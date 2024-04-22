@@ -129,6 +129,7 @@ const show = () => {
         else{
           WarningShow.value=true;
           message.value="用户名或密码错误";
+          return;
         }
       })
       .catch(error=>{
