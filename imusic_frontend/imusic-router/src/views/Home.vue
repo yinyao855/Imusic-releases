@@ -158,6 +158,15 @@ function parseLRC(lrc) {
   return lyrics;
 }
 
+const songlists=ref([
+  {cover:'http://182.92.100.66:5000/media/covers/%E5%BD%93%E7%A6%BB%E5%88%AB%E5%BC%80%E5%87%BA%E8%8A%B1.webp',title:'name'},
+  {cover:'http://182.92.100.66:5000/media/covers/%E5%BD%93%E7%A6%BB%E5%88%AB%E5%BC%80%E5%87%BA%E8%8A%B1.webp',title:'name'},
+  {cover:'http://182.92.100.66:5000/media/covers/%E5%BD%93%E7%A6%BB%E5%88%AB%E5%BC%80%E5%87%BA%E8%8A%B1.webp',title:'name'},
+  {cover:'http://182.92.100.66:5000/media/covers/%E5%BD%93%E7%A6%BB%E5%88%AB%E5%BC%80%E5%87%BA%E8%8A%B1.webp',title:'name'},
+  {cover:'http://182.92.100.66:5000/media/covers/%E5%BD%93%E7%A6%BB%E5%88%AB%E5%BC%80%E5%87%BA%E8%8A%B1.webp',title:'name'},
+  {cover:'http://182.92.100.66:5000/media/covers/%E5%BD%93%E7%A6%BB%E5%88%AB%E5%BC%80%E5%87%BA%E8%8A%B1.webp',title:'name'},
+  {cover:'http://182.92.100.66:5000/media/covers/%E5%BD%93%E7%A6%BB%E5%88%AB%E5%BC%80%E5%87%BA%E8%8A%B1.webp',title:'name'},
+]);
 
 const updateTime = () => {
   const audio = audioPlayer.value;
@@ -182,12 +191,18 @@ function getsonglistinit(id){
       .then(response=>{
         musicList.value=response.data.data.songs;
         currentMusic.value=musicList.value[curIndex.value]
-        console.log(response.data);
-        console.log(musicList.value);
         datax.value=response.data.data.songs;
       })
       .catch(error=>{
         console.log("get init songlist fail");
+      })
+  axios.get('http://182.92.100.66:5000/songlists/alldata')
+      .then(response=>{
+        songlists.value=response.data.data;
+        console.log(songlists.value)
+      })
+      .catch(error=>{
+        console.log('查不到歌单');
       })
 }
 
@@ -304,7 +319,7 @@ const datax=ref([]);
                  @changeMode="changeModex" v-model:HasLogin="HasLogin" @getsonglistinit="getsonglistinit"></Login>
           <Sign_up v-if="RegisterMode" @ChangerRegisterMode="ChangerRegisterMode" v-model:username="username"></Sign_up>
         </div>
-        <HomePage_Main v-if="mode==='1'"></HomePage_Main>
+        <HomePage_Main v-if="mode==='1'" v-model:songlists="songlists"></HomePage_Main>
         <ExplorePage_Main v-if="mode==='2'"></ExplorePage_Main>
         <SettingPage_Main v-if="mode==='3'"></SettingPage_Main>
       </div>
@@ -339,7 +354,6 @@ const datax=ref([]);
       @togglePlay="togglePlay"
       v-if="!isFull&&mode==='1'"
       :datax="datax"
-
   >
   </MusicPlayerView>
 

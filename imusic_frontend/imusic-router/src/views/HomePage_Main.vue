@@ -1,5 +1,5 @@
 <script setup>
-import {computed, ref} from "vue";
+import {computed, ref,defineModel} from "vue";
 import Search from "@/views/Search.vue";
 import Image_Scrool from "@/views/Image_Scrool.vue";
 const NaviMode = ref('1');
@@ -15,6 +15,9 @@ const changeNaviMode = (newMode) => {
   NaviMode.value = newMode.toString();
   console.log(NaviMode.value);
 }
+
+const songlists=defineModel('songlists');
+
 </script>
 
 <template>
@@ -24,10 +27,10 @@ const changeNaviMode = (newMode) => {
     <Search></Search>
   </div>
   <div class="text-2xl mx-4 text-white font-serif font-bold mt-16 ml-8">歌单</div>
-  <Image_Scrool ></Image_Scrool>
+  <Image_Scrool v-model:songlists="songlists"></Image_Scrool>
   <hr class="m-5 border-gray-500">
   <div class="text-2xl mx-4 text-white font-serif font-bold ml-8">推荐艺人</div>
-  <Image_Scrool ></Image_Scrool>
+  <Image_Scrool v-model:songlists="songlists"></Image_Scrool>
   <hr class="m-5 border-gray-500">
   <div class="mx-4">
   <div class="grid grid-cols-2 gap-4">
