@@ -206,6 +206,20 @@ function getsonglistinit(id){
       })
 }
 
+function changesonglist(){
+  console.log(index.value);
+  const web='http://182.92.100.66:5000/songlists/info/'+index.value;
+  axios.get(web)
+      .then(response=>{
+        musicList.value=response.data.data.songs;
+        currentMusic.value=musicList.value[curIndex.value]
+        datax.value=response.data.data.songs;
+      })
+      .catch(error=>{
+        console.log("get init songlist fail");
+      })
+}
+
 // const getdata = (num) =>{
 //  if(num===0){
 //    num=1;
@@ -229,8 +243,11 @@ function getsonglistinit(id){
 // }
 //
 // onMounted(getdata(0));
-
+const index=ref('1');
 const datax=ref([]);
+watch(index,()=>{
+  changesonglist();
+})
 </script>
 
 <template>
@@ -319,7 +336,7 @@ const datax=ref([]);
                  @changeMode="changeModex" v-model:HasLogin="HasLogin" @getsonglistinit="getsonglistinit"></Login>
           <Sign_up v-if="RegisterMode" @ChangerRegisterMode="ChangerRegisterMode" v-model:username="username"></Sign_up>
         </div>
-        <HomePage_Main v-if="mode==='1'" v-model:songlists="songlists"></HomePage_Main>
+        <HomePage_Main v-if="mode==='1'" v-model:songlists="songlists" v-model:index="index"></HomePage_Main>
         <ExplorePage_Main v-if="mode==='2'"></ExplorePage_Main>
         <SettingPage_Main v-if="mode==='3'"></SettingPage_Main>
       </div>

@@ -1,7 +1,7 @@
 <template>
   <div class="swiper-container mt-3 mr-4 ml-5" style="height:27%" @mouseenter="stopAutoSwitch" @mouseleave="startAutoSwitch">
     <div class="swiper-wrapper w-full h-full" :style="wrapperStyle">
-      <div class="swiper-slide h-3/4 mx-8" v-for="(songlist, index) in songlists" :key="index">
+      <div class="swiper-slide h-3/4 mx-8" v-for="(songlist, index) in songlists" :key="index" @click="handleindex(index)">
         <img :src="songlist.cover" :alt="`Slide ${index}`" class="h-full rounded-2xl aspect-square">
         <div class="text-center text-white my-2">{{songlist.title}}</div>
       </div>
@@ -30,6 +30,13 @@ const nextSlide = () => {
 const prevSlide = () => {
   currentIndex.value = (currentIndex.value - 1 + songlists.value.length) % songlists.value.length;
 };
+
+const index=defineModel('index');
+
+const handleindex = (indexx) =>{
+  index.value=songlists.value[indexx].id;
+  console.log(index.value)
+}
 
 let intervalId;
 const startAutoSwitch = () => {

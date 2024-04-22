@@ -17,6 +17,7 @@ const changeNaviMode = (newMode) => {
 }
 
 const songlists=defineModel('songlists');
+const index=defineModel('index');
 
 </script>
 
@@ -27,7 +28,7 @@ const songlists=defineModel('songlists');
     <Search></Search>
   </div>
   <div class="text-2xl mx-4 text-white font-serif font-bold mt-16 ml-8">歌单</div>
-  <Image_Scrool v-model:songlists="songlists"></Image_Scrool>
+  <Image_Scrool v-model:songlists="songlists" v-model:index="index"></Image_Scrool>
   <hr class="m-5 border-gray-500">
   <div class="text-2xl mx-4 text-white font-serif font-bold ml-8">推荐艺人</div>
   <Image_Scrool v-model:songlists="songlists"></Image_Scrool>
