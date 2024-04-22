@@ -125,6 +125,7 @@ const show = () => {
           HasLogin.value=true;
           getsonglistinit(username.value);
           changeMode();
+          avatar.value=response.data.data.avatar;
         }
         else{
           WarningShow.value=true;
@@ -152,7 +153,7 @@ const WarningShow=ref(false);
 const usernametofather=defineModel('username');
 // const email=defineModel('email');
 // const bio=defineModel('bio');
-// const avatar=defineModel('avatar');
+const avatar=defineModel('avatar');
 // const role=defineModel('role');
 // const registration_date=defineModel('registration_date');
 

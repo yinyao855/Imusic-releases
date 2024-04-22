@@ -350,6 +350,7 @@ watch(index,()=>{
       @ended="handleModeChange"
       controls
       autoplay
+      v-if="HasLogin"
   ></audio>
 
   <MusicPlayerView
