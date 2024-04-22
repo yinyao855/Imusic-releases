@@ -24,8 +24,8 @@
           <div class="flex h-2/3 justify-around w-1/2 mx-auto">
             <!--播放上一首-->
             <div class="tooltip my-auto" data-tip="上一首">
-              <button class="btn btn-sm transition duration-400 hover:bg-gray-600/40 bg-black rounded-md border-none" @click="goBack">
-                <svg width="28" height="28" viewBox="0 0 48 48" fill="black" xmlns="http://www.w3.org/2000/svg">
+              <button class="btn btn-sm transition duration-400 hover:bg-gray-600/40 bg-zinc-900 rounded-md border-none fill-zinc-900 hover:fill-zinc-900" @click="goBack">
+                <svg width="28" height="28" viewBox="0 0 48 48"  xmlns="http://www.w3.org/2000/svg">
                   <path d="M34 36L22 24L34 12" stroke="white" stroke-width="4" stroke-linecap="round"
                     stroke-linejoin="round" />
                   <path d="M14 12V36" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
@@ -33,7 +33,7 @@
               </button>
             </div>
             <div class="tooltip my-auto" data-tip="播放与暂停">
-              <button class="btn transition duration-400 hover:bg-gray-600/40 bg-black rounded-md border-none" @click="togglePlay">
+              <button class="btn transition duration-400 hover:bg-gray-600/40 bg-zinc-900 rounded-md border-none" @click="togglePlay">
                 <svg v-if="!isPlaying" width="40" height="40" viewBox="0 0 48 48" fill="white"
                   xmlns="http://www.w3.org/2000/svg">
                   <path d="M15 24V11.8756L25.5 17.9378L36 24L25.5 30.0622L15 36.1244V24Z" fill="white" stroke="white"
@@ -47,7 +47,7 @@
             </div>
             <!--播放下一首-->
             <div class="tooltip my-auto" data-tip="下一首">
-              <button class="btn btn-sm transition duration-400 hover:bg-gray-600/40 bg-black rounded-md border-none" @click="goNext">
+              <button class="btn btn-sm transition duration-400 hover:bg-gray-600/40 bg-zinc-900 rounded-md border-none" @click="goNext">
                 <svg width="28" height="28" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path d="M14 12L26 24L14 36" stroke="white" stroke-width="4" stroke-linecap="round"
                     stroke-linejoin="round" />
@@ -70,7 +70,7 @@
         <div class="w-1/4 flex justify-around">
           <!--控制播放速度-->
           <div class="tooltip my-auto" data-tip="播放速度">
-            <button class="btn btn-sm transition duration-400 hover:bg-gray-600/40 bg-black rounded-md border-none">
+            <button class="btn btn-sm transition duration-400 hover:bg-gray-600/40 bg-zinc-900 rounded-md border-none">
               <svg width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path
                   d="M34.0234 6.68921C31.0764 4.97912 27.6525 4 24 4C12.9543 4 4 12.9543 4 24C4 35.0457 12.9543 44 24 44C35.0457 44 44 35.0457 44 24C44 20.3727 43.0344 16.9709 41.3461 14.0377"
@@ -83,7 +83,7 @@
           </div>
           <!--控制播放方式-->
           <div class="tooltip my-auto" :data-tip="playerModeText">
-            <button class="btn btn-sm transition duration-400 hover:bg-gray-600/40 bg-black rounded-md border-none" @click="changeMode">
+            <button class="btn btn-sm transition duration-400 hover:bg-gray-600/40 bg-zinc-900 rounded-md border-none" @click="changeMode">
               <svg v-if="playerMode === 0" width="24" height="24" viewBox="0 0 48 48" fill="none"
                 xmlns="http://www.w3.org/2000/svg">
                 <path
@@ -117,7 +117,7 @@
           </div>
           <!--控制音量-->
           <div class="my-auto flex">
-            <button class="btn my-auto btn-sm transition duration-400 hover:bg-gray-600/40 bg-black rounded-md border-none">
+            <button class="btn my-auto btn-sm transition duration-400 hover:bg-gray-600/40 bg-zinc-900 rounded-md border-none">
               <svg width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M24 3.99976V43.9998" stroke="white" stroke-width="4" stroke-linecap="round" />
                 <path d="M34 11.9998V35.9998" stroke="white" stroke-width="4" stroke-linecap="round" />
@@ -131,7 +131,7 @@
           </div>
           <!--缩小播放器-->
           <div class="tooltip my-auto" data-tip="最小化">
-            <button class="btn btn-sm transition duration-400 hover:bg-gray-600/40 bg-black rounded-md border-none" @click="minimizePlayer">
+            <button class="btn btn-sm transition duration-400 hover:bg-gray-600/40 bg-zinc-900 rounded-md border-none" @click="minimizePlayer">
               <svg width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M27 9V21H39" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
                 <path d="M21 39V27H9" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
@@ -142,7 +142,7 @@
           </div>
           <!--全屏播放器-->
           <div class="tooltip my-auto" data-tip="全屏显示">
-            <button class="btn btn-sm transition duration-400 hover:bg-gray-600/40 bg-black rounded-md border-none" @click="fullSize">
+            <button class="btn btn-sm transition duration-400 hover:bg-gray-600/40 bg-zinc-900 rounded-md border-none" @click="fullSize">
               <svg width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M22 42H6V26" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
                 <path d="M26 6H42V22" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />

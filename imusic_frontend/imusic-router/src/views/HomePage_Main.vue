@@ -18,22 +18,23 @@ const changeNaviMode = (newMode) => {
 </script>
 
 <template>
-  <div class="w-full h-16 pl-6 fixed z-50 bg-black">
+  <div class="w-full h-16 pl-6 fixed z-50 bg-zinc-900">
     <div :class="[NaviClass1, 'text-transition']" @click="changeNaviMode(1)" style="line-height: 56px">推荐</div>
     <div :class="[NaviClass2, 'text-transition']" @click="changeNaviMode(2)" style="line-height: 56px">最新上传</div>
     <Search></Search>
   </div>
-  <div class="text-2xl mx-4 text-white font-serif font-bold mt-16">歌单</div>
-  <Image_Scrool></Image_Scrool>
+  <div class="text-2xl mx-4 text-white font-serif font-bold mt-16 ml-8">歌单</div>
+  <Image_Scrool ></Image_Scrool>
   <hr class="m-5 border-gray-500">
-  <div class="text-2xl mx-4 text-white font-serif font-bold">推荐艺人</div>
-  <Image_Scrool></Image_Scrool>
+  <div class="text-2xl mx-4 text-white font-serif font-bold ml-8">推荐艺人</div>
+  <Image_Scrool ></Image_Scrool>
   <hr class="m-5 border-gray-500">
+  <div class="mx-4">
   <div class="grid grid-cols-2 gap-4">
     <div class="grid-col-2">
-      <div class="text-2xl mx-4 text-white font-serif font-bold my-4">热门单曲</div>
+      <div class="text-2xl mx-8 text-white font-serif font-bold my-4">热门单曲</div>
       <div class="overflow-x-auto">
-        <table class="table">
+        <table class="table mx-auto">
           <!-- head -->
           <thead>
           <tr>
@@ -253,12 +254,13 @@ const changeNaviMode = (newMode) => {
       </div>
     </div>
   </div>
+  </div>
   <hr class="m-5 border-gray-500">
   <div class="text-white text-base px-4 my-4">
     关于ios后台播放<br>
     由于ios限制无法在后台切换歌曲，可以添加到主屏幕、升级到ios16.1.1<br>
   </div>
-  <div class="text-white text-base px-4 my-4">
+  <div class="text-white text-base px-4 mt-4 mb-32">
     如有侵权，请联系本人予以删除！邮箱xuehuitian45@gmail.com<br>
     本站本身不储存任何资源文件，资源来自互联网，仅供学习交流试听，请于下载后24小时内删除，支持购买正版专辑！
   </div>

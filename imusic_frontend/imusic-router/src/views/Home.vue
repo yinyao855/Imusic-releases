@@ -171,7 +171,7 @@ const changeModex = ()=>{
 </script>
 
 <template>
-  <div class="flex w-full h-screen bg-black">
+  <div class="flex w-full h-screen bg-zinc-900">
     <div class="w-1/6 h-screen fixed hidden lg:block" style="background-color:#2E2E30">
       <div
           class="group flex antialiased w-full mt-3 hover:text-blue-800 my-1 font-medium text-white transition duration-400 bg-yellow-95000 text-base"
@@ -250,7 +250,7 @@ const changeModex = ()=>{
     </div>
     <div class="lg:w-1/6 w-0 h-full mr-0"></div>
     <div class="w-full lg:w-5/6 h-full mr-0">
-      <div class="bg-black h-screen overflow-auto">
+      <div class="bg-zinc-900 h-screen overflow-auto">
         <div v-if="mode==='0'" class="w-full h-full z-50">
           <Login v-if="!RegisterMode" @ChangerRegisterMode="ChangerRegisterMode" v-model:username="username" @changeMode="changeModex"></Login>
           <Sign_up v-if="RegisterMode" @ChangerRegisterMode="ChangerRegisterMode"  v-model:username="username"></Sign_up>

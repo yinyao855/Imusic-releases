@@ -1,5 +1,5 @@
 <template>
-  <div class="swiper-container mt-3 w-full" style="height:27%" @mouseenter="stopAutoSwitch" @mouseleave="startAutoSwitch">
+  <div class="swiper-container mt-3 mr-4 ml-5" style="height:27%" @mouseenter="stopAutoSwitch" @mouseleave="startAutoSwitch">
     <div class="swiper-wrapper w-full h-full" :style="wrapperStyle">
       <div class="swiper-slide h-3/4 mx-8" v-for="(image, index) in imgs" :key="index">
         <img :src="image.src" :alt="`Slide ${index}`" class="h-full rounded-2xl">
