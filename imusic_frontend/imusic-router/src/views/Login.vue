@@ -126,6 +126,10 @@ const show = () => {
           getsonglistinit(username.value);
           changeMode();
           avatar.value=response.data.data.avatar;
+          if(response.data.data.avatar===null){
+            avatar.value='';
+          }
+          console.log(avatar.value)
         }
         else{
           WarningShow.value=true;

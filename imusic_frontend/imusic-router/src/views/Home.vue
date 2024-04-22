@@ -248,6 +248,8 @@ const datax=ref([]);
 watch(index,()=>{
   changesonglist();
 })
+
+const avatar=ref('');
 </script>
 
 <template>
@@ -258,7 +260,7 @@ watch(index,()=>{
           style="height:60px; line-height: 60px" @click="changeMode(0)">
         <svg t="1713667739578" class="icon inline fill-white transition duration-400 my-auto ml-4"
              viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"
-             p-id="5760" width="32" height="32">
+             p-id="5760" width="32" height="32" v-if="!HasLogin||avatar===''">
           <path
               d="M512 625.777778c-159.288889 0-284.444444-125.155556-284.444444-284.444445s125.155556-284.444444 284.444444-284.444444 284.444444 125.155556 284.444444 284.444444-125.155556 284.444444-284.444444 284.444445z m0-56.888889c125.155556 0 227.555556-102.4 227.555556-227.555556s-102.4-227.555556-227.555556-227.555555-227.555556 102.4-227.555556 227.555555 102.4 227.555556 227.555556 227.555556z"
               p-id="5761"></path>
@@ -266,6 +268,7 @@ watch(index,()=>{
               d="M56.888889 1024c0-250.311111 204.8-455.111111 455.111111-455.111111s455.111111 204.8 455.111111 455.111111h-56.888889c0-221.866667-176.355556-398.222222-398.222222-398.222222s-398.222222 176.355556-398.222222 398.222222H56.888889z"
               p-id="5762"></path>
         </svg>
+        <img v-if="HasLogin&&avatar!==''" :src="avatar" class="inline transition duration-400 my-auto ml-4 aspect-square w-12 h-12 rounded" alt="头像">
         <span class="px-5">{{ username }}</span>
         <svg t="1713669026081"
              class="icon inline fill-white group-hover:fill-blue-800 transition duration-400 justify-end my-auto mr-0"
@@ -333,7 +336,7 @@ watch(index,()=>{
       <div class="bg-zinc-900 h-screen overflow-auto">
         <div v-if="mode==='0'" class="w-full h-full z-50">
           <Login v-if="!RegisterMode" @ChangerRegisterMode="ChangerRegisterMode" v-model:username="username"
-                 @changeMode="changeModex" v-model:HasLogin="HasLogin" @getsonglistinit="getsonglistinit"></Login>
+                 @changeMode="changeModex" v-model:HasLogin="HasLogin" @getsonglistinit="getsonglistinit" v-model:avatar="avatar"></Login>
           <Sign_up v-if="RegisterMode" @ChangerRegisterMode="ChangerRegisterMode" v-model:username="username"></Sign_up>
         </div>
         <HomePage_Main v-if="mode==='1'" v-model:songlists="songlists" v-model:index="index"></HomePage_Main>
