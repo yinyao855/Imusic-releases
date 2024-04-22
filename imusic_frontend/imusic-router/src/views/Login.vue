@@ -65,7 +65,7 @@ import axios from "axios";
 import { useRouter } from 'vue-router';
 import Warning from "@/views/Warning.vue";
 import { defineEmits,defineModel } from "vue"
-const emits=defineEmits(['ChangerRegisterMode','changeMode']);
+const emits=defineEmits(['ChangerRegisterMode','changeMode','getsonglistinit']);
 const router = useRouter();
 
 
@@ -123,6 +123,7 @@ const show = () => {
             scalar: 1
           });
           HasLogin.value=true;
+          getsonglistinit(username.value);
           changeMode();
         }
         else{
@@ -133,6 +134,10 @@ const show = () => {
       .catch(error=>{
         console.log("error");
       })
+}
+
+const getsonglistinit=(s)=>{
+  emits('getsonglistinit',s);
 }
 
 const CloseWarning = () => {

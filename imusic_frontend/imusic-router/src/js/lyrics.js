@@ -420,51 +420,51 @@ background: linear-gradient(89deg, rgba(224,152,68,1) 0%, rgba(164,121,151,1) 81
 ]
 
 //歌单
-const musicList = [
+const musicList1 = [
     {
-        name: "难得有情人",
+        title: "难得有情人",
         singer: "关淑怡",
         cover: "./难得有情人.png",
-        source: "./难得有情人.mp3",
+        audio: "./难得有情人.mp3",
     },
     {
-        name: "天下",
+        title: "天下",
         singer: "张杰",
         cover: "./天下.webp",
-        source: "./天下.mp3",
+        audio: "./天下.mp3",
     },
     {
-        name: "喜帖街",
+        title: "喜帖街",
         singer: "谢安琪",
         cover: "./喜帖街.webp",
-        source: "./喜帖街.mp3",
+        audio: "./喜帖街.mp3",
     },
     {
-        name: "少女的祈祷",
+        title: "少女的祈祷",
         singer: "杨千嬅",
         cover: "./少女的祈祷.webp",
-        source: "./少女的祈祷.mp3",
+        audio: "./少女的祈祷.mp3",
     },
     {
-        name: "泡沫",
+        title: "泡沫",
         singer: "邓紫棋",
         cover: "./泡沫.webp",
-        source: "./泡沫.mp3",
+        audio: "./泡沫.mp3",
     },
     {
-        name: "Something Just Like This",
+        title: "Something Just Like This",
         singer: "The Chain smokers,Coldplay",
         cover: "./Something Just Like This.webp",
-        source: "./Something Just Like This.mp3",
+        audio: "./Something Just Like This.mp3",
     },
     {
-        name: "海阔天空",
+        title: "海阔天空",
         singer: "Beyond",
         cover: "./海阔天空.jpg",
-        source: "./海阔天空.mp3",
+        audio: "./海阔天空.mp3",
     },
 ];
 
 // Path: src/js/lyrics.js
 export default lyrics;
-export { gradient, musicList };
+export { gradient, musicList1 };

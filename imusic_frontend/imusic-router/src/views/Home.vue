@@ -39,12 +39,18 @@ const ChangerRegisterMode = () => {
 const props = defineProps({
   lyrics: Object,
   gradient: Object,
-  musicList: Object,
 })
 
 const lyrics = props.lyrics
 const gradient = props.gradient
-const musicList = props.musicList
+const musicList=ref([
+  {
+    title: "难得有情人",
+    singer: "关淑怡",
+    cover: "./难得有情人.png",
+    audio: "./难得有情人.mp3",
+  },
+]);
 
 const isFull = ref(false);
 
@@ -61,7 +67,7 @@ const currentTimeInSeconds = ref(0);
 //将当前播放歌曲和外部绑定
 const curIndex = defineModel("curIndex")
 const lyric = ref(parseLRC(lyrics[curIndex.value]))
-const currentMusic = ref(musicList[curIndex.value])
+const currentMusic = ref(musicList.value[curIndex.value])
 
 const playerMode = ref(0)
 
@@ -72,7 +78,7 @@ function changeSize() {
 //监控当前播放歌曲变化
 watch(curIndex, () => {
   const index = curIndex.value;
-  currentMusic.value = musicList[index];
+  currentMusic.value = musicList.value[index];
   lyric.value = parseLRC(lyrics[index]);
   isPlaying.value = true;
 })
@@ -91,7 +97,7 @@ function handleModeChange() {
 
 //上一首
 function backSong() {
-  const length = musicList.length;
+  const length = musicList.value.length;
   const index = (curIndex.value - 1 + length) % length;
   // currentMusic.value = musicList[index];
   // lyric.value = parseLRC(lyrics[index]);
@@ -101,7 +107,8 @@ function backSong() {
 
 //下一首
 function nextSong() {
-  const length = musicList.length;
+  const length = musicList.value.length;
+  console.log(length);
   const index = (curIndex.value + 1) % length;
   // currentMusic.value = musicList[index];
   // lyric.value = parseLRC(lyrics[index]);
@@ -115,7 +122,7 @@ function getRandomInt(max) {
 
 //随机选取
 function randomSong() {
-  const length = musicList.length;
+  const length = musicList.value.length;
   const index = getRandomInt(length)
   // currentMusic.value = musicList[index];
   // lyric.value = parseLRC(lyrics[index]);
@@ -152,7 +159,6 @@ function parseLRC(lrc) {
 }
 
 
-
 const updateTime = () => {
   const audio = audioPlayer.value;
   let minutes = Math.floor(audio.currentTime / 60);
@@ -168,6 +174,21 @@ const username = ref('点击登录')
 const HasLogin=ref(false);
 const changeModex = () => {
   mode.value = '1';
+}
+
+function getsonglistinit(id){
+  console.log(id);
+  axios.get('http://182.92.100.66:5000/songlists/info/1')
+      .then(response=>{
+        musicList.value=response.data.data.songs;
+        currentMusic.value=musicList.value[curIndex.value]
+        console.log(response.data);
+        console.log(musicList.value);
+        datax.value=response.data.data.songs;
+      })
+      .catch(error=>{
+        console.log("get init songlist fail");
+      })
 }
 
 // const getdata = (num) =>{
@@ -193,6 +214,8 @@ const changeModex = () => {
 // }
 //
 // onMounted(getdata(0));
+
+const datax=ref([]);
 </script>
 
 <template>
@@ -278,7 +301,7 @@ const changeModex = () => {
       <div class="bg-zinc-900 h-screen overflow-auto">
         <div v-if="mode==='0'" class="w-full h-full z-50">
           <Login v-if="!RegisterMode" @ChangerRegisterMode="ChangerRegisterMode" v-model:username="username"
-                 @changeMode="changeModex" v-model:HasLogin="HasLogin"></Login>
+                 @changeMode="changeModex" v-model:HasLogin="HasLogin" @getsonglistinit="getsonglistinit"></Login>
           <Sign_up v-if="RegisterMode" @ChangerRegisterMode="ChangerRegisterMode" v-model:username="username"></Sign_up>
         </div>
         <HomePage_Main v-if="mode==='1'"></HomePage_Main>
@@ -288,7 +311,7 @@ const changeModex = () => {
     </div>
   </div>
   <audio
-      :src="currentMusic.source"
+      :src="currentMusic.audio"
       ref="audioPlayer"
       class="hidden"
       @timeupdate="updateTime"
@@ -299,7 +322,7 @@ const changeModex = () => {
 
   <MusicPlayerView
       :key="1"
-      :name="currentMusic.name"
+      :name="currentMusic.title"
       :singer="currentMusic.singer"
       :cover="currentMusic.cover"
       @fullsize="changeSize"
@@ -314,6 +337,7 @@ const changeModex = () => {
       v-model:playerMode="playerMode"
       @togglePlay="togglePlay"
       v-if="!isFull&&mode==='1'"
+      :datax="datax"
   >
   </MusicPlayerView>
 
@@ -328,7 +352,7 @@ const changeModex = () => {
           v-model:duration="duration"
           v-model:currentTimeInSeconds="currentTimeInSeconds"
           @fullsize="changeSize"
-          :name="currentMusic.name"
+          :name="currentMusic.title"
           :singer="currentMusic.singer"
           :cover="currentMusic.cover"
           v-model:lyric="lyric"

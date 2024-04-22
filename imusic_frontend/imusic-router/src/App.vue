@@ -4,7 +4,7 @@ import {ref} from "vue";
 const HasLogin=ref(false);
 
 
-import { musicList } from "./js/lyrics.js";
+import { musicList1 } from "./js/lyrics.js";
 import lyrics from "./js/lyrics.js";
 import { gradient } from "./js/lyrics.js";
 const curMusicIndex = ref(0);
@@ -14,7 +14,7 @@ const curMusicIndex = ref(0);
   <div class="flex h-screen w-screen bg-black">
     <router-view v-model:HasLogin="HasLogin" 
     v-model:curIndex="curMusicIndex"
-    :musicList="musicList"
+    :musicList="musicList1"
     :gradient="gradient"
     :lyrics="lyrics">
     </router-view>
