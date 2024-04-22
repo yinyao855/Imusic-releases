@@ -2,28 +2,28 @@
   <div id="uploadSong" class="h-full w-full flex items-center">
     <div class=" formx2 my-auto ml-[200px] width:800px flexible">
       <div class="flex-column text-2xl">
-        <label>*Song Name</label>
+        <label>*歌曲名</label>
       </div>
       <div class="inputForm">
         <svg t="1713779846725" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="5635" width="24" height="24"><path d="M458.24 594.304l1.6-0.576v-0.64l417.216-417.152A65.6 65.6 0 0 0 784.32 83.2L367.104 500.416h-0.448l-0.384 1.28c-13.888 14.464-19.2 33.408-17.28 51.968l-28.672 86.464 86.656-28.736c18.24 1.792 36.928-3.52 51.264-17.088zM64 768.256V896h896v-127.744H64z" p-id="5636"></path></svg>
-        <input type="text" class="input bg-white" placeholder="Please input your song's name" v-model="SongName">
+        <input type="text" class="input bg-white" placeholder="请输入歌曲名" v-model="SongName">
       </div>
       <p class="text-sm text-gray-500">
-        <span>MUST fill in the item</span>
+        <span>此项为必填项</span>
       </p>
       <div class="flex-column text-2xl">
-        <label>*Singer</label>
+        <label>*歌手</label>
       </div>
       <div class="inputForm">
         <svg t="1713781402135" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="7988" width="24" height="24"><path d="M621.6906477754643 481.59890704548104v91.51856298436078A255.94484428572028 255.94484428572028 0 0 0 219.49160697948815 783.1750596871783v146.2541965102559h-73.12709904067292v-164.5359700921066a310.79016817345257 310.79016817345257 0 0 1 310.79016817345257-310.79016817345257h36.56354873479146a309.6932614129017 309.6932614129017 0 0 1 127.97242292840514 27.495789113605824z m109.6906477754644 240.7709710973103V563.7937657073393a36.56354873479146 36.56354873479146 0 0 1 36.56354873479146-36.563550305881485h73.12709746958292a36.56354873479146 36.56354873479146 0 1 1 0 73.12709904067292h-36.56354873479146v219.3812939798388h-1.2797235065826498A127.97242135731514 127.97242135731514 0 1 1 731.3812955509288 722.3698781427912zM676.5359716631967 892.8657074626428a54.8453238877322 54.8453238877322 0 1 0 0-109.6906477754644 54.8453238877322 54.8453238877322 0 0 0 0 109.6906477754644zM475.4364512652086 417.53956762599375a182.81774524504735 182.81774524504735 0 1 1 0-365.6354904900947 182.81774524504735 182.81774524504735 0 0 1 0 365.6354904900947z m0-73.12709746958292a109.6906477754644 109.6906477754644 0 1 0 0-219.3812955509288 109.6906477754644 109.6906477754644 0 0 0 0 219.3812955509288z" p-id="7989">
 
-        </path></svg><input type="text" class="input bg-white" placeholder="Please input the singer of your song" v-model="Singer">
+        </path></svg><input type="text" class="input bg-white" placeholder="请输入歌曲歌手" v-model="Singer">
       </div>
       <p class="text-sm text-gray-500">
-        <span>MUST fill in the item</span>
+        <span>此项为必填项</span>
       </p>
       <div class="flex-column text-2xl">
-        <label>*Song File</label>
+        <label>*歌曲文件</label>
       </div>
       <div class="grid grid-cols-1 space-y-2">
         <div class="flex items-center justify-center w-full">
@@ -35,20 +35,20 @@
               <div class="flex flex-auto max-h-48 w-2/5 mx-auto -mt-10">
                 <img class="has-mask h-36 object-center" src="https://img.freepik.com/free-vector/image-upload-concept-landing-page_52683-27130.jpg?size=338&ext=jpg" alt="freepik image">
               </div>
-              <p class="pointer-none text-gray-500 "><span class="text-sm">Drag and drop</span> files here <br /> or <a href="" id="" class="text-blue-600 hover:underline">select a file</a> from your computer</p>
+              <p class="pointer-none text-gray-500 "><span class="text-sm"></span> 拖拽文件至此处 <br /> 或 <a href="" id="" class="text-blue-600 hover:underline">选择文件</a> 上传</p>
             </div>
             <input type="file" class="hidden">
           </label>
         </div>
       </div>
       <p class="text-sm text-gray-500">
-        <span>MUST fill in the item</span>
+        <span>此项为必填项</span>
       </p>
       <p class="text-sm text-gray-300">
-        <span>File type: ONLY mp3</span>
+        <span>支持格式：mp3</span>
       </p>
       <div class="flex-column text-2xl">
-        <label>*Cover File</label>
+        <label>*歌曲封面</label>
       </div>
       <div class="grid grid-cols-1 space-y-2">
         <div class="flex items-center justify-center w-full">
@@ -60,20 +60,20 @@
               <div class="flex flex-auto max-h-48 w-2/5 mx-auto -mt-10">
                 <img class="has-mask h-36 object-center" src="https://img.freepik.com/free-vector/image-upload-concept-landing-page_52683-27130.jpg?size=338&ext=jpg" alt="freepik image">
               </div>
-              <p class="pointer-none text-gray-500 "><span class="text-sm">Drag and drop</span> files here <br /> or <a href="" id="" class="text-blue-600 hover:underline">select a file</a> from your computer</p>
+              <p class="pointer-none text-gray-500 "><span class="text-sm"></span>拖拽文件至此处<br />或<a href="" id="" class="text-blue-600 hover:underline">选择文件</a>上传</p>
             </div>
             <input type="file" class="hidden">
           </label>
         </div>
       </div>
       <p class="text-sm text-gray-500">
-        <span>MUST fill in the item</span>
+        <span>此项为必填项</span>
       </p>
       <p class="text-sm text-gray-300">
-        <span>File type:webg,jpg,jpeg,png</span>
+        <span>支持格式：webg,jpg,jpeg,png</span>
       </p>
       <div class="flex-column text-2xl">
-        <label>Theme</label>
+        <label>标签</label>
       </div>
       <div class="w-full mx-auto rounded-lg bg-gray-50 p-6" id="cta">
         <div class="group relative" id="dropdown-cta">
@@ -165,15 +165,15 @@
         </div>
       </div>
       <div class="flex-column text-2xl">
-        <label>Introduction</label>
+        <label>介绍</label>
       </div>
       <div class="inputForm">
         <svg t="1713789997854" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="9038" width="24" height="24">
           <path d="M0 0v1024h1024V0H0z m938.67 938.67H85.33V85.33h853.33v853.34z" fill="#333333" p-id="9039"></path>
-          <path d="M341.33 213.33h512v85.33h-512zM170.67 213.33H256v85.33h-85.33zM341.33 384h512v85.33h-512zM341.33 554.67h512V640h-512zM170.67 554.67H256V640h-85.33zM341.33 725.33h512v85.33h-512z" fill="#333333" p-id="9040"></path></svg><input type="text" class="input bg-white" placeholder="Please the introduction of the song" v-model="introduction">
+          <path d="M341.33 213.33h512v85.33h-512zM170.67 213.33H256v85.33h-85.33zM341.33 384h512v85.33h-512zM341.33 554.67h512V640h-512zM170.67 554.67H256V640h-85.33zM341.33 725.33h512v85.33h-512z" fill="#333333" p-id="9040"></path></svg><input type="text" class="input bg-white" placeholder="请为你的歌曲写一点介绍" v-model="introduction">
       </div>
       <div class="flex-column text-2xl">
-        <label>Lyric</label>
+        <label>歌词</label>
       </div>
       <div class="columns-2">
       <div class="inputForm">
