@@ -335,9 +335,11 @@ const datax=ref([]);
       v-model:currentTimeInSeconds="currentTimeInSeconds"
       v-model:audioPlayer="audioPlayer"
       v-model:playerMode="playerMode"
+      v-model:curIndex="curIndex"
       @togglePlay="togglePlay"
       v-if="!isFull&&mode==='1'"
       :datax="datax"
+
   >
   </MusicPlayerView>
 
