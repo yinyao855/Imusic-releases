@@ -369,7 +369,7 @@ watch(index,()=>{
       v-model:playerMode="playerMode"
       v-model:curIndex="curIndex"
       @togglePlay="togglePlay"
-      v-if="!isFull&&mode==='1'"
+      v-if="!isFull&&mode==='1'&&HasLogin"
       :datax="datax"
   >
   </MusicPlayerView>
