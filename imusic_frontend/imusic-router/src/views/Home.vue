@@ -268,7 +268,7 @@ const avatar=ref('');
               d="M56.888889 1024c0-250.311111 204.8-455.111111 455.111111-455.111111s455.111111 204.8 455.111111 455.111111h-56.888889c0-221.866667-176.355556-398.222222-398.222222-398.222222s-398.222222 176.355556-398.222222 398.222222H56.888889z"
               p-id="5762"></path>
         </svg>
-        <img v-if="HasLogin&&avatar!==''" :src="avatar" class="inline transition duration-400 my-auto ml-4 aspect-square w-12 h-12 rounded" alt="头像">
+        <img v-if="HasLogin&&avatar!==''" :src="avatar" class="inline transition duration-400 my-auto ml-4 aspect-square w-12 h-12 rounded-full" alt="头像">
         <span class="px-5">{{ username }}</span>
         <svg t="1713669026081"
              class="icon inline fill-white group-hover:fill-blue-800 transition duration-400 justify-end my-auto mr-0"
