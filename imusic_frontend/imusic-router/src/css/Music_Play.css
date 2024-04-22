@@ -97,7 +97,7 @@
 
 .card__btn:hover {
     padding: 10px;
-    background-color: rgba(0, 0, 0, 0.2); /* 鼠标悬停时的背景颜色 */
+    background-color: rgba(164, 164, 164, 0.2); /* 鼠标悬停时的背景颜色 */
     border-color: rgba(0, 0, 0, 0); /* 鼠标悬停时显示的边框颜色 */
 }
 
