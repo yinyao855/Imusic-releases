@@ -9,8 +9,8 @@
         <div class="text-center text-white my-2">{{songlist.title}}</div>
       </div>
     </div>
-    <button class="swiper-button-prev" @click="prevSlide">&lt;</button>
-    <button class="swiper-button-next" @click="nextSlide">&gt;</button>
+    <button class="swiper-button-prev btn" @click="prevSlide">&lt;</button>
+    <button class="swiper-button-next btn" @click="nextSlide">&gt;</button>
   </div>
 </template>
 
