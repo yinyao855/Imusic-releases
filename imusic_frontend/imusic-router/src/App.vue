@@ -4,8 +4,6 @@ import {ref} from "vue";
 const HasLogin=ref(false);
 
 
-
-
 import { musicList } from "./js/lyrics.js";
 import lyrics from "./js/lyrics.js";
 import { gradient } from "./js/lyrics.js";

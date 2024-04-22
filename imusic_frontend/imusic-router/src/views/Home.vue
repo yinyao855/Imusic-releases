@@ -5,6 +5,10 @@ import ExplorePage_Main from "@/views/ExplorePage_Main.vue";
 import SettingPage_Main from "@/views/SettingPage_Main.vue";
 import MusicPlayerView from "./MusicPlayerView.vue";
 import MusicPlayerFullView from "./MusicPlayerFullView.vue";
+import Login from "./Login.vue";
+import Sign_up from "./Sign_up.vue";
+
+const RegisterMode=ref(false);
 
 const mode = ref('1');
 const containerClass1 = computed(() => ({
@@ -26,8 +30,9 @@ const changeMode = (newMode) => {
 };
 
 
-
-
+const ChangerRegisterMode = () =>{
+  RegisterMode.value=!RegisterMode.value;
+}
 
 
 const props = defineProps({
@@ -158,6 +163,11 @@ const updateTime = () => {
   currentTimeInSeconds.value = audio.currentTime;
   durationInSeconds.value = audio.duration;
 };
+const username=ref('点击登录')
+
+const changeModex = ()=>{
+  mode.value='1';
+}
 </script>
 
 <template>
@@ -176,7 +186,7 @@ const updateTime = () => {
               d="M56.888889 1024c0-250.311111 204.8-455.111111 455.111111-455.111111s455.111111 204.8 455.111111 455.111111h-56.888889c0-221.866667-176.355556-398.222222-398.222222-398.222222s-398.222222 176.355556-398.222222 398.222222H56.888889z"
               p-id="5762"></path>
         </svg>
-        <span class="px-5">点击登录</span>
+        <span class="px-5">{{ username }}</span>
         <svg t="1713669026081"
              class="icon inline fill-white group-hover:fill-blue-800 transition duration-400 justify-end my-auto mr-0"
              viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"
@@ -241,6 +251,10 @@ const updateTime = () => {
     <div class="lg:w-1/6 w-0 h-full mr-0"></div>
     <div class="w-full lg:w-5/6 h-full mr-0">
       <div class="bg-black h-screen overflow-auto">
+        <div v-if="mode==='0'" class="w-full h-full z-50">
+          <Login v-if="!RegisterMode" @ChangerRegisterMode="ChangerRegisterMode" v-model:username="username" @changeMode="changeModex"></Login>
+          <Sign_up v-if="RegisterMode" @ChangerRegisterMode="ChangerRegisterMode"  v-model:username="username"></Sign_up>
+        </div>
         <HomePage_Main v-if="mode==='1'"></HomePage_Main>
         <ExplorePage_Main v-if="mode==='2'"></ExplorePage_Main>
         <SettingPage_Main v-if="mode==='3'"></SettingPage_Main>
@@ -273,7 +287,7 @@ const updateTime = () => {
         v-model:audioPlayer="audioPlayer"
         v-model:playerMode="playerMode"
         @togglePlay="togglePlay"
-        v-if="!isFull"
+        v-if="!isFull&&mode==='1'"
       >
       </MusicPlayerView>
 

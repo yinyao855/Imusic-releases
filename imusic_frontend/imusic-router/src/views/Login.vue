@@ -1,11 +1,11 @@
 <template>
   <div id="login" class="h-full w-full flex items-center">
-  <transition>
+  <transition name="vx">
     <div class="w-full absolute top-0 left-1/2 transform -translate-x-1/2" v-if="WarningShow">
       <Warning :message="message" @CloseWarning="CloseWarning" class="mx-auto"></Warning>
     </div>
   </transition>
-  <div class="form mx-auto my-auto">
+  <div class="formx mx-auto my-auto">
     <div class="flex-column">
       <label>Username </label>
     </div>
@@ -47,13 +47,13 @@
 
 <style>
 @import url('../css/Login.css');
-.v-enter-active,
-.v-leave-active {
+.vx-enter-active,
+.vx-leave-active {
   transition: opacity 0.3s ease;
 }
 
-.v-enter-from,
-.v-leave-to {
+.vx-enter-from,
+.vx-leave-to {
   opacity: 0;
 }
 </style>
@@ -64,13 +64,15 @@ import {ref} from "vue";
 import axios from "axios";
 import { useRouter } from 'vue-router';
 import Warning from "@/views/Warning.vue";
-
+import { defineEmits } from "vue"
+const emits=defineEmits(['ChangerRegisterMode','changeMode']);
 const router = useRouter();
 
-const gotosignup = () => {
-  console.log("signup");
-  router.push('/sign_up');
-}
+
+// const gotosignup = () => {
+//   console.log("signup");
+//   router.push('/sign_up');
+// }
 
 const show = () => {
   const button = document.querySelector('.button-submit');
@@ -90,10 +92,12 @@ const show = () => {
   const formData = new FormData();
   formData.append('username', username.value);
   formData.append('password', password.value);
-  axios.post('https://182.92.100.66:5000/users/login',formData)
+  console.log(formData);
+  axios.post('http://182.92.100.66:5000/users/login',formData)
       .then(response=>{
         if(response.data.success===1){
           HasLogin.value=true;
+          usernametofather.value=username.value;
           confetti({
             particleCount: 500,
             angle: 90,
@@ -118,6 +122,7 @@ const show = () => {
             disableForReducedMotion: false,
             scalar: 1
           });
+          changeMode();
         }
         else{
           WarningShow.value=true;
@@ -137,11 +142,19 @@ const username=ref('');
 const password=ref('');
 const message=ref('');
 const WarningShow=ref(false);
-// const usernametofather=defineModel('username');
+const usernametofather=defineModel('username');
 // const email=defineModel('email');
 // const bio=defineModel('bio');
 // const avatar=defineModel('avatar');
 // const role=defineModel('role');
 // const registration_date=defineModel('registration_date');
+
+const gotosignup = () =>{
+  emits('ChangerRegisterMode');
+}
+
+const changeMode= ()=>{
+  emits('changeMode');
+}
 
 </script>
