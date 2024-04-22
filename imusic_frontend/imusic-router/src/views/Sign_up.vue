@@ -134,7 +134,7 @@ const show = () => {
   axios.post('http://182.92.100.66:5000/users/register', formData)
       .then(response => {
         console.log(response.data);
-        if (response.data.success === 1) {
+        if (response.data.success === true) {
           usernametofather.value=username.value;
           confetti({
             particleCount: 500,

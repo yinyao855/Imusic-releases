@@ -1,5 +1,5 @@
 <script setup>
-import {computed, ref ,watch} from "vue";
+import {computed, onMounted, ref, watch} from "vue";
 import HomePage_Main from "@/views/HomePage_Main.vue";
 import ExplorePage_Main from "@/views/ExplorePage_Main.vue";
 import SettingPage_Main from "@/views/SettingPage_Main.vue";
@@ -7,8 +7,9 @@ import MusicPlayerView from "./MusicPlayerView.vue";
 import MusicPlayerFullView from "./MusicPlayerFullView.vue";
 import Login from "./Login.vue";
 import Sign_up from "./Sign_up.vue";
+import axios from "axios";
 
-const RegisterMode=ref(false);
+const RegisterMode = ref(false);
 
 const mode = ref('1');
 const containerClass1 = computed(() => ({
@@ -30,15 +31,15 @@ const changeMode = (newMode) => {
 };
 
 
-const ChangerRegisterMode = () =>{
-  RegisterMode.value=!RegisterMode.value;
+const ChangerRegisterMode = () => {
+  RegisterMode.value = !RegisterMode.value;
 }
 
 
 const props = defineProps({
-  lyrics:Object,
-  gradient:Object,
-  musicList:Object,
+  lyrics: Object,
+  gradient: Object,
+  musicList: Object,
 })
 
 const lyrics = props.lyrics
@@ -69,7 +70,7 @@ function changeSize() {
 }
 
 //监控当前播放歌曲变化
-watch(curIndex, ()=>{
+watch(curIndex, () => {
   const index = curIndex.value;
   currentMusic.value = musicList[index];
   lyric.value = parseLRC(lyrics[index]);
@@ -78,14 +79,12 @@ watch(curIndex, ()=>{
 
 //播放设置
 function handleModeChange() {
-  if (playerMode.value === 0){
+  if (playerMode.value === 0) {
     nextSong();
-  }
-  else if (playerMode.value === 1){
+  } else if (playerMode.value === 1) {
     audioPlayer.value.currentTime = 0;
     audioPlayer.value.play();
-  }
-  else {
+  } else {
     randomSong();
   }
 }
@@ -146,7 +145,7 @@ function parseLRC(lrc) {
       const millisecond = parseInt(match[3]);
       const timestamp = minute * 60 + second + millisecond / 1000;
       const text = match[4].trim();
-      lyrics.push({ timestamp, text });
+      lyrics.push({timestamp, text});
     }
   });
   return lyrics;
@@ -163,11 +162,35 @@ const updateTime = () => {
   currentTimeInSeconds.value = audio.currentTime;
   durationInSeconds.value = audio.duration;
 };
-const username=ref('点击登录')
+const username = ref('点击登录')
 
-const changeModex = ()=>{
-  mode.value='1';
+const changeModex = () => {
+  mode.value = '1';
 }
+
+// const getdata = (num) =>{
+//  if(num===0){
+//    num=1;
+//  }
+//  axios.get('http://182.92.100.66:5000/songs/query',{
+//    params:{
+//      id:num
+//    }
+//  })
+//      .then(response=>{
+//        currentMusic.value.singer=response.data.data[0].singer;
+//        currentMusic.value.name=response.data.data[0].title;
+//        currentMusic.value.cover=response.data.data[0].cover;
+//        currentMusic.value.source=response.data.data[0].audio;
+//
+//        console.log(currentMusic);
+//      })
+//      .catch(error=>{
+//        console.log("erroronget");
+//      })
+// }
+//
+// onMounted(getdata(0));
 </script>
 
 <template>
@@ -252,8 +275,9 @@ const changeModex = ()=>{
     <div class="w-full lg:w-5/6 h-full mr-0">
       <div class="bg-zinc-900 h-screen overflow-auto">
         <div v-if="mode==='0'" class="w-full h-full z-50">
-          <Login v-if="!RegisterMode" @ChangerRegisterMode="ChangerRegisterMode" v-model:username="username" @changeMode="changeModex"></Login>
-          <Sign_up v-if="RegisterMode" @ChangerRegisterMode="ChangerRegisterMode"  v-model:username="username"></Sign_up>
+          <Login v-if="!RegisterMode" @ChangerRegisterMode="ChangerRegisterMode" v-model:username="username"
+                 @changeMode="changeModex"></Login>
+          <Sign_up v-if="RegisterMode" @ChangerRegisterMode="ChangerRegisterMode" v-model:username="username"></Sign_up>
         </div>
         <HomePage_Main v-if="mode==='1'"></HomePage_Main>
         <ExplorePage_Main v-if="mode==='2'"></ExplorePage_Main>
@@ -269,31 +293,31 @@ const changeModex = ()=>{
       @ended="handleModeChange"
       controls
       autoplay
-    ></audio>
+  ></audio>
 
-      <MusicPlayerView
-        :key="1"
-        :name="currentMusic.name"
-        :singer="currentMusic.singer"
-        :cover="currentMusic.cover"
-        @fullsize="changeSize"
-        @back="backSong"
-        @next="nextSong"
-        v-model:currentTime="currentTime"
-        v-model:duration="duration"
-        v-model:isPlaying="isPlaying"
-        v-model:durationInSeconds="durationInSeconds"
-        v-model:currentTimeInSeconds="currentTimeInSeconds"
-        v-model:audioPlayer="audioPlayer"
-        v-model:playerMode="playerMode"
-        @togglePlay="togglePlay"
-        v-if="!isFull&&mode==='1'"
-      >
-      </MusicPlayerView>
+  <MusicPlayerView
+      :key="1"
+      :name="currentMusic.name"
+      :singer="currentMusic.singer"
+      :cover="currentMusic.cover"
+      @fullsize="changeSize"
+      @back="backSong"
+      @next="nextSong"
+      v-model:currentTime="currentTime"
+      v-model:duration="duration"
+      v-model:isPlaying="isPlaying"
+      v-model:durationInSeconds="durationInSeconds"
+      v-model:currentTimeInSeconds="currentTimeInSeconds"
+      v-model:audioPlayer="audioPlayer"
+      v-model:playerMode="playerMode"
+      @togglePlay="togglePlay"
+      v-if="!isFull&&mode==='1'"
+  >
+  </MusicPlayerView>
 
-      <Transition name="slide" appear>
-      <div v-if="isFull" key="musicPlay" class="transition-container z-50">
-        <MusicPlayerFullView
+  <Transition name="slide" appear>
+    <div v-if="isFull" key="musicPlay" class="transition-container z-50">
+      <MusicPlayerFullView
           class="fixed top-0 left-0 w-full"
           v-model:audioPlayer="audioPlayer"
           v-model:durationInSeconds="durationInSeconds"
@@ -311,10 +335,10 @@ const changeModex = ()=>{
           @togglePlay="togglePlay"
           @back="backSong"
           @next="nextSong"
-        ></MusicPlayerFullView>
-      </div>
-    </Transition>
-  
+      ></MusicPlayerFullView>
+    </div>
+  </Transition>
+
 
 </template>
 

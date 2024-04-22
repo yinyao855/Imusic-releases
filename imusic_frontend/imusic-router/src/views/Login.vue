@@ -95,7 +95,7 @@ const show = () => {
   console.log(formData);
   axios.post('http://182.92.100.66:5000/users/login',formData)
       .then(response=>{
-        if(response.data.success===1){
+        if(response.data.success===true){
           HasLogin.value=true;
           usernametofather.value=username.value;
           confetti({

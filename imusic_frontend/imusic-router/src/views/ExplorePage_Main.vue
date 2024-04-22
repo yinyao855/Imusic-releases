@@ -1,6 +1,8 @@
 <script setup>
 import {computed, ref} from "vue";
+import Singer_Show_Area from "@/views/Singer_Show_Area.vue";
 import Search from "@/views/Search.vue";
+import List_Show_Area from "@/views/List_Show_Area.vue";
 const NaviMode = ref('1');
 const NaviClass1 = computed(() => ({
   'text-base inline-block mx-5 w-30 rounded-lg antialiased tracking-widest font-medium transition-colors duration-400 hover:bg-gray-600/40': true,
@@ -17,12 +19,13 @@ const changeNaviMode = (newMode) => {
 </script>
 
 <template>
-  <div class="w-full h-14 pl-6">
+  <div class="w-full h-16 pl-6 fixed z-50 bg-zinc-900">
     <div :class="[NaviClass1, 'text-transition']" @click="changeNaviMode(1)" style="line-height: 56px">歌手</div>
     <div :class="[NaviClass2, 'text-transition']" @click="changeNaviMode(2)" style="line-height: 56px">歌单</div>
     <Search></Search>
   </div>
-
+  <Singer_Show_Area v-if="NaviMode==='1'"></Singer_Show_Area>
+  <List_Show_Area v-if="NaviMode==='2'"></List_Show_Area>
 </template>
 
 <style scoped>
