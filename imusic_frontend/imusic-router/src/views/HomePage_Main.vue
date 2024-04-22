@@ -18,12 +18,12 @@ const changeNaviMode = (newMode) => {
 </script>
 
 <template>
-  <div class="w-full h-16 pl-6">
+  <div class="w-full h-16 pl-6 fixed z-50 bg-black">
     <div :class="[NaviClass1, 'text-transition']" @click="changeNaviMode(1)" style="line-height: 56px">推荐</div>
     <div :class="[NaviClass2, 'text-transition']" @click="changeNaviMode(2)" style="line-height: 56px">最新上传</div>
     <Search></Search>
   </div>
-  <div class="text-2xl mx-4 text-white font-serif font-bold">歌单</div>
+  <div class="text-2xl mx-4 text-white font-serif font-bold mt-16">歌单</div>
   <Image_Scrool></Image_Scrool>
   <hr class="m-5 border-gray-500">
   <div class="text-2xl mx-4 text-white font-serif font-bold">推荐艺人</div>
@@ -37,15 +37,15 @@ const changeNaviMode = (newMode) => {
           <!-- head -->
           <thead>
           <tr>
-            <th>音乐标题</th>
-            <th>歌手</th>
-            <th>专辑</th>
+            <th class="text-center text-sm font-semibold">音乐标题</th>
+            <th class="text-center text-sm font-semibold">歌手</th>
+            <th class="text-center text-sm font-semibold">专辑</th>
             <th></th>
           </tr>
           </thead>
           <tbody>
           <!-- row 1 -->
-          <tr>
+          <tr class="text-white transition duration-400 hover:bg-gray-600/40 rounded-md">
             <td>
               <div class="flex items-center gap-3">
                 <div class="avatar">
@@ -61,8 +61,6 @@ const changeNaviMode = (newMode) => {
             </td>
             <td>
               Zemlak, Daniel and Leannon
-              <br/>
-              <span class="badge badge-ghost badge-sm">Desktop Support Technician</span>
             </td>
             <td>Purple</td>
             <th>
@@ -70,7 +68,7 @@ const changeNaviMode = (newMode) => {
             </th>
           </tr>
           <!-- row 2 -->
-          <tr>
+          <tr class="text-white transition duration-400 hover:bg-gray-600/40 rounded-md">
             <td>
               <div class="flex items-center gap-3">
                 <div class="avatar">
@@ -86,8 +84,6 @@ const changeNaviMode = (newMode) => {
             </td>
             <td>
               Carroll Group
-              <br/>
-              <span class="badge badge-ghost badge-sm">Tax Accountant</span>
             </td>
             <td>Red</td>
             <th>
@@ -95,7 +91,7 @@ const changeNaviMode = (newMode) => {
             </th>
           </tr>
           <!-- row 3 -->
-          <tr>
+          <tr class="text-white transition duration-400 hover:bg-gray-600/40 rounded-md">
             <td>
               <div class="flex items-center gap-3">
                 <div class="avatar">
@@ -111,8 +107,6 @@ const changeNaviMode = (newMode) => {
             </td>
             <td>
               Rowe-Schoen
-              <br/>
-              <span class="badge badge-ghost badge-sm">Office Assistant I</span>
             </td>
             <td>Crimson</td>
             <th>
@@ -120,7 +114,7 @@ const changeNaviMode = (newMode) => {
             </th>
           </tr>
           <!-- row 4 -->
-          <tr>
+          <tr class="text-white transition duration-400 hover:bg-gray-600/40 rounded-md">
             <td>
               <div class="flex items-center gap-3">
                 <div class="avatar">
@@ -136,8 +130,6 @@ const changeNaviMode = (newMode) => {
             </td>
             <td>
               Wyman-Ledner
-              <br/>
-              <span class="badge badge-ghost badge-sm">Community Outreach Specialist</span>
             </td>
             <td>Indigo</td>
             <th>
@@ -156,20 +148,20 @@ const changeNaviMode = (newMode) => {
           <!-- head -->
           <thead>
           <tr>
-            <th>音乐标题</th>
-            <th>歌手</th>
-            <th>专辑</th>
-            <th>时长</th>
+            <th class="text-center text-sm font-semibold">音乐标题</th>
+            <th class="text-center text-sm font-semibold">上传者</th>
+            <th class="text-center text-sm font-semibold">专辑</th>
+            <th class="text-center text-sm font-semibold"></th>
           </tr>
           </thead>
           <tbody>
           <!-- row 1 -->
-          <tr>
+          <tr class="text-white transition duration-400 hover:bg-gray-600/40 rounded-md">
             <td>
               <div class="flex items-center gap-3">
                 <div class="avatar">
                   <div class="mask mask-squircle w-12 h-12">
-                    <img src="" alt="Avatar Tailwind CSS Component" />
+                    <img src="http://182.92.100.66:5000/media/covers/%E5%96%9C%E5%B8%96%E8%A1%97_AT5qMkj.webp" alt="Avatar Tailwind CSS Component" />
                   </div>
                 </div>
                 <div>
@@ -180,8 +172,6 @@ const changeNaviMode = (newMode) => {
             </td>
             <td>
               Zemlak, Daniel and Leannon
-              <br/>
-              <span class="badge badge-ghost badge-sm">Desktop Support Technician</span>
             </td>
             <td>Purple</td>
             <th>
@@ -189,7 +179,7 @@ const changeNaviMode = (newMode) => {
             </th>
           </tr>
           <!-- row 2 -->
-          <tr>
+          <tr class="text-white transition duration-400 hover:bg-gray-600/40 rounded-md">
             <td>
               <div class="flex items-center gap-3">
                 <div class="avatar">
@@ -205,8 +195,6 @@ const changeNaviMode = (newMode) => {
             </td>
             <td>
               Carroll Group
-              <br/>
-              <span class="badge badge-ghost badge-sm">Tax Accountant</span>
             </td>
             <td>Red</td>
             <th>
@@ -214,7 +202,7 @@ const changeNaviMode = (newMode) => {
             </th>
           </tr>
           <!-- row 3 -->
-          <tr>
+          <tr class="text-white transition duration-400 hover:bg-gray-600/40 rounded-md">
             <td>
               <div class="flex items-center gap-3">
                 <div class="avatar">
@@ -230,8 +218,6 @@ const changeNaviMode = (newMode) => {
             </td>
             <td>
               Rowe-Schoen
-              <br/>
-              <span class="badge badge-ghost badge-sm">Office Assistant I</span>
             </td>
             <td>Crimson</td>
             <th>
@@ -239,7 +225,7 @@ const changeNaviMode = (newMode) => {
             </th>
           </tr>
           <!-- row 4 -->
-          <tr>
+          <tr class="text-white transition duration-400 hover:bg-gray-600/40 rounded-md">
             <td>
               <div class="flex items-center gap-3">
                 <div class="avatar">
@@ -255,8 +241,6 @@ const changeNaviMode = (newMode) => {
             </td>
             <td>
               Wyman-Ledner
-              <br/>
-              <span class="badge badge-ghost badge-sm">Community Outreach Specialist</span>
             </td>
             <td>Indigo</td>
             <th>
@@ -275,7 +259,7 @@ const changeNaviMode = (newMode) => {
     由于ios限制无法在后台切换歌曲，可以添加到主屏幕、升级到ios16.1.1<br>
   </div>
   <div class="text-white text-base px-4 my-4">
-    如有侵权，请联系本人予以删除！邮箱i@liumingye.cn或liumingye2015@gmail.com<br>
+    如有侵权，请联系本人予以删除！邮箱xuehuitian45@gmail.com<br>
     本站本身不储存任何资源文件，资源来自互联网，仅供学习交流试听，请于下载后24小时内删除，支持购买正版专辑！
   </div>
 </template>

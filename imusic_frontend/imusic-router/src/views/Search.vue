@@ -3,7 +3,7 @@
 </script>
 
 <template>
-  <div class="absolute top-2 right-4">
+  <div class="fixed top-2 right-4">
     <div class="group">
       <svg viewBox="0 0 24 24" aria-hidden="true" class="search-icon">
         <g>

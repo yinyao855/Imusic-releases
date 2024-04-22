@@ -1,8 +1,9 @@
 <template>
   <div class="swiper-container mt-3 w-full" style="height:27%" @mouseenter="stopAutoSwitch" @mouseleave="startAutoSwitch">
-    <div class="swiper-wrapper w-full h-1/4" :style="wrapperStyle">
-      <div class="swiper-slide" v-for="(image, index) in imgs" :key="index">
-        <img :src="image.src" :alt="`Slide ${index}`">
+    <div class="swiper-wrapper w-full h-full" :style="wrapperStyle">
+      <div class="swiper-slide h-3/4 mx-8" v-for="(image, index) in imgs" :key="index">
+        <img :src="image.src" :alt="`Slide ${index}`" class="h-full rounded-2xl">
+        <div class="text-center text-white my-2">hello</div>
       </div>
     </div>
     <button class="swiper-button-prev" @click="prevSlide">&lt;</button>
@@ -14,13 +15,18 @@
 import { ref, computed, onMounted, onUnmounted } from 'vue';
 
 const imgs = ref([
-  { src: './1.jpg' },
-  { src: './2.jpg' },
-  { src: './3.jpg' },
-  { src: './4.jpg' },
+  { src: 'http://182.92.100.66:5000/media/covers/%E5%96%9C%E5%B8%96%E8%A1%97_AT5qMkj.webp' },
+  { src: 'http://182.92.100.66:5000/media/covers/%E5%96%9C%E5%B8%96%E8%A1%97_AT5qMkj.webp' },
+  { src: 'http://182.92.100.66:5000/media/covers/%E5%96%9C%E5%B8%96%E8%A1%97_AT5qMkj.webp' },
+  { src: 'http://182.92.100.66:5000/media/covers/%E5%96%9C%E5%B8%96%E8%A1%97_AT5qMkj.webp' },
+  { src: 'http://182.92.100.66:5000/media/covers/%E5%96%9C%E5%B8%96%E8%A1%97_AT5qMkj.webp' },
+  { src: 'http://182.92.100.66:5000/media/covers/%E5%96%9C%E5%B8%96%E8%A1%97_AT5qMkj.webp' },
+  { src: 'http://182.92.100.66:5000/media/covers/%E5%96%9C%E5%B8%96%E8%A1%97_AT5qMkj.webp' },
+  { src: 'http://182.92.100.66:5000/media/covers/%E5%96%9C%E5%B8%96%E8%A1%97_AT5qMkj.webp' },
+  { src: 'http://182.92.100.66:5000/media/covers/%E5%96%9C%E5%B8%96%E8%A1%97_AT5qMkj.webp' },
 ]); // 应配合实际路径使用
 const currentIndex = ref(0);
-const imgWidth = 600; // 轮播图图片宽度，根据实际调整
+const imgWidth = 100; // 轮播图图片宽度，根据实际调整
 const transitionTime = 500; // 动画过渡时间，毫秒
 
 const wrapperStyle = computed(() => ({
