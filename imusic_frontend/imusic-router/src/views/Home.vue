@@ -2,6 +2,7 @@
 import {computed, onMounted, ref, watch} from "vue";
 import HomePage_Main from "@/views/HomePage_Main.vue";
 import ExplorePage_Main from "@/views/ExplorePage_Main.vue";
+import CreateCenter from "@/views/CreateCenterPage_Main.vue";
 import SettingPage_Main from "@/views/SettingPage_Main.vue";
 import MusicPlayerView from "./MusicPlayerView.vue";
 import MusicPlayerFullView from "./MusicPlayerFullView.vue";
@@ -24,7 +25,10 @@ const containerClass3 = computed(() => ({
   'antialiased text-sm block h-10 my-1 text-white leading-10 transition duration-400 hover:bg-gray-600/40 px-4 ml-2 mr-2 rounded-md': mode.value !== '3',
   'antialiased text-sm block h-10 my-1 text-white leading-10 transition duration-400 px-4 ml-2 mr-2 rounded-md bg-blue-500 hover:bg-blue-500': mode.value === '3',
 }));
-
+const containerClass4 = computed(() => ({
+  'antialiased text-sm block h-10 my-1 text-white leading-10 transition duration-400 hover:bg-gray-600/40 px-4 ml-2 mr-2 rounded-md': mode.value !== '4',
+  'antialiased text-sm block h-10 my-1 text-white leading-10 transition duration-400 px-4 ml-2 mr-2 rounded-md bg-blue-500 hover:bg-blue-500': mode.value === '4',
+}));
 const changeMode = (newMode) => {
   mode.value = newMode.toString(); // 设置新的 mode 值
   console.log(mode.value);
@@ -322,6 +326,15 @@ const avatar=ref('');
         </svg>
         <span class="px-4 font-medium">设置</span>
       </div>
+      <div :class="containerClass4" @click="changeMode(4)">
+      <svg t="1713772424829" class="icon inline fill-white my-auto" viewBox="0 0 1024 1024" version="1.1"
+           xmlns="http://www.w3.org/2000/svg"
+           p-id="2447" width="16" height="16">
+        <path d="M374 4q-17 1-32 8-36 16-50.5 53t1.5 73h-91q-30 2-50 24t-20 52v121q2 19 12 35t26 25v265q2 30 17.5 55t41.5 39q26 14 56 14h465q30-2 54.5-17.5t39-41.5q14.5-26 14.5-55V395l5-3q15-11 24-27.5t9-35.5V208q-2-30-24-50t-52-20h-85l3-8q5-15 5-31 0-39-28-67T648 4h-15q-22 2-41 12t-33 27l-45 56-50-62q-15-16-34.5-24.5T388 4h-14z m111 707H285q-24 0-41-17t-17-40V405h258v306z m315-52q-2 22-18.5 37T743 711H543V405h258l-1 254zM485 348H208q-8 0-13.5-5.5T189 329V214q0-8 5.5-13.5T208 195h277v153z m335-153q8 0 13.5 5.5T839 214v115q0 8-5.5 13.5T820 348H543V195h277zM648 61q16 0 27 11.5t11 27q0 15.5-11 27T648 138h-91l47-59q14-18 36-18h8z m-260 0q22 0 36 17l47 60h-91q-16 0-27-11.5t-11-27q0-15.5 11-27T380 61h8z" fill="#ffffff" p-id="2448">
+        </path>
+      </svg>
+      <span class="px-4 font-medium">创作中心</span>
+    </div>
       <div
           class="antialiased text-sm block h-10 my-1 text-white leading-10 transition duration-400 px-4 hover:bg-gray-600/40 ml-2 mr-2 rounded-md">
         <p class="px-4 font-medium">创建的歌单</p>
@@ -342,6 +355,7 @@ const avatar=ref('');
         <HomePage_Main v-if="mode==='1'" v-model:songlists="songlists" v-model:index="index"></HomePage_Main>
         <ExplorePage_Main v-if="mode==='2'"></ExplorePage_Main>
         <SettingPage_Main v-if="mode==='3'"></SettingPage_Main>
+        <CreateCenter v-if="mode==='4'"></CreateCenter>
       </div>
     </div>
   </div>
