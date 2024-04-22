@@ -256,7 +256,7 @@ const avatar=ref('');
   <div class="flex w-full h-screen bg-zinc-900">
     <div class="w-1/6 h-screen fixed hidden lg:block" style="background-color:#2E2E30">
       <div
-          class="group flex antialiased w-full mt-3 hover:text-blue-800 my-1 font-medium text-white transition duration-400 bg-yellow-95000 text-base"
+          class="group flex antialiased w-full mt-3 hover:text-blue-500 my-1 font-medium text-white transition duration-400 bg-yellow-95000 text-base"
           style="height:60px; line-height: 60px" @click="changeMode(0)">
         <svg t="1713667739578" class="icon inline fill-white transition duration-400 my-auto ml-4"
              viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"

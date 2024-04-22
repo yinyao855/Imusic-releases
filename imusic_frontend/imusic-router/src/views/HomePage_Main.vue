@@ -1,7 +1,8 @@
 <script setup>
 import {computed, ref,defineModel} from "vue";
 import Search from "@/views/Search.vue";
-import Image_Scrool from "@/views/Image_Scrool.vue";
+import Image_Scrool from "@/views/SongList_Scrool.vue";
+import SingerList_Scrool from "@/views/SingerList_Scrool.vue";
 const NaviMode = ref('1');
 const NaviClass1 = computed(() => ({
   'text-base inline-block mx-5 w-30 rounded-lg antialiased tracking-widest font-medium transition-colors duration-400 hover:bg-gray-600/40': true,
@@ -31,7 +32,7 @@ const index=defineModel('index');
   <Image_Scrool v-model:songlists="songlists" v-model:index="index"></Image_Scrool>
   <hr class="m-5 border-gray-500">
   <div class="text-2xl mx-4 text-white font-serif font-bold ml-8">推荐艺人</div>
-  <Image_Scrool v-model:songlists="songlists"></Image_Scrool>
+  <SingerList_Scrool v-model:songlists="songlists"></SingerList_Scrool>
   <hr class="m-5 border-gray-500">
   <div class="mx-4">
   <div class="grid grid-cols-2 gap-4">
