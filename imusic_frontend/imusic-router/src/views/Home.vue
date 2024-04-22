@@ -151,6 +151,8 @@ function parseLRC(lrc) {
   return lyrics;
 }
 
+
+
 const updateTime = () => {
   const audio = audioPlayer.value;
   let minutes = Math.floor(audio.currentTime / 60);
@@ -163,7 +165,7 @@ const updateTime = () => {
   durationInSeconds.value = audio.duration;
 };
 const username = ref('点击登录')
-
+const HasLogin=ref(false);
 const changeModex = () => {
   mode.value = '1';
 }
@@ -276,7 +278,7 @@ const changeModex = () => {
       <div class="bg-zinc-900 h-screen overflow-auto">
         <div v-if="mode==='0'" class="w-full h-full z-50">
           <Login v-if="!RegisterMode" @ChangerRegisterMode="ChangerRegisterMode" v-model:username="username"
-                 @changeMode="changeModex"></Login>
+                 @changeMode="changeModex" v-model:HasLogin="HasLogin"></Login>
           <Sign_up v-if="RegisterMode" @ChangerRegisterMode="ChangerRegisterMode" v-model:username="username"></Sign_up>
         </div>
         <HomePage_Main v-if="mode==='1'"></HomePage_Main>
