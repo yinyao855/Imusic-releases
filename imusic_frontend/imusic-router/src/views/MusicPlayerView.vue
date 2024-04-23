@@ -26,8 +26,6 @@
             <!--播放上一首-->
 
 
-
-
             <div class="tooltip my-auto" data-tip="上一首">
               <button
                   class="btn btn-sm transition duration-400 hover:bg-gray-600/40 bg-zinc-900 rounded-md border-none fill-zinc-900 hover:fill-zinc-900"
@@ -77,7 +75,6 @@
         </div>
         <!-- 其他控制 -->
         <div class="w-1/4 flex justify-around">
-
 
 
           <!--控制播放方式-->

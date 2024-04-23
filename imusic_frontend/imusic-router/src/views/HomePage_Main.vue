@@ -4,6 +4,7 @@ import Search from "@/views/Search.vue";
 import Image_Scrool from "@/views/SongList_Scrool.vue";
 import SingerList_Scrool from "@/views/SingerList_Scrool.vue";
 import Newest_Songs_Page from "@/views/Newest_Songs_Page.vue";
+import SongList_Page from "@/views/SongList_Page.vue";
 
 const emits=defineEmits(['handlePlayNow','handlePlayAfter']);
 const songlistlast=defineModel('songlistlast')
@@ -23,6 +24,7 @@ const changeNaviMode = (newMode) => {
 }
 
 const songlists = defineModel('songlists');
+const songlist=defineModel('songlist');
 const index = defineModel('index');
 
 function handlePlayNow(id){
@@ -34,22 +36,36 @@ function handlePlayAfter(id){
   emits('handlePlayAfter',id);
 }
 
+const SearchContent=ref('');
+
+const SearchOperation =()=>{
+  console.log("hello");
+  console.log(SearchContent.value);
+}
+
+const needshowsonglistpage=defineModel('needshowsonglistpage');
+
+const changesize=()=>{
+  needshowsonglistpage.value=false;
+}
+
 </script>
 
 <template>
-  <div class="w-full h-16 pl-6 fixed z-50 bg-zinc-900">
+  <SongList_Page class="w-screen mb-32" v-model:songlist="songlist" v-if="needshowsonglistpage" @changesize="changesize"></SongList_Page>
+  <div class="w-full h-16 pl-6 fixed z-20 bg-zinc-900" v-if="!needshowsonglistpage">
     <div :class="[NaviClass1, 'text-transition']" @click="changeNaviMode(1)" style="line-height: 56px">推荐</div>
     <div :class="[NaviClass2, 'text-transition']" @click="changeNaviMode(2)" style="line-height: 56px">最新上传</div>
-    <Search></Search>
+    <Search v-model:SearchContent="SearchContent" @SearchOperation="SearchOperation"></Search>
   </div>
-  <Newest_Songs_Page @handlePlayNow="handlePlayNow" @handlePlayAfter="handlePlayAfter" v-model:songlistlast="songlistlast" v-if="NaviMode!=='1'" class="text-2xl mb-32 mx-4 text-white font-serif font-bold mt-16 ml-8"></Newest_Songs_Page>
-  <div class="text-2xl mx-4 text-white font-serif font-bold mt-16 ml-8" v-if="NaviMode==='1'">歌单</div>
-  <Image_Scrool v-model:songlists="songlists" v-model:index="index" v-if="NaviMode==='1'"></Image_Scrool>
-  <hr class="m-5 border-gray-500" v-if="NaviMode==='1'">
-  <div class="text-2xl mx-4 text-white font-serif font-bold ml-8" v-if="NaviMode==='1'">推荐艺人</div>
-  <SingerList_Scrool v-model:songlists="songlists" v-if="NaviMode==='1'"></SingerList_Scrool>
-  <hr class="m-5 border-gray-500" v-if="NaviMode==='1'">
-  <div class="mx-4" v-if="NaviMode==='1'">
+  <Newest_Songs_Page @handlePlayNow="handlePlayNow" @handlePlayAfter="handlePlayAfter" v-model:songlistlast="songlistlast" v-if="NaviMode!=='1'&&!needshowsonglistpage" class="text-2xl mb-32 mx-4 text-white font-serif font-bold mt-16 ml-8 z-50"></Newest_Songs_Page>
+  <div class="text-2xl mx-4 text-white font-serif font-bold mt-16 ml-8" v-if="NaviMode==='1'&&!needshowsonglistpage">歌单</div>
+  <Image_Scrool v-model:songlists="songlists" v-model:index="index" v-if="NaviMode==='1'&&!needshowsonglistpage"></Image_Scrool>
+  <hr class="m-5 border-gray-500" v-if="NaviMode==='1'&&!needshowsonglistpage">
+  <div class="text-2xl mx-4 text-white font-serif font-bold ml-8" v-if="NaviMode==='1'&&!needshowsonglistpage">推荐艺人</div>
+  <SingerList_Scrool v-model:songlists="songlists" v-if="NaviMode==='1'&&!needshowsonglistpage"></SingerList_Scrool>
+  <hr class="m-5 border-gray-500" v-if="NaviMode==='1'&&!needshowsonglistpage">
+  <div class="mx-4" v-if="NaviMode==='1'&&!needshowsonglistpage">
     <div class="grid grid-cols-2 gap-4">
       <div class="grid-col-2">
         <div class="text-2xl mx-8 text-white font-serif font-bold my-4">热门单曲</div>
@@ -275,12 +291,12 @@ function handlePlayAfter(id){
       </div>
     </div>
   </div>
-  <hr class="m-5 border-gray-500" v-if="NaviMode==='1'">
-  <div class="text-white text-base px-4 my-4" v-if="NaviMode==='1'">
+  <hr class="m-5 border-gray-500" v-if="NaviMode==='1'&&!needshowsonglistpage">
+  <div class="text-white text-base px-4 my-4" v-if="NaviMode==='1'&&!needshowsonglistpage">
     关于ios后台播放<br>
     由于ios限制无法在后台切换歌曲，可以添加到主屏幕、升级到ios16.1.1<br>
   </div>
-  <div class="text-white text-base px-4 mt-4 mb-32" v-if="NaviMode==='1'">
+  <div class="text-white text-base px-4 mt-4 mb-32" v-if="NaviMode==='1'&&!needshowsonglistpage">
     如有侵权，请联系本人予以删除！邮箱xuehuitian45@gmail.com<br>
     本站本身不储存任何资源文件，资源来自互联网，仅供学习交流试听，请于下载后24小时内删除，支持购买正版专辑！
   </div>

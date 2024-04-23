@@ -1,8 +1,10 @@
 <script setup>
-import {defineModel, defineEmits} from "vue"
+import {defineEmits, defineModel} from "vue"
+import buttonchangesize from './buttonchangesize.vue'
 
-const songlistlast = defineModel('songlistlast');
-const emits = defineEmits(['handlePlayNow', 'handlePlayAfter']);
+const songlistlast = defineModel('songlist');
+
+const emits = defineEmits(['handlePlayNow', 'handlePlayAfter','changesize']);
 
 function handlePlayNow(index) {
   //console.log(songlistlast.value[index].id);
@@ -14,10 +16,22 @@ function handlePlayAfter(index) {
   emits('handlePlayAfter', songlistlast.value[index].id)
 }
 
+const changesize=()=>{
+  emits('changesize');
+}
+
 </script>
 
 <template>
-  <div class="overflow-x-auto">
+  <div class="bgx bg-cover bg-center h-2/5 relative z-40">
+    <div class="bg-blur w-full h-full absolute top-0 left-0"  :style="{backgroundImage: `url(${songlistlast.cover})`}"></div>
+    <buttonchangesize class="absolute top-5 left-5" @fullsize="changesize"></buttonchangesize>
+    <img class="absolute top-10 left-24 w-60 aspect-square rounded-2xl" :src="songlistlast.cover">
+    <div class="absolute top-10 left-96">你好</div>
+  </div>
+
+
+  <div class="overflow-x-auto mb-32">
     <table class="table">
       <!-- head -->
       <thead>
@@ -31,7 +45,7 @@ function handlePlayAfter(index) {
       <tbody>
       <!-- row 1 -->
       <tr class="text-white transition duration-400 hover:bg-gray-600/40 rounded-md"
-          v-for="(item, index) in songlistlast" :key="index">
+          v-for="(item, index) in songlistlast.songs" :key="index">
         <td>
           <div class="flex items-center gap-3">
             <div class="avatar">
@@ -103,5 +117,32 @@ function handlePlayAfter(index) {
 </template>
 
 <style scoped>
+.bg-blur{
+  float:left;
+  background-position:center;
+  background-repeat:no-repeat;
+  background-size:cover;
+  -webkit-filter: blur(9px);
+  -moz-filter: blur(9px);
+  -o-filter: blur(9px);
+  -ms-filter: blur(9px);
+  filter:blur(9px);
 
+}
+.content{
+  font-size:50px;
+  color:#555;
+  font-weight:bold;
+}
+.font-content{
+  position:absolute;
+  width:700px;
+  height:700px;
+  margin:20px;
+  text-align:center;
+  line-height:700px;
+  left:50%;
+  top:50%;
+  transform: translate3d(-50%,-50%,0);
+}
 </style>

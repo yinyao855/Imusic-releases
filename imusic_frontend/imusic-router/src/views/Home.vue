@@ -192,6 +192,8 @@ const changeModex = () => {
   mode.value = '1';
 }
 
+const needshowsonglistpage=ref(false);
+
 function getsonglistinit(id){
   console.log(id);
   axios.get('http://182.92.100.66:5000/songlists/info/1')
@@ -221,17 +223,26 @@ function getsonglistinit(id){
         console.log(error.data.message);
       })
 }
-
+const songlist=ref([{cover:'http://182.92.100.66:5000/media/covers/%E5%BD%93%E7%A6%BB%E5%88%AB%E5%BC%80%E5%87%BA%E8%8A%B1.webp',title:'name'}]);
 
 function changesonglist(){
-  console.log(index.value);
+  // console.log(index.value);
+  // const web='http://182.92.100.66:5000/songlists/info/'+index.value;
+  // axios.get(web)
+  //     .then(response=>{
+  //       musicList.value=response.data.data.songs;
+  //       curIndex.value=0;
+  //       currentMusic.value=musicList.value[curIndex.value]
+  //       datax.value=response.data.data.songs;
+  //     })
+  //     .catch(error=>{
+  //       console.log("get init songlist fail");
+  //     })
+  needshowsonglistpage.value=true;
   const web='http://182.92.100.66:5000/songlists/info/'+index.value;
   axios.get(web)
       .then(response=>{
-        musicList.value=response.data.data.songs;
-        curIndex.value=0;
-        currentMusic.value=musicList.value[curIndex.value]
-        datax.value=response.data.data.songs;
+        songlist.value=response.data.data;
       })
       .catch(error=>{
         console.log("get init songlist fail");
@@ -416,7 +427,7 @@ const avatar=ref('');
                  @changeMode="changeModex" v-model:HasLogin="HasLogin" @getsonglistinit="getsonglistinit" v-model:avatar="avatar"></Login>
           <Sign_up v-if="RegisterMode" @ChangerRegisterMode="ChangerRegisterMode" v-model:username="username"></Sign_up>
         </div>
-        <HomePage_Main @handlePlayAfter="handlePlayAfter" @handlePlayNow="handlePlayNow" v-if="mode==='1'" v-model:songlists="songlists" v-model:index="index" v-model:songlistlast="songlistlast"></HomePage_Main>
+        <HomePage_Main v-model:songlist="songlist" v-model:needshowsonglistpage="needshowsonglistpage" @handlePlayAfter="handlePlayAfter" @handlePlayNow="handlePlayNow" v-if="mode==='1'" v-model:songlists="songlists" v-model:index="index" v-model:songlistlast="songlistlast"></HomePage_Main>
         <ExplorePage_Main v-if="mode==='2'"></ExplorePage_Main>
         <SettingPage_Main v-if="mode==='3'"></SettingPage_Main>
         <CreateCenter v-if="mode==='4'"></CreateCenter>

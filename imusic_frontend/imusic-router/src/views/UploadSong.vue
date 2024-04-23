@@ -1,6 +1,6 @@
 <template>
-  <div id="uploadSong" class="h-full w-full flex items-center">
-    <div class=" formx2 my-auto ml-[200px] width:800px flexible">
+  <div id="uploadSong" class="h-full w-full flex items-center bg-zinc-900">
+    <div class=" formx2 my-auto ml-[200px] width:800px flexible bg-zinc-900">
       <div class="flex-column text-2xl">
         <label>*歌曲名</label>
       </div>
@@ -168,7 +168,7 @@
         <label>介绍</label>
       </div>
       <div class="inputForm">
-        <svg t="1713789997854" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="9038" width="24" height="24">
+        <svg t="1713789997854" class="icon" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" p-id="9038" width="24" height="24">
           <path d="M0 0v1024h1024V0H0z m938.67 938.67H85.33V85.33h853.33v853.34z" fill="#333333" p-id="9039"></path>
           <path d="M341.33 213.33h512v85.33h-512zM170.67 213.33H256v85.33h-85.33zM341.33 384h512v85.33h-512zM341.33 554.67h512V640h-512zM170.67 554.67H256V640h-85.33zM341.33 725.33h512v85.33h-512z" fill="#333333" p-id="9040"></path></svg><input type="text" class="input bg-white" placeholder="请为你的歌曲写一点介绍" v-model="introduction">
       </div>
@@ -177,7 +177,7 @@
       </div>
       <div class="columns-2">
       <div class="inputForm">
-        <svg t="1713789997854" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="9038" width="24" height="24">
+        <svg t="1713789997854" class="icon" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" p-id="9038" width="24" height="24">
           <path d="M0 0v1024h1024V0H0z m938.67 938.67H85.33V85.33h853.33v853.34z" fill="#333333" p-id="9039"></path>
           <path d="M341.33 213.33h512v85.33h-512zM170.67 213.33H256v85.33h-85.33zM341.33 384h512v85.33h-512zM341.33 554.67h512V640h-512zM170.67 554.67H256V640h-85.33zM341.33 725.33h512v85.33h-512z" fill="#333333" p-id="9040"></path></svg><input type="text" class="input bg-white" placeholder="Please the introduction of the song" v-model="introduction">
       </div>
