@@ -40,7 +40,6 @@ function handlePlayAfter(id) {
 const SearchContent = ref('');
 
 const SearchOperation = () => {
-  console.log("hello");
   console.log(SearchContent.value);
 }
 
