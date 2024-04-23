@@ -361,7 +361,7 @@ function playEffect() {
 <style scoped>
 .bg_img {
   margin: 0;
-  background: url("./assets/imgPlaylist.jpeg");
+  background: url("../assets/imgPlaylist.jpeg");
   height: 300px;
   background-size: cover;
   filter: blur(50px);
