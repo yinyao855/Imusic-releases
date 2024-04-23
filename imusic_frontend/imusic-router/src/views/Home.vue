@@ -91,9 +91,9 @@ function changeSize() {
 
 //监控当前播放歌曲变化
 watch(curIndex, () => {
-  const index = curIndex.value;
+  let index = curIndex.value;
   currentMusic.value = musicList.value[index];
-  lyric.value = parseLRC(lyrics[index]);
+  lyric.value = parseLRC(lyrics[0]);
   isPlaying.value = true;
 })
 
