@@ -1,39 +1,37 @@
 <template>
-  <div id="uploadSong" class="h-full w-full flex items-center bg-zinc-900">
-    <div class=" formx2 my-auto ml-[200px] width:800px flexible bg-zinc-900">
+  <div id="uploadSong" class="h-full w-full flex items-center">
+    <div class=" formx2 my-auto ml-[200px] width:800px flexible bg-gray-800">
       <div class="flex-column text-2xl">
-        <label>*歌曲名</label>
+        <div class="text-white">*歌曲名</div>
       </div>
-      <div class="inputForm">
-        <svg t="1713779846725" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="5635" width="24" height="24"><path d="M458.24 594.304l1.6-0.576v-0.64l417.216-417.152A65.6 65.6 0 0 0 784.32 83.2L367.104 500.416h-0.448l-0.384 1.28c-13.888 14.464-19.2 33.408-17.28 51.968l-28.672 86.464 86.656-28.736c18.24 1.792 36.928-3.52 51.264-17.088zM64 768.256V896h896v-127.744H64z" p-id="5636"></path></svg>
-        <input type="text" class="input bg-white" placeholder="请输入歌曲名" v-model="SongName">
+      <div class="inputForm bg-gray-700">
+        <svg t="1713779846725" class="icon fill-white transition" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="5635" width="24" height="24"><path d="M458.24 594.304l1.6-0.576v-0.64l417.216-417.152A65.6 65.6 0 0 0 784.32 83.2L367.104 500.416h-0.448l-0.384 1.28c-13.888 14.464-19.2 33.408-17.28 51.968l-28.672 86.464 86.656-28.736c18.24 1.792 36.928-3.52 51.264-17.088zM64 768.256V896h896v-127.744H64z" p-id="5636"></path></svg>
+        <input type="text" class="input bg-gray-700" placeholder="请输入歌曲名" v-model="SongName">
       </div>
-      <p class="text-sm text-gray-500">
+      <p class="text-sm text-gray-500 ">
         <span>此项为必填项</span>
       </p>
       <div class="flex-column text-2xl">
-        <label>*歌手</label>
+        <div class="text-white">*歌手</div>
       </div>
-      <div class="inputForm">
+      <div class="inputForm bg-gray-700">
         <svg t="1713781402135" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="7988" width="24" height="24"><path d="M621.6906477754643 481.59890704548104v91.51856298436078A255.94484428572028 255.94484428572028 0 0 0 219.49160697948815 783.1750596871783v146.2541965102559h-73.12709904067292v-164.5359700921066a310.79016817345257 310.79016817345257 0 0 1 310.79016817345257-310.79016817345257h36.56354873479146a309.6932614129017 309.6932614129017 0 0 1 127.97242292840514 27.495789113605824z m109.6906477754644 240.7709710973103V563.7937657073393a36.56354873479146 36.56354873479146 0 0 1 36.56354873479146-36.563550305881485h73.12709746958292a36.56354873479146 36.56354873479146 0 1 1 0 73.12709904067292h-36.56354873479146v219.3812939798388h-1.2797235065826498A127.97242135731514 127.97242135731514 0 1 1 731.3812955509288 722.3698781427912zM676.5359716631967 892.8657074626428a54.8453238877322 54.8453238877322 0 1 0 0-109.6906477754644 54.8453238877322 54.8453238877322 0 0 0 0 109.6906477754644zM475.4364512652086 417.53956762599375a182.81774524504735 182.81774524504735 0 1 1 0-365.6354904900947 182.81774524504735 182.81774524504735 0 0 1 0 365.6354904900947z m0-73.12709746958292a109.6906477754644 109.6906477754644 0 1 0 0-219.3812955509288 109.6906477754644 109.6906477754644 0 0 0 0 219.3812955509288z" p-id="7989">
 
-        </path></svg><input type="text" class="input bg-white" placeholder="请输入歌曲歌手" v-model="Singer">
+        </path></svg><input type="text" class="input bg-gray-700" placeholder="请输入歌曲歌手" v-model="Singer">
       </div>
       <p class="text-sm text-gray-500">
         <span>此项为必填项</span>
       </p>
       <div class="flex-column text-2xl">
-        <label>*歌曲文件</label>
+        <div class="text-white">*歌曲文件</div>
       </div>
       <div class="grid grid-cols-1 space-y-2">
         <div class="flex items-center justify-center w-full">
           <label class="flex flex-col rounded-lg border-4 border-dashed w-full h-60 p-10 group text-center">
             <div class="h-full w-full text-center flex flex-col items-center justify-center  ">
-              -<svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 text-blue-400 group-hover:text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
-              </svg>
+              <svg t="1713876861040" class="icon fill-white transition hover:fill-blue-600" viewBox="0 0 1194 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="7431" width="80" height="80"><path d="M152.62673094 991.65443843a51.27435943 51.27435943 0 0 1-52.15426311-48.79463341l102.38873717-552.73919819v-1.5198328c0-27.67695563 23.35743091-50.15448278 52.23425434-50.15448278h843.90717007c28.31688465 0 51.51433311 21.75760687 52.3942369 48.79463253l-102.38873725 552.73919807v1.5198328a51.27435943 51.27435943 0 0 1-52.31424564 50.15448382H152.62673094z m636.80995128-262.85108717c13.27853904 0 26.47708777-15.91824934 30.95659499-31.83649784 0-15.91824934-4.47950719-37.11591754-13.27854002-47.67475592L657.05124401 447.87425375c-17.59806379-21.19766814-44.15514285-21.19766814-61.75320652 0L445.23454444 649.2920975C431.95600436 659.85093594 431.95600436 681.04860501 431.95600436 696.96685342c0 15.91824934 13.27853904 31.83649781 30.87660374 31.83649784h105.98834157v132.46542936c0 21.19766814 13.1985478 37.11591754 30.87660377 37.11591755h61.75320656c17.67805497 0 30.87660377-15.91824934 30.87660375-37.11591755V728.80335124H789.51667344zM202.94119625 271.81362032c-37.83583785 0-68.71244156 28.95681469-68.79243277 64.47290816L32.95989401 868.70796219V97.03284595C33.03988525 61.59674467 60.63684963 32.79991158 94.79309279 32.79991158H403.95908469l92.70980156 96.46938842h463.46901844c34.15624311 0 61.83319876 28.79683219 61.83319876 64.31292572V271.97360282H202.94119625z" fill="#1296db" p-id="7432">
+              </path></svg>
               <div class="flex flex-auto max-h-48 w-2/5 mx-auto -mt-10">
-                <img class="has-mask h-36 object-center" src="https://img.freepik.com/free-vector/image-upload-concept-landing-page_52683-27130.jpg?size=338&ext=jpg" alt="freepik image">
               </div>
               <p class="pointer-none text-gray-500 "><span class="text-sm"></span> 拖拽文件至此处 <br /> 或 <a href="" id="" class="text-blue-600 hover:underline">选择文件</a> 上传</p>
             </div>
@@ -48,17 +46,16 @@
         <span>支持格式：mp3</span>
       </p>
       <div class="flex-column text-2xl">
-        <label>*歌曲封面</label>
+        <div class="text-white">*歌曲封面</div>
       </div>
       <div class="grid grid-cols-1 space-y-2">
         <div class="flex items-center justify-center w-full">
           <label class="flex flex-col rounded-lg border-4 border-dashed w-full h-60 p-10 group text-center">
             <div class="h-full w-full text-center flex flex-col items-center justify-center  ">
-              -<svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 text-blue-400 group-hover:text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
-            </svg>
+              <svg t="1713876861040" class="icon fill-white transition hover:fill-blue-600" viewBox="0 0 1194 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="7431" width="80" height="80"><path d="M152.62673094 991.65443843a51.27435943 51.27435943 0 0 1-52.15426311-48.79463341l102.38873717-552.73919819v-1.5198328c0-27.67695563 23.35743091-50.15448278 52.23425434-50.15448278h843.90717007c28.31688465 0 51.51433311 21.75760687 52.3942369 48.79463253l-102.38873725 552.73919807v1.5198328a51.27435943 51.27435943 0 0 1-52.31424564 50.15448382H152.62673094z m636.80995128-262.85108717c13.27853904 0 26.47708777-15.91824934 30.95659499-31.83649784 0-15.91824934-4.47950719-37.11591754-13.27854002-47.67475592L657.05124401 447.87425375c-17.59806379-21.19766814-44.15514285-21.19766814-61.75320652 0L445.23454444 649.2920975C431.95600436 659.85093594 431.95600436 681.04860501 431.95600436 696.96685342c0 15.91824934 13.27853904 31.83649781 30.87660374 31.83649784h105.98834157v132.46542936c0 21.19766814 13.1985478 37.11591754 30.87660377 37.11591755h61.75320656c17.67805497 0 30.87660377-15.91824934 30.87660375-37.11591755V728.80335124H789.51667344zM202.94119625 271.81362032c-37.83583785 0-68.71244156 28.95681469-68.79243277 64.47290816L32.95989401 868.70796219V97.03284595C33.03988525 61.59674467 60.63684963 32.79991158 94.79309279 32.79991158H403.95908469l92.70980156 96.46938842h463.46901844c34.15624311 0 61.83319876 28.79683219 61.83319876 64.31292572V271.97360282H202.94119625z" fill="#1296db" p-id="7432">
+              </path></svg>
               <div class="flex flex-auto max-h-48 w-2/5 mx-auto -mt-10">
-                <img class="has-mask h-36 object-center" src="https://img.freepik.com/free-vector/image-upload-concept-landing-page_52683-27130.jpg?size=338&ext=jpg" alt="freepik image">
+
               </div>
               <p class="pointer-none text-gray-500 "><span class="text-sm"></span>拖拽文件至此处<br />或<a href="" id="" class="text-blue-600 hover:underline">选择文件</a>上传</p>
             </div>
@@ -73,17 +70,17 @@
         <span>支持格式：webg,jpg,jpeg,png</span>
       </p>
       <div class="flex-column text-2xl">
-        <label>标签</label>
+        <div class="text-white">*标签</div>
       </div>
-      <div class="w-full mx-auto rounded-lg bg-gray-50 p-6" id="cta">
+      <div class="w-full mx-auto rounded-lg bg-gray-700 p-6" id="cta">
         <div class="group relative" id="dropdown-cta">
-          <div class="flex items-center space-x-1" id="dropdown-header">
-            <a href="#" class="block" id="dropdown-link">{{ theme }}</a>
+          <div class="flex items-center space-x-1 bg-grey-500" id="dropdown-header">
+            <a href="#" class="block " id="dropdown-link">{{ theme }}</a>
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 transition-all duration-500 group-hover:rotate-180" id="icon-arrow-down" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
             </svg>
           </div>
-          <ul class="absolute z-10 hidden w-full divide-y rounded border bg-white shadow-md group-hover:block" id="dropdown-items">
+          <ul class="absolute z-10 hidden w-full divide-y rounded border bg-gray-600 shadow-md group-hover:block" id="dropdown-items">
             <li class="p-3"><button class="hover:text-blue-600" @click="setTheme(0)">主题（默认）</button></li>
             <li class="p-3"><button class="hover:text-blue-600" @click="setTheme(1)">背景音乐</button></li>
             <li class="p-3"><button class="hover:text-blue-600" @click="setTheme(2)">经典老歌</button></li>
@@ -93,7 +90,7 @@
           </ul>
         </div>
       </div>
-      <div class="w-full mx-auto rounded-lg bg-gray-50 p-6" id="cta">
+      <div class="w-full mx-auto rounded-lg bg-gray-700 p-6" id="cta">
         <div class="group relative" id="dropdown-cta">
           <div class="flex items-center space-x-1" id="dropdown-header">
             <a href="#" class="block" id="dropdown-link">{{ scene }}</a>
@@ -101,7 +98,7 @@
               <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
             </svg>
           </div>
-          <ul class="absolute z-10 hidden w-full divide-y rounded border bg-white shadow-md group-hover:block" id="dropdown-items">
+          <ul class="absolute z-10 hidden w-full divide-y rounded border bg-gray-600 shadow-md group-hover:block" id="dropdown-items">
             <li class="p-3"><button class="hover:text-blue-600" @click="setScene(0)">场景（默认）</button></li>
             <li class="p-3"><button class="hover:text-blue-600" @click="setScene(1)">咖啡馆</button></li>
             <li class="p-3"><button class="hover:text-blue-600" @click="setScene(2)">运动</button></li>
@@ -111,7 +108,7 @@
           </ul>
         </div>
       </div>
-      <div class="w-full mx-auto rounded-lg bg-gray-50 p-6" id="cta">
+      <div class="w-full mx-auto rounded-lg bg-gray-700 p-6" id="cta">
         <div class="group relative" id="dropdown-cta">
           <div class="flex items-center space-x-1" id="dropdown-header">
             <a href="#" class="block" id="dropdown-link">{{ mood }}</a>
@@ -119,7 +116,7 @@
               <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
             </svg>
           </div>
-          <ul class="absolute z-10 hidden w-full divide-y rounded border bg-white shadow-md group-hover:block" id="dropdown-items">
+          <ul class="absolute z-10 hidden w-full divide-y rounded border bg-gray-600 shadow-md group-hover:block" id="dropdown-items">
             <li class="p-3"><button class="hover:text-blue-600" @click="setMood(0)">心情（默认）</button></li>
             <li class="p-3"><button class="hover:text-blue-600" @click="setMood(1)">伤感</button></li>
             <li class="p-3"><button class="hover:text-blue-600" @click="setMood(2)">安静</button></li>
@@ -128,7 +125,7 @@
           </ul>
         </div>
       </div>
-      <div class="w-full mx-auto rounded-lg bg-gray-50 p-6" id="cta">
+      <div class="w-full mx-auto rounded-lg bg-gray-700 p-6" id="cta">
         <div class="group relative" id="dropdown-cta">
           <div class="flex items-center space-x-1" id="dropdown-header">
             <a href="#" class="block" id="dropdown-link">{{ style }}</a>
@@ -136,7 +133,7 @@
               <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
             </svg>
           </div>
-          <ul class="absolute z-10 hidden w-full divide-y rounded border bg-white shadow-md group-hover:block" id="dropdown-items">
+          <ul class="absolute z-10 hidden w-full divide-y rounded border bg-gray-600 shadow-md group-hover:block" id="dropdown-items">
             <li class="p-3"><button class="hover:text-blue-600" @click="setStyle(0)">风格（默认）</button></li>
             <li class="p-3"><button class="hover:text-blue-600" @click="setStyle(1)">摇滚</button></li>
             <li class="p-3"><button class="hover:text-blue-600" @click="setStyle(2)">民谣</button></li>
@@ -146,7 +143,7 @@
           </ul>
         </div>
       </div>
-      <div class="w-full mx-auto rounded-lg bg-gray-50 p-6" id="cta">
+      <div class="w-full mx-auto rounded-lg bg-gray-700 p-6" id="cta">
         <div class="group relative" id="dropdown-cta">
           <div class="flex items-center space-x-1" id="dropdown-header">
             <a href="#" class="block" id="dropdown-link">{{ language }}</a>
@@ -154,7 +151,7 @@
               <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
             </svg>
           </div>
-          <ul class="absolute z-10 hidden w-full divide-y rounded border bg-white shadow-md group-hover:block" id="dropdown-items">
+          <ul class="absolute z-10 hidden w-full divide-y rounded border bg-gray-600 shadow-md group-hover:block" id="dropdown-items">
             <li class="p-3"><button class="hover:text-blue-600" @click="setLanguage(0)">语言（默认）</button></li>
             <li class="p-3"><button class="hover:text-blue-600" @click="setLanguage(1)">英语</button></li>
             <li class="p-3"><button class="hover:text-blue-600" @click="setLanguage(2)">日语</button></li>
@@ -167,19 +164,21 @@
       <div class="flex-column text-2xl">
         <label>介绍</label>
       </div>
-      <div class="inputForm">
-        <svg t="1713789997854" class="icon" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" p-id="9038" width="24" height="24">
-          <path d="M0 0v1024h1024V0H0z m938.67 938.67H85.33V85.33h853.33v853.34z" fill="#333333" p-id="9039"></path>
-          <path d="M341.33 213.33h512v85.33h-512zM170.67 213.33H256v85.33h-85.33zM341.33 384h512v85.33h-512zM341.33 554.67h512V640h-512zM170.67 554.67H256V640h-85.33zM341.33 725.33h512v85.33h-512z" fill="#333333" p-id="9040"></path></svg><input type="text" class="input bg-white" placeholder="请为你的歌曲写一点介绍" v-model="introduction">
+      <div class="inputForm bg-gray-700">
+        <svg t="1713789997854" class="icon fill-white" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" p-id="9038" width="24" height="24">
+          <path d="M0 0v1024h1024V0H0z m938.67 938.67H85.33V85.33h853.33v853.34z" fill="white" p-id="9039"></path>
+          <path d="M341.33 213.33h512v85.33h-512zM170.67 213.33H256v85.33h-85.33zM341.33 384h512v85.33h-512zM341.33 554.67h512V640h-512zM170.67 554.67H256V640h-85.33zM341.33 725.33h512v85.33h-512z" fill="white" p-id="9040"></path></svg>
+        <input type="text" class="input bg-gray-700" placeholder="请为你的歌曲写一点介绍" v-model="introduction">
       </div>
       <div class="flex-column text-2xl">
         <label>歌词</label>
       </div>
       <div class="columns-2">
-      <div class="inputForm">
-        <svg t="1713789997854" class="icon" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" p-id="9038" width="24" height="24">
-          <path d="M0 0v1024h1024V0H0z m938.67 938.67H85.33V85.33h853.33v853.34z" fill="#333333" p-id="9039"></path>
-          <path d="M341.33 213.33h512v85.33h-512zM170.67 213.33H256v85.33h-85.33zM341.33 384h512v85.33h-512zM341.33 554.67h512V640h-512zM170.67 554.67H256V640h-85.33zM341.33 725.33h512v85.33h-512z" fill="#333333" p-id="9040"></path></svg><input type="text" class="input bg-white" placeholder="Please the introduction of the song" v-model="introduction">
+      <div class="inputForm bg-gray-700">
+        <svg t="1713789997854" class="icon fill-white" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" p-id="9038" width="24" height="24">
+          <path d="M0 0v1024h1024V0H0z m938.67 938.67H85.33V85.33h853.33v853.34z" fill="white" p-id="9039"></path>
+          <path d="M341.33 213.33h512v85.33h-512zM170.67 213.33H256v85.33h-85.33zM341.33 384h512v85.33h-512zM341.33 554.67h512V640h-512zM170.67 554.67H256V640h-85.33zM341.33 725.33h512v85.33h-512z" fill="white" p-id="9040"></path></svg>
+        <input type="text" class="input bg-gray-700" placeholder="Please the introduction of the song" v-model="introduction">
       </div>
 
       </div>
@@ -208,11 +207,13 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
-  background-color: #ffffff;
   padding: 30px;
   width: 800px;
   border-radius: 20px;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+.text-white {
+  color: white;
 }
 </style>
 
