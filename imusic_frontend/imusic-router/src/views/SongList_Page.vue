@@ -4,34 +4,53 @@ import buttonchangesize from './buttonchangesize.vue'
 
 const songlistlast = defineModel('songlist');
 
-const emits = defineEmits(['handlePlayNow', 'handlePlayAfter','changesize']);
+const emits = defineEmits(['handlePlayNow', 'handlePlayAfter', 'changesize','ChangeSongList']);
 
 function handlePlayNow(index) {
   //console.log(songlistlast.value[index].id);
-  emits('handlePlayNow', songlistlast.value[index].id)
+  emits('handlePlayNow', songlistlast.value.songs[index].id)
 }
 
 function handlePlayAfter(index) {
   //console.log(songlistlast.value[index].id);
-  emits('handlePlayAfter', songlistlast.value[index].id)
+  emits('handlePlayAfter', songlistlast.value.songs[index].id)
 }
 
-const changesize=()=>{
+const changesize = () => {
   emits('changesize');
+}
+
+const ChangeSongList =()=>{
+  emits('ChangeSongList',songlistlast.value.id);
 }
 
 </script>
 
 <template>
   <div class="bgx bg-cover bg-center h-2/5 relative z-40">
-    <div class="bg-blur w-full h-full absolute top-0 left-0"  :style="{backgroundImage: `url(${songlistlast.cover})`}"></div>
+    <div class="bg-blur w-full h-full absolute top-0 left-0"
+         :style="{backgroundImage: `url(${songlistlast.cover})`}"></div>
     <buttonchangesize class="absolute top-5 left-5" @fullsize="changesize"></buttonchangesize>
     <img class="absolute top-10 left-24 w-60 aspect-square rounded-2xl" :src="songlistlast.cover">
-    <div class="absolute top-10 left-96">你好</div>
+    <div class="absolute top-10 left-96">
+      <div class="text-4xl text-white my-8">
+        {{ songlistlast.title }}
+      </div>
+      <div class="text-2xl text-white font-base">{{ songlistlast.owner }} 创建于 {{ songlistlast.create_date }}</div>
+      <div>{{ songlistlast.introduction }}</div>
+      <div class="btn btn-xl my-8 bg-blue-600 border-none rounded-2xl hover:bg-blue-800 text-white fill-white" @click="ChangeSongList">播放全部
+        <svg t="1713860064756" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"
+             p-id="3125" width="25" height="25">
+          <path
+              d="M469.333333 469.333333V170.666667h85.333334v298.666666h298.666666v85.333334h-298.666666v298.666666h-85.333334v-298.666666H170.666667v-85.333334h298.666666z"
+              p-id="3126"></path>
+        </svg>
+      </div>
+    </div>
   </div>
 
 
-  <div class="overflow-x-auto mb-32">
+  <div class="overflow-x-auto mb-32 mt-6">
     <table class="table">
       <!-- head -->
       <thead>
@@ -117,32 +136,34 @@ const changesize=()=>{
 </template>
 
 <style scoped>
-.bg-blur{
-  float:left;
-  background-position:center;
-  background-repeat:no-repeat;
-  background-size:cover;
-  -webkit-filter: blur(9px);
-  -moz-filter: blur(9px);
-  -o-filter: blur(9px);
-  -ms-filter: blur(9px);
-  filter:blur(9px);
+.bg-blur {
+  float: left;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  -webkit-filter: blur(19px);
+  -moz-filter: blur(19px);
+  -o-filter: blur(19px);
+  -ms-filter: blur(19px);
+  filter: blur(19px);
 
 }
-.content{
-  font-size:50px;
-  color:#555;
-  font-weight:bold;
+
+.content {
+  font-size: 50px;
+  color: #555;
+  font-weight: bold;
 }
-.font-content{
-  position:absolute;
-  width:700px;
-  height:700px;
-  margin:20px;
-  text-align:center;
-  line-height:700px;
-  left:50%;
-  top:50%;
-  transform: translate3d(-50%,-50%,0);
+
+.font-content {
+  position: absolute;
+  width: 700px;
+  height: 700px;
+  margin: 20px;
+  text-align: center;
+  line-height: 700px;
+  left: 50%;
+  top: 50%;
+  transform: translate3d(-50%, -50%, 0);
 }
 </style>

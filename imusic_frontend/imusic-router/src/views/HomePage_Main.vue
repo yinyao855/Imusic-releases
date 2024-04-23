@@ -6,7 +6,7 @@ import SingerList_Scrool from "@/views/SingerList_Scrool.vue";
 import Newest_Songs_Page from "@/views/Newest_Songs_Page.vue";
 import SongList_Page from "@/views/SongList_Page.vue";
 
-const emits=defineEmits(['handlePlayNow','handlePlayAfter']);
+const emits=defineEmits(['handlePlayNow','handlePlayAfter','ChangeSongList']);
 const songlistlast=defineModel('songlistlast')
 
 const NaviMode = ref('1');
@@ -28,6 +28,7 @@ const songlist=defineModel('songlist');
 const index = defineModel('index');
 
 function handlePlayNow(id){
+  console.log(id);
   emits('handlePlayNow',id);
 }
 
@@ -49,10 +50,14 @@ const changesize=()=>{
   needshowsonglistpage.value=false;
 }
 
+function ChangeSongList(id){
+  emits('ChangeSongList',id);
+}
+
 </script>
 
 <template>
-  <SongList_Page class="w-screen mb-32" v-model:songlist="songlist" v-if="needshowsonglistpage" @changesize="changesize"></SongList_Page>
+  <SongList_Page class="w-screen mb-32" v-model:songlist="songlist" v-if="needshowsonglistpage" @changesize="changesize" @handlePlayAfter="handlePlayAfter" @handlePlayNow="handlePlayNow" @ChangeSongList="ChangeSongList"></SongList_Page>
   <div class="w-full h-16 pl-6 fixed z-20 bg-zinc-900" v-if="!needshowsonglistpage">
     <div :class="[NaviClass1, 'text-transition']" @click="changeNaviMode(1)" style="line-height: 56px">推荐</div>
     <div :class="[NaviClass2, 'text-transition']" @click="changeNaviMode(2)" style="line-height: 56px">最新上传</div>

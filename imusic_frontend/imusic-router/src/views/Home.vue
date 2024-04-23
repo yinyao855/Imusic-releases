@@ -9,8 +9,15 @@ import MusicPlayerFullView from "./MusicPlayerFullView.vue";
 import Login from "./Login.vue";
 import Sign_up from "./Sign_up.vue";
 import axios from "axios";
-const songlistlast=ref([
-  {singer:'张杰', uploader:'yy',cover:'http://182.92.100.66:5000/media/covers/%E6%98%8E%E5%A4%A9%E8%BF%87%E5%90%8E-%E5%BC%A0%E6%9D%B0.png',id:'22',title:'明天过后'}
+
+const songlistlast = ref([
+  {
+    singer: '张杰',
+    uploader: 'yy',
+    cover: 'http://182.92.100.66:5000/media/covers/%E6%98%8E%E5%A4%A9%E8%BF%87%E5%90%8E-%E5%BC%A0%E6%9D%B0.png',
+    id: '22',
+    title: '明天过后'
+  }
 ]);
 
 const RegisterMode = ref(false);
@@ -50,7 +57,7 @@ const props = defineProps({
 
 const lyrics = props.lyrics
 const gradient = props.gradient
-const musicList=ref([
+const musicList = ref([
   {
     title: "难得有情人",
     singer: "关淑怡",
@@ -165,14 +172,35 @@ function parseLRC(lrc) {
   return lyrics;
 }
 
-const songlists=ref([
-  {cover:'http://182.92.100.66:5000/media/covers/%E5%BD%93%E7%A6%BB%E5%88%AB%E5%BC%80%E5%87%BA%E8%8A%B1.webp',title:'name'},
-  {cover:'http://182.92.100.66:5000/media/covers/%E5%BD%93%E7%A6%BB%E5%88%AB%E5%BC%80%E5%87%BA%E8%8A%B1.webp',title:'name'},
-  {cover:'http://182.92.100.66:5000/media/covers/%E5%BD%93%E7%A6%BB%E5%88%AB%E5%BC%80%E5%87%BA%E8%8A%B1.webp',title:'name'},
-  {cover:'http://182.92.100.66:5000/media/covers/%E5%BD%93%E7%A6%BB%E5%88%AB%E5%BC%80%E5%87%BA%E8%8A%B1.webp',title:'name'},
-  {cover:'http://182.92.100.66:5000/media/covers/%E5%BD%93%E7%A6%BB%E5%88%AB%E5%BC%80%E5%87%BA%E8%8A%B1.webp',title:'name'},
-  {cover:'http://182.92.100.66:5000/media/covers/%E5%BD%93%E7%A6%BB%E5%88%AB%E5%BC%80%E5%87%BA%E8%8A%B1.webp',title:'name'},
-  {cover:'http://182.92.100.66:5000/media/covers/%E5%BD%93%E7%A6%BB%E5%88%AB%E5%BC%80%E5%87%BA%E8%8A%B1.webp',title:'name'},
+const songlists = ref([
+  {
+    cover: 'http://182.92.100.66:5000/media/covers/%E5%BD%93%E7%A6%BB%E5%88%AB%E5%BC%80%E5%87%BA%E8%8A%B1.webp',
+    title: 'name'
+  },
+  {
+    cover: 'http://182.92.100.66:5000/media/covers/%E5%BD%93%E7%A6%BB%E5%88%AB%E5%BC%80%E5%87%BA%E8%8A%B1.webp',
+    title: 'name'
+  },
+  {
+    cover: 'http://182.92.100.66:5000/media/covers/%E5%BD%93%E7%A6%BB%E5%88%AB%E5%BC%80%E5%87%BA%E8%8A%B1.webp',
+    title: 'name'
+  },
+  {
+    cover: 'http://182.92.100.66:5000/media/covers/%E5%BD%93%E7%A6%BB%E5%88%AB%E5%BC%80%E5%87%BA%E8%8A%B1.webp',
+    title: 'name'
+  },
+  {
+    cover: 'http://182.92.100.66:5000/media/covers/%E5%BD%93%E7%A6%BB%E5%88%AB%E5%BC%80%E5%87%BA%E8%8A%B1.webp',
+    title: 'name'
+  },
+  {
+    cover: 'http://182.92.100.66:5000/media/covers/%E5%BD%93%E7%A6%BB%E5%88%AB%E5%BC%80%E5%87%BA%E8%8A%B1.webp',
+    title: 'name'
+  },
+  {
+    cover: 'http://182.92.100.66:5000/media/covers/%E5%BD%93%E7%A6%BB%E5%88%AB%E5%BC%80%E5%87%BA%E8%8A%B1.webp',
+    title: 'name'
+  },
 ]);
 
 const updateTime = () => {
@@ -187,64 +215,71 @@ const updateTime = () => {
   durationInSeconds.value = audio.duration;
 };
 const username = ref('点击登录')
-const HasLogin=ref(false);
+const HasLogin = ref(false);
 const changeModex = () => {
   mode.value = '1';
 }
 
-const needshowsonglistpage=ref(false);
+const needshowsonglistpage = ref(false);
 
-function getsonglistinit(id){
+function getsonglistinit(id) {
   console.log(id);
   axios.get('http://182.92.100.66:5000/songlists/info/1')
+      .then(response => {
+        musicList.value = response.data.data.songs;
+        currentMusic.value = musicList.value[curIndex.value]
+        datax.value = response.data.data.songs;
+        console.log(musicList.value);
+      })
+      .catch(error => {
+        console.log("get init songlist fail");
+      })
+  axios.get('http://182.92.100.66:5000/songlists/alldata')
+      .then(response => {
+        songlists.value = response.data.data;
+        console.log(songlists.value)
+      })
+      .catch(error => {
+        console.log('查不到歌单');
+      })
+  axios.get('http://182.92.100.66:5000/recommend/latest')
+      .then(response => {
+        songlistlast.value = response.data.data;
+        console.log(songlistlast.value);
+      })
+      .catch(error => {
+        console.log(error.data.message);
+      })
+}
+
+const songlist = ref([{
+  cover: 'http://182.92.100.66:5000/media/covers/%E5%BD%93%E7%A6%BB%E5%88%AB%E5%BC%80%E5%87%BA%E8%8A%B1.webp',
+  title: 'name'
+}]);
+
+function ChangeSongList(id){
+  console.log(index.value);
+  const web='http://182.92.100.66:5000/songlists/info/'+index.value;
+  axios.get(web)
       .then(response=>{
         musicList.value=response.data.data.songs;
+        curIndex.value=0;
         currentMusic.value=musicList.value[curIndex.value]
         datax.value=response.data.data.songs;
-        console.log(musicList.value);
       })
       .catch(error=>{
         console.log("get init songlist fail");
       })
-  axios.get('http://182.92.100.66:5000/songlists/alldata')
-      .then(response=>{
-        songlists.value=response.data.data;
-        console.log(songlists.value)
-      })
-      .catch(error=>{
-        console.log('查不到歌单');
-      })
-  axios.get('http://182.92.100.66:5000/recommend/latest')
-      .then(response=>{
-        songlistlast.value=response.data.data;
-        console.log(songlistlast.value);
-      })
-      .catch(error=>{
-        console.log(error.data.message);
-      })
 }
-const songlist=ref([{cover:'http://182.92.100.66:5000/media/covers/%E5%BD%93%E7%A6%BB%E5%88%AB%E5%BC%80%E5%87%BA%E8%8A%B1.webp',title:'name'}]);
 
-function changesonglist(){
-  // console.log(index.value);
-  // const web='http://182.92.100.66:5000/songlists/info/'+index.value;
-  // axios.get(web)
-  //     .then(response=>{
-  //       musicList.value=response.data.data.songs;
-  //       curIndex.value=0;
-  //       currentMusic.value=musicList.value[curIndex.value]
-  //       datax.value=response.data.data.songs;
-  //     })
-  //     .catch(error=>{
-  //       console.log("get init songlist fail");
-  //     })
-  needshowsonglistpage.value=true;
-  const web='http://182.92.100.66:5000/songlists/info/'+index.value;
+function changesonglist() {
+  needshowsonglistpage.value = true;
+  const web = 'http://182.92.100.66:5000/songlists/info/' + index.value;
   axios.get(web)
-      .then(response=>{
-        songlist.value=response.data.data;
+      .then(response => {
+        songlist.value = response.data.data;
       })
-      .catch(error=>{
+      .catch(error => {
         console.log("get init songlist fail");
       })
 }
@@ -272,63 +307,64 @@ function changesonglist(){
 // }
 //
 // onMounted(getdata(0));
-const index=ref('1');
-const datax=ref([]);
-watch(index,()=>{
+const index = ref('1');
+const datax = ref([]);
+watch(index, () => {
   changesonglist();
 })
 
-function handlePlayNow(id){
-  const web='http://182.92.100.66:5000/songs/info/'+id;
+function handlePlayNow(id) {
+  const web = 'http://182.92.100.66:5000/songs/info/' + id;
   axios.get(web)
-      .then(response=>{
-        const newmusic=response.data.data;
-        const idx=newmusic.id;
-        let length=musicList.value.length;
-        for(let i=0;i<length;i=i+1){
-          if(musicList.value[i].id===idx){
-            curIndex.value=i;
-            currentMusic.value=musicList.value[curIndex.value];
+      .then(response => {
+        const newmusic = response.data.data;
+        const idx = newmusic.id;
+        let length = musicList.value.length;
+        for (let i = 0; i < length; i = i + 1) {
+          if (musicList.value[i].id === idx) {
+            curIndex.value = i;
+            currentMusic.value = musicList.value[curIndex.value];
             return;
           }
         }
         musicList.value.push(newmusic);
         console.log(curIndex.value);
-        curIndex.value=musicList.value.length-1;
+        curIndex.value = musicList.value.length - 1;
         console.log(curIndex.value);
-        datax.value=musicList.value;
-        currentMusic.value=musicList.value[curIndex.value]
+        datax.value = musicList.value;
+        currentMusic.value = musicList.value[curIndex.value]
       })
-      .catch(error=>{
+      .catch(error => {
         console.log(error.data.message);
       })
 }
 
-function handlePlayAfter(id){
-  const web='http://182.92.100.66:5000/songs/info/'+id;
+function handlePlayAfter(id) {
+  const web = 'http://182.92.100.66:5000/songs/info/' + id;
   axios.get(web)
-      .then(response=>{
-        const newmusic=response.data.data;
-        const idx=newmusic.id;
-        let length=musicList.value.length;
-        for(let i=0;i<length;i=i+1){
-          if(musicList.value[i].id===idx){
-            curIndex.value=i;
-            currentMusic.value=musicList.value[curIndex.value];
+      .then(response => {
+        const newmusic = response.data.data;
+        const idx = newmusic.id;
+        let length = musicList.value.length;
+        for (let i = 0; i < length; i = i + 1) {
+          if (musicList.value[i].id === idx) {
+            curIndex.value = i;
+            currentMusic.value = musicList.value[curIndex.value];
             return;
           }
         }
         musicList.value.push(newmusic);
         console.log(curIndex.value);
-        datax.value=musicList.value;
-        currentMusic.value=musicList.value[curIndex.value]
+        datax.value = musicList.value;
+        currentMusic.value = musicList.value[curIndex.value]
       })
-      .catch(error=>{
+      .catch(error => {
         console.log(error.data.message);
       })
 }
 
-const avatar=ref('');
+
+const avatar = ref('');
 </script>
 
 <template>
@@ -347,7 +383,8 @@ const avatar=ref('');
               d="M56.888889 1024c0-250.311111 204.8-455.111111 455.111111-455.111111s455.111111 204.8 455.111111 455.111111h-56.888889c0-221.866667-176.355556-398.222222-398.222222-398.222222s-398.222222 176.355556-398.222222 398.222222H56.888889z"
               p-id="5762"></path>
         </svg>
-        <img v-if="HasLogin&&avatar!==''" :src="avatar" class="inline transition duration-400 my-auto ml-4 aspect-square w-12 h-12 rounded-full" alt="头像">
+        <img v-if="HasLogin&&avatar!==''" :src="avatar"
+             class="inline transition duration-400 my-auto ml-4 aspect-square w-12 h-12 rounded-full" alt="头像">
         <span class="px-5">{{ username }}</span>
         <svg t="1713669026081"
              class="icon inline fill-white group-hover:fill-blue-800 transition duration-400 justify-end my-auto mr-0"
@@ -402,14 +439,16 @@ const avatar=ref('');
         <span class="px-4 font-medium">设置</span>
       </div>
       <div :class="containerClass4" @click="changeMode(4)">
-      <svg t="1713772424829" class="icon inline fill-white my-auto" viewBox="0 0 1024 1024" version="1.1"
-           xmlns="http://www.w3.org/2000/svg"
-           p-id="2447" width="16" height="16">
-        <path d="M374 4q-17 1-32 8-36 16-50.5 53t1.5 73h-91q-30 2-50 24t-20 52v121q2 19 12 35t26 25v265q2 30 17.5 55t41.5 39q26 14 56 14h465q30-2 54.5-17.5t39-41.5q14.5-26 14.5-55V395l5-3q15-11 24-27.5t9-35.5V208q-2-30-24-50t-52-20h-85l3-8q5-15 5-31 0-39-28-67T648 4h-15q-22 2-41 12t-33 27l-45 56-50-62q-15-16-34.5-24.5T388 4h-14z m111 707H285q-24 0-41-17t-17-40V405h258v306z m315-52q-2 22-18.5 37T743 711H543V405h258l-1 254zM485 348H208q-8 0-13.5-5.5T189 329V214q0-8 5.5-13.5T208 195h277v153z m335-153q8 0 13.5 5.5T839 214v115q0 8-5.5 13.5T820 348H543V195h277zM648 61q16 0 27 11.5t11 27q0 15.5-11 27T648 138h-91l47-59q14-18 36-18h8z m-260 0q22 0 36 17l47 60h-91q-16 0-27-11.5t-11-27q0-15.5 11-27T380 61h8z" fill="#ffffff" p-id="2448">
-        </path>
-      </svg>
-      <span class="px-4 font-medium">创作中心</span>
-    </div>
+        <svg t="1713772424829" class="icon inline fill-white my-auto" viewBox="0 0 1024 1024" version="1.1"
+             xmlns="http://www.w3.org/2000/svg"
+             p-id="2447" width="16" height="16">
+          <path
+              d="M374 4q-17 1-32 8-36 16-50.5 53t1.5 73h-91q-30 2-50 24t-20 52v121q2 19 12 35t26 25v265q2 30 17.5 55t41.5 39q26 14 56 14h465q30-2 54.5-17.5t39-41.5q14.5-26 14.5-55V395l5-3q15-11 24-27.5t9-35.5V208q-2-30-24-50t-52-20h-85l3-8q5-15 5-31 0-39-28-67T648 4h-15q-22 2-41 12t-33 27l-45 56-50-62q-15-16-34.5-24.5T388 4h-14z m111 707H285q-24 0-41-17t-17-40V405h258v306z m315-52q-2 22-18.5 37T743 711H543V405h258l-1 254zM485 348H208q-8 0-13.5-5.5T189 329V214q0-8 5.5-13.5T208 195h277v153z m335-153q8 0 13.5 5.5T839 214v115q0 8-5.5 13.5T820 348H543V195h277zM648 61q16 0 27 11.5t11 27q0 15.5-11 27T648 138h-91l47-59q14-18 36-18h8z m-260 0q22 0 36 17l47 60h-91q-16 0-27-11.5t-11-27q0-15.5 11-27T380 61h8z"
+              fill="#ffffff" p-id="2448">
+          </path>
+        </svg>
+        <span class="px-4 font-medium">创作中心</span>
+      </div>
       <div
           class="antialiased text-sm block h-10 my-1 text-white leading-10 transition duration-400 px-4 hover:bg-gray-600/40 ml-2 mr-2 rounded-md">
         <p class="px-4 font-medium">创建的歌单</p>
@@ -424,10 +463,15 @@ const avatar=ref('');
       <div class="bg-zinc-900 h-screen overflow-auto">
         <div v-if="mode==='0'" class="w-full h-full z-50">
           <Login v-if="!RegisterMode" @ChangerRegisterMode="ChangerRegisterMode" v-model:username="username"
-                 @changeMode="changeModex" v-model:HasLogin="HasLogin" @getsonglistinit="getsonglistinit" v-model:avatar="avatar"></Login>
+                 @changeMode="changeModex" v-model:HasLogin="HasLogin" @getsonglistinit="getsonglistinit"
+                 v-model:avatar="avatar"></Login>
           <Sign_up v-if="RegisterMode" @ChangerRegisterMode="ChangerRegisterMode" v-model:username="username"></Sign_up>
         </div>
-        <HomePage_Main v-model:songlist="songlist" v-model:needshowsonglistpage="needshowsonglistpage" @handlePlayAfter="handlePlayAfter" @handlePlayNow="handlePlayNow" v-if="mode==='1'" v-model:songlists="songlists" v-model:index="index" v-model:songlistlast="songlistlast"></HomePage_Main>
+        <HomePage_Main v-model:songlist="songlist" v-model:needshowsonglistpage="needshowsonglistpage"
+                       @handlePlayAfter="handlePlayAfter" @handlePlayNow="handlePlayNow" v-if="mode==='1'"
+                       @ChangeSongList="ChangeSongList"
+                       v-model:songlists="songlists" v-model:index="index"
+                       v-model:songlistlast="songlistlast"></HomePage_Main>
         <ExplorePage_Main v-if="mode==='2'"></ExplorePage_Main>
         <SettingPage_Main v-if="mode==='3'"></SettingPage_Main>
         <CreateCenter v-if="mode==='4'"></CreateCenter>
