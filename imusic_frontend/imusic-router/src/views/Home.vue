@@ -9,6 +9,9 @@ import MusicPlayerFullView from "./MusicPlayerFullView.vue";
 import Login from "./Login.vue";
 import Sign_up from "./Sign_up.vue";
 import axios from "axios";
+const songlistlast=ref([
+  {singer:'张杰', uploader:'yy',cover:'http://182.92.100.66:5000/media/covers/%E6%98%8E%E5%A4%A9%E8%BF%87%E5%90%8E-%E5%BC%A0%E6%9D%B0.png',id:'22',title:'明天过后'}
+]);
 
 const RegisterMode = ref(false);
 
@@ -196,6 +199,7 @@ function getsonglistinit(id){
         musicList.value=response.data.data.songs;
         currentMusic.value=musicList.value[curIndex.value]
         datax.value=response.data.data.songs;
+        console.log(musicList.value);
       })
       .catch(error=>{
         console.log("get init songlist fail");
@@ -208,7 +212,16 @@ function getsonglistinit(id){
       .catch(error=>{
         console.log('查不到歌单');
       })
+  axios.get('http://182.92.100.66:5000/recommend/latest')
+      .then(response=>{
+        songlistlast.value=response.data.data;
+        console.log(songlistlast.value);
+      })
+      .catch(error=>{
+        console.log(error.data.message);
+      })
 }
+
 
 function changesonglist(){
   console.log(index.value);
@@ -216,6 +229,7 @@ function changesonglist(){
   axios.get(web)
       .then(response=>{
         musicList.value=response.data.data.songs;
+        curIndex.value=0;
         currentMusic.value=musicList.value[curIndex.value]
         datax.value=response.data.data.songs;
       })
@@ -252,6 +266,56 @@ const datax=ref([]);
 watch(index,()=>{
   changesonglist();
 })
+
+function handlePlayNow(id){
+  const web='http://182.92.100.66:5000/songs/info/'+id;
+  axios.get(web)
+      .then(response=>{
+        const newmusic=response.data.data;
+        const idx=newmusic.id;
+        let length=musicList.value.length;
+        for(let i=0;i<length;i=i+1){
+          if(musicList.value[i].id===idx){
+            curIndex.value=i;
+            currentMusic.value=musicList.value[curIndex.value];
+            return;
+          }
+        }
+        musicList.value.push(newmusic);
+        console.log(curIndex.value);
+        curIndex.value=musicList.value.length-1;
+        console.log(curIndex.value);
+        datax.value=musicList.value;
+        currentMusic.value=musicList.value[curIndex.value]
+      })
+      .catch(error=>{
+        console.log(error.data.message);
+      })
+}
+
+function handlePlayAfter(id){
+  const web='http://182.92.100.66:5000/songs/info/'+id;
+  axios.get(web)
+      .then(response=>{
+        const newmusic=response.data.data;
+        const idx=newmusic.id;
+        let length=musicList.value.length;
+        for(let i=0;i<length;i=i+1){
+          if(musicList.value[i].id===idx){
+            curIndex.value=i;
+            currentMusic.value=musicList.value[curIndex.value];
+            return;
+          }
+        }
+        musicList.value.push(newmusic);
+        console.log(curIndex.value);
+        datax.value=musicList.value;
+        currentMusic.value=musicList.value[curIndex.value]
+      })
+      .catch(error=>{
+        console.log(error.data.message);
+      })
+}
 
 const avatar=ref('');
 </script>
@@ -352,7 +416,7 @@ const avatar=ref('');
                  @changeMode="changeModex" v-model:HasLogin="HasLogin" @getsonglistinit="getsonglistinit" v-model:avatar="avatar"></Login>
           <Sign_up v-if="RegisterMode" @ChangerRegisterMode="ChangerRegisterMode" v-model:username="username"></Sign_up>
         </div>
-        <HomePage_Main v-if="mode==='1'" v-model:songlists="songlists" v-model:index="index"></HomePage_Main>
+        <HomePage_Main @handlePlayAfter="handlePlayAfter" @handlePlayNow="handlePlayNow" v-if="mode==='1'" v-model:songlists="songlists" v-model:index="index" v-model:songlistlast="songlistlast"></HomePage_Main>
         <ExplorePage_Main v-if="mode==='2'"></ExplorePage_Main>
         <SettingPage_Main v-if="mode==='3'"></SettingPage_Main>
         <CreateCenter v-if="mode==='4'"></CreateCenter>

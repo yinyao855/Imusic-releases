@@ -1,6 +1,6 @@
 <script setup>
 import {computed, ref} from "vue";
-import Image_Scrool from "@/views/Image_Scrool.vue";
+import Image_Scrool from "@/views/SongList_Scrool.vue";
 import UploadSong from "@/views/UploadSong.vue";
 const NaviMode = ref('1');
 const upload= ref('0');
