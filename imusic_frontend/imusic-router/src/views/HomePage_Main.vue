@@ -1,13 +1,13 @@
 <script setup>
-import {computed, ref, defineModel,defineEmits} from "vue";
+import {computed, ref, defineModel, defineEmits} from "vue";
 import Search from "@/views/Search.vue";
 import Image_Scrool from "@/views/SongList_Scrool.vue";
 import SingerList_Scrool from "@/views/SingerList_Scrool.vue";
 import Newest_Songs_Page from "@/views/Newest_Songs_Page.vue";
 import SongList_Page from "@/views/SongList_Page.vue";
 
-const emits=defineEmits(['handlePlayNow','handlePlayAfter','ChangeSongList']);
-const songlistlast=defineModel('songlistlast')
+const emits = defineEmits(['handlePlayNow', 'handlePlayAfter', 'ChangeSongList']);
+const songlistlast = defineModel('songlistlast')
 
 const NaviMode = ref('1');
 const NaviClass1 = computed(() => ({
@@ -24,50 +24,63 @@ const changeNaviMode = (newMode) => {
 }
 
 const songlists = defineModel('songlists');
-const songlist=defineModel('songlist');
+const songlist = defineModel('songlist');
 const index = defineModel('index');
 
-function handlePlayNow(id){
+function handlePlayNow(id) {
   console.log(id);
-  emits('handlePlayNow',id);
+  emits('handlePlayNow', id);
 }
 
 
-function handlePlayAfter(id){
-  emits('handlePlayAfter',id);
+function handlePlayAfter(id) {
+  emits('handlePlayAfter', id);
 }
 
-const SearchContent=ref('');
+const SearchContent = ref('');
 
-const SearchOperation =()=>{
+const SearchOperation = () => {
   console.log("hello");
   console.log(SearchContent.value);
 }
 
-const needshowsonglistpage=defineModel('needshowsonglistpage');
+const needshowsonglistpage = defineModel('needshowsonglistpage');
 
-const changesize=()=>{
-  needshowsonglistpage.value=false;
+const changesize = () => {
+  needshowsonglistpage.value = false;
 }
 
-function ChangeSongList(id){
-  emits('ChangeSongList',id);
+function ChangeSongList(id) {
+  emits('ChangeSongList', id);
 }
 
 </script>
 
 <template>
-  <SongList_Page class="w-screen mb-32" v-model:songlist="songlist" v-if="needshowsonglistpage" @changesize="changesize" @handlePlayAfter="handlePlayAfter" @handlePlayNow="handlePlayNow" @ChangeSongList="ChangeSongList"></SongList_Page>
+  <transition name="slide" appear>
+    <div class="transition-container z-50" v-if="needshowsonglistpage">
+    <SongList_Page class="w-screen mb-32" v-model:songlist="songlist"
+                   @changesize="changesize" @handlePlayAfter="handlePlayAfter" @handlePlayNow="handlePlayNow"
+                   @ChangeSongList="ChangeSongList"></SongList_Page>
+    </div>
+  </transition>
   <div class="w-full h-16 pl-6 fixed z-20 bg-zinc-900" v-if="!needshowsonglistpage">
     <div :class="[NaviClass1, 'text-transition']" @click="changeNaviMode(1)" style="line-height: 56px">推荐</div>
     <div :class="[NaviClass2, 'text-transition']" @click="changeNaviMode(2)" style="line-height: 56px">最新上传</div>
     <Search v-model:SearchContent="SearchContent" @SearchOperation="SearchOperation"></Search>
   </div>
-  <Newest_Songs_Page @handlePlayNow="handlePlayNow" @handlePlayAfter="handlePlayAfter" v-model:songlistlast="songlistlast" v-if="NaviMode!=='1'&&!needshowsonglistpage" class="text-2xl mb-32 mx-4 text-white font-serif font-bold mt-16 ml-8 z-50"></Newest_Songs_Page>
-  <div class="text-2xl mx-4 text-white font-serif font-bold mt-16 ml-8" v-if="NaviMode==='1'&&!needshowsonglistpage">歌单</div>
-  <Image_Scrool v-model:songlists="songlists" v-model:index="index" v-if="NaviMode==='1'&&!needshowsonglistpage"></Image_Scrool>
+  <Newest_Songs_Page @handlePlayNow="handlePlayNow" @handlePlayAfter="handlePlayAfter"
+                     v-model:songlistlast="songlistlast" v-if="NaviMode!=='1'&&!needshowsonglistpage"
+                     class="text-2xl mb-32 mx-4 text-white font-serif font-bold mt-16 ml-8 z-50"></Newest_Songs_Page>
+  <div class="text-2xl mx-4 text-white font-serif font-bold mt-16 ml-8" v-if="NaviMode==='1'&&!needshowsonglistpage">
+    歌单
+  </div>
+  <Image_Scrool v-model:songlists="songlists" v-model:index="index"
+                v-if="NaviMode==='1'&&!needshowsonglistpage"></Image_Scrool>
   <hr class="m-5 border-gray-500" v-if="NaviMode==='1'&&!needshowsonglistpage">
-  <div class="text-2xl mx-4 text-white font-serif font-bold ml-8" v-if="NaviMode==='1'&&!needshowsonglistpage">推荐艺人</div>
+  <div class="text-2xl mx-4 text-white font-serif font-bold ml-8" v-if="NaviMode==='1'&&!needshowsonglistpage">
+    推荐艺人
+  </div>
   <SingerList_Scrool v-model:songlists="songlists" v-if="NaviMode==='1'&&!needshowsonglistpage"></SingerList_Scrool>
   <hr class="m-5 border-gray-500" v-if="NaviMode==='1'&&!needshowsonglistpage">
   <div class="mx-4" v-if="NaviMode==='1'&&!needshowsonglistpage">
@@ -310,5 +323,32 @@ function ChangeSongList(id){
 <style scoped>
 .text-transition {
   transition: color 0.5s ease;
+}
+
+
+.slide-leave-active {
+  transition: transform 0.5s ease;
+}
+
+.slide-enter-active {
+  transition: transform 0.5s ease;
+}
+
+.slide-enter-from,
+.slide-leave-to {
+  transform: translateX(100%);
+}
+
+.slide-enter-to,
+.slide-leave-from {
+  transform: translateX(0);
+}
+
+.transition-container {
+  position: fixed;
+  right: 0;
+  top: 0;
+  width: 81%;
+  height: 100%;
 }
 </style>
