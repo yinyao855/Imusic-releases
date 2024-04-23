@@ -514,7 +514,7 @@ const avatar = ref('');
   <Transition name="slide" appear>
     <div v-if="isFull" key="musicPlay" class="transition-container z-50">
       <MusicPlayerFullView
-          class="fixed top-0 left-0 w-full"
+          class="fixed top-0 left-0 w-full z-50"
           v-model:audioPlayer="audioPlayer"
           v-model:durationInSeconds="durationInSeconds"
           v-model:currentTime="currentTime"

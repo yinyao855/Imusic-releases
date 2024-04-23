@@ -1,8 +1,9 @@
 <script setup>
 import {defineModel, defineEmits} from "vue"
+import buttonchangesize from './buttonchangesize.vue'
 
 const songlistlast = defineModel('songlistlast');
-const emits = defineEmits(['handlePlayNow', 'handlePlayAfter']);
+const emits = defineEmits(['handlePlayNow', 'handlePlayAfter', 'changesize']);
 
 function handlePlayNow(index) {
   //console.log(songlistlast.value[index].id);
@@ -14,12 +15,19 @@ function handlePlayAfter(index) {
   emits('handlePlayAfter', songlistlast.value[index].id)
 }
 
+const changesize = () => {
+  emits('changesize');
+}
+
 </script>
 
 <template>
-  <div class="text-2xl mx-auto my-6 w-full text-center text-white font-semibold">搜索结果</div>
-  <div class="overflow-x-auto mx-6">
-    <table class="table">
+  <div class="text-2xl mx-auto my-6 w-full text-center text-white font-semibold">
+    <buttonchangesize class="absolute top-5 left-5" @fullsize="changesize"></buttonchangesize>
+    搜索结果
+  </div>
+  <div class="overflow-x-auto mx-6 mb-32">
+    <table class="table mb-32">
       <!-- head -->
       <thead>
       <tr>
