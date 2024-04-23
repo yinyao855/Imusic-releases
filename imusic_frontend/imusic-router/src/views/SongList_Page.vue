@@ -50,7 +50,7 @@ const ChangeSongList =()=>{
   </div>
 
 
-  <div class="overflow-x-auto mb-32 mt-6">
+  <div class="mt-6 overflow-auto">
     <table class="table">
       <!-- head -->
       <thead>
@@ -133,6 +133,7 @@ const ChangeSongList =()=>{
       </tbody>
     </table>
   </div>
+  <div class="h-32"></div>
 </template>
 
 <style scoped>
