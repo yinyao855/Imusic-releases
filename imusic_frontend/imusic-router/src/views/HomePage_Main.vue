@@ -349,6 +349,6 @@ function ChangeSongList(id) {
   right: 0;
   top: 0;
   width: 81%;
-  height: 100%;
+  height:80%
 }
 </style>
