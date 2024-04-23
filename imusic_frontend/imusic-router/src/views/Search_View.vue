@@ -17,7 +17,8 @@ function handlePlayAfter(index) {
 </script>
 
 <template>
-  <div class="overflow-x-auto">
+  <div class="text-2xl mx-auto my-6 w-full text-center text-white font-semibold">搜索结果</div>
+  <div class="overflow-x-auto mx-6">
     <table class="table">
       <!-- head -->
       <thead>
