@@ -129,7 +129,7 @@
                    @input="changeVolume"/>
           </div>
 
-          <div class="dropdown dropdown-top dropdown-end my-auto tooltip transition duration-400 hover:bg-gray-600/40 bg-zinc-900 btn btn-sm" data-tip="播放列表">
+          <div class="dropdown dropdown-top dropdown-end my-auto tooltip transition duration-400 hover:bg-gray-600/40 bg-zinc-900 btn btn-sm z-50" data-tip="播放列表">
             <svg t="1713774064278" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"
                  p-id="2300" width="32" height="32" tabindex="0" role="button">
               <path

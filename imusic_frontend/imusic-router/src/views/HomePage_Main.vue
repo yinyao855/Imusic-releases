@@ -80,14 +80,14 @@ const ChangeSearchViewMode = () => {
 
 <template>
   <transition name="slide" appear>
-    <div class="transition-container-2 mb-32" v-if="ShowSearchView">
+    <div class="transition-container-2" v-if="ShowSearchView">
       <Search_View v-if="ShowSearchView" v-model:songlistlast="songlistsearch" @handlePlayNow="handlePlayNow"
-                   @handlePlayAfter="handlePlayAfter" @changesize="ChangeSearchViewMode" class="w-full mb-32"></Search_View>
+                   @handlePlayAfter="handlePlayAfter" @changesize="ChangeSearchViewMode" class="w-full"></Search_View>
     </div>
   </transition>
 
   <transition name="slide" appear>
-    <div class="transition-container z-50" v-if="needshowsonglistpage&&!ShowSearchView">
+    <div class="transition-container z-50 ml-8" v-if="needshowsonglistpage&&!ShowSearchView">
       <SongList_Page class="w-screen mb-32" v-model:songlist="songlist"
                      @changesize="changesize" @handlePlayAfter="handlePlayAfter" @handlePlayNow="handlePlayNow"
                      @ChangeSongList="ChangeSongList"></SongList_Page>
@@ -377,19 +377,14 @@ const ChangeSearchViewMode = () => {
 }
 
 .transition-container {
-  position: fixed;
   right: 0;
   top: 0;
-  width: 81%;
   height: 80%
 }
 
 
 .transition-container-2 {
-  position: fixed;
   right: 0;
   top: 0;
-  width: 83.3%;
-  height: 80%
 }
 </style>

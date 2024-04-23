@@ -26,7 +26,7 @@ const changesize = () => {
     <buttonchangesize class="absolute top-5 left-5" @fullsize="changesize"></buttonchangesize>
     搜索结果
   </div>
-  <div class="overflow-x-auto mx-6 mb-32">
+  <div class="overflow-x-auto mx-6">
     <table class="table mb-32">
       <!-- head -->
       <thead>
