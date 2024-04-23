@@ -1,6 +1,6 @@
 <template>
   <div id="uploadSong" class="h-full w-full flex items-center">
-    <div class=" formx2 my-auto ml-[200px] width:800px flexible bg-gray-800">
+    <div class=" formx2 my-auto ml-[200px] width:800px flexible bg-zinc-900">
       <div class="flex-column text-2xl">
         <div class="text-white">*歌曲名</div>
       </div>
@@ -162,7 +162,7 @@
         </div>
       </div>
       <div class="flex-column text-2xl">
-        <label>介绍</label>
+        <div class="text-white">介绍</div>
       </div>
       <div class="inputForm bg-gray-700">
         <svg t="1713789997854" class="icon fill-white" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" p-id="9038" width="24" height="24">
@@ -171,17 +171,40 @@
         <input type="text" class="input bg-gray-700" placeholder="请为你的歌曲写一点介绍" v-model="introduction">
       </div>
       <div class="flex-column text-2xl">
-        <label>歌词</label>
+        <div class="text-white">歌词</div>
       </div>
-      <div class="columns-2">
-      <div class="inputForm bg-gray-700">
+      <div class="grid grid-cols-10 gap-4">
+        <p class="col-span-3 text-sm text-gray-300">
+          <span>歌词开始时间</span>
+        </p>
+        <p class="text-sm text-gray-300">
+          <span>单句歌词</span>
+        </p>
+      </div>
+      <div class="grid grid-cols-10 gap-4">
+      <div class="inputForm bg-gray-700 col-span-3">
         <svg t="1713789997854" class="icon fill-white" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" p-id="9038" width="24" height="24">
           <path d="M0 0v1024h1024V0H0z m938.67 938.67H85.33V85.33h853.33v853.34z" fill="white" p-id="9039"></path>
           <path d="M341.33 213.33h512v85.33h-512zM170.67 213.33H256v85.33h-85.33zM341.33 384h512v85.33h-512zM341.33 554.67h512V640h-512zM170.67 554.67H256V640h-85.33zM341.33 725.33h512v85.33h-512z" fill="white" p-id="9040"></path></svg>
-        <input type="text" class="input bg-gray-700" placeholder="Please the introduction of the song" v-model="introduction">
+        <input type="text" class="input bg-gray-700" placeholder="[00:00:00]" v-model="introduction">
+      </div>
+        <div class="inputForm bg-gray-700 col-span-6">
+          <svg t="1713789997854" class="icon fill-white" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" p-id="9038" width="24" height="24">
+            <path d="M0 0v1024h1024V0H0z m938.67 938.67H85.33V85.33h853.33v853.34z" fill="white" p-id="9039"></path>
+            <path d="M341.33 213.33h512v85.33h-512zM170.67 213.33H256v85.33h-85.33zM341.33 384h512v85.33h-512zM341.33 554.67h512V640h-512zM170.67 554.67H256V640h-85.33zM341.33 725.33h512v85.33h-512z" fill="white" p-id="9040"></path></svg>
+          <input type="text" class="input bg-gray-700" placeholder="请输入单句歌词" v-model="introduction">
+        </div>
+        <div type="button" class="h-[31px] col-span-1 m-auto border-radius rounded-full mx-auto focus:outline-none focus:shadow-outline hover:bg-gray-300 transition" @click="delete[0]">
+          <svg t="1713878622296" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="9893" width="32" height="32">
+            <path d="M875.432137 148.567863c-198.090484-198.090484-523.981279-198.090484-722.071763 0s-198.090484 523.981279 0 722.071763 523.981279 198.090484 722.071763 0S1073.522621 353.048362 875.432137 148.567863zM690.121685 646.98908c12.780031 12.780031 12.780031 31.950078 0 44.730109-12.780031 12.780031-31.950078 12.780031-44.730109 0L511.201248 557.528861l-134.190328 134.190328c-12.780031 12.780031-31.950078 12.780031-44.730109 0-12.780031-12.780031-12.780031-31.950078 0-44.730109L466.471139 512.798752 332.280811 378.608424C319.50078 365.828393 319.50078 346.658346 332.280811 333.878315s31.950078-12.780031 44.730109 0L511.201248 468.068643l134.190328-134.190328c12.780031-12.780031 31.950078-12.780031 44.730109 0 12.780031 12.780031 12.780031 31.950078 0 44.730109L555.931357 512.798752 690.121685 646.98908z" fill="#d81e06" p-id="9894"></path>
+          </svg>
+        </div>
+      </div>
+      <div type="button" class="h-[31px] border-radius rounded-full mx-auto focus:outline-none focus:shadow-outline hover:bg-gray-300 transition" @click="addCnt">
+        <svg t="1713878741158" class="icon" viewBox="0 0 1025 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="11250" width="32" height="32"><path d="M512 93.090909c111.709091 0 216.436364 44.218182 295.563636 123.345455 162.909091 162.909091 162.909091 428.218182 0 593.454545C728.436364 886.690909 623.709091 930.909091 512 930.909091s-216.436364-44.218182-295.563636-123.345455c-162.909091-162.909091-162.909091-428.218182 0-593.454545C295.563636 137.309091 400.290909 93.090909 512 93.090909m0-93.090909C381.672727 0 249.018182 48.872727 148.945455 148.945455-48.872727 349.090909-48.872727 674.909091 148.945455 875.054545c100.072727 100.072727 232.727273 148.945455 363.054545 148.945455s262.981818-48.872727 363.054545-148.945455c200.145455-200.145455 200.145455-523.636364 0-723.781818C774.981818 48.872727 642.327273 0 512 0z" fill="#1296db" p-id="11251"></path><path d="M512 779.636364c-25.6 0-46.545455-20.945455-46.545455-46.545455v-442.181818c0-25.6 20.945455-46.545455 46.545455-46.545455s46.545455 20.945455 46.545455 46.545455v442.181818c0 25.6-20.945455 46.545455-46.545455 46.545455z" fill="#1296db" p-id="11252"></path><path d="M733.090909 558.545455h-442.181818c-25.6 0-46.545455-20.945455-46.545455-46.545455s20.945455-46.545455 46.545455-46.545455h442.181818c25.6 0 46.545455 20.945455 46.545455 46.545455s-20.945455 46.545455-46.545455 46.545455z" fill="#1296db" p-id="11253"></path></svg>
       </div>
 
-      </div>
+
       <div>
         <button type="submit" class="my-5 w-full flex justify-center bg-blue-500 text-gray-100 p-4  rounded-full tracking-wide
                                     font-semibold  focus:outline-none focus:shadow-outline hover:bg-blue-600 shadow-lg cursor-pointer transition ease-in duration-300">
