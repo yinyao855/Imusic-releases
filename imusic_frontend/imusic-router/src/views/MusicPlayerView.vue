@@ -129,24 +129,41 @@
                    @input="changeVolume"/>
           </div>
 
-          <div class="dropdown dropdown-top dropdown-end my-auto tooltip transition duration-400 hover:bg-gray-600/40 bg-zinc-900 btn btn-sm z-50" data-tip="播放列表">
-            <svg t="1713774064278" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"
-                 p-id="2300" width="32" height="32" tabindex="0" role="button">
+          <!--          <div class="dropdown dropdown-top dropdown-end my-auto tooltip transition duration-400 hover:bg-gray-600/40 bg-zinc-900 btn btn-sm z-50" data-tip="播放列表">-->
+          <!--            <svg t="1713774064278" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"-->
+          <!--                 p-id="2300" width="32" height="32" tabindex="0" role="button">-->
+          <!--              <path-->
+          <!--                  d="M170.666667 213.333333h682.666666v85.333334H170.666667V213.333333z m0 512h682.666666v85.333334H170.666667v-85.333334z m0-256h682.666666v85.333334H170.666667v-85.333334z"-->
+          <!--                  fill="white" p-id="2301"></path>-->
+          <!--            </svg>-->
+          <!--            <div class="max-h-10 overflow-auto">-->
+          <!--            <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow rounded-box bg-zinc-900 text-white text-sm h-100" style="width:490px">-->
+          <!--              <li v-for="(item, index) in datax" :key="index" @click="handleindex(index)">-->
+          <!--                <div>-->
+          <!--                  <img :src="item.cover" alt="封面" class="aspect-square h-12 w-12">-->
+          <!--                  <a style="font-size: 15px; line-height: 22px">{{ item.title }}</a>-->
+          <!--                  <br>-->
+          <!--                  <a class="block text-gray-600 text-s mr-0">{{ item.singer }}</a>-->
+          <!--                </div>-->
+          <!--              </li>-->
+          <!--            </ul>-->
+          <!--            </div>-->
+          <!--          </div>-->
+
+          <button
+              class="my-auto tooltip transition duration-400 hover:bg-gray-600/40 bg-zinc-900 btn btn-sm z-50 border-none"
+              data-tip="播放列表" @click="ShowPlayMusicListChange" @blur="ShowPlayMusicListChange">
+            <svg t="1713774064278" class="icon" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg"
+                 p-id="2300" width="32" height="32" tabindex="0" role="button" >
               <path
                   d="M170.666667 213.333333h682.666666v85.333334H170.666667V213.333333z m0 512h682.666666v85.333334H170.666667v-85.333334z m0-256h682.666666v85.333334H170.666667v-85.333334z"
-                  fill="white" p-id="2301"></path>
+                  fill="white"></path>
             </svg>
-            <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow rounded-box bg-zinc-900 text-white text-sm" style="width:490px">
-              <li v-for="(item, index) in datax" :key="index" @click="handleindex(index)">
-                <div>
-                  <img :src="item.cover" alt="封面" class="aspect-square h-12 w-12">
-                  <a style="font-size: 15px; line-height: 22px">{{ item.title }}</a>
-                  <br>
-                  <a class="block text-gray-600 text-s mr-0">{{ item.singer }}</a>
-                </div>
-              </li>
-            </ul>
-          </div>
+          </button>
+          <transition name="slide">
+            <PlayMusic_List :songlistlast="datax" v-if="ShowPlayMusicList" @handleindex="handleindex"></PlayMusic_List>
+          </transition>
+
 
           <!--缩小播放器-->
           <div class="tooltip my-auto" data-tip="最小化">
@@ -181,18 +198,24 @@
 <script setup>
 import {ref} from 'vue';
 import {defineProps, defineModel} from 'vue';
+import PlayMusic_List from "@/views/PlayMusic_List.vue";
 
-const index=defineModel('curIndex');
+const ShowPlayMusicList = ref(false);
+const index = defineModel('curIndex');
 
-const handleindex = (indexx) =>{
-  index.value=indexx;
+const handleindex = (indexx) => {
+  index.value = indexx;
+}
+
+const ShowPlayMusicListChange = () => {
+  ShowPlayMusicList.value = !ShowPlayMusicList.value;
 }
 
 const props = defineProps({
   cover: String,
   name: String,
   singer: String,
-  datax:Array,
+  datax: Array,
 });
 
 const emit = defineEmits([
@@ -269,9 +292,31 @@ function expandPlayer() {
 function fullSize() {
   emit('fullsize');
 }
+
+
+
 </script>
 
 <style scoped>
+.slide-leave-active {
+  transition: transform 0.5s ease;
+}
+
+.slide-enter-active {
+  transition: transform 0.5s ease;
+}
+
+.slide-enter-from,
+.slide-leave-to {
+  transform: translateX(100%);
+}
+
+.slide-enter-to,
+.slide-leave-from {
+  transform: translateX(0);
+}
+
+
 .music-player-container {
   /* 设置背景图片填充方式 */
   background-size: cover;
