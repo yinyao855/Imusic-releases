@@ -1,5 +1,5 @@
 <script setup>
-import {computed, onMounted, ref, watch} from "vue";
+import {computed, ref, watch} from "vue";
 import HomePage_Main from "@/views/HomePage_Main.vue";
 import ExplorePage_Main from "@/views/ExplorePage_Main.vue";
 import CreateCenter from "@/views/CreateCenterPage_Main.vue";
@@ -19,9 +19,7 @@ const songlistlast = ref([
     title: '明天过后'
   }
 ]);
-
 const RegisterMode = ref(false);
-
 const mode = ref('1');
 const containerClass1 = computed(() => ({
   'antialiased text-sm block h-10 my-1 text-white leading-10 transition duration-400 hover:bg-gray-600/40 px-4 ml-2 mr-2 rounded-md': mode.value !== '1',
@@ -41,14 +39,11 @@ const containerClass4 = computed(() => ({
 }));
 const changeMode = (newMode) => {
   mode.value = newMode.toString(); // 设置新的 mode 值
-  console.log(mode.value);
 };
-
 
 const ChangerRegisterMode = () => {
   RegisterMode.value = !RegisterMode.value;
 }
-
 
 const props = defineProps({
   lyrics: Object,
@@ -63,39 +58,49 @@ const musicList = ref([
     singer: "关淑怡",
     cover: "./难得有情人.png",
     audio: "./难得有情人.mp3",
+    lyric:'http://182.92.100.66:5000/media/lyrics/%E7%A6%BB%E5%88%AB%E5%BC%80%E5%87%BA%E8%8A%B1_-_%E5%B0%B1%E6%98%AF%E5%8D%97%E6%96%B9%E5%87%AF%E9%A1%B9%E5%AD%A6%E5%87%AF.lrc',
   },
 ]);
-
 const isFull = ref(false);
-
 const audioPlayer = ref(null);
 const isPlaying = ref(true);
-
 //当前播放时间和总时间
 const currentTime = ref("0:00");
 const duration = ref("0:00");
 //当前播放时间和总时间（秒）
 const durationInSeconds = ref(0);
 const currentTimeInSeconds = ref(0);
-
 //将当前播放歌曲和外部绑定
 const curIndex = defineModel("curIndex")
-const lyric = ref(parseLRC(lyrics[curIndex.value]))
+const lyric = ref(parseLRC(lyrics[0]))
 const currentMusic = ref(musicList.value[curIndex.value])
-
 const playerMode = ref(0)
-
 function changeSize() {
+  if(currentMusic.value.lyric!==null){
+    fetchAndFormatLyrics(currentMusic.value.lyric);
+  }
   isFull.value = !isFull.value;
 }
-
 //监控当前播放歌曲变化
 watch(curIndex, () => {
   let index = curIndex.value;
   currentMusic.value = musicList.value[index];
-  lyric.value = parseLRC(lyrics[0]);
+  if(currentMusic.value.lyric!==null){
+    fetchAndFormatLyrics(currentMusic.value.lyric);
+  }
   isPlaying.value = true;
+  console.log(lyric.value);
 })
+
+const refresh=()=>{
+  let index = curIndex.value;
+  currentMusic.value = musicList.value[index];
+  console.log(musicList.value)
+  if(currentMusic.value.lyric!==null){
+    fetchAndFormatLyrics(currentMusic.value.lyric);
+  }
+  isPlaying.value = true;
+}
 
 //播放设置
 function handleModeChange() {
@@ -113,21 +118,43 @@ function handleModeChange() {
 function backSong() {
   const length = musicList.value.length;
   const index = (curIndex.value - 1 + length) % length;
-  // currentMusic.value = musicList[index];
-  // lyric.value = parseLRC(lyrics[index]);
-  // isPlaying.value = true;
   curIndex.value = index;
+  refresh();
 }
+
+const formattedLyrics = ref([]);
+const fetchAndFormatLyrics = async (lrcUrl) => {
+  try {
+    const response = await axios.get(lrcUrl);
+    lyric.value = formatLyrics(response.data);
+    flag.value=true;
+  } catch (error) {
+    console.error('Error fetching lyrics:', error);
+    flag.value=true;
+  }
+};
+
+const flag=ref(false);
+
+const formatLyrics = (rawLyrics) => {
+  // 用正则表达式匹配时间部分，并将毫秒位变成两位数
+  const formattedLyrics = rawLyrics.replace(/\[(\d+:\d+\.)(\d{2,3})\]/g, (match, time, ms) => {
+    // 截取毫秒位的前两位
+    const truncatedMs = ms.slice(0, 2);
+    // 返回替换后的时间字符串
+    return `[${time}${truncatedMs}]`;
+  });
+
+  return parseLRC(formattedLyrics);
+};
 
 //下一首
 function nextSong() {
   const length = musicList.value.length;
-  console.log(length);
   const index = (curIndex.value + 1) % length;
-  // currentMusic.value = musicList[index];
-  // lyric.value = parseLRC(lyrics[index]);
-  // isPlaying.value = true;
   curIndex.value = index;
+  console.log(musicList.value);
+  refresh();
 }
 
 function getRandomInt(max) {
@@ -223,11 +250,10 @@ const changeModex = () => {
 const needshowsonglistpage = ref(false);
 
 function getsonglistinit(id) {
-  console.log(id);
   axios.get('http://182.92.100.66:5000/songlists/info/1')
       .then(response => {
         musicList.value = response.data.data.songs;
-        currentMusic.value = musicList.value[curIndex.value]
+        currentMusic.value = musicList.value[curIndex.value];
         datax.value = response.data.data.songs;
         console.log(musicList.value);
       })
@@ -237,7 +263,6 @@ function getsonglistinit(id) {
   axios.get('http://182.92.100.66:5000/songlists/alldata')
       .then(response => {
         songlists.value = response.data.data;
-        console.log(songlists.value)
       })
       .catch(error => {
         console.log('查不到歌单');
@@ -245,7 +270,6 @@ function getsonglistinit(id) {
   axios.get('http://182.92.100.66:5000/recommend/latest')
       .then(response => {
         songlistlast.value = response.data.data;
-        console.log(songlistlast.value);
       })
       .catch(error => {
         console.log(error.data.message);
@@ -258,7 +282,6 @@ const songlist = ref([{
 }]);
 
 function ChangeSongList(id){
-  console.log(index.value);
   const web='http://182.92.100.66:5000/songlists/info/'+index.value;
   axios.get(web)
       .then(response=>{
@@ -284,29 +307,6 @@ function changesonglist() {
       })
 }
 
-// const getdata = (num) =>{
-//  if(num===0){
-//    num=1;
-//  }
-//  axios.get('http://182.92.100.66:5000/songs/query',{
-//    params:{
-//      id:num
-//    }
-//  })
-//      .then(response=>{
-//        currentMusic.value.singer=response.data.data[0].singer;
-//        currentMusic.value.name=response.data.data[0].title;
-//        currentMusic.value.cover=response.data.data[0].cover;
-//        currentMusic.value.source=response.data.data[0].audio;
-//
-//        console.log(currentMusic);
-//      })
-//      .catch(error=>{
-//        console.log("erroronget");
-//      })
-// }
-//
-// onMounted(getdata(0));
 const index = ref('1');
 const datax = ref([]);
 watch(index, () => {
@@ -317,7 +317,7 @@ function handlePlayNow(id) {
   const web = 'http://182.92.100.66:5000/songs/info/' + id;
   axios.get(web)
       .then(response => {
-        const newmusic = response.data.data;
+        let newmusic = response.data.data;
         const idx = newmusic.id;
         let length = musicList.value.length;
         for (let i = 0; i < length; i = i + 1) {
@@ -328,9 +328,7 @@ function handlePlayNow(id) {
           }
         }
         musicList.value.push(newmusic);
-        console.log(curIndex.value);
         curIndex.value = musicList.value.length - 1;
-        console.log(curIndex.value);
         datax.value = musicList.value;
         currentMusic.value = musicList.value[curIndex.value]
       })
@@ -343,7 +341,7 @@ function handlePlayAfter(id) {
   const web = 'http://182.92.100.66:5000/songs/info/' + id;
   axios.get(web)
       .then(response => {
-        const newmusic = response.data.data;
+        let newmusic = response.data.data;
         const idx = newmusic.id;
         let length = musicList.value.length;
         for (let i = 0; i < length; i = i + 1) {
@@ -362,7 +360,6 @@ function handlePlayAfter(id) {
         console.log(error.data.message);
       })
 }
-
 
 const avatar = ref('');
 </script>
