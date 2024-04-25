@@ -58,7 +58,7 @@ const musicList = ref([
     singer: "关淑怡",
     cover: "./难得有情人.png",
     audio: "./难得有情人.mp3",
-    lyric:'http://182.92.100.66:5000/media/lyrics/%E7%A6%BB%E5%88%AB%E5%BC%80%E5%87%BA%E8%8A%B1_-_%E5%B0%B1%E6%98%AF%E5%8D%97%E6%96%B9%E5%87%AF%E9%A1%B9%E5%AD%A6%E5%87%AF.lrc',
+    lyric: 'http://182.92.100.66:5000/media/lyrics/%E7%A6%BB%E5%88%AB%E5%BC%80%E5%87%BA%E8%8A%B1_-_%E5%B0%B1%E6%98%AF%E5%8D%97%E6%96%B9%E5%87%AF%E9%A1%B9%E5%AD%A6%E5%87%AF.lrc',
   },
 ]);
 const isFull = ref(false);
@@ -75,28 +75,30 @@ const curIndex = defineModel("curIndex")
 const lyric = ref(parseLRC(lyrics[0]))
 const currentMusic = ref(musicList.value[curIndex.value])
 const playerMode = ref(0)
+
 function changeSize() {
-  if(currentMusic.value.lyric!==null){
+  if (currentMusic.value.lyric !== null) {
     fetchAndFormatLyrics(currentMusic.value.lyric);
   }
   isFull.value = !isFull.value;
 }
+
 //监控当前播放歌曲变化
 watch(curIndex, () => {
   let index = curIndex.value;
   currentMusic.value = musicList.value[index];
-  if(currentMusic.value.lyric!==null){
+  if (currentMusic.value.lyric !== null) {
     fetchAndFormatLyrics(currentMusic.value.lyric);
   }
   isPlaying.value = true;
   console.log(lyric.value);
 })
 
-const refresh=()=>{
+const refresh = () => {
   let index = curIndex.value;
   currentMusic.value = musicList.value[index];
   console.log(musicList.value)
-  if(currentMusic.value.lyric!==null){
+  if (currentMusic.value.lyric !== null) {
     fetchAndFormatLyrics(currentMusic.value.lyric);
   }
   isPlaying.value = true;
@@ -127,14 +129,14 @@ const fetchAndFormatLyrics = async (lrcUrl) => {
   try {
     const response = await axios.get(lrcUrl);
     lyric.value = formatLyrics(response.data);
-    flag.value=true;
+    flag.value = true;
   } catch (error) {
     console.error('Error fetching lyrics:', error);
-    flag.value=true;
+    flag.value = true;
   }
 };
 
-const flag=ref(false);
+const flag = ref(false);
 
 const formatLyrics = (rawLyrics) => {
   // 用正则表达式匹配时间部分，并将毫秒位变成两位数
@@ -281,16 +283,16 @@ const songlist = ref([{
   title: 'name'
 }]);
 
-function ChangeSongList(id){
-  const web='http://182.92.100.66:5000/songlists/info/'+index.value;
+function ChangeSongList(id) {
+  const web = 'http://182.92.100.66:5000/songlists/info/' + index.value;
   axios.get(web)
-      .then(response=>{
-        musicList.value=response.data.data.songs;
-        curIndex.value=0;
-        currentMusic.value=musicList.value[curIndex.value]
-        datax.value=response.data.data.songs;
+      .then(response => {
+        musicList.value = response.data.data.songs;
+        curIndex.value = 0;
+        currentMusic.value = musicList.value[curIndex.value]
+        datax.value = response.data.data.songs;
       })
-      .catch(error=>{
+      .catch(error => {
         console.log("get init songlist fail");
       })
 }
@@ -335,12 +337,12 @@ function handlePlayNow(id) {
       .catch(error => {
         console.log(error.data.message);
       })
-  const s={"songlist":musicList.value};
-  axios.post('http://182.92.100.66:5000/usersonglist/update',s)
-      .then(response=>{
+  const s = {"songlist": musicList.value};
+  axios.post('http://182.92.100.66:5000/usersonglist/update', s)
+      .then(response => {
         console.log(response.data.message);
       })
-      .catch(error=>{
+      .catch(error => {
         console.log("出错了");
       })
 }
@@ -367,12 +369,12 @@ function handlePlayAfter(id) {
       .catch(error => {
         console.log(error.data.message);
       })
-  const s={"songlist":musicList.value};
-  axios.post('http://182.92.100.66:5000/usersonglist/update',s)
-      .then(response=>{
+  const s = {"songlist": musicList.value};
+  axios.post('http://182.92.100.66:5000/usersonglist/update', s)
+      .then(response => {
         console.log(response.data.message);
       })
-      .catch(error=>{
+      .catch(error => {
         console.log("出错了");
       })
 }

@@ -7,7 +7,8 @@
       <div class="card">
         <label for="uploadx">
           <div class="card__img">
-            <img :src="props.cover" :class="{'content':true, 'rotate':isPlaying,'stop':!isPlaying, 'rounded-full':true, 'w-[243px]':true, 'h-[243px]':true}">
+            <img :src="props.cover"
+                 :class="{'content':true, 'rotate':isPlaying,'stop':!isPlaying, 'rounded-full':true, 'w-[243px]':true, 'h-[243px]':true}">
           </div>
           <div class="card__title" style="font-weight: bolder !important;">{{ props.name }}</div>
           <div class="card__subtitle">{{ props.singer }}</div>
@@ -74,9 +75,10 @@
       </div>
     </div>
     <div class="col2">
-      
 
-      <div style="width:100%;  display:flex; align-items: center; justify-content: center; margin: 0;" class="lyricclass">
+
+      <div style="width:100%;  display:flex; align-items: center; justify-content: center; margin: 0;"
+           class="lyricclass">
         <ul style="width:100%;">
     <span class="box" v-for="(item, index) in lyricsshow" :key="index"
           :class="{ 'highlighted': item.special ,'nothighlighted' : !item.special}">
@@ -87,24 +89,25 @@
       </div>
     </div>
   </div>
-  
+
 
 </template>
 
 <script setup>
-import {ref,defineModel,watch} from 'vue';
+import {ref, defineModel, watch} from 'vue';
 import buttonchangesize from './buttonchangesize.vue'
-import { defineEmits } from 'vue';
-const emit = defineEmits(['fullsize','togglePlay','update','back','next']);
-const changesize =()=>{
+import {defineEmits} from 'vue';
+
+const emit = defineEmits(['fullsize', 'togglePlay', 'update', 'back', 'next']);
+const changesize = () => {
   emit('fullsize');
 }
-const props=defineProps({
-  cover:String,
-  source:String,
-  singer:String,
-  name:String,
-  sty:String,
+const props = defineProps({
+  cover: String,
+  source: String,
+  singer: String,
+  name: String,
+  sty: String,
 })
 
 const isPlaying = defineModel("isPlaying");
@@ -113,7 +116,7 @@ const currentTime = defineModel("currentTime");
 const currentduration = defineModel("currentTimeInSeconds");
 const durationInSeconds = defineModel("durationInSeconds");
 const lyric = defineModel("lyric")
-const test=defineModel("test");
+const test = defineModel("test");
 const audioPlayer = defineModel("audioPlayer");
 
 const lyricsshow = ref([{text: '', special: false}, {text: '', special: false}, {text: '', special: false}, {
@@ -129,10 +132,9 @@ const nowline = ref(0);
 
 const togglePlay = () => {
   emit('togglePlay');
-  if(!isPlaying.value){
+  if (!isPlaying.value) {
     playAudio();
-  }
-  else{
+  } else {
     pauseAudio();
   }
 };
@@ -153,18 +155,18 @@ const pauseAudio = () => {
   const content = document.querySelector('.content');
 };
 
-const back = () =>{
+const back = () => {
   emit('back');
 }
 
-const next = () =>{
+const next = () => {
   emit('next');
 }
 
 const restart = () => {
-  audioPlayer.value.currentTime=0;
-  currentduration.value=0;
-  currentTime.value='0:00';
+  audioPlayer.value.currentTime = 0;
+  currentduration.value = 0;
+  currentTime.value = '0:00';
 };
 
 const getcurrentTime = () => {
@@ -218,9 +220,9 @@ watch(currentduration, () => {
 @import url('../css/Music_Play.css');
 
 .outcontainer {
-    display: grid;
-    height:100%;
-    grid-template-columns: 1fr 1fr;
+  display: grid;
+  height: 100%;
+  grid-template-columns: 1fr 1fr;
 }
 
 .content {

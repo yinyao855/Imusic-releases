@@ -73,7 +73,7 @@ const songName = ref('');
     </div>
 
   </div>
-  <div v-if="upload==='1'" class="w-full lg:w-5/6 h-full mr-0">
+  <div v-if="upload==='1'" class="w-full h-full">
     <UploadSong @uploadSongSuccess="uploadSongSuccess"></UploadSong>
   </div>
 
