@@ -337,12 +337,29 @@ const submitSong = () => {
     WarningShow.value=true;
     message.value='请先登录';
   }
+  if(songTitle.value===''){
+    WarningShow.value=true;
+    message.value='请输入歌曲名';
+  }
+  if(mp3File.value===null){
+    WarningShow.value=true;
+    message.value='请上传歌曲';
+  }
+  if(coverImageFile.value===null){
+    WarningShow.value=true;
+    message.value='请上传封面';
+  }
   let formData = new FormData();
   formData.append('title', songTitle.value);
   formData.append('singer', singerName.value);
   formData.append('cover', coverImageFile.value);
   formData.append('audio', mp3File.value);
   formData.append('uploader', username.value);
+  formData.append('tag_theme',theme.value);
+  formData.append('tag_scene',scene.value);
+  formData.append('tag_style',style.value);
+  formData.append('tag_mood',mood.value);
+  formData.append('tag_language',language.value);
   if(lrcFile.value){
     formData.append('lyric',lrcFile.value)
   }
