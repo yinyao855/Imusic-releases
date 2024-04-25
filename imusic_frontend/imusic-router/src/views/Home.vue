@@ -1,5 +1,5 @@
 <script setup>
-import {computed, ref, watch} from "vue";
+import {computed, onMounted, ref, watch} from "vue";
 import HomePage_Main from "@/views/HomePage_Main.vue";
 import ExplorePage_Main from "@/views/ExplorePage_Main.vue";
 import CreateCenter from "@/views/CreateCenterPage_Main.vue";
@@ -362,6 +362,7 @@ function handlePlayAfter(id) {
 }
 
 const avatar = ref('');
+onMounted(getsonglistinit)
 </script>
 
 <template>
