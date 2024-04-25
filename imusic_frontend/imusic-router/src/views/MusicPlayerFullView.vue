@@ -7,7 +7,7 @@
       <div class="card">
         <label for="uploadx">
           <div class="card__img">
-            <img :src="props.cover" class="content rotate rounded-full w-[243px] h-[243px]">
+            <img :src="props.cover" :class="{'content':true, 'rotate':isPlaying,'stop':!isPlaying, 'rounded-full':true, 'w-[243px]':true, 'h-[243px]':true}">
           </div>
           <div class="card__title" style="font-weight: bolder !important;">{{ props.name }}</div>
           <div class="card__subtitle">{{ props.singer }}</div>
@@ -146,15 +146,11 @@ const seek = () => {
 
 const playAudio = () => {
   const content = document.querySelector('.content');
-  content.classList.add('rotate');
-  content.classList.remove('stop');
 }
 
 
 const pauseAudio = () => {
   const content = document.querySelector('.content');
-  content.classList.add('stop');
-  content.classList.remove('rotate');
 };
 
 const back = () =>{

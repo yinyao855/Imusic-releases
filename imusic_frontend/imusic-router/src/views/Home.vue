@@ -335,6 +335,14 @@ function handlePlayNow(id) {
       .catch(error => {
         console.log(error.data.message);
       })
+  const s={"songlist":musicList.value};
+  axios.post('http://182.92.100.66:5000/usersonglist/update',s)
+      .then(response=>{
+        console.log(response.data.message);
+      })
+      .catch(error=>{
+        console.log("出错了");
+      })
 }
 
 function handlePlayAfter(id) {
@@ -358,6 +366,14 @@ function handlePlayAfter(id) {
       })
       .catch(error => {
         console.log(error.data.message);
+      })
+  const s={"songlist":musicList.value};
+  axios.post('http://182.92.100.66:5000/usersonglist/update',s)
+      .then(response=>{
+        console.log(response.data.message);
+      })
+      .catch(error=>{
+        console.log("出错了");
       })
 }
 
