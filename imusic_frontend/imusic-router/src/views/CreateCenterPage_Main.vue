@@ -1,5 +1,5 @@
 <script setup>
-import {computed, ref} from "vue";
+import {computed, ref ,defineModel} from "vue";
 import Image_Scrool from "@/views/SongList_Scrool.vue";
 import UploadSong from "@/views/UploadSong.vue";
 const NaviMode = ref('1');
@@ -31,6 +31,9 @@ const uploadSongSuccess=()=>{
   upload.value='0';
 }
 const songName = ref('');
+const username=defineModel('username')
+
+const HasLogin=defineModel('HasLogin')
 </script>
 
 <template>
@@ -74,7 +77,7 @@ const songName = ref('');
 
   </div>
   <div v-if="upload==='1'" class="w-full h-full">
-    <UploadSong @uploadSongSuccess="uploadSongSuccess"></UploadSong>
+    <UploadSong @uploadSongSuccess="uploadSongSuccess" v-model:HasLogin="HasLogin" v-model:username="username"></UploadSong>
   </div>
 
 </template>

@@ -1,48 +1,26 @@
 <template>
   <div>
-    <input type="file" @change="onLrcFileChange">
-    <button @click="parseLrcFile">Upload and Parse LRC</button>
-    <div v-if="lrcParsed.length">
-      <div v-for="(line, index) in lrcParsed" :key="index">
-        <span>Time: {{ line.time }}</span> | <span>Lyrics: {{ line.text }}</span>
-      </div>
-    </div>
+    <input type="radio" id="contactChoice1" name="contact" value="email" v-model="selectedContactMethod" />
+    <label for="contactChoice1">电子邮件</label>
+
+    <input type="radio" id="contactChoice2" name="contact" value="phone" v-model="selectedContactMethod" />
+    <label for="contactChoice2">电话</label>
+
+    <input type="radio" id="contactChoice3" name="contact" value="mail" v-model="selectedContactMethod" />
+    <label for="contactChoice3">邮件</label>
+  </div>
+  <div>
+    <button @click="submitContactMethod">提交</button>
   </div>
 </template>
 
 <script setup>
 import { ref } from 'vue';
 
-const lrcFile = ref(null);
-const lrcParsed = ref([]);
+const selectedContactMethod = ref('');
 
-const onLrcFileChange = (event) => {
-  lrcFile.value = event.target.files[0];
-};
-
-const parseLrcFile = () => {
-  if (lrcFile.value) {
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      const lrcContent = e.target.result;
-      lrcParsed.value = parseLrcContent(lrcContent);
-    };
-    reader.readAsText(lrcFile.value);
-  }
-};
-
-const parseLrcContent = (lrcContent) => {
-  const lines = lrcContent.split('\n');
-  const pattern = /\[(\d{2}):(\d{2})\.(\d{2})\](.*)/;
-  return lines.map(line => {
-    const match = line.match(pattern);
-    if (match) {
-      return {
-        time: `${match[1]}:${match[2]}.${match[3]}`,
-        text: match[4].trim()
-      };
-    }
-    return { time: '', text: '' };
-  }).filter(line => line.text !== '');
+const submitContactMethod = () => {
+  // 在这里可以获取selectedContactMethod的值，并执行所需的操作
+  alert(`选择的联系方式: ${selectedContactMethod.value}`);
 };
 </script>

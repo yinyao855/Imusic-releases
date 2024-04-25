@@ -1,4 +1,9 @@
 <template>
+  <transition name="vx">
+    <div class="w-full absolute top-0 left-1/2 transform -translate-x-1/2" v-if="WarningShow">
+      <Warning :message="message" @CloseWarning="CloseWarning" class="mx-auto"></Warning>
+    </div>
+  </transition>
   <div class="h-full w-full flex items-center">
     <div class="formx2 my-auto mx-auto width:800px flexible bg-zinc-900">
       <div class="flex-column text-2xl">
@@ -35,28 +40,28 @@
       <div class="flex-column text-2xl">
         <div class="text-white">*歌曲文件</div>
       </div>
-            <div class="grid grid-cols-1 space-y-2">
-              <div class="flex items-center justify-center w-full">
-                <label class="flex flex-col rounded-lg border-4 border-dashed w-full h-60 p-10 group text-center">
-                  <div class="h-full w-full text-center flex flex-col items-center justify-center  ">
-                    <svg t="1713876861040" class="icon fill-white transition hover:fill-blue-600" viewBox="0 0 1194 1024"
-                         version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="7431" width="80" height="80">
-                      <path
-                          d="M152.62673094 991.65443843a51.27435943 51.27435943 0 0 1-52.15426311-48.79463341l102.38873717-552.73919819v-1.5198328c0-27.67695563 23.35743091-50.15448278 52.23425434-50.15448278h843.90717007c28.31688465 0 51.51433311 21.75760687 52.3942369 48.79463253l-102.38873725 552.73919807v1.5198328a51.27435943 51.27435943 0 0 1-52.31424564 50.15448382H152.62673094z m636.80995128-262.85108717c13.27853904 0 26.47708777-15.91824934 30.95659499-31.83649784 0-15.91824934-4.47950719-37.11591754-13.27854002-47.67475592L657.05124401 447.87425375c-17.59806379-21.19766814-44.15514285-21.19766814-61.75320652 0L445.23454444 649.2920975C431.95600436 659.85093594 431.95600436 681.04860501 431.95600436 696.96685342c0 15.91824934 13.27853904 31.83649781 30.87660374 31.83649784h105.98834157v132.46542936c0 21.19766814 13.1985478 37.11591754 30.87660377 37.11591755h61.75320656c17.67805497 0 30.87660377-15.91824934 30.87660375-37.11591755V728.80335124H789.51667344zM202.94119625 271.81362032c-37.83583785 0-68.71244156 28.95681469-68.79243277 64.47290816L32.95989401 868.70796219V97.03284595C33.03988525 61.59674467 60.63684963 32.79991158 94.79309279 32.79991158H403.95908469l92.70980156 96.46938842h463.46901844c34.15624311 0 61.83319876 28.79683219 61.83319876 64.31292572V271.97360282H202.94119625z"
-                          fill="#1296db" p-id="7432">
-                      </path>
-                    </svg>
-                    <div class="flex flex-auto max-h-48 w-2/5 mx-auto -mt-10">
-                    </div>
-                    <p class="pointer-none text-gray-500 "><span class="text-sm"></span> 拖拽文件至此处 <br/> 或 <a href=""
-                                                                                                                    id=""
-                                                                                                                    class="text-blue-600 hover:underline">选择文件</a>
-                      上传</p>
-                  </div>
-                  <input type="file" @change="onMp3FileChange" class="absolute -left-10 -top-10">
-                </label>
+      <div class="grid grid-cols-1 space-y-2">
+        <div class="flex items-center justify-center w-full">
+          <label class="flex flex-col rounded-lg border-4 border-dashed w-full h-60 p-10 group text-center">
+            <div class="h-full w-full text-center flex flex-col items-center justify-center  ">
+              <svg t="1713876861040" class="icon fill-white transition hover:fill-blue-600" viewBox="0 0 1194 1024"
+                   version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="7431" width="80" height="80">
+                <path
+                    d="M152.62673094 991.65443843a51.27435943 51.27435943 0 0 1-52.15426311-48.79463341l102.38873717-552.73919819v-1.5198328c0-27.67695563 23.35743091-50.15448278 52.23425434-50.15448278h843.90717007c28.31688465 0 51.51433311 21.75760687 52.3942369 48.79463253l-102.38873725 552.73919807v1.5198328a51.27435943 51.27435943 0 0 1-52.31424564 50.15448382H152.62673094z m636.80995128-262.85108717c13.27853904 0 26.47708777-15.91824934 30.95659499-31.83649784 0-15.91824934-4.47950719-37.11591754-13.27854002-47.67475592L657.05124401 447.87425375c-17.59806379-21.19766814-44.15514285-21.19766814-61.75320652 0L445.23454444 649.2920975C431.95600436 659.85093594 431.95600436 681.04860501 431.95600436 696.96685342c0 15.91824934 13.27853904 31.83649781 30.87660374 31.83649784h105.98834157v132.46542936c0 21.19766814 13.1985478 37.11591754 30.87660377 37.11591755h61.75320656c17.67805497 0 30.87660377-15.91824934 30.87660375-37.11591755V728.80335124H789.51667344zM202.94119625 271.81362032c-37.83583785 0-68.71244156 28.95681469-68.79243277 64.47290816L32.95989401 868.70796219V97.03284595C33.03988525 61.59674467 60.63684963 32.79991158 94.79309279 32.79991158H403.95908469l92.70980156 96.46938842h463.46901844c34.15624311 0 61.83319876 28.79683219 61.83319876 64.31292572V271.97360282H202.94119625z"
+                    fill="#1296db" p-id="7432">
+                </path>
+              </svg>
+              <div class="flex flex-auto max-h-48 w-2/5 mx-auto -mt-10">
               </div>
+              <p class="pointer-none text-gray-500 "><span class="text-sm"></span> 拖拽文件至此处 <br/> 或 <a href=""
+                                                                                                              id=""
+                                                                                                              class="text-blue-600 hover:underline">选择文件</a>
+                上传</p>
             </div>
+            <input type="file" @change="onMp3FileChange" class="absolute -left-10 -top-10">
+          </label>
+        </div>
+      </div>
       <p class="text-sm text-gray-500">
         <span>此项为必填项</span>
       </p>
@@ -66,28 +71,29 @@
       <div class="flex-column text-2xl">
         <div class="text-white">*歌曲封面</div>
       </div>
-            <div class="grid grid-cols-1 space-y-2">
-              <div class="flex items-center justify-center w-full">
-                <label class="flex flex-col rounded-lg border-4 border-dashed w-full h-60 p-10 group text-center" for="CoverUpLoad">
-                  <div class="h-full w-full text-center flex flex-col items-center justify-center  ">
-                    <svg t="1713876861040" class="icon fill-white transition hover:fill-blue-600" viewBox="0 0 1194 1024"
-                         version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="7431" width="80" height="80">
-                      <path
-                          d="M152.62673094 991.65443843a51.27435943 51.27435943 0 0 1-52.15426311-48.79463341l102.38873717-552.73919819v-1.5198328c0-27.67695563 23.35743091-50.15448278 52.23425434-50.15448278h843.90717007c28.31688465 0 51.51433311 21.75760687 52.3942369 48.79463253l-102.38873725 552.73919807v1.5198328a51.27435943 51.27435943 0 0 1-52.31424564 50.15448382H152.62673094z m636.80995128-262.85108717c13.27853904 0 26.47708777-15.91824934 30.95659499-31.83649784 0-15.91824934-4.47950719-37.11591754-13.27854002-47.67475592L657.05124401 447.87425375c-17.59806379-21.19766814-44.15514285-21.19766814-61.75320652 0L445.23454444 649.2920975C431.95600436 659.85093594 431.95600436 681.04860501 431.95600436 696.96685342c0 15.91824934 13.27853904 31.83649781 30.87660374 31.83649784h105.98834157v132.46542936c0 21.19766814 13.1985478 37.11591754 30.87660377 37.11591755h61.75320656c17.67805497 0 30.87660377-15.91824934 30.87660375-37.11591755V728.80335124H789.51667344zM202.94119625 271.81362032c-37.83583785 0-68.71244156 28.95681469-68.79243277 64.47290816L32.95989401 868.70796219V97.03284595C33.03988525 61.59674467 60.63684963 32.79991158 94.79309279 32.79991158H403.95908469l92.70980156 96.46938842h463.46901844c34.15624311 0 61.83319876 28.79683219 61.83319876 64.31292572V271.97360282H202.94119625z"
-                          fill="#1296db" p-id="7432">
-                      </path>
-                    </svg>
-                    <div class="flex flex-auto max-h-48 w-2/5 mx-auto -mt-10">
+      <div class="grid grid-cols-1 space-y-2">
+        <div class="flex items-center justify-center w-full">
+          <label class="flex flex-col rounded-lg border-4 border-dashed w-full h-60 p-10 group text-center"
+                 for="CoverUpLoad">
+            <div class="h-full w-full text-center flex flex-col items-center justify-center  ">
+              <svg t="1713876861040" class="icon fill-white transition hover:fill-blue-600" viewBox="0 0 1194 1024"
+                   version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="7431" width="80" height="80">
+                <path
+                    d="M152.62673094 991.65443843a51.27435943 51.27435943 0 0 1-52.15426311-48.79463341l102.38873717-552.73919819v-1.5198328c0-27.67695563 23.35743091-50.15448278 52.23425434-50.15448278h843.90717007c28.31688465 0 51.51433311 21.75760687 52.3942369 48.79463253l-102.38873725 552.73919807v1.5198328a51.27435943 51.27435943 0 0 1-52.31424564 50.15448382H152.62673094z m636.80995128-262.85108717c13.27853904 0 26.47708777-15.91824934 30.95659499-31.83649784 0-15.91824934-4.47950719-37.11591754-13.27854002-47.67475592L657.05124401 447.87425375c-17.59806379-21.19766814-44.15514285-21.19766814-61.75320652 0L445.23454444 649.2920975C431.95600436 659.85093594 431.95600436 681.04860501 431.95600436 696.96685342c0 15.91824934 13.27853904 31.83649781 30.87660374 31.83649784h105.98834157v132.46542936c0 21.19766814 13.1985478 37.11591754 30.87660377 37.11591755h61.75320656c17.67805497 0 30.87660377-15.91824934 30.87660375-37.11591755V728.80335124H789.51667344zM202.94119625 271.81362032c-37.83583785 0-68.71244156 28.95681469-68.79243277 64.47290816L32.95989401 868.70796219V97.03284595C33.03988525 61.59674467 60.63684963 32.79991158 94.79309279 32.79991158H403.95908469l92.70980156 96.46938842h463.46901844c34.15624311 0 61.83319876 28.79683219 61.83319876 64.31292572V271.97360282H202.94119625z"
+                    fill="#1296db" p-id="7432">
+                </path>
+              </svg>
+              <div class="flex flex-auto max-h-48 w-2/5 mx-auto -mt-10">
 
-                    </div>
-                    <p class="pointer-none text-gray-500 "><span class="text-sm"></span>拖拽文件至此处<br/>或<a href="" id=""
-                                                                                                                class="text-blue-600 hover:underline">选择文件</a>上传
-                    </p>
-                  </div>
-                  <input type="file" @change="onCoverFileChange" id="CoverUpLoad" class="absolute -left-10 -top-10">
-                </label>
               </div>
+              <p class="pointer-none text-gray-500 "><span class="text-sm"></span>拖拽文件至此处<br/>或<a href="" id=""
+                                                                                                          class="text-blue-600 hover:underline">选择文件</a>上传
+              </p>
             </div>
+            <input type="file" @change="onCoverFileChange" id="CoverUpLoad" class="absolute -left-10 -top-10">
+          </label>
+        </div>
+      </div>
       <p class="text-sm text-gray-500">
         <span>此项为必填项</span>
       </p>
@@ -95,173 +101,56 @@
         <span>支持格式：webg,jpg,jpeg,png</span>
       </p>
       <div class="flex-column text-2xl">
-        <div class="text-white">*标签</div>
+        <div class="text-white">标签</div>
       </div>
-      <div class="w-full mx-auto rounded-lg bg-gray-700 p-6" id="cta">
-        <div class="group relative" id="dropdown-cta">
-          <div class="flex items-center space-x-1 bg-grey-500" id="dropdown-header">
-            <a href="#" class="block " id="dropdown-link">{{ theme }}</a>
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 transition-all duration-500 group-hover:rotate-180"
-                 id="icon-arrow-down" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5"/>
-            </svg>
-          </div>
-          <ul class="absolute z-10 hidden w-full divide-y rounded border bg-gray-600 shadow-md group-hover:block"
-              id="dropdown-items">
-            <li class="p-3">
-              <button class="hover:text-blue-600" @click="setTheme(0)">主题（默认）</button>
-            </li>
-            <li class="p-3">
-              <button class="hover:text-blue-600" @click="setTheme(1)">背景音乐</button>
-            </li>
-            <li class="p-3">
-              <button class="hover:text-blue-600" @click="setTheme(2)">经典老歌</button>
-            </li>
-            <li class="p-3">
-              <button class="hover:text-blue-600" @click="setTheme(3)">KTV金曲</button>
-            </li>
-            <li class="p-3">
-              <button class="hover:text-blue-600" @click="setTheme(4)">游戏配乐</button>
-            </li>
-            <li class="p-3">
-              <button class="hover:text-blue-600" @click="setTheme(5)">电影配乐</button>
-            </li>
-          </ul>
-        </div>
+
+      主题
+      <div class="join w-full">
+        <input class="join-item btn w-1/6" type="radio" name="options1" aria-label="默认" value="默认" v-model="theme"/>
+        <input class="join-item btn w-1/6" type="radio" name="options1" aria-label="背景音乐" value="背景音乐" v-model="theme"/>
+        <input class="join-item btn w-1/6" type="radio" name="options1" aria-label="经典老歌" value="经典老歌" v-model="theme"/>
+        <input class="join-item btn w-1/6" type="radio" name="options1" aria-label="KTV金曲" value="KTV金曲" v-model="theme"/>
+        <input class="join-item btn w-1/6" type="radio" name="options1" aria-label="游戏配乐" value="游戏配乐" v-model="theme"/>
+        <input class="join-item btn w-1/6" type="radio" name="options1" aria-label="电影配乐" value="电影配乐" v-model="theme"/>
       </div>
-      <div class="w-full mx-auto rounded-lg bg-gray-700 p-6" id="cta">
-        <div class="group relative" id="dropdown-cta">
-          <div class="flex items-center space-x-1" id="dropdown-header">
-            <a href="#" class="block" id="dropdown-link">{{ scene }}</a>
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 transition-all duration-500 group-hover:rotate-180"
-                 id="icon-arrow-down" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5"/>
-            </svg>
-          </div>
-          <ul class="absolute z-10 hidden w-full divide-y rounded border bg-gray-600 shadow-md group-hover:block"
-              id="dropdown-items">
-            <li class="p-3">
-              <button class="hover:text-blue-600" @click="setScene(0)">场景（默认）</button>
-            </li>
-            <li class="p-3">
-              <button class="hover:text-blue-600" @click="setScene(1)">咖啡馆</button>
-            </li>
-            <li class="p-3">
-              <button class="hover:text-blue-600" @click="setScene(2)">运动</button>
-            </li>
-            <li class="p-3">
-              <button class="hover:text-blue-600" @click="setScene(3)">睡前</button>
-            </li>
-            <li class="p-3">
-              <button class="hover:text-blue-600" @click="setScene(4)">旅行</button>
-            </li>
-            <li class="p-3">
-              <button class="hover:text-blue-600" @click="setScene(5)">派对</button>
-            </li>
-          </ul>
-        </div>
+      场景
+      <div class="join w-full">
+        <input class="join-item btn w-1/6" type="radio" name="options2" aria-label="默认" value="默认" v-model="scene"/>
+        <input class="join-item btn w-1/6" type="radio" name="options2" aria-label="咖啡馆" value="咖啡馆" v-model="scene"/>
+        <input class="join-item btn w-1/6" type="radio" name="options2" aria-label="运动" value="运动" v-model="scene"/>
+        <input class="join-item btn w-1/6" type="radio" name="options2" aria-label="睡前" value="睡前" v-model="scene"/>
+        <input class="join-item btn w-1/6" type="radio" name="options2" aria-label="旅行" value="旅行" v-model="scene"/>
+        <input class="join-item btn w-1/6" type="radio" name="options2" aria-label="派对" value="派对" v-model="scene"/>
       </div>
-      <div class="w-full mx-auto rounded-lg bg-gray-700 p-6" id="cta">
-        <div class="group relative" id="dropdown-cta">
-          <div class="flex items-center space-x-1" id="dropdown-header">
-            <a href="#" class="block" id="dropdown-link">{{ mood }}</a>
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 transition-all duration-500 group-hover:rotate-180"
-                 id="icon-arrow-down" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5"/>
-            </svg>
-          </div>
-          <ul class="absolute z-10 hidden w-full divide-y rounded border bg-gray-600 shadow-md group-hover:block"
-              id="dropdown-items">
-            <li class="p-3">
-              <button class="hover:text-blue-600" @click="setMood(0)">心情（默认）</button>
-            </li>
-            <li class="p-3">
-              <button class="hover:text-blue-600" @click="setMood(1)">伤感</button>
-            </li>
-            <li class="p-3">
-              <button class="hover:text-blue-600" @click="setMood(2)">安静</button>
-            </li>
-            <li class="p-3">
-              <button class="hover:text-blue-600" @click="setMood(3)">思念</button>
-            </li>
-            <li class="p-3">
-              <button class="hover:text-blue-600" @click="setMood(4)">宣泄</button>
-            </li>
-          </ul>
-        </div>
+      心情
+      <div class="join w-full">
+        <input class="join-item btn w-1/6" type="radio" name="options3" aria-label="默认" value="默认" v-model="mood"/>
+        <input class="join-item btn w-1/6" type="radio" name="options3" aria-label="伤感" value="伤感" v-model="mood"/>
+        <input class="join-item btn w-1/6" type="radio" name="options3" aria-label="安静" value="安静" v-model="mood"/>
+        <input class="join-item btn w-1/6" type="radio" name="options3" aria-label="思念" value="思念" v-model="mood"/>
+        <input class="join-item btn w-1/6" type="radio" name="options3" aria-label="宣泄" value="宣泄" v-model="mood"/>
+        <input class="join-item btn w-1/6" type="radio" name="options3" aria-label="开心" value="开心" v-model="mood"/>
       </div>
-      <div class="w-full mx-auto rounded-lg bg-gray-700 p-6" id="cta">
-        <div class="group relative" id="dropdown-cta">
-          <div class="flex items-center space-x-1" id="dropdown-header">
-            <a href="#" class="block" id="dropdown-link">{{ style }}</a>
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 transition-all duration-500 group-hover:rotate-180"
-                 id="icon-arrow-down" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5"/>
-            </svg>
-          </div>
-          <ul class="absolute z-10 hidden w-full divide-y rounded border bg-gray-600 shadow-md group-hover:block"
-              id="dropdown-items">
-            <li class="p-3">
-              <button class="hover:text-blue-600" @click="setStyle(0)">风格（默认）</button>
-            </li>
-            <li class="p-3">
-              <button class="hover:text-blue-600" @click="setStyle(1)">摇滚</button>
-            </li>
-            <li class="p-3">
-              <button class="hover:text-blue-600" @click="setStyle(2)">民谣</button>
-            </li>
-            <li class="p-3">
-              <button class="hover:text-blue-600" @click="setStyle(3)">轻音乐</button>
-            </li>
-            <li class="p-3">
-              <button class="hover:text-blue-600" @click="setStyle(4)">电音</button>
-            </li>
-            <li class="p-3">
-              <button class="hover:text-blue-600" @click="setStyle(5)">流行</button>
-            </li>
-          </ul>
-        </div>
+      风格
+      <div class="join w-full">
+        <input class="join-item btn w-1/6" type="radio" name="options4" aria-label="默认" value="默认" v-model="style"/>
+        <input class="join-item btn w-1/6" type="radio" name="options4" aria-label="摇滚" value="摇滚" v-model="style"/>
+        <input class="join-item btn w-1/6" type="radio" name="options4" aria-label="民谣" value="民谣" v-model="style"/>
+        <input class="join-item btn w-1/6" type="radio" name="options4" aria-label="轻音乐" value="轻音乐" v-model="style"/>
+        <input class="join-item btn w-1/6" type="radio" name="options4" aria-label="电音" value="电音" v-model="style"/>
+        <input class="join-item btn w-1/6" type="radio" name="options4" aria-label="流行" value="流行" v-model="style"/>
       </div>
-      <div class="w-full mx-auto rounded-lg bg-gray-700 p-6" id="cta">
-        <div class="group relative" id="dropdown-cta">
-          <div class="flex items-center space-x-1" id="dropdown-header">
-            <a href="#" class="block" id="dropdown-link">{{ language }}</a>
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 transition-all duration-500 group-hover:rotate-180"
-                 id="icon-arrow-down" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5"/>
-            </svg>
-          </div>
-          <ul class="absolute z-10 hidden w-full divide-y rounded border bg-gray-600 shadow-md group-hover:block"
-              id="dropdown-items">
-            <li class="p-3">
-              <button class="hover:text-blue-600" @click="setLanguage(0)">语言（默认）</button>
-            </li>
-            <li class="p-3">
-              <button class="hover:text-blue-600" @click="setLanguage(1)">英语</button>
-            </li>
-            <li class="p-3">
-              <button class="hover:text-blue-600" @click="setLanguage(2)">日语</button>
-            </li>
-            <li class="p-3">
-              <button class="hover:text-blue-600" @click="setLanguage(3)">粤语</button>
-            </li>
-            <li class="p-3">
-              <button class="hover:text-blue-600" @click="setLanguage(4)">国语</button>
-            </li>
-            <li class="p-3">
-              <button class="hover:text-blue-600" @click="setLanguage(5)">韩语</button>
-            </li>
-          </ul>
-        </div>
+      语言
+      <div class="join w-full">
+        <input class="join-item btn w-1/6" type="radio" name="options5" aria-label="默认" value="默认" v-model="language"/>
+        <input class="join-item btn w-1/6" type="radio" name="options5" aria-label="英语" value="英语" v-model="language"/>
+        <input class="join-item btn w-1/6" type="radio" name="options5" aria-label="日语" value="日语" v-model="language"/>
+        <input class="join-item btn w-1/6" type="radio" name="options5" aria-label="粤语" value="粤语" v-model="language"/>
+        <input class="join-item btn w-1/6" type="radio" name="options5" aria-label="国语" value="国语" v-model="language"/>
+        <input class="join-item btn w-1/6" type="radio" name="options5" aria-label="韩语" value="韩语" v-model="language"/>
       </div>
-      <div class="join join-vertical lg:join-horizontal w-full bg">
-        <button class="btn join-item w-1/6">默认</button>
-        <button class="btn join-item w-1/6">背景音乐</button>
-        <button class="btn join-item w-1/6">经典老歌</button>
-        <button class="btn join-item w-1/6">KTV金曲</button>
-        <button class="btn join-item w-1/6">游戏配乐</button>
-        <button class="btn join-item w-1/6">电影配乐</button>
-      </div>
+
+
       <div class="flex-column text-2xl">
         <div class="text-white">介绍</div>
       </div>
@@ -280,7 +169,7 @@
       </div>
       <div>
         <input type="file" @change="onLrcFileChange">
-        <button @click="parseLrcFile" class="btn btn-sm">上传歌词文件</button>
+        <button @click="parseLrcFile" class="btn btn-xl">上传并解析歌词文件</button>
       </div>
       <div class="grid grid-cols-10 gap-4">
         <p class="col-span-3 text-sm text-gray-300">
@@ -338,7 +227,7 @@
               fill="" p-id="11253"></path>
         </svg>
       </div>
-      <button class="my-5 w-full flex justify-center bg-blue-600 text-gray-100 p-4  rounded-full tracking-wide
+      <button class="my-5 w-full flex justify-center bg-blue-600 text-gray-100 p-4  rounded-full tracking-wide button-submit
                                     font-semibold  focus:outline-none focus:shadow-outline hover:bg-blue-800 shadow-lg cursor-pointer transition ease-in duration-300"
               @click="submitSong">
         Upload
@@ -377,22 +266,21 @@
 
 <script setup>
 import confetti from 'canvas-confetti';
-import {ref} from "vue";
+import {ref,defineModel} from "vue";
 import axios from "axios";
-import {useRouter} from 'vue-router';
 import Warning from "@/views/Warning.vue";
 import {defineEmits} from "vue"
 import P from "particles.vue3";
 
 const emits = defineEmits(['ChangerRegisterMode', 'changeMode']);
 const lyrics = ref([{'time': '', 'text': ''}]);
-const router = useRouter();
 const theme = ref('主题');
 const scene = ref('场景');
 const mood = ref('心情');
 const style = ref('风格');
 const language = ref('语言');
-
+const introduction=ref('');
+const username=defineModel('username')
 
 const songTitle = ref('');
 const singerName = ref('');
@@ -428,7 +316,7 @@ const parseLrcContent = (lrcContent) => {
         text: match[4].trim()
       };
     }
-    return { time: '', text: '' };
+    return {time: '', text: ''};
   }).filter(line => line.text !== '');
 };
 
@@ -441,12 +329,24 @@ const onCoverFileChange = (event) => {
 };
 
 const submitSong = () => {
+  const button = document.querySelector('.button-submit');
+  const rect = button.getBoundingClientRect();
+  const x = rect.left + rect.width / 2 + window.scrollX;
+  const y = rect.top + rect.height / 2 + window.scrollY;
+  if(HasLogin.value===false){
+    WarningShow.value=true;
+    message.value='请先登录';
+  }
   let formData = new FormData();
   formData.append('title', songTitle.value);
   formData.append('singer', singerName.value);
   formData.append('cover', coverImageFile.value);
   formData.append('audio', mp3File.value);
   formData.append('uploader', username.value);
+  if(lrcFile.value){
+    formData.append('lyric',lrcFile.value)
+  }
+  formData.append('introduction',introduction.value);
 
   axios.post('http://182.92.100.66:5000/songs/upload', formData, {
     headers: {
@@ -454,11 +354,35 @@ const submitSong = () => {
     },
   })
       .then(response => {
-        alert('Song uploaded successfully!');
+        alert('上传成功');
         console.log(response.data);
+        confetti({
+          particleCount: 500,
+          angle: 90,
+          spread: 45,
+          startVelocity: 45,
+          decay: 0.9,
+          gravity: 1,
+          drift: 0,
+          ticks: 200,
+          origin: { x: x / window.innerWidth, y: y / window.innerHeight },
+          shapes: ["square", "circle"],
+          zIndex: 100,
+          colors: [
+            "#26ccff",
+            "#a25afd",
+            "#ff5e7e",
+            "#88ff5a",
+            "#fcff42",
+            "#ffa62d",
+            "#ff36ff"
+          ],
+          disableForReducedMotion: false,
+          scalar: 1
+        });
       })
       .catch(error => {
-        alert('Failed to upload song.');
+        alert('上传失败');
         console.error(error.response ? error.response : error);
       });
 };
@@ -476,157 +400,13 @@ const deleteline = (index) => {
     lyrics.value.splice(index, 1);
   }
 }
-const setTheme = (newTheme) => {
-  if (newTheme === 1) {
-    theme.value = '背景音乐';
-  } else if (newTheme === 2) {
-    theme.value = '经典老歌';
-  } else if (newTheme === 3) {
-    theme.value = 'KTV金曲';
-  } else if (newTheme === 4) {
-    theme.value = '游戏配乐';
-  } else if (newTheme === 5) {
-    theme.value = '电影配乐';
-  } else if (newTheme === 0) {
-    theme.value = '主题';
-  }
-}
-const setScene = (newScene) => {
-  if (newScene === 1) {
-    scene.value = '咖啡馆';
-  } else if (newScene === 2) {
-    scene.value = '运动';
-  } else if (newScene === 3) {
-    scene.value = '睡前';
-  } else if (newScene === 4) {
-    scene.value = '旅行';
-  } else if (newScene === 5) {
-    scene.value = '派对';
-  } else if (newScene === 0) {
-    scene.value = '场景';
-  }
-}
-const setMood = (newMood) => {
-  if (newMood === 1) {
-    mood.value = '伤感';
-  } else if (newMood === 2) {
-    mood.value = '安静';
-  } else if (newMood === 3) {
-    mood.value = '思念';
-  } else if (newMood === 4) {
-    mood.value = '宣泄';
-  } else if (newMood === 0) {
-    mood.value = '心情';
-  }
-}
-const setStyle = (newStyle) => {
-  if (newStyle === 1) {
-    style.value = '摇滚';
-  } else if (newStyle === 2) {
-    style.value = '民谣';
-  } else if (newStyle === 3) {
-    style.value = '轻音乐';
-  } else if (newStyle === 4) {
-    style.value = '电音';
-  } else if (newStyle === 5) {
-    style.value = '流行';
-  } else if (newStyle === 0) {
-    style.value = '风格';
-  }
-}
-const setLanguage = (newLanguage) => {
-  if (newLanguage === 1) {
-    language.value = '英语';
-  } else if (newLanguage === 2) {
-    language.value = '日语';
-  } else if (newLanguage === 3) {
-    language.value = '粤语';
-  } else if (newLanguage === 4) {
-    language.value = '国语';
-  } else if (newLanguage === 5) {
-    language.value = '韩语';
-  } else if (newLanguage === 0) {
-    language.value = '语言';
-  }
-}
-// const gotosignup = () => {
-//   console.log("signup");
-//   router.push('/sign_up');
-// }
-
-// const show = () => {
-//   const button = document.querySelector('.button-submit');
-//   const rect = button.getBoundingClientRect();
-//   const x = rect.left + rect.width / 2 + window.scrollX;
-//   const y = rect.top + rect.height / 2 + window.scrollY;
-//   if (username.value === '') {
-//     WarningShow.value = true;
-//     message.value = "请输入用户名";
-//     return;
-//   }
-//   if (password.value === '') {
-//     WarningShow.value = true;
-//     message.value = "请输入密码";
-//     return;
-//   }
-//   const formData = new FormData();
-//   formData.append('username', username.value);
-//   formData.append('password', password.value);
-//   console.log(formData);
-//   axios.post('http://182.92.100.66:5000/users/login', formData)
-//       .then(response => {
-//         if (response.data.success === 1) {
-//           HasLogin.value = true;
-//           usernametofather.value = username.value;
-//           confetti({
-//             particleCount: 500,
-//             angle: 90,
-//             spread: 45,
-//             startVelocity: 45,
-//             decay: 0.9,
-//             gravity: 1,
-//             drift: 0,
-//             ticks: 200,
-//             origin: {x: x / window.innerWidth, y: y / window.innerHeight},
-//             shapes: ["square", "circle"],
-//             zIndex: 100,
-//             colors: [
-//               "#26ccff",
-//               "#a25afd",
-//               "#ff5e7e",
-//               "#88ff5a",
-//               "#fcff42",
-//               "#ffa62d",
-//               "#ff36ff"
-//             ],
-//             disableForReducedMotion: false,
-//             scalar: 1
-//           });
-//           changeMode();
-//         } else {
-//           WarningShow.value = true;
-//           message.value = "用户名或密码错误";
-//         }
-//       })
-//       .catch(error => {
-//         console.log("error");
-//       })
-// }
 
 const CloseWarning = () => {
   WarningShow.value = false;
 }
 const HasLogin = defineModel('HasLogin');
-const username = ref('');
-const password = ref('');
 const message = ref('');
 const WarningShow = ref(false);
-const usernametofather = defineModel('username');
-// const email=defineModel('email');
-// const bio=defineModel('bio');
-// const avatar=defineModel('avatar');
-// const role=defineModel('role');
-// const registration_date=defineModel('registration_date');
 
 const gotosignup = () => {
   emits('ChangerRegisterMode');

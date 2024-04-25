@@ -490,7 +490,7 @@ onMounted(getsonglistinit)
                        v-model:songlistlast="songlistlast"></HomePage_Main>
         <ExplorePage_Main v-if="mode==='2'"></ExplorePage_Main>
         <SettingPage_Main v-if="mode==='3'"></SettingPage_Main>
-        <CreateCenter v-if="mode==='4'"></CreateCenter>
+        <CreateCenter v-if="mode==='4'" v-model:HasLogin="HasLogin" v-model:username="username"></CreateCenter>
       </div>
     </div>
   </div>
