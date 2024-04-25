@@ -260,7 +260,7 @@ function getsonglistinit(id) {
       .catch(error => {
         console.log("get init songlist fail");
       })
-  axios.get('http://182.92.100.66:5000/songlists/alldata')
+  axios.get('http://182.92.100.66:5000/songlists/initdata')
       .then(response => {
         songlists.value = response.data.data;
       })
