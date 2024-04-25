@@ -1,54 +1,48 @@
 <template>
   <div>
-    <input type="text" v-model="songTitle" placeholder="Enter song title">
-    <input type="text" v-model="singerName" placeholder="Enter singer name">
-    <input type="file" @change="onMp3FileChange">
-    <input type="file" @change="onCoverFileChange">
-    <button @click="submitSong">Upload Song</button>
+    <input type="file" @change="onLrcFileChange">
+    <button @click="parseLrcFile">Upload and Parse LRC</button>
+    <div v-if="lrcParsed.length">
+      <div v-for="(line, index) in lrcParsed" :key="index">
+        <span>Time: {{ line.time }}</span> | <span>Lyrics: {{ line.text }}</span>
+      </div>
+    </div>
   </div>
 </template>
 
 <script setup>
-import {ref} from 'vue';
-import axios from 'axios';
+import { ref } from 'vue';
 
-const songTitle = ref('');
-const singerName = ref('');
-const mp3File = ref(null);
-const coverImageFile = ref(null);
+const lrcFile = ref(null);
+const lrcParsed = ref([]);
 
-const onMp3FileChange = (event) => {
-  mp3File.value = event.target.files[0];
+const onLrcFileChange = (event) => {
+  lrcFile.value = event.target.files[0];
 };
 
-const onCoverFileChange = (event) => {
-  coverImageFile.value = event.target.files[0];
+const parseLrcFile = () => {
+  if (lrcFile.value) {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const lrcContent = e.target.result;
+      lrcParsed.value = parseLrcContent(lrcContent);
+    };
+    reader.readAsText(lrcFile.value);
+  }
 };
 
-const submitSong = () => {
-  let formData = new FormData();
-  formData.append('title', songTitle.value);
-  formData.append('singer', singerName.value);
-  formData.append('cover', coverImageFile.value);
-  formData.append('audio', mp3File.value);
-  formData.append('uploader','xht')
-
-  axios.post('http://182.92.100.66:5000/songs/upload', formData, {
-    headers: {
-      'Content-Type': 'multipart/form-data'
-    },
-  })
-      .then(response => {
-        alert('Song uploaded successfully!');
-        console.log(response.data);
-      })
-      .catch(error => {
-        alert('Failed to upload song.');
-        console.error(error.response ? error.response : error);
-      });
+const parseLrcContent = (lrcContent) => {
+  const lines = lrcContent.split('\n');
+  const pattern = /\[(\d{2}):(\d{2})\.(\d{2})\](.*)/;
+  return lines.map(line => {
+    const match = line.match(pattern);
+    if (match) {
+      return {
+        time: `${match[1]}:${match[2]}.${match[3]}`,
+        text: match[4].trim()
+      };
+    }
+    return { time: '', text: '' };
+  }).filter(line => line.text !== '');
 };
 </script>
-
-<style>
-/* Include any CSS you want for your component */
-</style>

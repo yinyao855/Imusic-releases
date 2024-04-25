@@ -254,6 +254,14 @@
           </ul>
         </div>
       </div>
+      <div class="join join-vertical lg:join-horizontal w-full bg">
+        <button class="btn join-item w-1/6">默认</button>
+        <button class="btn join-item w-1/6">背景音乐</button>
+        <button class="btn join-item w-1/6">经典老歌</button>
+        <button class="btn join-item w-1/6">KTV金曲</button>
+        <button class="btn join-item w-1/6">游戏配乐</button>
+        <button class="btn join-item w-1/6">电影配乐</button>
+      </div>
       <div class="flex-column text-2xl">
         <div class="text-white">介绍</div>
       </div>
@@ -269,6 +277,10 @@
       </div>
       <div class="flex-column text-2xl">
         <div class="text-white">歌词</div>
+      </div>
+      <div>
+        <input type="file" @change="onLrcFileChange">
+        <button @click="parseLrcFile" class="btn btn-sm">上传歌词文件</button>
       </div>
       <div class="grid grid-cols-10 gap-4">
         <p class="col-span-3 text-sm text-gray-300">
@@ -297,7 +309,7 @@
                 d="M341.33 213.33h512v85.33h-512zM170.67 213.33H256v85.33h-85.33zM341.33 384h512v85.33h-512zM341.33 554.67h512V640h-512zM170.67 554.67H256V640h-85.33zM341.33 725.33h512v85.33h-512z"
                 fill="white" p-id="9040"></path>
           </svg>
-          <input type="text" class="input bg-zinc-900" placeholder="请输入单句歌词" v-model="lyric.content">
+          <input type="text" class="input bg-zinc-900" placeholder="请输入单句歌词" v-model="lyric.text">
         </div>
         <div type="button"
              class="h-[31px] col-span-1 m-auto border-radius rounded-full mx-auto focus:outline-none focus:shadow-outline hover:bg-gray-300 transition"
@@ -373,7 +385,7 @@ import {defineEmits} from "vue"
 import P from "particles.vue3";
 
 const emits = defineEmits(['ChangerRegisterMode', 'changeMode']);
-const lyrics = ref([{'time': '', 'content': ''}]);
+const lyrics = ref([{'time': '', 'text': ''}]);
 const router = useRouter();
 const theme = ref('主题');
 const scene = ref('场景');
@@ -386,6 +398,39 @@ const songTitle = ref('');
 const singerName = ref('');
 const mp3File = ref(null);
 const coverImageFile = ref(null);
+
+
+const lrcFile = ref(null);
+
+const onLrcFileChange = (event) => {
+  lrcFile.value = event.target.files[0];
+};
+
+const parseLrcFile = () => {
+  if (lrcFile.value) {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const lrcContent = e.target.result;
+      lyrics.value = parseLrcContent(lrcContent);
+    };
+    reader.readAsText(lrcFile.value);
+  }
+};
+
+const parseLrcContent = (lrcContent) => {
+  const lines = lrcContent.split('\n');
+  const pattern = /\[(\d{2}):(\d{2})\.(\d{2})\](.*)/;
+  return lines.map(line => {
+    const match = line.match(pattern);
+    if (match) {
+      return {
+        time: `${match[1]}:${match[2]}.${match[3]}`,
+        text: match[4].trim()
+      };
+    }
+    return { time: '', text: '' };
+  }).filter(line => line.text !== '');
+};
 
 const onMp3FileChange = (event) => {
   mp3File.value = event.target.files[0];
