@@ -43,6 +43,7 @@ const HasLogin = defineModel('HasLogin')
     <div :class="[NaviClass2, 'text-transition']" @click="changeNaviMode(2)" style="line-height: 56px">创意空间</div>
     <Search></Search>
   </div>
+  <div v-if="NaviMode==='1'">
   <div class="grid-col">
     <div class="text-2xl mx-4 text-white font-serif font-bold my-4">我的上传</div>
     <div class="overflow-x-auto">
@@ -89,6 +90,7 @@ const HasLogin = defineModel('HasLogin')
   <div v-if="upload==='1'" class="w-full h-full">
     <UploadSong @uploadSongSuccess="uploadSongSuccess" v-model:HasLogin="HasLogin"
                 v-model:username="username"></UploadSong>
+  </div>
   </div>
 
 </template>
