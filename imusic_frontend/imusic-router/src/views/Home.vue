@@ -7,6 +7,7 @@ import SettingPage_Main from "@/views/SettingPage_Main.vue";
 import MusicPlayerView from "./MusicPlayerView.vue";
 import MusicPlayerFullView from "./MusicPlayerFullView.vue";
 import Login from "./Login.vue";
+import Personal_Center from "@/views/Personal_Center.vue";
 import Sign_up from "./Sign_up.vue";
 import axios from "axios";
 
@@ -278,6 +279,19 @@ function getsonglistinit(id) {
       })
 }
 
+const userdata=ref([]);
+const getuserdata=()=>{
+  const web='http://182.92.100.66:5000/users/info/'+username.value;
+  axios.get(web)
+      .then(response=>{
+        console.log(response.data.data);
+        userdata.value=response.data.data;
+      })
+      .catch(error=>{
+        console.log(error.data);
+      })
+}
+
 const songlist = ref([{
   cover: 'http://182.92.100.66:5000/media/covers/%E5%BD%93%E7%A6%BB%E5%88%AB%E5%BC%80%E5%87%BA%E8%8A%B1.webp',
   title: 'name'
@@ -379,6 +393,13 @@ function handlePlayAfter(id) {
       })
 }
 
+const LoginArea=()=>{
+  if(HasLogin.value===true){
+    getuserdata();
+  }
+  changeMode(0);
+}
+
 const avatar = ref('');
 onMounted(getsonglistinit)
 </script>
@@ -388,7 +409,7 @@ onMounted(getsonglistinit)
     <div class="w-1/6 h-screen fixed hidden lg:block" style="background-color:#2E2E30">
       <div
           class="group flex antialiased w-full mt-3 hover:text-blue-500 my-1 font-medium text-white transition duration-400 bg-yellow-95000 text-base"
-          style="height:60px; line-height: 60px" @click="changeMode(0)">
+          style="height:60px; line-height: 60px" @click="LoginArea">
         <svg t="1713667739578" class="icon inline fill-white transition duration-400 my-auto ml-4"
              viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"
              p-id="5760" width="32" height="32" v-if="!HasLogin||avatar===''">
@@ -477,12 +498,13 @@ onMounted(getsonglistinit)
     <div class="lg:w-1/6 w-0 h-full mr-0"></div>
     <div class="w-full lg:w-5/6 h-full mr-0">
       <div class="bg-zinc-900 h-screen overflow-auto">
-        <div v-if="mode==='0'" class="w-full h-full z-50">
+        <div v-if="mode==='0'&&!HasLogin" class="w-full h-full z-50">
           <Login v-if="!RegisterMode" @ChangerRegisterMode="ChangerRegisterMode" v-model:username="username"
                  @changeMode="changeModex" v-model:HasLogin="HasLogin" @getsonglistinit="getsonglistinit"
                  v-model:avatar="avatar"></Login>
           <Sign_up v-if="RegisterMode" @ChangerRegisterMode="ChangerRegisterMode" v-model:username="username"></Sign_up>
         </div>
+        <Personal_Center v-model:userdata="userdata" v-model:HasLogin="HasLogin" v-model:username="username" v-if="HasLogin&&mode==='0'"></Personal_Center>
         <HomePage_Main v-model:songlist="songlist" v-model:needshowsonglistpage="needshowsonglistpage"
                        @handlePlayAfter="handlePlayAfter" @handlePlayNow="handlePlayNow" v-if="mode==='1'"
                        @ChangeSongList="ChangeSongList"
