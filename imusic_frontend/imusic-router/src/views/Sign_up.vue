@@ -135,6 +135,8 @@ const gotologin = () => {
   emits('ChangerRegisterMode');
 }
 
+const key=ref('');
+
 
 const verify_code = ref('');
 
@@ -170,6 +172,7 @@ const show = () => {
   formData.append('username', username.value);
   formData.append('password', password.value);
   formData.append('verification_code',verify_code.value);
+  formData.append('sessionId',key.value);
   axios.post('http://182.92.100.66:5000/users/register', formData)
       .then(response => {
         console.log(response.data);
@@ -222,10 +225,12 @@ watch(timeLeft, () => {
 let interval = null;
 
 const startCountdown = () => {
-  const formData=new FormData();
-  formData.append('email',email.value);
-  axios.post('http://182.92.100.66:5000/users/send-code',formData)
+  const web='http://182.92.100.66:5000/users/send-code?email='+email.value;
+  alert(web);
+  axios.get(web)
       .then(response=>{
+        key.value=response.data.sessionId;
+        console.log("ok")
         console.log(response.data);
       })
       .catch(error=>{

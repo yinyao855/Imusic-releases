@@ -319,6 +319,10 @@ function getsonglistinit(id) {
   axios.get('http://182.92.100.66:5000/songlists/initdata')
       .then(response => {
         songlists.value = response.data.data;
+        let length=songlists.value;
+        for(let i=0;i<length;++i){
+          songlists.value[i].duration=gettime(songlists.value[i].duration)
+        }
       })
       .catch(error => {
         console.log('查不到歌单');
@@ -326,10 +330,23 @@ function getsonglistinit(id) {
   axios.get('http://182.92.100.66:5000/recommend/latest')
       .then(response => {
         songlistlast.value = response.data.data;
+        let length=songlistlast.value.length;
+        for(let i=0;i<length;++i){
+          songlistlast.value[i].duration=gettime(songlistlast.value[i].duration)
+        }
       })
       .catch(error => {
         console.log(error.data.message);
       })
+}
+
+const gettime=(time)=>{
+  const minute=Math.floor(time/60);
+  const second=Math.floor(time-minute*60);
+  if(second<10){
+    return `${minute}:0${second}`;
+  }
+  return `${minute}:${second}`;
 }
 
 const userdata = ref([]);
@@ -370,7 +387,13 @@ function changesonglist() {
   const web = 'http://182.92.100.66:5000/songlists/info/' + index.value;
   axios.get(web)
       .then(response => {
+        console.log('hello');
         songlist.value = response.data.data;
+        let length=songlist.value.songs.length;
+        console.log(length);
+        for(let i=0;i<length;++i){
+          songlist.value.songs[i].duration=gettime(songlist.value.songs[i].duration)
+        }
       })
       .catch(error => {
         console.log("get init songlist fail");
@@ -457,6 +480,10 @@ const getPageinit=()=>{
   axios.get('http://182.92.100.66:5000/songlists/initdata')
       .then(response => {
         songlists.value = response.data.data;
+        let length=songlists.value.length;
+        for(let i=0;i<length;++i){
+          songlists.value[i].duration=gettime(songlists.value[i].duration);
+        }
       })
       .catch(error => {
         console.log('查不到歌单');
@@ -464,6 +491,10 @@ const getPageinit=()=>{
   axios.get('http://182.92.100.66:5000/recommend/latest')
       .then(response => {
         songlistlast.value = response.data.data;
+        let length=songlistlast.value.length;
+        for(let i=0;i<length;++i){
+          songlistlast.value[i].duration=gettime(songlistlast.value[i].duration);
+        }
       })
       .catch(error => {
         console.log(error.data.message);

@@ -94,7 +94,7 @@ const ChangeSearchViewMode = () => {
                      @ChangeSongList="ChangeSongList"></SongList_Page>
     </div>
   </transition>
-  <div class="w-full h-16 pl-6 fixed bg-zinc-900" v-if="!needshowsonglistpage&&!ShowSearchView">
+  <div class="w-full h-16 pl-6 fixed bg-zinc-900 z-50" v-if="!needshowsonglistpage&&!ShowSearchView">
     <div :class="[NaviClass1, 'text-transition']" @click="changeNaviMode(1)" style="line-height: 56px">推 荐</div>
     <div :class="[NaviClass2, 'text-transition']" @click="changeNaviMode(2)" style="line-height: 56px">最新上传</div>
     <Search v-model:SearchContent="SearchContent" @SearchOperation="SearchOperation"></Search>
