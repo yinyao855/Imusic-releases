@@ -226,7 +226,7 @@ let interval = null;
 
 const startCountdown = () => {
   const web='http://182.92.100.66:5000/users/send-code?email='+email.value;
-  alert(web);
+  console.log(getCookie('sessionId'));
   axios.get(web)
       .then(response=>{
         key.value=response.data.sessionId;
@@ -246,6 +246,19 @@ const startCountdown = () => {
       clearInterval(interval);
     }
   }, 1000);
+}
+
+function getCookie(cookieName) {
+  const cookies = document.cookie.split(';');
+  for (let i = 0; i < cookies.length; i++) {
+    const cookie = cookies[i].trim();
+    // 检查是否是所需的cookie
+    if (cookie.startsWith(cookieName + '=')) {
+      return cookie.substring(cookieName.length + 1);
+    }
+  }
+  // 如果找不到指定的cookie，则返回空字符串或者其他默认值
+  return 'hello';
 }
 
 const CloseWarning = () => {
