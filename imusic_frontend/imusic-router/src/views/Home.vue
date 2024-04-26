@@ -11,6 +11,7 @@ import Personal_Center from "@/views/Personal_Center.vue";
 import CreateSonglist from "@/views/CreateSonglist.vue";
 import Sign_up from "./Sign_up.vue";
 import axios from "axios";
+import UploadSong from "@/views/UploadSong.vue";
 
 const songlistlast = ref([
   {
@@ -453,7 +454,7 @@ const LoginArea = () => {
 
 const avatar = ref('');
 
-const getPageinit=()=>{
+const getPageinit = () => {
   axios.get('http://182.92.100.66:5000/songlists/initdata')
       .then(response => {
         songlists.value = response.data.data;
@@ -596,7 +597,8 @@ onMounted(getPageinit);
     </div>
   </div>
   <CreateSonglist :showFormCreateSonglist="showFormCreateSonglist"
-                  @activeShowFormCreateSonglist="activeShowFormCreateSonglist"></CreateSonglist>
+                  @activeShowFormCreateSonglist="activeShowFormCreateSonglist" v-model:HasLogin="HasLogin"
+                  v-model:username="username"></CreateSonglist>
   <audio
       :src="currentMusic.audio"
       ref="audioPlayer"
