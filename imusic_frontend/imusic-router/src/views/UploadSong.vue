@@ -53,12 +53,9 @@
               </svg>
               <div class="flex flex-auto max-h-48 w-2/5 mx-auto -mt-10">
               </div>
-              <p class="pointer-none text-gray-500 "><span class="text-sm"></span> 拖拽文件至此处 <br/> 或 <a href=""
-                                                                                                              id=""
-                                                                                                              class="text-blue-600 hover:underline">选择文件</a>
-                上传</p>
+              <p class="pointer-none text-gray-500 "><span class="text-sm"></span> 拖拽文件至此处 <br/> 或点击此处上传</p>
             </div>
-            <input type="file" @change="onMp3FileChange" class="absolute -left-10 -top-10">
+            <input type="file" @change="onMp3FileChange" class="absolute -left-10 -top-10"  accept="audio/mpeg, audio/wav, audio/ogg">
           </label>
         </div>
       </div>
@@ -66,7 +63,7 @@
         <span>此项为必填项</span>
       </p>
       <p class="text-sm text-gray-300">
-        <span>支持格式：mp3</span>
+        <span>支持格式：mp3,wav,ogg</span>
       </p>
       <div class="flex-column text-2xl">
         <div class="text-white">*歌曲封面</div>
@@ -86,11 +83,9 @@
               <div class="flex flex-auto max-h-48 w-2/5 mx-auto -mt-10">
 
               </div>
-              <p class="pointer-none text-gray-500 "><span class="text-sm"></span>拖拽文件至此处<br/>或<a href="" id=""
-                                                                                                          class="text-blue-600 hover:underline">选择文件</a>上传
-              </p>
+              <p class="pointer-none text-gray-500 "><span class="text-sm"></span> 拖拽文件至此处 <br/> 或点击此处上传</p>
             </div>
-            <input type="file" @change="onCoverFileChange" id="CoverUpLoad" class="absolute -left-10 -top-10">
+            <input type="file" @change="onCoverFileChange" id="CoverUpLoad" class="absolute -left-10 -top-10" accept="image/jpeg, image/png, image/gif, image/webp">
           </label>
         </div>
       </div>
@@ -98,7 +93,7 @@
         <span>此项为必填项</span>
       </p>
       <p class="text-sm text-gray-300">
-        <span>支持格式：webg,jpg,jpeg,png</span>
+        <span>支持格式：webp,jpg,jpeg,png</span>
       </p>
       <div class="flex-column text-2xl">
         <div class="text-white">标签</div>
@@ -169,7 +164,7 @@
       </div>
       <div>
         <input type="file" @change="onLrcFileChange">
-        <button @click="parseLrcFile" class="btn btn-xl">上传并解析歌词文件</button>
+        <button @click="parseLrcFile" class="btn btn-xl text-white tracking-widest">上传并解析歌词文件</button>
       </div>
       <div class="grid grid-cols-10 gap-4">
         <p class="col-span-3 text-sm text-gray-300">
@@ -227,10 +222,10 @@
               fill="" p-id="11253"></path>
         </svg>
       </div>
-      <button class="my-5 w-full flex justify-center bg-blue-600 text-gray-100 p-4  rounded-full tracking-wide button-submit
-                                    font-semibold  focus:outline-none focus:shadow-outline hover:bg-blue-800 shadow-lg cursor-pointer transition ease-in duration-300"
+      <button class="my-5 w-full flex justify-center bg-blue-600 text-white p-4  rounded-full button-submit
+                                    font-semibold  focus:outline-none focus:shadow-outline hover:bg-blue-800 shadow-lg cursor-pointer transition ease-in duration-300 tracking-widest"
               @click="submitSong">
-        Upload
+        上 传
       </button>
     </div>
   </div>
@@ -298,7 +293,13 @@ const parseLrcFile = () => {
   if (lrcFile.value) {
     const reader = new FileReader();
     reader.onload = (e) => {
-      const lrcContent = e.target.result;
+      let lrcContent = e.target.result;
+      lrcContent = lrcContent.replace(/\[(\d+:\d+\.)(\d{2,3})\]/g, (match, time, ms) => {
+        // 截取毫秒位的前两位
+        const truncatedMs = ms.slice(0, 2);
+        // 返回替换后的时间字符串
+        return `[${time}${truncatedMs}]`;
+      });
       lyrics.value = parseLrcContent(lrcContent);
     };
     reader.readAsText(lrcFile.value);
@@ -319,6 +320,15 @@ const parseLrcContent = (lrcContent) => {
     return {time: '', text: ''};
   }).filter(line => line.text !== '');
 };
+
+
+function convertLyricsToLRC(lyricsArray) {
+  let lrcContent = '';
+  for (const lyric of lyricsArray) {
+    lrcContent += `[${lyric.time}]${lyric.text}\n`;
+  }
+  return lrcContent;
+}
 
 const onMp3FileChange = (event) => {
   mp3File.value = event.target.files[0];
@@ -350,6 +360,9 @@ const submitSong = () => {
     message.value='请上传封面';
   }
   let formData = new FormData();
+  const lrcString = convertLyricsToLRC(lyrics.value);
+  let filename=songTitle.value+'.lrc';
+  const lrcBlob = new Blob([lrcString], { type: 'text/plain' });
   formData.append('title', songTitle.value);
   formData.append('singer', singerName.value);
   formData.append('cover', coverImageFile.value);
@@ -360,11 +373,8 @@ const submitSong = () => {
   formData.append('tag_style',style.value);
   formData.append('tag_mood',mood.value);
   formData.append('tag_language',language.value);
-  if(lrcFile.value){
-    formData.append('lyric',lrcFile.value)
-  }
+  formData.append('lyric', lrcBlob, filename);
   formData.append('introduction',introduction.value);
-
   axios.post('http://182.92.100.66:5000/songs/upload', formData, {
     headers: {
       'Content-Type': 'multipart/form-data'
