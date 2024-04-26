@@ -53,7 +53,8 @@
               </svg>
               <div class="flex flex-auto max-h-48 w-2/5 mx-auto -mt-10">
               </div>
-              <p class="pointer-none text-gray-500 "><span class="text-sm"></span> 拖拽文件至此处 <br/> 或点击此处上传</p>
+              <p v-if="mp3File===null" class="pointer-none text-gray-500 "><span class="text-sm"></span> 拖拽文件至此处 <br/> 或点击此处上传</p>
+              <p v-if="mp3File!==null" class="pointer-none text-gray-500 "><span class="text-sm"></span> {{mp3File.name}}</p>
             </div>
             <input type="file" @change="onMp3FileChange" class="absolute -left-10 -top-10"  accept="audio/mpeg, audio/wav, audio/ogg">
           </label>
@@ -72,7 +73,11 @@
         <div class="flex items-center justify-center w-full">
           <label class="flex flex-col rounded-lg border-4 border-dashed w-full h-60 p-10 group text-center"
                  for="CoverUpLoad">
-            <div class="h-full w-full text-center flex flex-col items-center justify-center  ">
+            <div class="w-40 h-40 content-center m-auto" v-if="coverImageFile!==null" >
+              <img :src="coverImageFileUrl" class="w-full h-full object-cover rounded-lg content-center">
+            </div>
+            <p v-if="coverImageFile!==null" class="pointer-none text-gray-500 "><span class="text-sm"></span>{{coverImageFile.name}}</p>
+            <div  v-if="coverImageFile===null" class="h-full w-full text-center flex flex-col items-center justify-center  ">
               <svg t="1713876861040" class="icon fill-white transition hover:fill-blue-600" viewBox="0 0 1194 1024"
                    version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="7431" width="80" height="80">
                 <path
@@ -81,9 +86,8 @@
                 </path>
               </svg>
               <div class="flex flex-auto max-h-48 w-2/5 mx-auto -mt-10">
-
               </div>
-              <p class="pointer-none text-gray-500 "><span class="text-sm"></span> 拖拽文件至此处 <br/> 或点击此处上传</p>
+              <p v-if="coverImageFile===null" class="pointer-none text-gray-500 "><span class="text-sm"></span> 拖拽文件至此处 <br/> 或点击此处上传</p>
             </div>
             <input type="file" @change="onCoverFileChange" id="CoverUpLoad" class="absolute -left-10 -top-10" accept="image/jpeg, image/png, image/gif, image/webp">
           </label>
@@ -282,6 +286,8 @@ const singerName = ref('');
 const mp3File = ref(null);
 const coverImageFile = ref(null);
 
+let coverImageFileUrl=null;
+const music_file = ref('0');
 
 const lrcFile = ref(null);
 
@@ -336,6 +342,13 @@ const onMp3FileChange = (event) => {
 
 const onCoverFileChange = (event) => {
   coverImageFile.value = event.target.files[0];
+  //转base64
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    coverImageFileUrl = e.target.result;
+  };
+  reader.readAsDataURL(coverImageFile.value);
+  coverImageFileUrl = reader.result;
 };
 
 const submitSong = () => {
