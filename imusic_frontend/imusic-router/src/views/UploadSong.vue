@@ -73,7 +73,9 @@
         <div class="flex items-center justify-center w-full">
           <label class="flex flex-col rounded-lg border-4 border-dashed w-full h-60 p-10 group text-center"
                  for="CoverUpLoad">
-            <img v-if="coverImageFile!==null" :src="coverImageFileUrl" class="flex-auto object-cover rounded-lg content-center">
+            <div class="w-40 h-40 content-center m-auto" v-if="coverImageFile!==null" >
+              <img :src="coverImageFileUrl" class="w-full h-full object-cover rounded-lg content-center">
+            </div>
             <p v-if="coverImageFile!==null" class="pointer-none text-gray-500 "><span class="text-sm"></span>{{coverImageFile.name}}</p>
             <div  v-if="coverImageFile===null" class="h-full w-full text-center flex flex-col items-center justify-center  ">
               <svg t="1713876861040" class="icon fill-white transition hover:fill-blue-600" viewBox="0 0 1194 1024"
