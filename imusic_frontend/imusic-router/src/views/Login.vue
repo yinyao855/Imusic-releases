@@ -1,5 +1,5 @@
 <template>
-  <div id="login" class="h-full w-full flex items-center">
+  <div id="login" class="h-full w-full flex items-center"  @keypress.enter="show">
   <transition name="vx">
     <div class="w-full absolute top-0 left-1/2 transform -translate-x-1/2" v-if="WarningShow">
       <Warning :message="message" @CloseWarning="CloseWarning" class="mx-auto"></Warning>

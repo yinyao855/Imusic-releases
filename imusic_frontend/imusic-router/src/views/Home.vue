@@ -23,20 +23,20 @@ const songlistlast = ref([
 const RegisterMode = ref(false);
 const mode = ref('1');
 const containerClass1 = computed(() => ({
-  'antialiased text-sm block h-10 my-1 text-white leading-10 transition duration-400 hover:bg-gray-600/40 px-4 ml-2 mr-2 rounded-md': mode.value !== '1',
-  'antialiased text-sm block h-10 my-1 text-white leading-10 transition duration-400 px-4 ml-2 mr-2 rounded-md bg-blue-500 hover:bg-blue-500': mode.value === '1',
+  'antialiased text-sm block h-10 my-1 text-white leading-10 transition ease-in duration-400 hover:bg-gray-600/40 px-4 ml-2 mr-2 rounded-md': mode.value !== '1',
+  'antialiased text-sm block h-10 my-1 text-white leading-10 transition ease-in duration-400 px-4 ml-2 mr-2 rounded-md bg-blue-500 hover:bg-blue-500': mode.value === '1',
 }));
 const containerClass2 = computed(() => ({
-  'antialiased text-sm block h-10 my-1 text-white leading-10 transition duration-400 hover:bg-gray-600/40 px-4 ml-2 mr-2 rounded-md': mode.value !== '2',
-  'antialiased text-sm block h-10 my-1 text-white leading-10 transition duration-400 px-4 ml-2 mr-2 rounded-md bg-blue-500 hover:bg-blue-500': mode.value === '2',
+  'antialiased text-sm block h-10 my-1 text-white leading-10 transition ease-in duration-400 hover:bg-gray-600/40 px-4 ml-2 mr-2 rounded-md': mode.value !== '2',
+  'antialiased text-sm block h-10 my-1 text-white leading-10 transition ease-in duration-400 px-4 ml-2 mr-2 rounded-md bg-blue-500 hover:bg-blue-500': mode.value === '2',
 }));
 const containerClass3 = computed(() => ({
-  'antialiased text-sm block h-10 my-1 text-white leading-10 transition duration-400 hover:bg-gray-600/40 px-4 ml-2 mr-2 rounded-md': mode.value !== '3',
-  'antialiased text-sm block h-10 my-1 text-white leading-10 transition duration-400 px-4 ml-2 mr-2 rounded-md bg-blue-500 hover:bg-blue-500': mode.value === '3',
+  'antialiased text-sm block h-10 my-1 text-white leading-10 transition ease-in duration-400 hover:bg-gray-600/40 px-4 ml-2 mr-2 rounded-md': mode.value !== '3',
+  'antialiased text-sm block h-10 my-1 text-white leading-10 transition ease-in duration-400 px-4 ml-2 mr-2 rounded-md bg-blue-500 hover:bg-blue-500': mode.value === '3',
 }));
 const containerClass4 = computed(() => ({
-  'antialiased text-sm block h-10 my-1 text-white leading-10 transition duration-400 hover:bg-gray-600/40 px-4 ml-2 mr-2 rounded-md': mode.value !== '4',
-  'antialiased text-sm block h-10 my-1 text-white leading-10 transition duration-400 px-4 ml-2 mr-2 rounded-md bg-blue-500 hover:bg-blue-500': mode.value === '4',
+  'antialiased text-sm block h-10 my-1 text-white leading-10 transition ease-in duration-400 hover:bg-gray-600/40 px-4 ml-2 mr-2 rounded-md': mode.value !== '4',
+  'antialiased text-sm block h-10 my-1 text-white leading-10 transition ease-in duration-400 px-4 ml-2 mr-2 rounded-md bg-blue-500 hover:bg-blue-500': mode.value === '4',
 }));
 const changeMode = (newMode) => {
   mode.value = newMode.toString(); // 设置新的 mode 值
@@ -55,13 +55,24 @@ const lyrics = props.lyrics
 const gradient = props.gradient
 const musicList = ref([
   {
-    title: "难得有情人",
-    singer: "关淑怡",
-    cover: "./难得有情人.png",
-    audio: "./难得有情人.mp3",
-    lyric: 'http://182.92.100.66:5000/media/lyrics/%E7%A6%BB%E5%88%AB%E5%BC%80%E5%87%BA%E8%8A%B1_-_%E5%B0%B1%E6%98%AF%E5%8D%97%E6%96%B9%E5%87%AF%E9%A1%B9%E5%AD%A6%E5%87%AF.lrc',
-  },
-]);
+    "id": null,
+    "title": "",
+    "singer": "",
+    "cover": "",
+    "gradient": "",
+    "introduction": "",
+    "audio": "",
+    "duration": "",
+    "lyric": "",
+    "tag_theme": null,
+    "tag_scene": null,
+    "tag_mood": null,
+    "tag_style": null,
+    "tag_language": null,
+    "uploader": "",
+    "like": 0,
+    "upload_date": ""
+  }]);
 const isFull = ref(false);
 const audioPlayer = ref(null);
 const isPlaying = ref(true);
@@ -81,7 +92,9 @@ function changeSize() {
   if (currentMusic.value.lyric !== null) {
     fetchAndFormatLyrics(currentMusic.value.lyric);
   }
-  isFull.value = !isFull.value;
+  if(cantransformtofull.value){
+    isFull.value = !isFull.value;
+  }
 }
 
 //监控当前播放歌曲变化
@@ -93,7 +106,7 @@ watch(curIndex, () => {
   }
   isPlaying.value = true;
   console.log(lyric.value);
-  const id=currentMusic.value.id;
+  const id = currentMusic.value.id;
   updateusersonglist(id);
 })
 
@@ -254,14 +267,40 @@ const changeModex = () => {
 
 const needshowsonglistpage = ref(false);
 
+const cantransformtofull = ref(false);
+
 function getsonglistinit(id) {
-  axios.get('http://182.92.100.66:5000/feature/recent',{
-    params:{
-      'username':username.value,
+  axios.get('http://182.92.100.66:5000/feature/recent', {
+    params: {
+      'username': username.value,
     }
   })
       .then(response => {
         musicList.value = response.data.data.songs;
+        cantransformtofull.value = true;
+        if (musicList.value.length === 0) {
+          cantransformtofull.value = false;
+          musicList.value = [
+            {
+              "id": null,
+              "title": "",
+              "singer": "",
+              "cover": "",
+              "gradient": "",
+              "introduction": "",
+              "audio": "",
+              "duration": "",
+              "lyric": "",
+              "tag_theme": null,
+              "tag_scene": null,
+              "tag_mood": null,
+              "tag_style": null,
+              "tag_language": null,
+              "uploader": "",
+              "like": 0,
+              "upload_date": ""
+            }]
+        }
         currentMusic.value = musicList.value[curIndex.value];
         datax.value = response.data.data.songs;
         console.log(musicList.value);
@@ -285,15 +324,15 @@ function getsonglistinit(id) {
       })
 }
 
-const userdata=ref([]);
-const getuserdata=()=>{
-  const web='http://182.92.100.66:5000/users/info/'+username.value;
+const userdata = ref([]);
+const getuserdata = () => {
+  const web = 'http://182.92.100.66:5000/users/info/' + username.value;
   axios.get(web)
-      .then(response=>{
+      .then(response => {
         console.log(response.data.data);
-        userdata.value=response.data.data;
+        userdata.value = response.data.data;
       })
-      .catch(error=>{
+      .catch(error => {
         console.log(error.data);
       })
 }
@@ -384,36 +423,54 @@ function handlePlayAfter(id) {
       })
 }
 
-const updateusersonglist=(songid)=>{
-  const formData=new FormData();
-  formData.append('username',username.value);
-  formData.append('song_id',songid);
-  axios.post('http://182.92.100.66:5000/feature/addrecent',formData)
-      .then(response=>{
+const updateusersonglist = (songid) => {
+  const formData = new FormData();
+  formData.append('username', username.value);
+  formData.append('song_id', songid);
+  axios.post('http://182.92.100.66:5000/feature/addrecent', formData)
+      .then(response => {
         console.log(response.data);
       })
-      .catch(error=>{
+      .catch(error => {
         console.log(error.data);
       })
 }
 
-const LoginArea=()=>{
-  if(HasLogin.value===true){
+const LoginArea = () => {
+  if (HasLogin.value === true) {
     getuserdata();
   }
   changeMode(0);
 }
 
 const avatar = ref('');
+
+const getPageinit=()=>{
+  axios.get('http://182.92.100.66:5000/songlists/initdata')
+      .then(response => {
+        songlists.value = response.data.data;
+      })
+      .catch(error => {
+        console.log('查不到歌单');
+      })
+  axios.get('http://182.92.100.66:5000/recommend/latest')
+      .then(response => {
+        songlistlast.value = response.data.data;
+      })
+      .catch(error => {
+        console.log(error.data.message);
+      })
+}
+onMounted(getPageinit);
 </script>
 
 <template>
   <div class="flex w-full h-screen bg-zinc-900">
     <div class="w-1/6 h-screen fixed hidden lg:block" style="background-color:#2E2E30">
       <div
-          class="group flex antialiased w-full mt-3 hover:text-blue-500 my-1 font-medium text-white transition duration-400 bg-yellow-95000 text-base"
+          class="group flex antialiased w-full mt-3 hover:text-blue-500 my-1 font-medium text-white transition ease-in duration-400 bg-yellow-95000 text-base"
           style="height:60px; line-height: 60px" @click="LoginArea">
-        <svg t="1713667739578" class="icon inline fill-white transition duration-400 my-auto ml-4"
+        <svg t="1713667739578" class="icon inline fill-white transition ease-in duration-400 my-auto ml-4"
              viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"
              p-id="5760" width="32" height="32" v-if="!HasLogin||avatar===''">
           <path
@@ -424,10 +481,11 @@ const avatar = ref('');
               p-id="5762"></path>
         </svg>
         <img v-if="HasLogin&&avatar!==''" :src="avatar"
-             class="inline transition duration-400 my-auto ml-4 aspect-square w-12 h-12 rounded-full" alt="头像">
+             class="inline transition ease-in duration-400 my-auto ml-4 aspect-square w-12 h-12 rounded-full"
+             alt="头像">
         <span class="px-5">{{ username }}</span>
         <svg t="1713669026081"
-             class="icon inline fill-white group-hover:fill-blue-800 transition duration-400 justify-end my-auto mr-0"
+             class="icon inline fill-white group-hover:fill-blue-800 transition ease-in duration-400 justify-end my-auto mr-0"
              viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"
              p-id="6750" width="20" height="20">
           <path
@@ -490,11 +548,11 @@ const avatar = ref('');
         <span class="px-4 font-medium">创作中心</span>
       </div>
       <div
-          class="antialiased text-sm block h-10 my-1 text-white leading-10 transition duration-400 px-4 hover:bg-gray-600/40 ml-2 mr-2 rounded-md">
+          class="antialiased text-sm block h-10 my-1 text-white leading-10 transition ease-in duration-400 px-4 hover:bg-gray-600/40 ml-2 mr-2 rounded-md">
         <p class="px-4 font-medium">创建的歌单</p>
       </div>
       <div
-          class="antialiased text-sm block h-10 my-1 text-white leading-10 transition duration-400 px-4 hover:bg-gray-600/40 ml-2 mr-2 rounded-md">
+          class="antialiased text-sm block h-10 my-1 text-white leading-10 transition ease-in duration-400 px-4 hover:bg-gray-600/40 ml-2 mr-2 rounded-md">
         <span class="px-4 font-medium">收藏的歌单</span>
       </div>
     </div>
@@ -507,7 +565,8 @@ const avatar = ref('');
                  v-model:avatar="avatar"></Login>
           <Sign_up v-if="RegisterMode" @ChangerRegisterMode="ChangerRegisterMode" v-model:username="username"></Sign_up>
         </div>
-        <Personal_Center v-model:userdata="userdata" v-model:HasLogin="HasLogin" v-model:username="username" v-if="HasLogin&&mode==='0'"></Personal_Center>
+        <Personal_Center v-model:userdata="userdata" v-model:HasLogin="HasLogin" v-model:username="username"
+                         v-if="HasLogin&&mode==='0'"></Personal_Center>
         <HomePage_Main v-model:songlist="songlist" v-model:needshowsonglistpage="needshowsonglistpage"
                        @handlePlayAfter="handlePlayAfter" @handlePlayNow="handlePlayNow" v-if="mode==='1'"
                        @ChangeSongList="ChangeSongList"

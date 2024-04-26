@@ -45,7 +45,7 @@ function fileToBase64(file) {
 </script>
 
 <template>
-  <div class="upload_image bg-zinc-900 hover:bg-zinc-700 transition ease-in duration-300 mx-auto">
+  <div class="upload_image bg-zinc-900 hover:bg-zinc-800 transition ease-in duration-300 mx-auto">
     <label class="custum-file-upload" for="image">
       <div class="icon" v-if="!needshow">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="fill-white">

@@ -4,7 +4,7 @@
       <Warning :message="message" @CloseWarning="CloseWarning" class="mx-auto"></Warning>
     </div>
   </transition>
-  <div class="h-full w-full flex items-center">
+  <div class="h-full w-full flex items-center" @keypress.enter="submitSong">
     <div class="formx2 my-auto mx-auto width:800px flexible bg-zinc-900">
       <div class="flex-column text-2xl">
         <div class="text-white">*歌曲名</div>
@@ -400,18 +400,22 @@ const submitSong = () => {
   if (HasLogin.value === false) {
     WarningShow.value = true;
     message.value = '请先登录';
+    return;
   }
   if (songTitle.value === '') {
     WarningShow.value = true;
     message.value = '请输入歌曲名';
+    return;
   }
   if (mp3File.value === null) {
     WarningShow.value = true;
     message.value = '请上传歌曲';
+    return;
   }
   if (coverImageFile.value === null) {
     WarningShow.value = true;
     message.value = '请上传封面';
+    return;
   }
   let formData = new FormData();
   const lrcString = convertLyricsToLRC(lyrics.value);
