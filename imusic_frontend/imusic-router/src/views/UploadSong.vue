@@ -53,10 +53,13 @@
               </svg>
               <div class="flex flex-auto max-h-48 w-2/5 mx-auto -mt-10">
               </div>
-              <p v-if="mp3File===null" class="pointer-none text-gray-500 "><span class="text-sm"></span> 拖拽文件至此处 <br/> 或点击此处上传</p>
-              <p v-if="mp3File!==null" class="pointer-none text-gray-500 "><span class="text-sm"></span> {{mp3File.name}}</p>
+              <p v-if="mp3File===null" class="pointer-none text-gray-500 "><span class="text-sm"></span> 拖拽文件至此处
+                <br/> 或点击此处上传</p>
+              <p v-if="mp3File!==null" class="pointer-none text-gray-500 "><span class="text-sm"></span>
+                {{ mp3File.name }}</p>
             </div>
-            <input type="file" @change="onMp3FileChange" class="absolute -left-10 -top-10"  accept="audio/mpeg, audio/wav, audio/ogg">
+            <input type="file" @change="onMp3FileChange" class="absolute -left-10 -top-10"
+                   accept="audio/mpeg, audio/wav, audio/ogg">
           </label>
         </div>
       </div>
@@ -71,13 +74,15 @@
       </div>
       <div class="grid grid-cols-1 space-y-2">
         <div class="flex items-center justify-center w-full">
-          <label class="flex flex-col rounded-lg border-4 border-dashed w-full h-60 p-10 group text-center"
+          <label class="flex flex-col rounded-lg border-4 border-dashed w-full h-60 p-10 group text-center p-0"
                  for="CoverUpLoad">
-            <div class="w-40 h-40 content-center m-auto" v-if="coverImageFile!==null" >
+            <div class="h-4/5 content-center m-auto" v-if="coverImageFile!==null">
               <img :src="coverImageFileUrl" class="w-full h-full object-cover rounded-lg content-center">
             </div>
-            <p v-if="coverImageFile!==null" class="pointer-none text-gray-500 "><span class="text-sm"></span>{{coverImageFile.name}}</p>
-            <div  v-if="coverImageFile===null" class="h-full w-full text-center flex flex-col items-center justify-center  ">
+            <p v-if="coverImageFile!==null" class="pointer-none text-gray-500 "><span
+                class="text-sm"></span>{{ coverImageFile.name }}</p>
+            <div v-if="coverImageFile===null"
+                 class="h-full w-full text-center flex flex-col items-center justify-center  ">
               <svg t="1713876861040" class="icon fill-white transition hover:fill-blue-600" viewBox="0 0 1194 1024"
                    version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="7431" width="80" height="80">
                 <path
@@ -87,9 +92,11 @@
               </svg>
               <div class="flex flex-auto max-h-48 w-2/5 mx-auto -mt-10">
               </div>
-              <p v-if="coverImageFile===null" class="pointer-none text-gray-500 "><span class="text-sm"></span> 拖拽文件至此处 <br/> 或点击此处上传</p>
+              <p v-if="coverImageFile===null" class="pointer-none text-gray-500 "><span class="text-sm"></span> 拖拽文件至此处
+                <br/> 或点击此处上传</p>
             </div>
-            <input type="file" @change="onCoverFileChange" id="CoverUpLoad" class="absolute -left-10 -top-10" accept="image/jpeg, image/png, image/gif, image/webp">
+            <input type="file" @change="onCoverFileChange" id="CoverUpLoad" class="absolute -left-10 -top-10"
+                   accept="image/jpeg, image/png, image/gif, image/webp">
           </label>
         </div>
       </div>
@@ -106,16 +113,22 @@
       主题
       <div class="join w-full">
         <input class="join-item btn w-1/6" type="radio" name="options1" aria-label="默认" value="默认" v-model="theme"/>
-        <input class="join-item btn w-1/6" type="radio" name="options1" aria-label="背景音乐" value="背景音乐" v-model="theme"/>
-        <input class="join-item btn w-1/6" type="radio" name="options1" aria-label="经典老歌" value="经典老歌" v-model="theme"/>
-        <input class="join-item btn w-1/6" type="radio" name="options1" aria-label="KTV金曲" value="KTV金曲" v-model="theme"/>
-        <input class="join-item btn w-1/6" type="radio" name="options1" aria-label="游戏配乐" value="游戏配乐" v-model="theme"/>
-        <input class="join-item btn w-1/6" type="radio" name="options1" aria-label="电影配乐" value="电影配乐" v-model="theme"/>
+        <input class="join-item btn w-1/6" type="radio" name="options1" aria-label="背景音乐" value="背景音乐"
+               v-model="theme"/>
+        <input class="join-item btn w-1/6" type="radio" name="options1" aria-label="经典老歌" value="经典老歌"
+               v-model="theme"/>
+        <input class="join-item btn w-1/6" type="radio" name="options1" aria-label="KTV金曲" value="KTV金曲"
+               v-model="theme"/>
+        <input class="join-item btn w-1/6" type="radio" name="options1" aria-label="游戏配乐" value="游戏配乐"
+               v-model="theme"/>
+        <input class="join-item btn w-1/6" type="radio" name="options1" aria-label="电影配乐" value="电影配乐"
+               v-model="theme"/>
       </div>
       场景
       <div class="join w-full">
         <input class="join-item btn w-1/6" type="radio" name="options2" aria-label="默认" value="默认" v-model="scene"/>
-        <input class="join-item btn w-1/6" type="radio" name="options2" aria-label="咖啡馆" value="咖啡馆" v-model="scene"/>
+        <input class="join-item btn w-1/6" type="radio" name="options2" aria-label="咖啡馆" value="咖啡馆"
+               v-model="scene"/>
         <input class="join-item btn w-1/6" type="radio" name="options2" aria-label="运动" value="运动" v-model="scene"/>
         <input class="join-item btn w-1/6" type="radio" name="options2" aria-label="睡前" value="睡前" v-model="scene"/>
         <input class="join-item btn w-1/6" type="radio" name="options2" aria-label="旅行" value="旅行" v-model="scene"/>
@@ -135,18 +148,25 @@
         <input class="join-item btn w-1/6" type="radio" name="options4" aria-label="默认" value="默认" v-model="style"/>
         <input class="join-item btn w-1/6" type="radio" name="options4" aria-label="摇滚" value="摇滚" v-model="style"/>
         <input class="join-item btn w-1/6" type="radio" name="options4" aria-label="民谣" value="民谣" v-model="style"/>
-        <input class="join-item btn w-1/6" type="radio" name="options4" aria-label="轻音乐" value="轻音乐" v-model="style"/>
+        <input class="join-item btn w-1/6" type="radio" name="options4" aria-label="轻音乐" value="轻音乐"
+               v-model="style"/>
         <input class="join-item btn w-1/6" type="radio" name="options4" aria-label="电音" value="电音" v-model="style"/>
         <input class="join-item btn w-1/6" type="radio" name="options4" aria-label="流行" value="流行" v-model="style"/>
       </div>
       语言
       <div class="join w-full">
-        <input class="join-item btn w-1/6" type="radio" name="options5" aria-label="默认" value="默认" v-model="language"/>
-        <input class="join-item btn w-1/6" type="radio" name="options5" aria-label="英语" value="英语" v-model="language"/>
-        <input class="join-item btn w-1/6" type="radio" name="options5" aria-label="日语" value="日语" v-model="language"/>
-        <input class="join-item btn w-1/6" type="radio" name="options5" aria-label="粤语" value="粤语" v-model="language"/>
-        <input class="join-item btn w-1/6" type="radio" name="options5" aria-label="国语" value="国语" v-model="language"/>
-        <input class="join-item btn w-1/6" type="radio" name="options5" aria-label="韩语" value="韩语" v-model="language"/>
+        <input class="join-item btn w-1/6" type="radio" name="options5" aria-label="默认" value="默认"
+               v-model="language"/>
+        <input class="join-item btn w-1/6" type="radio" name="options5" aria-label="英语" value="英语"
+               v-model="language"/>
+        <input class="join-item btn w-1/6" type="radio" name="options5" aria-label="日语" value="日语"
+               v-model="language"/>
+        <input class="join-item btn w-1/6" type="radio" name="options5" aria-label="粤语" value="粤语"
+               v-model="language"/>
+        <input class="join-item btn w-1/6" type="radio" name="options5" aria-label="国语" value="国语"
+               v-model="language"/>
+        <input class="join-item btn w-1/6" type="radio" name="options5" aria-label="韩语" value="韩语"
+               v-model="language"/>
       </div>
 
 
@@ -265,7 +285,7 @@
 
 <script setup>
 import confetti from 'canvas-confetti';
-import {ref,defineModel} from "vue";
+import {ref, defineModel} from "vue";
 import axios from "axios";
 import Warning from "@/views/Warning.vue";
 import {defineEmits} from "vue"
@@ -278,15 +298,15 @@ const scene = ref('场景');
 const mood = ref('心情');
 const style = ref('风格');
 const language = ref('语言');
-const introduction=ref('');
-const username=defineModel('username')
+const introduction = ref('');
+const username = defineModel('username')
 
 const songTitle = ref('');
 const singerName = ref('');
 const mp3File = ref(null);
 const coverImageFile = ref(null);
 
-const coverImageFileUrl=ref('');
+const coverImageFileUrl = ref('');
 const music_file = ref('0');
 
 const lrcFile = ref(null);
@@ -350,7 +370,7 @@ const createImage = (file) => {
   fileToBase64(file).then(function (base64) {
     coverImageFileUrl.value = base64;// 输出文件的 base64 形式
   }).catch(function (error) {
-    console.error('Error:',error.data);
+    console.error('Error:', error.data);
   });
 };
 
@@ -376,38 +396,38 @@ const submitSong = () => {
   const rect = button.getBoundingClientRect();
   const x = rect.left + rect.width / 2 + window.scrollX;
   const y = rect.top + rect.height / 2 + window.scrollY;
-  if(HasLogin.value===false){
-    WarningShow.value=true;
-    message.value='请先登录';
+  if (HasLogin.value === false) {
+    WarningShow.value = true;
+    message.value = '请先登录';
   }
-  if(songTitle.value===''){
-    WarningShow.value=true;
-    message.value='请输入歌曲名';
+  if (songTitle.value === '') {
+    WarningShow.value = true;
+    message.value = '请输入歌曲名';
   }
-  if(mp3File.value===null){
-    WarningShow.value=true;
-    message.value='请上传歌曲';
+  if (mp3File.value === null) {
+    WarningShow.value = true;
+    message.value = '请上传歌曲';
   }
-  if(coverImageFile.value===null){
-    WarningShow.value=true;
-    message.value='请上传封面';
+  if (coverImageFile.value === null) {
+    WarningShow.value = true;
+    message.value = '请上传封面';
   }
   let formData = new FormData();
   const lrcString = convertLyricsToLRC(lyrics.value);
-  let filename=songTitle.value+'.lrc';
-  const lrcBlob = new Blob([lrcString], { type: 'text/plain' });
+  let filename = songTitle.value + '.lrc';
+  const lrcBlob = new Blob([lrcString], {type: 'text/plain'});
   formData.append('title', songTitle.value);
   formData.append('singer', singerName.value);
   formData.append('cover', coverImageFile.value);
   formData.append('audio', mp3File.value);
   formData.append('uploader', username.value);
-  formData.append('tag_theme',theme.value);
-  formData.append('tag_scene',scene.value);
-  formData.append('tag_style',style.value);
-  formData.append('tag_mood',mood.value);
-  formData.append('tag_language',language.value);
+  formData.append('tag_theme', theme.value);
+  formData.append('tag_scene', scene.value);
+  formData.append('tag_style', style.value);
+  formData.append('tag_mood', mood.value);
+  formData.append('tag_language', language.value);
   formData.append('lyric', lrcBlob, filename);
-  formData.append('introduction',introduction.value);
+  formData.append('introduction', introduction.value);
   axios.post('http://182.92.100.66:5000/songs/upload', formData, {
     headers: {
       'Content-Type': 'multipart/form-data'
@@ -425,7 +445,7 @@ const submitSong = () => {
           gravity: 1,
           drift: 0,
           ticks: 200,
-          origin: { x: x / window.innerWidth, y: y / window.innerHeight },
+          origin: {x: x / window.innerWidth, y: y / window.innerHeight},
           shapes: ["square", "circle"],
           zIndex: 100,
           colors: [
