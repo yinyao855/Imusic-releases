@@ -286,7 +286,7 @@ const singerName = ref('');
 const mp3File = ref(null);
 const coverImageFile = ref(null);
 
-let coverImageFileUrl=null;
+const coverImageFileUrl=ref('');
 const music_file = ref('0');
 
 const lrcFile = ref(null);
@@ -342,14 +342,34 @@ const onMp3FileChange = (event) => {
 
 const onCoverFileChange = (event) => {
   coverImageFile.value = event.target.files[0];
-  //转base64
-  const reader = new FileReader();
-  reader.onload = (e) => {
-    coverImageFileUrl = e.target.result;
-  };
-  reader.readAsDataURL(coverImageFile.value);
-  coverImageFileUrl = reader.result;
+  const files = event.target.files || event.dataTransfer.files;
+  createImage(files[0]);
 };
+
+const createImage = (file) => {
+  fileToBase64(file).then(function (base64) {
+    coverImageFileUrl.value = base64;// 输出文件的 base64 形式
+  }).catch(function (error) {
+    console.error('Error:',error.data);
+  });
+};
+
+
+function fileToBase64(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+
+    reader.onload = function (event) {
+      resolve(event.target.result);
+    };
+
+    reader.onerror = function (error) {
+      reject(error);
+    };
+
+    reader.readAsDataURL(file);
+  });
+}
 
 const submitSong = () => {
   const button = document.querySelector('.button-submit');

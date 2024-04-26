@@ -4,7 +4,7 @@ import {ref} from 'vue'
 
 const CoverFile = defineModel('Avatar');
 let needshow = ref(false);
-let imageUrl = ref('');
+const imageUrl = ref('');
 const AvatarHasChanged = defineModel('AvatarHasChanged')
 
 const onFileChange = (e) => {
@@ -59,7 +59,7 @@ function fileToBase64(file) {
         </svg>
       </div>
       <div class="text text-white text-xl text-center flex items-center" v-if="!needshow">
-        <span class="text-center">请上传封面</span>
+        <span class="text-center">请上传个人头像</span>
       </div>
       <input type="file" id="image" @change="onFileChange">
       <img :src="imageUrl" alt="图片" class="preview" v-if="needshow">
