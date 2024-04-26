@@ -249,17 +249,19 @@ const startCountdown = () => {
 }
 
 function getCookie(cookieName) {
-  const cookies = document.cookie.split(';');
-  for (let i = 0; i < cookies.length; i++) {
-    const cookie = cookies[i].trim();
-    // 检查是否是所需的cookie
-    if (cookie.startsWith(cookieName + '=')) {
-      return cookie.substring(cookieName.length + 1);
+  const strCookie = document.cookie
+  const cookieList = strCookie.split(';')
+
+  for(let i = 0; i < cookieList.length; i++) {
+    const arr = cookieList[i].split('=')
+    if (cookieName === arr[0].trim()) {
+      return arr[1]
     }
   }
-  // 如果找不到指定的cookie，则返回空字符串或者其他默认值
-  return 'hello';
+
+  return ''
 }
+
 
 const CloseWarning = () => {
   WarningShow.value = false;
