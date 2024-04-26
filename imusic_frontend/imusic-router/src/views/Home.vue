@@ -349,6 +349,12 @@ const gettime = (time) => {
   return `${minute}:${second}`;
 }
 
+const extractDate = (dateTimeString) => {
+  const date = new Date(dateTimeString);
+  const dateString = date.toISOString().slice(0, 10);
+  return dateString;
+}
+
 const userdata = ref([]);
 const getuserdata = () => {
   const web = 'http://182.92.100.66:5000/users/info/' + username.value;
@@ -387,8 +393,8 @@ function changesonglist() {
   const web = 'http://182.92.100.66:5000/songlists/info/' + index.value;
   axios.get(web)
       .then(response => {
-        console.log('hello');
         songlist.value = response.data.data;
+        songlist.value.create_date=extractDate(songlist.value.create_date)
         let length = songlist.value.songs.length;
         console.log(length);
         for (let i = 0; i < length; ++i) {

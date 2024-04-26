@@ -57,10 +57,23 @@ const SearchOperation = () => {
         console.log(response.data.data);
         ShowSearchView.value = true;
         songlistsearch.value = response.data.data;
+        let length=songlistsearch.value.length;
+        for(let i=0;i<length;++i){
+          songlistsearch.value[i].duration=gettime(songlistsearch.value[i].duration)
+        }
       })
       .catch(error => {
         console.log(error.data.message);
       })
+}
+
+const gettime = (time) => {
+  const minute = Math.floor(time / 60);
+  const second = Math.floor(time - minute * 60);
+  if (second < 10) {
+    return `${minute}:0${second}`;
+  }
+  return `${minute}:${second}`;
 }
 
 const needshowsonglistpage = defineModel('needshowsonglistpage');
@@ -380,7 +393,7 @@ const ChangeSearchViewMode = () => {
 .transition-container {
   right: 0;
   top: 0;
-  height: 80%
+  height: 100%
 }
 
 
