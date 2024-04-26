@@ -14,7 +14,7 @@ const NaviClass2 = computed(() => ({
   'text-cyan-700 underline underline-offset-8 decoration-2': NaviMode.value === '2',
 }));
 const containerClass_Upload = computed(() => ({
-  'antialiased text-sm box h-10 my-1 text-white leading-10 transition duration-400 hover:bg-gray-600/40 px-4 ml-2 mr-2 rounded-md': upload.value !== '1',
+  'antialiased text-sm box h-10 my-1 text-white leading-10 transition duration-400 hover:bg-gray-600/40 bg-zinc-800 px-4 ml-2 mr-2 rounded-md': upload.value !== '1',
   'antialiased text-sm box h-10 my-1 text-white leading-10 transition duration-400 px-4 ml-2 mr-2 rounded-md bg-blue-500 hover:bg-blue-500': upload.value === '1',
 }));
 const changeNaviMode = (newMode) => {
@@ -67,15 +67,6 @@ const HasLogin = defineModel('HasLogin')
   <div class="w-5px  w-1/5 flex items-center justify-center">
     <div
         :class="containerClass_Upload" @click="uploadSong(1)">
-      <!--      <svg t="1713774287902" class="icon inline fill-white transition duration-400 my-auto" viewBox="0 0 1024 1024"-->
-      <!--           version="1.1"-->
-      <!--           xmlns="http://www.w3.org/2000/svg"-->
-      <!--           p-id="2452" width="20" height="20">-->
-      <!--        <path-->
-      <!--            d="M509 736q-15 0-24-9t-9-24V209l1-80-111 123-85 84q-9 10-23.5 10t-23.5-9.5q-9-9.5-9-23t10-24.5L484 39q11-11 25.5-11T534 39l249 250q11 11 11 24.5t-9.5 23Q775 346 761 346t-23-9l-86-85-110-125 1 82v494q0 15-9.5 24t-24.5 9z"-->
-      <!--            fill="#ffffff" p-id="2453">-->
-      <!--        </path>-->
-      <!--      </svg>-->
       <svg v-if="upload==='0'" t="1714112054245" class="icon inline fill-white transition duration-400 my-auto mr-1"
            viewBox="0 0 1024 1024"
            version="1.1" xmlns="http://www.w3.org/2000/svg"
@@ -105,5 +96,6 @@ const HasLogin = defineModel('HasLogin')
 <style scoped>
 .text-transition {
   transition: color 0.5s ease;
+
 }
 </style>
