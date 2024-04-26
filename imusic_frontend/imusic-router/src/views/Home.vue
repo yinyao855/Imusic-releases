@@ -253,7 +253,11 @@ const changeModex = () => {
 const needshowsonglistpage = ref(false);
 
 function getsonglistinit(id) {
-  axios.get('http://182.92.100.66:5000/songlists/info/1')
+  axios.get('http://182.92.100.66:5000/feature/recent',{
+    params:{
+      'username':username.value,
+    }
+  })
       .then(response => {
         musicList.value = response.data.data.songs;
         currentMusic.value = musicList.value[curIndex.value];
@@ -311,6 +315,7 @@ function ChangeSongList(id) {
       })
 }
 
+
 function changesonglist() {
   needshowsonglistpage.value = true;
   const web = 'http://182.92.100.66:5000/songlists/info/' + index.value;
@@ -349,16 +354,9 @@ function handlePlayNow(id) {
         currentMusic.value = musicList.value[curIndex.value]
       })
       .catch(error => {
-        console.log(error.data.message);
+        console.log('error');
       })
-  const s = {"songlist": musicList.value};
-  axios.post('http://182.92.100.66:5000/usersonglist/update', s)
-      .then(response => {
-        console.log(response.data.message);
-      })
-      .catch(error => {
-        console.log("出错了");
-      })
+  updateusersonglist(id);
 }
 
 function handlePlayAfter(id) {
@@ -383,13 +381,19 @@ function handlePlayAfter(id) {
       .catch(error => {
         console.log(error.data.message);
       })
-  const s = {"songlist": musicList.value};
-  axios.post('http://182.92.100.66:5000/usersonglist/update', s)
-      .then(response => {
-        console.log(response.data.message);
+  updateusersonglist(id);
+}
+
+const updateusersonglist=(songid)=>{
+  const formData=new FormData();
+  formData.append('username',username.value);
+  formData.append('song_id',songid);
+  axios.post('http://182.92.100.66:5000/feature/addrecent',formData)
+      .then(response=>{
+        console.log(response.data);
       })
-      .catch(error => {
-        console.log("出错了");
+      .catch(error=>{
+        console.log(error.data);
       })
 }
 
@@ -401,7 +405,6 @@ const LoginArea=()=>{
 }
 
 const avatar = ref('');
-onMounted(getsonglistinit)
 </script>
 
 <template>
