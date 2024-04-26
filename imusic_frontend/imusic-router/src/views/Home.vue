@@ -8,6 +8,7 @@ import MusicPlayerView from "./MusicPlayerView.vue";
 import MusicPlayerFullView from "./MusicPlayerFullView.vue";
 import Login from "./Login.vue";
 import Personal_Center from "@/views/Personal_Center.vue";
+import CreateSonglist from "@/views/CreateSonglist.vue";
 import Sign_up from "./Sign_up.vue";
 import axios from "axios";
 
@@ -92,7 +93,7 @@ function changeSize() {
   if (currentMusic.value.lyric !== null) {
     fetchAndFormatLyrics(currentMusic.value.lyric);
   }
-  if(cantransformtofull.value){
+  if (cantransformtofull.value) {
     isFull.value = !isFull.value;
   }
 }
@@ -263,6 +264,13 @@ const username = ref('点击登录')
 const HasLogin = ref(false);
 const changeModex = () => {
   mode.value = '1';
+}
+
+const showFormCreateSonglist = ref(false) // 创建歌单的表单是否打开
+
+// 打开创建歌单的表单
+const activeShowFormCreateSonglist = () => {
+  showFormCreateSonglist.value = !showFormCreateSonglist.value;
 }
 
 const needshowsonglistpage = ref(false);
@@ -531,7 +539,16 @@ const avatar = ref('');
       </div>
       <div
           class="antialiased text-sm block h-10 my-1 text-white leading-10 transition ease-in duration-400 px-4 hover:bg-gray-600/40 ml-2 mr-2 rounded-md">
-        <p class="px-4 font-medium">创建的歌单</p>
+        <p class="px-4 font-medium inline">创建的歌单</p>
+        <svg @click="activeShowFormCreateSonglist" class="h-5 w-5 text-blue-500 inline my-3 float-right" width="24"
+             height="24"
+             viewBox="0 0 24 24" stroke-width="2"
+             stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+          <path stroke="none" d="M0 0h24v24H0z"/>
+          <rect x="4" y="4" width="16" height="16" rx="2"/>
+          <line x1="9" y1="12" x2="15" y2="12"/>
+          <line x1="12" y1="9" x2="12" y2="15"/>
+        </svg>
       </div>
       <div
           class="antialiased text-sm block h-10 my-1 text-white leading-10 transition ease-in duration-400 px-4 hover:bg-gray-600/40 ml-2 mr-2 rounded-md">
@@ -560,6 +577,8 @@ const avatar = ref('');
       </div>
     </div>
   </div>
+  <CreateSonglist :showFormCreateSonglist="showFormCreateSonglist"
+                  @activeShowFormCreateSonglist="activeShowFormCreateSonglist"></CreateSonglist>
   <audio
       :src="currentMusic.audio"
       ref="audioPlayer"
