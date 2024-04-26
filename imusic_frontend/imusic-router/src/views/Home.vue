@@ -93,6 +93,8 @@ watch(curIndex, () => {
   }
   isPlaying.value = true;
   console.log(lyric.value);
+  const id=currentMusic.value.id;
+  updateusersonglist(id);
 })
 
 const refresh = () => {
@@ -356,7 +358,6 @@ function handlePlayNow(id) {
       .catch(error => {
         console.log('error');
       })
-  updateusersonglist(id);
 }
 
 function handlePlayAfter(id) {
@@ -381,7 +382,6 @@ function handlePlayAfter(id) {
       .catch(error => {
         console.log(error.data.message);
       })
-  updateusersonglist(id);
 }
 
 const updateusersonglist=(songid)=>{
