@@ -23,20 +23,20 @@ const songlistlast = ref([
 const RegisterMode = ref(false);
 const mode = ref('1');
 const containerClass1 = computed(() => ({
-  'antialiased text-sm block h-10 my-1 text-white leading-10 transition duration-400 hover:bg-gray-600/40 px-4 ml-2 mr-2 rounded-md': mode.value !== '1',
-  'antialiased text-sm block h-10 my-1 text-white leading-10 transition duration-400 px-4 ml-2 mr-2 rounded-md bg-blue-500 hover:bg-blue-500': mode.value === '1',
+  'antialiased text-sm block h-10 my-1 text-white leading-10 transition ease-in duration-400 hover:bg-gray-600/40 px-4 ml-2 mr-2 rounded-md': mode.value !== '1',
+  'antialiased text-sm block h-10 my-1 text-white leading-10 transition ease-in duration-400 px-4 ml-2 mr-2 rounded-md bg-blue-500 hover:bg-blue-500': mode.value === '1',
 }));
 const containerClass2 = computed(() => ({
-  'antialiased text-sm block h-10 my-1 text-white leading-10 transition duration-400 hover:bg-gray-600/40 px-4 ml-2 mr-2 rounded-md': mode.value !== '2',
-  'antialiased text-sm block h-10 my-1 text-white leading-10 transition duration-400 px-4 ml-2 mr-2 rounded-md bg-blue-500 hover:bg-blue-500': mode.value === '2',
+  'antialiased text-sm block h-10 my-1 text-white leading-10 transition ease-in duration-400 hover:bg-gray-600/40 px-4 ml-2 mr-2 rounded-md': mode.value !== '2',
+  'antialiased text-sm block h-10 my-1 text-white leading-10 transition ease-in duration-400 px-4 ml-2 mr-2 rounded-md bg-blue-500 hover:bg-blue-500': mode.value === '2',
 }));
 const containerClass3 = computed(() => ({
-  'antialiased text-sm block h-10 my-1 text-white leading-10 transition duration-400 hover:bg-gray-600/40 px-4 ml-2 mr-2 rounded-md': mode.value !== '3',
-  'antialiased text-sm block h-10 my-1 text-white leading-10 transition duration-400 px-4 ml-2 mr-2 rounded-md bg-blue-500 hover:bg-blue-500': mode.value === '3',
+  'antialiased text-sm block h-10 my-1 text-white leading-10 transition ease-in duration-400 hover:bg-gray-600/40 px-4 ml-2 mr-2 rounded-md': mode.value !== '3',
+  'antialiased text-sm block h-10 my-1 text-white leading-10 transition ease-in duration-400 px-4 ml-2 mr-2 rounded-md bg-blue-500 hover:bg-blue-500': mode.value === '3',
 }));
 const containerClass4 = computed(() => ({
-  'antialiased text-sm block h-10 my-1 text-white leading-10 transition duration-400 hover:bg-gray-600/40 px-4 ml-2 mr-2 rounded-md': mode.value !== '4',
-  'antialiased text-sm block h-10 my-1 text-white leading-10 transition duration-400 px-4 ml-2 mr-2 rounded-md bg-blue-500 hover:bg-blue-500': mode.value === '4',
+  'antialiased text-sm block h-10 my-1 text-white leading-10 transition ease-in duration-400 hover:bg-gray-600/40 px-4 ml-2 mr-2 rounded-md': mode.value !== '4',
+  'antialiased text-sm block h-10 my-1 text-white leading-10 transition ease-in duration-400 px-4 ml-2 mr-2 rounded-md bg-blue-500 hover:bg-blue-500': mode.value === '4',
 }));
 const changeMode = (newMode) => {
   mode.value = newMode.toString(); // 设置新的 mode 值
@@ -262,6 +262,28 @@ function getsonglistinit(id) {
   })
       .then(response => {
         musicList.value = response.data.data.songs;
+        if(musicList.value.length===0){
+          musicList.value=[
+            {
+              "id": 12,
+              "title": "All Too Well",
+              "singer": "Taylor Swift",
+              "cover": "http://182.92.100.66:5000/media/covers/AllTooWell_cover.jpg",
+              "gradient": "background: rgb(118, 85, 66);background: linear-gradient(135deg, rgb(104, 72, 55), rgb(198, 175, 153));",
+              "introduction": "《All Too Well》的歌词讲述了一段失败的恋爱关系。它使用的说明性细节让人回想起曾经亲密的浪漫记忆，并探索其痛苦的后果。其中一个细节是叙述者留在她前情人的妹妹家里的一条围巾，它引起了广泛的解释并成为一种流行文化现象。 2012 年版本是一首缓慢燃烧的力量民谣，融合了乡村、民谣和摇滚音乐的风格。由斯威夫特和杰克·安东诺夫制作的“10 分钟版本”具有受流行摇滚制作影响的乡村氛围。",
+              "audio": "http://182.92.100.66:5000/media/audios/AllTooWell_audio.mp3",
+              "duration": "613.041632",
+              "lyric": "http://182.92.100.66:5000/media/lyrics/AllTooWell_lyric.lrc",
+              "tag_theme": null,
+              "tag_scene": null,
+              "tag_mood": null,
+              "tag_style": null,
+              "tag_language": null,
+              "uploader": "sivenlu",
+              "like": 0,
+              "upload_date": "2024-04-22 19:27:12"
+            }]
+        }
         currentMusic.value = musicList.value[curIndex.value];
         datax.value = response.data.data.songs;
         console.log(musicList.value);
@@ -411,9 +433,9 @@ const avatar = ref('');
   <div class="flex w-full h-screen bg-zinc-900">
     <div class="w-1/6 h-screen fixed hidden lg:block" style="background-color:#2E2E30">
       <div
-          class="group flex antialiased w-full mt-3 hover:text-blue-500 my-1 font-medium text-white transition duration-400 bg-yellow-95000 text-base"
+          class="group flex antialiased w-full mt-3 hover:text-blue-500 my-1 font-medium text-white transition ease-in duration-400 bg-yellow-95000 text-base"
           style="height:60px; line-height: 60px" @click="LoginArea">
-        <svg t="1713667739578" class="icon inline fill-white transition duration-400 my-auto ml-4"
+        <svg t="1713667739578" class="icon inline fill-white transition ease-in duration-400 my-auto ml-4"
              viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"
              p-id="5760" width="32" height="32" v-if="!HasLogin||avatar===''">
           <path
@@ -424,10 +446,10 @@ const avatar = ref('');
               p-id="5762"></path>
         </svg>
         <img v-if="HasLogin&&avatar!==''" :src="avatar"
-             class="inline transition duration-400 my-auto ml-4 aspect-square w-12 h-12 rounded-full" alt="头像">
+             class="inline transition ease-in duration-400 my-auto ml-4 aspect-square w-12 h-12 rounded-full" alt="头像">
         <span class="px-5">{{ username }}</span>
         <svg t="1713669026081"
-             class="icon inline fill-white group-hover:fill-blue-800 transition duration-400 justify-end my-auto mr-0"
+             class="icon inline fill-white group-hover:fill-blue-800 transition ease-in duration-400 justify-end my-auto mr-0"
              viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"
              p-id="6750" width="20" height="20">
           <path
@@ -490,11 +512,11 @@ const avatar = ref('');
         <span class="px-4 font-medium">创作中心</span>
       </div>
       <div
-          class="antialiased text-sm block h-10 my-1 text-white leading-10 transition duration-400 px-4 hover:bg-gray-600/40 ml-2 mr-2 rounded-md">
+          class="antialiased text-sm block h-10 my-1 text-white leading-10 transition ease-in duration-400 px-4 hover:bg-gray-600/40 ml-2 mr-2 rounded-md">
         <p class="px-4 font-medium">创建的歌单</p>
       </div>
       <div
-          class="antialiased text-sm block h-10 my-1 text-white leading-10 transition duration-400 px-4 hover:bg-gray-600/40 ml-2 mr-2 rounded-md">
+          class="antialiased text-sm block h-10 my-1 text-white leading-10 transition ease-in duration-400 px-4 hover:bg-gray-600/40 ml-2 mr-2 rounded-md">
         <span class="px-4 font-medium">收藏的歌单</span>
       </div>
     </div>
