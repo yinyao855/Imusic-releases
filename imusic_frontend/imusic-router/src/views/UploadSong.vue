@@ -18,7 +18,7 @@
         </svg>
         <input type="text" class="input bg-zinc-900" placeholder="请输入歌曲名" v-model="songTitle">
       </div>
-      <p class="text-sm bg-zinc-900">
+      <p class="text-sm text-gray-500">
         <span>此项为必填项</span>
       </p>
       <div class="flex-column text-2xl">
@@ -290,6 +290,7 @@ import axios from "axios";
 import Warning from "@/views/Warning.vue";
 import {defineEmits} from "vue"
 import P from "particles.vue3";
+import CreateCenterPage_Main from "@/views/CreateCenterPage_Main.vue";
 
 const emits = defineEmits(['ChangerRegisterMode', 'changeMode']);
 const lyrics = ref([{'time': '', 'text': ''}]);
@@ -439,6 +440,7 @@ const submitSong = () => {
   })
       .then(response => {
         alert('上传成功');
+        upLoadSongSuccess();
         console.log(response.data);
         confetti({
           particleCount: 500,

@@ -19,6 +19,35 @@
         <input type="text" class="input bg-white" placeholder="Enter your Email" v-model="email">
       </div>
 
+
+      <div class="flex-column">
+        <label>Verification Code </label>
+      </div>
+      <div class="inputForm">
+        <svg t="1714116043933" class="icon fill-black" viewBox="0 0 1024 1024" version="1.1"
+             xmlns="http://www.w3.org/2000/svg"
+             p-id="5931" width="24" height="24">
+          <path
+              d="M943.1 172c-2.4-0.2-245.1-25.3-413.8-147.8-5.1-3.7-11-5.6-17.3-5.6-6.2 0-12.2 1.9-17.3 5.6C326.9 146 83.3 171.8 80.9 172c-15.2 1.4-26.6 14.1-26.6 29.3 0 6.7 0.6 165.8 54.8 344.4 32.1 105.8 76.4 196.4 131.9 269.2 70.3 92.3 158.5 156 262 189.2 2.9 0.9 5.9 1.4 9 1.4s6.1-0.5 8.9-1.4c103.6-33.2 191.7-96.8 262-189.2 55.4-72.7 99.8-163.2 131.9-269.2 54.1-178.6 54.8-337.7 54.8-344.4C969.7 186.1 958.3 173.5 943.1 172zM910.1 227.2l-0.1 1.6c-2.9 58.1-13.4 174.4-51.4 299.9-66.7 220.1-183.1 360.1-346 416.1L512 945l-0.6-0.2C349 888.9 232.7 749.4 165.8 530.1c-39.8-130.5-49.4-254.2-51.8-301.4l-0.1-1.6 1.5-0.2c70.6-10.3 250.5-44.8 395.5-142.4l0.9-0.7 1 0.7C658 182.1 837.9 216.6 908.5 227L910.1 227.2z"
+              p-id="5932"></path>
+          <path
+              d="M641.8 351 467 580.3l-89-76.1c-5.3-4.5-12.1-7-19.1-7-8.6 0-16.8 3.7-22.4 10.3-10.5 12.3-9.1 31 3.3 41.5l112.7 96.4c5.2 4.4 12.4 7 19.6 7 0.9 0 1.8 0 2.7-0.1 8-0.8 15.4-5 20.3-11.4l193.7-254c4.8-6.3 6.8-14 5.7-21.8-1-7.8-5.1-14.7-11.3-19.5C670.1 335.6 651.6 338.1 641.8 351z"
+              p-id="5933"></path>
+        </svg>
+        <input type="text" class="input bg-white" placeholder="Enter your Verification Code" v-model="verify_code">
+        <div class="w-1/2 h-full text-black border-black rounded-2xl flex items-center justify-center">
+          <button class="btn text-black hover:text-white hover:bg-black btn-outline w-full" v-if="!showcountdown" @click="startCountdown">
+            {{ content }}
+          </button>
+
+          <span v-if="showcountdown" class="countdown font-mono text-2xl text-black px-4">
+            <span :style="{ '--value': timeLeft }"></span>
+        </span>
+          <span class="text:black" v-if="showcountdown">秒后重新获取</span>
+        </div>
+      </div>
+
+
       <div class="flex-column">
         <label>Username </label>
       </div>
@@ -92,17 +121,22 @@
 <script setup>
 import Warning from "@/views/Warning.vue";
 import confetti from 'canvas-confetti';
-import {ref} from "vue";
 import axios from "axios";
-import {RouterView, useRouter} from 'vue-router';
-import { defineEmits } from "vue"
-const emits=defineEmits(['ChangerRegisterMode']);
+import { useRouter} from 'vue-router';
+import {defineEmits} from "vue"
+const content=ref('获取验证码');
+import { ref, watch} from "vue";
+const showcountdown = ref(false);
+
+const emits = defineEmits(['ChangerRegisterMode']);
 
 const router = useRouter();
-
 const gotologin = () => {
   emits('ChangerRegisterMode');
 }
+
+
+const verify_code = ref('');
 
 const show = () => {
   const button = document.querySelector('.button-submit');
@@ -114,7 +148,11 @@ const show = () => {
     WarningShow.value = true;
     message.value = '请输入邮箱';
     return;
-  } else if (!emailRegex.test(email.value)) {
+  } else if (verify_code.value === '') {
+    WarningShow.value = true;
+    message.value = '请输入验证码';
+    return;
+  }else if (!emailRegex.test(email.value)) {
     WarningShow.value = true;
     message.value = '邮箱格式不符合要求';
     return;
@@ -131,11 +169,12 @@ const show = () => {
   formData.append('email', email.value)
   formData.append('username', username.value);
   formData.append('password', password.value);
+  formData.append('verification_code',verify_code.value);
   axios.post('http://182.92.100.66:5000/users/register', formData)
       .then(response => {
         console.log(response.data);
         if (response.data.success === true) {
-          usernametofather.value=username.value;
+          usernametofather.value = username.value;
           confetti({
             particleCount: 500,
             angle: 90,
@@ -170,6 +209,39 @@ const show = () => {
         console.log("error");
       })
 }
+const timeLeft = ref(60);
+watch(timeLeft, () => {
+  let time = timeLeft.value;
+  if(time===0){
+    showcountdown.value=false;
+    content.value='重新获取';
+  }
+})
+
+
+let interval = null;
+
+const startCountdown = () => {
+  const formData=new FormData();
+  formData.append('email',email.value);
+  axios.post('http://182.92.100.66:5000/users/send-code',formData)
+      .then(response=>{
+        console.log(response.data);
+      })
+      .catch(error=>{
+        console.log(error.data);
+      })
+  showcountdown.value = true;
+  clearInterval(interval);
+  timeLeft.value = 60;
+  interval = setInterval(() => {
+    if (timeLeft.value > 0) {
+      timeLeft.value--;
+    } else {
+      clearInterval(interval);
+    }
+  }, 1000);
+}
 
 const CloseWarning = () => {
   WarningShow.value = false;
@@ -180,11 +252,5 @@ const password = ref('');
 const repeatpassword = ref('');
 const message = ref('');
 const WarningShow = ref(false);
-const usernametofather=defineModel('username');
-// const email=defineModel('email');
-// const bio=defineModel('bio');
-// const avatar=defineModel('avatar');
-// const role=defineModel('role');
-// const registration_date=defineModel('registration_date');
-
+const usernametofather = defineModel('username');
 </script>

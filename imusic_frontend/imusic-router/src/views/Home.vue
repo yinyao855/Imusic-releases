@@ -452,6 +452,24 @@ const LoginArea = () => {
 }
 
 const avatar = ref('');
+
+const getPageinit=()=>{
+  axios.get('http://182.92.100.66:5000/songlists/initdata')
+      .then(response => {
+        songlists.value = response.data.data;
+      })
+      .catch(error => {
+        console.log('查不到歌单');
+      })
+  axios.get('http://182.92.100.66:5000/recommend/latest')
+      .then(response => {
+        songlistlast.value = response.data.data;
+      })
+      .catch(error => {
+        console.log(error.data.message);
+      })
+}
+onMounted(getPageinit);
 </script>
 
 <template>
