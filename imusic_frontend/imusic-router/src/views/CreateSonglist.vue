@@ -1,7 +1,6 @@
 <script setup>
 import {defineModel, ref} from "vue";
 import axios from "axios";
-import P from "particles.vue3";
 
 const title = ref("");
 const introduction = ref("");
@@ -15,11 +14,6 @@ const language = ref("")
 const cover = ref(null);
 const coverImageFileUrl = ref('');
 
-const props = defineProps({
-  showFormCreateSonglist: Boolean,
-})
-
-const emit = defineEmits(['activeShowFormCreateSonglist']);
 const HasLogin = defineModel('HasLogin');
 const username = defineModel('username');
 const message = ref('');
@@ -90,7 +84,7 @@ function sendPostCreateSonglist() {
       .then(function (response) {
         if (response.data.success === true) {
           console.log(response);
-          window.alert("创建成功");
+          alert("创建成功");
           emit("activeShowFormCreateSonglist");
         }
       })
@@ -102,9 +96,8 @@ function sendPostCreateSonglist() {
 </script>
 
 <template>
-  <!--  <button @click="showForm">click</button>-->
-  <div class="form_create_container bg-gray-400 fixed" v-show="showFormCreateSonglist">
-    <div class="form_create m-auto mt-4 bg-gray-800 p-3 rounded-2xl">
+  <div class="form_create_container bg-zinc-900 w-full">
+    <div class="w-3/5 m-auto mt-4 bg-zinc-900 p-3 rounded-2xl">
       <div class="">
         <div class="text-2xl text-white mb-2">
           <p class="">*歌单标题</p>
@@ -117,9 +110,9 @@ function sendPostCreateSonglist() {
         </div>
         <div class="grid grid-cols-1 space-y-2">
           <div class="flex items-center justify-center w-full">
-            <label class="flex flex-col rounded-lg border-4 border-dashed w-full h-52 p-10 group text-center"
+            <label class="flex flex-col rounded-lg border-4 border-dashed w-full h-60 pb-6 pt-3 group text-center hover:bg-zinc-800 transition ease-in duration-300"
                    for="CoverUpLoad">
-              <div class="h-32 content-center m-auto" v-if="cover!==null">
+              <div class="h-full content-center mx-auto" v-if="cover!==null">
                 <img :src="coverImageFileUrl" class="w-full h-full object-cover rounded-lg content-center">
               </div>
               <p v-if="cover!==null" class=" pointer-none text-gray-500 "><span
@@ -159,63 +152,67 @@ function sendPostCreateSonglist() {
       <div class="text-2xl text-white my-2">
         <p class="">标签</p>
       </div>
-      <div class="inline-block">
-        <select v-model="theme"
-                class="text-xs inline-flex items-center font-bold leading-sm px-2 py-1 bg-blue-200 text-blue-700 rounded-full">
-          <option value="">-- 主题 --</option>
-          <option>背景音乐</option>
-          <option>经典老歌</option>
-          <option>KTV金曲</option>
-          <option>游戏配乐</option>
-          <option>电影配乐</option>
-        </select>
+      主题
+      <div class="join w-full">
+        <input class="join-item btn w-1/6" type="radio" name="options1" aria-label="默认" value="默认" v-model="theme"/>
+        <input class="join-item btn w-1/6" type="radio" name="options1" aria-label="背景音乐" value="背景音乐"
+               v-model="theme"/>
+        <input class="join-item btn w-1/6" type="radio" name="options1" aria-label="经典老歌" value="经典老歌"
+               v-model="theme"/>
+        <input class="join-item btn w-1/6" type="radio" name="options1" aria-label="KTV金曲" value="KTV金曲"
+               v-model="theme"/>
+        <input class="join-item btn w-1/6" type="radio" name="options1" aria-label="游戏配乐" value="游戏配乐"
+               v-model="theme"/>
+        <input class="join-item btn w-1/6" type="radio" name="options1" aria-label="电影配乐" value="电影配乐"
+               v-model="theme"/>
       </div>
-      <div class="inline-block">
-        <select v-model="scene"
-                class="ml-1 text-xs inline-flex items-center font-bold leading-sm px-2 py-1 bg-green-200 text-green-700 rounded-full">
-          <option value="">-- 场景 --</option>
-          <option>咖啡馆</option>
-          <option>运动</option>
-          <option>睡前</option>
-          <option>旅行</option>
-          <option>派对</option>
-        </select>
+      场景
+      <div class="join w-full">
+        <input class="join-item btn w-1/6" type="radio" name="options2" aria-label="默认" value="默认" v-model="scene"/>
+        <input class="join-item btn w-1/6" type="radio" name="options2" aria-label="咖啡馆" value="咖啡馆"
+               v-model="scene"/>
+        <input class="join-item btn w-1/6" type="radio" name="options2" aria-label="运动" value="运动" v-model="scene"/>
+        <input class="join-item btn w-1/6" type="radio" name="options2" aria-label="睡前" value="睡前" v-model="scene"/>
+        <input class="join-item btn w-1/6" type="radio" name="options2" aria-label="旅行" value="旅行" v-model="scene"/>
+        <input class="join-item btn w-1/6" type="radio" name="options2" aria-label="派对" value="派对" v-model="scene"/>
       </div>
-      <div class="inline-block">
-        <select v-model="mood"
-                class="ml-1 text-xs inline-flex items-center font-bold leading-sm px-2 py-1 bg-red-200 text-red-700 rounded-full">
-          <option value="">-- 心情 --</option>
-          <option>伤感</option>
-          <option>安静</option>
-          <option>思念</option>
-          <option>宣泄</option>
-        </select>
+      心情
+      <div class="join w-full">
+        <input class="join-item btn w-1/6" type="radio" name="options3" aria-label="默认" value="默认" v-model="mood"/>
+        <input class="join-item btn w-1/6" type="radio" name="options3" aria-label="伤感" value="伤感" v-model="mood"/>
+        <input class="join-item btn w-1/6" type="radio" name="options3" aria-label="安静" value="安静" v-model="mood"/>
+        <input class="join-item btn w-1/6" type="radio" name="options3" aria-label="思念" value="思念" v-model="mood"/>
+        <input class="join-item btn w-1/6" type="radio" name="options3" aria-label="宣泄" value="宣泄" v-model="mood"/>
+        <input class="join-item btn w-1/6" type="radio" name="options3" aria-label="开心" value="开心" v-model="mood"/>
       </div>
-      <div class="inline-block">
-        <select v-model="style"
-                class="ml-1 text-xs inline-flex items-center font-bold leading-sm px-2 py-1 bg-orange-200 text-orange-700 rounded-full">
-          <option value="">-- 风格 --</option>
-          <option>摇滚</option>
-          <option>民谣</option>
-          <option>轻音乐</option>
-          <option>电音</option>
-          <option>流行</option>
-        </select>
+      风格
+      <div class="join w-full">
+        <input class="join-item btn w-1/6" type="radio" name="options4" aria-label="默认" value="默认" v-model="style"/>
+        <input class="join-item btn w-1/6" type="radio" name="options4" aria-label="摇滚" value="摇滚" v-model="style"/>
+        <input class="join-item btn w-1/6" type="radio" name="options4" aria-label="民谣" value="民谣" v-model="style"/>
+        <input class="join-item btn w-1/6" type="radio" name="options4" aria-label="轻音乐" value="轻音乐"
+               v-model="style"/>
+        <input class="join-item btn w-1/6" type="radio" name="options4" aria-label="电音" value="电音" v-model="style"/>
+        <input class="join-item btn w-1/6" type="radio" name="options4" aria-label="流行" value="流行" v-model="style"/>
       </div>
-      <div class="inline-block">
-        <select v-model="language"
-                class="ml-1 text-xs inline-flex items-center font-bold leading-sm px-2 py-1 bg-purple-200 text-purple-700 rounded-full">
-          <option value="">-- 语言 --</option>
-          <option>英语</option>
-          <option>日语</option>
-          <option>粤语</option>
-          <option>国语</option>
-          <option>韩语</option>
-        </select>
+      语言
+      <div class="join w-full">
+        <input class="join-item btn w-1/6" type="radio" name="options5" aria-label="默认" value="默认"
+               v-model="language"/>
+        <input class="join-item btn w-1/6" type="radio" name="options5" aria-label="英语" value="英语"
+               v-model="language"/>
+        <input class="join-item btn w-1/6" type="radio" name="options5" aria-label="日语" value="日语"
+               v-model="language"/>
+        <input class="join-item btn w-1/6" type="radio" name="options5" aria-label="粤语" value="粤语"
+               v-model="language"/>
+        <input class="join-item btn w-1/6" type="radio" name="options5" aria-label="国语" value="国语"
+               v-model="language"/>
+        <input class="join-item btn w-1/6" type="radio" name="options5" aria-label="韩语" value="韩语"
+               v-model="language"/>
       </div>
       <div>
-        <button @click="sendPostCreateSonglist" class="mt-8 w-full flex justify-center bg-blue-500 text-gray-100 p-4  rounded-full tracking-wide
-                                    font-semibold  focus:outline-none focus:shadow-outline hover:bg-blue-600 shadow-lg cursor-pointer transition ease-in duration-300">
+        <button @click="sendPostCreateSonglist" class="mt-8 w-full flex justify-center bg-blue-600 text-gray-100 p-4  rounded-full tracking-wide
+                                    font-semibold  focus:outline-none focus:shadow-outline hover:bg-blue-800 shadow-lg cursor-pointer transition ease-in duration-300">
           创建歌单
         </button>
       </div>
@@ -240,15 +237,9 @@ select {
 .form_create_container {
   width: 100%;
   height: 100%;
-  position: fixed;
-  z-index: 1;
   left: 0;
   top: 0;
   opacity: 95%;
 }
 
-.form_create {
-  width: 500px;
-  box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.5);
-}
 </style>

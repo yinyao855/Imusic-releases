@@ -12,6 +12,7 @@ import CreateSonglist from "@/views/CreateSonglist.vue";
 import Sign_up from "./Sign_up.vue";
 import axios from "axios";
 import UploadSong from "@/views/UploadSong.vue";
+import CreateSonglistPage_Main from "@/views/CreateSonglistPage_Main.vue";
 
 const songlistlast = ref([
   {
@@ -39,6 +40,10 @@ const containerClass3 = computed(() => ({
 const containerClass4 = computed(() => ({
   'antialiased text-sm block h-10 my-1 text-white leading-10 transition ease-in duration-400 hover:bg-gray-600/40 px-4 ml-2 mr-2 rounded-md': mode.value !== '4',
   'antialiased text-sm block h-10 my-1 text-white leading-10 transition ease-in duration-400 px-4 ml-2 mr-2 rounded-md bg-blue-500 hover:bg-blue-500': mode.value === '4',
+}));
+const containerClass5 = computed(() => ({
+  'antialiased text-sm block h-10 my-1 text-white leading-10 transition ease-in duration-400 hover:bg-gray-600/40 pl-4 ml-2 mr-2 rounded-md': mode.value !== '5',
+  'antialiased text-sm block h-10 my-1 text-white leading-10 transition ease-in duration-400 px-4 ml-2 mr-2 rounded-md bg-blue-500 hover:bg-blue-500': mode.value === '5',
 }));
 const changeMode = (newMode) => {
   mode.value = newMode.toString(); // 设置新的 mode 值
@@ -267,12 +272,6 @@ const changeModex = () => {
   mode.value = '1';
 }
 
-const showFormCreateSonglist = ref(false) // 创建歌单的表单是否打开
-
-// 打开创建歌单的表单
-const activeShowFormCreateSonglist = () => {
-  showFormCreateSonglist.value = !showFormCreateSonglist.value;
-}
 
 const needshowsonglistpage = ref(false);
 
@@ -320,9 +319,9 @@ function getsonglistinit(id) {
   axios.get('http://182.92.100.66:5000/songlists/initdata')
       .then(response => {
         songlists.value = response.data.data;
-        let length=songlists.value;
-        for(let i=0;i<length;++i){
-          songlists.value[i].duration=gettime(songlists.value[i].duration)
+        let length = songlists.value;
+        for (let i = 0; i < length; ++i) {
+          songlists.value[i].duration = gettime(songlists.value[i].duration)
         }
       })
       .catch(error => {
@@ -331,9 +330,9 @@ function getsonglistinit(id) {
   axios.get('http://182.92.100.66:5000/recommend/latest')
       .then(response => {
         songlistlast.value = response.data.data;
-        let length=songlistlast.value.length;
-        for(let i=0;i<length;++i){
-          songlistlast.value[i].duration=gettime(songlistlast.value[i].duration)
+        let length = songlistlast.value.length;
+        for (let i = 0; i < length; ++i) {
+          songlistlast.value[i].duration = gettime(songlistlast.value[i].duration)
         }
       })
       .catch(error => {
@@ -341,10 +340,10 @@ function getsonglistinit(id) {
       })
 }
 
-const gettime=(time)=>{
-  const minute=Math.floor(time/60);
-  const second=Math.floor(time-minute*60);
-  if(second<10){
+const gettime = (time) => {
+  const minute = Math.floor(time / 60);
+  const second = Math.floor(time - minute * 60);
+  if (second < 10) {
     return `${minute}:0${second}`;
   }
   return `${minute}:${second}`;
@@ -390,10 +389,10 @@ function changesonglist() {
       .then(response => {
         console.log('hello');
         songlist.value = response.data.data;
-        let length=songlist.value.songs.length;
+        let length = songlist.value.songs.length;
         console.log(length);
-        for(let i=0;i<length;++i){
-          songlist.value.songs[i].duration=gettime(songlist.value.songs[i].duration)
+        for (let i = 0; i < length; ++i) {
+          songlist.value.songs[i].duration = gettime(songlist.value.songs[i].duration)
         }
       })
       .catch(error => {
@@ -481,9 +480,9 @@ const getPageinit = () => {
   axios.get('http://182.92.100.66:5000/songlists/initdata')
       .then(response => {
         songlists.value = response.data.data;
-        let length=songlists.value.length;
-        for(let i=0;i<length;++i){
-          songlists.value[i].duration=gettime(songlists.value[i].duration);
+        let length = songlists.value.length;
+        for (let i = 0; i < length; ++i) {
+          songlists.value[i].duration = gettime(songlists.value[i].duration);
         }
       })
       .catch(error => {
@@ -492,9 +491,9 @@ const getPageinit = () => {
   axios.get('http://182.92.100.66:5000/recommend/latest')
       .then(response => {
         songlistlast.value = response.data.data;
-        let length=songlistlast.value.length;
-        for(let i=0;i<length;++i){
-          songlistlast.value[i].duration=gettime(songlistlast.value[i].duration);
+        let length = songlistlast.value.length;
+        for (let i = 0; i < length; ++i) {
+          songlistlast.value[i].duration = gettime(songlistlast.value[i].duration);
         }
       })
       .catch(error => {
@@ -582,23 +581,20 @@ onMounted(getPageinit);
              p-id="2447" width="16" height="16">
           <path
               d="M374 4q-17 1-32 8-36 16-50.5 53t1.5 73h-91q-30 2-50 24t-20 52v121q2 19 12 35t26 25v265q2 30 17.5 55t41.5 39q26 14 56 14h465q30-2 54.5-17.5t39-41.5q14.5-26 14.5-55V395l5-3q15-11 24-27.5t9-35.5V208q-2-30-24-50t-52-20h-85l3-8q5-15 5-31 0-39-28-67T648 4h-15q-22 2-41 12t-33 27l-45 56-50-62q-15-16-34.5-24.5T388 4h-14z m111 707H285q-24 0-41-17t-17-40V405h258v306z m315-52q-2 22-18.5 37T743 711H543V405h258l-1 254zM485 348H208q-8 0-13.5-5.5T189 329V214q0-8 5.5-13.5T208 195h277v153z m335-153q8 0 13.5 5.5T839 214v115q0 8-5.5 13.5T820 348H543V195h277zM648 61q16 0 27 11.5t11 27q0 15.5-11 27T648 138h-91l47-59q14-18 36-18h8z m-260 0q22 0 36 17l47 60h-91q-16 0-27-11.5t-11-27q0-15.5 11-27T380 61h8z"
-              fill="#ffffff" p-id="2448">
+              p-id="2448">
           </path>
         </svg>
         <span class="px-4 font-medium">创作中心</span>
       </div>
-      <div
-          class="antialiased text-sm block h-10 my-1 text-white leading-10 transition ease-in duration-400 px-4 hover:bg-gray-600/40 ml-2 mr-2 rounded-md">
-        <p class="px-4 font-medium inline">创建的歌单</p>
-        <svg @click="activeShowFormCreateSonglist" class="h-5 w-5 text-blue-500 inline my-3 float-right" width="24"
-             height="24"
-             viewBox="0 0 24 24" stroke-width="2"
-             stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-          <path stroke="none" d="M0 0h24v24H0z"/>
-          <rect x="4" y="4" width="16" height="16" rx="2"/>
-          <line x1="9" y1="12" x2="15" y2="12"/>
-          <line x1="12" y1="9" x2="12" y2="15"/>
-        </svg>
+
+        <div :class="containerClass5" @click="changeMode(5)">
+          <svg t="1714138297308" class="icon inline fill-white my-auto" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"
+               p-id="2360" width="16" height="16">
+            <path
+                d="M513.994 950.637c-119.023 0-230.918-46.127-315.082-129.876C114.714 736.94 68.335 625.526 68.335 506.95c0-118.547 46.381-229.991 130.547-313.776 84.165-83.752 196.057-129.877 315.08-129.877s230.918 46.125 315.044 129.877C913.24 276.959 959.59 388.404 959.59 506.92c0.03 118.577-46.351 230.02-130.584 313.8-84.096 83.75-195.99 129.917-315.012 129.917z m0-823.71c-102.087 0-198.033 39.537-270.164 111.353C171.727 310.03 132 405.463 132 506.95c0 101.487 39.694 196.914 111.797 268.638C315.93 847.4 411.872 886.933 513.961 886.933c102.056 0 198.032-39.534 270.163-111.345 72.1-71.784 111.832-167.192 111.797-268.673 0-101.484-39.697-196.885-111.797-268.606-72.102-71.812-168.078-111.382-270.13-111.382z m222.828 348.19H545.826V284.12c0-17.573-14.26-31.833-31.833-31.833s-31.833 14.26-31.833 31.833v190.998H291.164c-17.573 0-31.833 14.26-31.833 31.833 0 17.567 14.26 31.833 31.833 31.833H482.16V729.78c0 17.606 14.262 31.831 31.835 31.831 17.576 0 31.83-14.225 31.83-31.831V538.783h190.997c17.607 0 31.833-14.266 31.833-31.833 0-17.578-14.226-31.833-31.833-31.833z"
+                p-id="2361"></path>
+          </svg>
+          <span class="px-4 font-medium">创建歌单</span>
       </div>
       <div
           class="antialiased text-sm block h-10 my-1 text-white leading-10 transition ease-in duration-400 px-4 hover:bg-gray-600/40 ml-2 mr-2 rounded-md">
@@ -624,12 +620,12 @@ onMounted(getPageinit);
         <ExplorePage_Main v-if="mode==='2'"></ExplorePage_Main>
         <SettingPage_Main v-if="mode==='3'"></SettingPage_Main>
         <CreateCenter v-if="mode==='4'" v-model:HasLogin="HasLogin" v-model:username="username"></CreateCenter>
+        <CreateSonglistPage_Main v-if="mode==='5'" v-model:HasLogin="HasLogin"
+                        v-model:username="username"></CreateSonglistPage_Main>
       </div>
     </div>
   </div>
-  <CreateSonglist :showFormCreateSonglist="showFormCreateSonglist"
-                  @activeShowFormCreateSonglist="activeShowFormCreateSonglist" v-model:HasLogin="HasLogin"
-                  v-model:username="username"></CreateSonglist>
+
   <audio
       :src="currentMusic.audio"
       ref="audioPlayer"
