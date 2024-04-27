@@ -57,10 +57,23 @@ const SearchOperation = () => {
         console.log(response.data.data);
         ShowSearchView.value = true;
         songlistsearch.value = response.data.data;
+        let length=songlistsearch.value.length;
+        for(let i=0;i<length;++i){
+          songlistsearch.value[i].duration=gettime(songlistsearch.value[i].duration)
+        }
       })
       .catch(error => {
         console.log(error.data.message);
       })
+}
+
+const gettime = (time) => {
+  const minute = Math.floor(time / 60);
+  const second = Math.floor(time - minute * 60);
+  if (second < 10) {
+    return `${minute}:0${second}`;
+  }
+  return `${minute}:${second}`;
 }
 
 const needshowsonglistpage = defineModel('needshowsonglistpage');
@@ -94,7 +107,7 @@ const ChangeSearchViewMode = () => {
                      @ChangeSongList="ChangeSongList"></SongList_Page>
     </div>
   </transition>
-  <div class="w-full h-16 pl-6 fixed bg-zinc-900" v-if="!needshowsonglistpage&&!ShowSearchView">
+  <div class="w-full h-16 pl-6 fixed bg-zinc-900 z-50" v-if="!needshowsonglistpage&&!ShowSearchView">
     <div :class="[NaviClass1, 'text-transition']" @click="changeNaviMode(1)" style="line-height: 56px">推 荐</div>
     <div :class="[NaviClass2, 'text-transition']" @click="changeNaviMode(2)" style="line-height: 56px">最新上传</div>
     <Search v-model:SearchContent="SearchContent" @SearchOperation="SearchOperation"></Search>
@@ -380,7 +393,7 @@ const ChangeSearchViewMode = () => {
 .transition-container {
   right: 0;
   top: 0;
-  height: 80%
+  height: 100%
 }
 
 

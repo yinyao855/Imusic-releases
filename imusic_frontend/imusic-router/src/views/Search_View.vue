@@ -34,6 +34,7 @@ const changesize = () => {
         <th class="text-left text-sm font-semibold">音乐标题</th>
         <th class="text-left text-sm font-semibold">歌手</th>
         <th class="text-left text-sm font-semibold">上传者</th>
+        <th class="text-left text-sm font-semibold">时长</th>
         <th class="text-left text-sm font-semibold"></th>
       </tr>
       </thead>
@@ -59,6 +60,7 @@ const changesize = () => {
           {{ item.singer }}
         </td>
         <td>{{ item.uploader }}</td>
+        <td>{{item.duration}}</td>
         <th>
           <div
               class="dropdown dropdown-left dropdown-end my-auto tooltip transition duration-400 hover:bg-gray-600/40 bg-zinc-900 btn btn-sm border-none"
