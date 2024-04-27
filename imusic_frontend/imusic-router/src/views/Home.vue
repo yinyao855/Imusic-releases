@@ -278,6 +278,41 @@ const changeModex = () => {
   mode.value = '1';
 }
 
+const refreshNewest_Songs_Page=()=>{
+  axios.get('http://182.92.100.66:5000/recommend/latest')
+      .then(response => {
+        songlistlast.value = response.data.data;
+        let length = songlistlast.value.length;
+        for (let i = 0; i < length; ++i) {
+          songlistlast.value[i].duration = gettime(songlistlast.value[i].duration)
+        }
+        axios.get('http://182.92.100.66:5000/like/songs',{
+          params:{
+            'username':username.value,
+          }
+        })
+            .then(response2=>{
+              userlike.value=response2.data.songs;
+              console.log(userlike.value);
+              let length2=userlike.value.length;
+              for(let i=0;i<length;++i){
+                for(let j=0;j<length2;++j){
+                  if(songlistlast.value[i].id===userlike.value[j].id){
+                    songlistlast.value[i].user_like=true;
+                  }
+                }
+              }
+              console.log(songlist.value);
+            })
+            .catch(error=>{
+              console.log(error.response.data);
+            })
+      })
+      .catch(error => {
+        console.log(error.data.message);
+      })
+}
+
 
 const needshowsonglistpage = ref(false);
 
@@ -430,9 +465,76 @@ function changesonglist() {
         for (let i = 0; i < length; ++i) {
           songlist.value.songs[i].duration = gettime(songlist.value.songs[i].duration)
         }
+        axios.get('http://182.92.100.66:5000/like/songs',{
+          params:{
+            'username':username.value,
+          }
+        })
+            .then(response2=>{
+              userlike.value=response2.data.songs;
+              console.log(userlike.value);
+              let length2=userlike.value.length;
+              for(let i=0;i<length;++i){
+                for(let j=0;j<length2;++j){
+                  if(songlist.value.songs[i].id===userlike.value[j].id){
+                    songlist.value.songs[i].user_like=true;
+                  }
+                }
+              }
+              console.log(songlist.value.songs);
+            })
+            .catch(error=>{
+              console.log(error.response.data);
+            })
       })
       .catch(error => {
         console.log("get init songlist fail");
+      })
+}
+
+
+const songlistsearch=ref([]);
+const SearchContent=ref('');
+const ShowSearchView=ref(false);
+
+
+const SearchOperation = () => {
+  axios.get('http://182.92.100.66:5000/songs/search', {
+    params: {
+      keyword: SearchContent.value
+    }
+  })
+      .then(response => {
+        console.log(response.data.data);
+        ShowSearchView.value = true;
+        songlistsearch.value = response.data.data;
+        let length = songlistsearch.value.length;
+        for (let i = 0; i < length; ++i) {
+          songlistsearch.value[i].duration = gettime(songlistsearch.value[i].duration)
+        }
+        axios.get('http://182.92.100.66:5000/like/songs',{
+          params:{
+            'username':username.value,
+          }
+        })
+            .then(response2=>{
+              userlike.value=response2.data.songs;
+              console.log(userlike.value);
+              let length2=userlike.value.length;
+              for(let i=0;i<length;++i){
+                for(let j=0;j<length2;++j){
+                  if(songlistsearch.value[i].id===userlike.value[j].id){
+                    songlistsearch.value[i].user_like=true;
+                  }
+                }
+              }
+            })
+            .catch(error=>{
+              console.log(error.response.data);
+            })
+      })
+      .catch(error => {
+        console.log(error.data.message);
       })
 }
 
@@ -722,8 +824,8 @@ function activeSonglist(choose) {
                          v-if="HasLogin&&mode==='0'" @updateavatar="updateavatar"></Personal_Center>
         <HomePage_Main v-model:songlist="songlist" v-model:needshowsonglistpage="needshowsonglistpage"
                        @handlePlayAfter="handlePlayAfter" @handlePlayNow="handlePlayNow" v-if="mode==='1'"
-                       @ChangeSongList="ChangeSongList"
-                       v-model:songlists="songlists" v-model:index="index" v-model:username="username" v-model:userlike="userlike"
+                       @ChangeSongList="ChangeSongList" v-model:SearchContent="SearchContent" v-model:ShowSearchView="ShowSearchView" v-model:songlistsearch="songlistsearch" @SearchOperation="SearchOperation"
+                       v-model:songlists="songlists" v-model:index="index" v-model:username="username" v-model:userlike="userlike" @refreshNewest_Songs_Page="refreshNewest_Songs_Page"
                        v-model:songlistlast="songlistlast" v-model:HomePageRecommendLatest="HomePageRecommendLatest"></HomePage_Main>
         <ExplorePage_Main v-if="mode==='2'"></ExplorePage_Main>
         <SettingPage_Main v-if="mode==='3'"></SettingPage_Main>

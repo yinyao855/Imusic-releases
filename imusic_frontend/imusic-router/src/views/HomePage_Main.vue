@@ -9,7 +9,7 @@ import axios from "axios";
 import Search_View from "@/views/Search_View.vue";
 import CurrentUser_SongList from "@/views/CurrentUser_SongList.vue";
 
-const emits = defineEmits(['handlePlayNow', 'handlePlayAfter', 'ChangeSongList']);
+const emits = defineEmits(['handlePlayNow', 'handlePlayAfter', 'ChangeSongList','refreshNewest_Songs_Page','SearchOperation']);
 const songlistlast = defineModel('songlistlast')
 const username = defineModel('username')
 
@@ -28,12 +28,15 @@ const changeNaviMode = (newMode) => {
   console.log(NaviMode.value);
 }
 
+const userlike=defineModel('userlike')
+
 const songlists = defineModel('songlists');
 const songlist = defineModel('songlist');
 const HomePageRecommendLatest = defineModel('HomePageRecommendLatest');
 const index = defineModel('index');
-const ShowSearchView = ref(false);
-const songlistsearch = ref([]);
+const ShowSearchView = defineModel('ShowSearchView');
+const songlistsearch = defineModel('songlistsearch');
+
 
 
 function handlePlayNow(id) {
@@ -46,27 +49,10 @@ function handlePlayAfter(id) {
   emits('handlePlayAfter', id);
 }
 
-const SearchContent = ref('');
+const SearchContent = defineModel('SearchContent');
 
 const SearchOperation = () => {
-  console.log(SearchContent.value);
-  axios.get('http://182.92.100.66:5000/songs/search', {
-    params: {
-      keyword: SearchContent.value
-    }
-  })
-      .then(response => {
-        console.log(response.data.data);
-        ShowSearchView.value = true;
-        songlistsearch.value = response.data.data;
-        let length = songlistsearch.value.length;
-        for (let i = 0; i < length; ++i) {
-          songlistsearch.value[i].duration = gettime(songlistsearch.value[i].duration)
-        }
-      })
-      .catch(error => {
-        console.log(error.data.message);
-      })
+  emits('SearchOperation')
 }
 
 const gettime = (time) => {
@@ -123,16 +109,17 @@ const CloseCurrentUser_SongList=()=>{
 }
 
 
-const userlike=defineModel('userlike')
-
+const refresh=()=>{
+emits('refreshNewest_Songs_Page');
+}
 
 </script>
 
 <template>
   <transition name="slide" appear>
     <div class="transition-container-2" v-if="ShowSearchView&&!ShowCurrentUser_SongList">
-      <Search_View v-if="ShowSearchView&&!ShowCurrentUser_SongList" v-model:songlistlast="songlistsearch"
-                   @handlePlayNow="handlePlayNow"
+      <Search_View v-if="ShowSearchView&&!ShowCurrentUser_SongList" v-model:songlistlast="songlistsearch" v-model:username="username"
+                   @handlePlayNow="handlePlayNow" v-model:userlike="userlike"
                    @handlePlayAfter="handlePlayAfter" @changesize="ChangeSearchViewMode" class="w-full"
                    @addToSongList="addToSongList"></Search_View>
     </div>
@@ -148,14 +135,14 @@ const userlike=defineModel('userlike')
 
   <transition name="slide" appear>
     <div class="transition-container z-50 ml-8" v-if="needshowsonglistpage&&!ShowSearchView&&!ShowCurrentUser_SongList">
-      <SongList_Page class="w-screen mb-32" v-model:songlist="songlist"
+      <SongList_Page class="w-screen mb-32" v-model:songlist="songlist" v-model:username="username" v-model:userlike="userlike"
                      @changesize="changesize" @handlePlayAfter="handlePlayAfter" @handlePlayNow="handlePlayNow"
                      @ChangeSongList="ChangeSongList" @addToSongList="addToSongList"></SongList_Page>
     </div>
   </transition>
   <div class="w-full h-16 pl-6 fixed bg-zinc-900 z-50"
        v-if="!needshowsonglistpage&&!ShowSearchView&&!ShowCurrentUser_SongList">
-    <div :class="[NaviClass1, 'text-transition']" @click="changeNaviMode(1);refresh()" style="line-height: 56px">推 荐</div>
+    <div :class="[NaviClass1, 'text-transition']" @click="changeNaviMode(1);" style="line-height: 56px">推 荐</div>
     <div :class="[NaviClass2, 'text-transition']" @click="changeNaviMode(2);refresh()" style="line-height: 56px">最新上传</div>
     <Search v-model:SearchContent="SearchContent" @SearchOperation="SearchOperation"></Search>
   </div>

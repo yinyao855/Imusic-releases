@@ -44,21 +44,21 @@ const deletelike=(index)=>{
         console.log(error.response.data);
       })
 }
-const refresh=()=>{
-  let length1=songlistlast.value.length;
-  let length2=userlike.value.length;
-  console.log(length1);
-  console.log(length2);
-  for(let i=0;i<length1;++i){
-    for(let j=0;j<length2;++j){
-      if(userlike.value[j].id===songlistlast.value[i].id){
-        console.log(userlike.value[j].id);
-        songlistlast.value[i].user_like=true;
-      }
-    }
-  }
-}
-onMounted(refresh)
+// const refresh=()=>{
+//   let length1=songlistlast.value.length;
+//   let length2=userlike.value.length;
+//   console.log(length1);
+//   console.log(length2);
+//   for(let i=0;i<length1;++i){
+//     for(let j=0;j<length2;++j){
+//       if(userlike.value[j].id===songlistlast.value[i].id){
+//         console.log(userlike.value[j].id);
+//         songlistlast.value[i].user_like=true;
+//       }
+//     }
+//   }
+// }
+// onMounted(refresh)
 
 </script>
 
