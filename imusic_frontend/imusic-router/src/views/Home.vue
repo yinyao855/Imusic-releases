@@ -8,12 +8,11 @@ import MusicPlayerView from "./MusicPlayerView.vue";
 import MusicPlayerFullView from "./MusicPlayerFullView.vue";
 import Login from "./Login.vue";
 import Personal_Center from "@/views/Personal_Center.vue";
-import CreateSonglist from "@/views/CreateSonglist_Area.vue";
 import Sign_up from "./Sign_up.vue";
 import axios from "axios";
-import UploadSong from "@/views/UploadSong.vue";
 import CreateSonglistPage_Main from "@/views/CreateSonglistPage_Main.vue";
 import CreatedSonglist from "@/views/CreatedSonglist.vue";
+
 const userlike=ref([]);
 const songlistlast = ref([
   {
@@ -145,11 +144,9 @@ function handleModeChange() {
   }
 }
 
-//上一首
 function backSong() {
   const length = musicList.value.length;
-  const index = (curIndex.value - 1 + length) % length;
-  curIndex.value = index;
+  curIndex.value = (curIndex.value - 1 + length) % length;
   refresh();
 }
 
@@ -182,8 +179,7 @@ const formatLyrics = (rawLyrics) => {
 //下一首
 function nextSong() {
   const length = musicList.value.length;
-  const index = (curIndex.value + 1) % length;
-  curIndex.value = index;
+  curIndex.value = (curIndex.value + 1) % length;
   console.log(musicList.value);
   refresh();
 }
@@ -195,11 +191,7 @@ function getRandomInt(max) {
 //随机选取
 function randomSong() {
   const length = musicList.value.length;
-  const index = getRandomInt(length)
-  // currentMusic.value = musicList[index];
-  // lyric.value = parseLRC(lyrics[index]);
-  // isPlaying.value = true;
-  curIndex.value = index;
+  curIndex.value = getRandomInt(length)
 }
 
 const togglePlay = () => {

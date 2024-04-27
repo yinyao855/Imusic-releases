@@ -5,7 +5,7 @@ import axios from "axios";
 const props = defineProps({
   songlist: Object,
 })
-const showSonglistForm = ref(false);
+
 function show_tag(theme) {
   if (theme === null) return false;
   return true;
@@ -25,73 +25,17 @@ function sendDeleteSonglist() {
       });
 }
 
-function sendEditSonglist() {
-  showEditSonglist.value = false;
-  return;
-  axios.post(url.value, formData)
-      .then(function (response) {
-        if (response.data.success === true) {
-          const formData = new FormData();
-          formData.append('title', props.songlist.title);
-          formData.append('cover', props.songlist.cover);
-          formData.append('introduction', props.songlist.introduction);
-          formData.append('owner', props.songlist.owner);
-          formData.append('tag_theme', props.songlist.tag_theme);
-          formData.append('tag_scene', props.songlist.tag_scene);
-          formData.append('tag_mood', props.songlist.tag_mood);
-          formData.append('tag_style', props.songlist.tag_style);
-          formData.append('tag_language', props.songlist.tag_language);
-          window.alert("edit success");
-          location.reload();
-        }
-      })
-      .catch(function (error) {
-        console.log("error");
-      });
-}
-
-const showEditSonglist = ref(false);
-
-function activeShowEditSonglist() {
-  showEditSonglist.value = true;
-}
-
 </script>
 
 <template>
-  <div class="bgx bg-cover bg-center h-72 relative z-40">
+  <div class="bgx bg-cover bg-center h-72 relative z-10">
     <div class="bg-blur w-full h-full absolute top-0 left-0"
          :style="{backgroundImage: 'url(' + props.songlist.cover + ')'}"></div>
-    <div class="p-5 header_songlist w-full">
-      <svg v-show="!showEditSonglist" @click="sendDeleteSonglist"
-           class="inline-block float-right h-8 w-8 cursor-pointer text-red-600 hover:text-red-800" width="24"
-           height="24"
-           viewBox="0 0 24 24" stroke-width="2"
-           stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-        <path stroke="none" d="M0 0h24v24H0z"/>
-        <line x1="4" y1="7" x2="20" y2="7"/>
-        <line x1="10" y1="11" x2="10" y2="17"/>
-        <line x1="14" y1="11" x2="14" y2="17"/>
-        <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12"/>
-        <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3"/>
-      </svg>
-      <svg v-show="!showEditSonglist" @click="activeShowEditSonglist"
-           class="m-1 inline-block float-right h-7 w-7 cursor-pointer text-blue-700 hover:text-blue-900" width="24"
-           height="24"
-           viewBox="0 0 24 24"
-           xmlns="http://www.w3.org/2000/svg" fill="none"
-           stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/>
-      </svg>
-      <button @click="sendEditSonglist" v-show="showEditSonglist" class="btn m-1 inline-block float-right ">完成
-      </button>
-      <div class="inline-block" v-show="!showEditSonglist">
+    <div class="p-5 header_songlist">
+      <div class="inline-block">
         <img :src="props.songlist.cover" class="img_songlist shadow-2xl">
       </div>
-      <div class="inline-block" v-show="showEditSonglist">
-        <img :src="props.songlist.cover" class="img_songlist shadow-2xl">
-      </div>
-      <div class="inline-block ml-7 align-top" v-show="!showEditSonglist">
+      <div class="inline-block ml-7 align-top">
         <div>
           <h1 class="mt-2 text-white font-extrabold text-3xl">{{ props.songlist.title }}</h1>
           <p class="mt-2 text-white">{{ props.songlist.owner }} · {{ props.songlist.create_date }}</p>
@@ -127,90 +71,7 @@ function activeShowEditSonglist() {
           </div>
         </div>
       </div>
-      <div v-show="showEditSonglist" class="inline-block ml-7 align-top">
-        <div class="flex-column text-md">
-          <div class="text-white">*歌曲名</div>
-        </div>
-        <div class="inputForm bg-zinc-900">
-          <svg t="1713779846725" class="icon fill-white transition" viewBox="0 0 1024 1024" version="1.1"
-               xmlns="http://www.w3.org/2000/svg" p-id="5635" width="24" height="24">
-            <path
-                d="M458.24 594.304l1.6-0.576v-0.64l417.216-417.152A65.6 65.6 0 0 0 784.32 83.2L367.104 500.416h-0.448l-0.384 1.28c-13.888 14.464-19.2 33.408-17.28 51.968l-28.672 86.464 86.656-28.736c18.24 1.792 36.928-3.52 51.264-17.088zM64 768.256V896h896v-127.744H64z"
-                p-id="5636"></path>
-          </svg>
-          <input type="text" class="input bg-zinc-900 text-white" placeholder="请输入歌单名"
-                 v-model="props.songlist.title">
-        </div>
-        <div class="flex-column text-md">
-          <div class="text-white">介绍</div>
-        </div>
-        <div class="inputForm bg-zinc-900">
-          <svg t="1713789997854" class="icon fill-white" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg"
-               p-id="9038" width="24" height="24">
-            <path d="M0 0v1024h1024V0H0z m938.67 938.67H85.33V85.33h853.33v853.34z" fill="white" p-id="9039"></path>
-            <path
-                d="M341.33 213.33h512v85.33h-512zM170.67 213.33H256v85.33h-85.33zM341.33 384h512v85.33h-512zM341.33 554.67h512V640h-512zM170.67 554.67H256V640h-85.33zM341.33 725.33h512v85.33h-512z"
-                fill="white" p-id="9040"></path>
-          </svg>
-          <input type="text" class="input bg-zinc-900 text-white" placeholder="请为你的歌曲写一点介绍"
-                 v-model="props.songlist.introduction">
-        </div>
-        <div class="inline-block mt-5">
-          <select v-model="props.songlist.tag_theme"
-                  class="text-xs inline-flex items-center font-bold leading-sm px-1 py-1 bg-blue-200 text-blue-700 rounded-full">
-            <option :value="null">-- 主题 --</option>
-            <option>背景音乐</option>
-            <option>经典老歌</option>
-            <option>KTV金曲</option>
-            <option>游戏配乐</option>
-            <option>电影配乐</option>
-          </select>
-        </div>
-        <div class="inline-block">
-          <select v-model="props.songlist.tag_scene"
-                  class="ml-1 text-xs inline-flex items-center font-bold leading-sm px-1 py-1 bg-green-200 text-green-700 rounded-full">
-            <option :value="null">-- 场景 --</option>
-            <option>咖啡馆</option>
-            <option>运动</option>
-            <option>睡前</option>
-            <option>旅行</option>
-            <option>派对</option>
-          </select>
-        </div>
-        <div class="inline-block">
-          <select v-model="props.songlist.tag_mood"
-                  class="ml-1 text-xs inline-flex items-center font-bold leading-sm px-1 py-1 bg-red-200 text-red-700 rounded-full">
-            <option :value="null">-- 心情 --</option>
-            <option>伤感</option>
-            <option>安静</option>
-            <option>思念</option>
-            <option>宣泄</option>
-          </select>
-        </div>
-        <div class="inline-block">
-          <select v-model="props.songlist.tag_style"
-                  class="ml-1 text-xs inline-flex items-center font-bold leading-sm px-1 py-1 bg-orange-200 text-orange-700 rounded-full">
-            <option :value="null">-- 风格 --</option>
-            <option>摇滚</option>
-            <option>民谣</option>
-            <option>轻音乐</option>
-            <option>电音</option>
-            <option>流行</option>
-          </select>
-        </div>
-        <div class="inline-block">
-          <select v-model="props.songlist.tag_language"
-                  class="ml-1 text-xs inline-flex items-center font-bold leading-sm px-1 py-1 bg-purple-200 text-purple-700 rounded-full">
-            <option :value="null">-- 语言 --</option>
-            <option>英语</option>
-            <option>日语</option>
-            <option>粤语</option>
-            <option>国语</option>
-            <option>韩语</option>
-          </select>
-        </div>
-      </div>
-      <div class="mt-3">
+      <div class="">
         <button class="mr-3 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-20 rounded-full">
           <svg class="h-5 w-5 inline-block align-sub text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                stroke-width="2"
@@ -243,24 +104,24 @@ function activeShowEditSonglist() {
         <!--          </button>-->
         <!--          <div class="menu_item top-0 left-8">-->
         <!--            <div class="inline-block ml-5 mr-3">-->
-        <!--              <svg class="h-8 w-8 cursor-pointer text-blue-600 hover:text-blue-800" width="24" height="24"-->
-        <!--                   viewBox="0 0 24 24"-->
-        <!--                   xmlns="http://www.w3.org/2000/svg" fill="none"-->
-        <!--                   stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">-->
-        <!--                <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/>-->
-        <!--              </svg>-->
+<!--                      <svg class="h-8 w-8 cursor-pointer text-blue-600 hover:text-blue-800" width="24" height="24"-->
+<!--                           viewBox="0 0 24 24"-->
+<!--                           xmlns="http://www.w3.org/2000/svg" fill="none"-->
+<!--                           stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">-->
+<!--                        <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/>-->
+<!--                      </svg>-->
         <!--            </div>-->
         <!--            <div class="inline-block" @click="sendDeleteSonglist">-->
-        <!--              <svg class="h-8 w-8 cursor-pointer text-red-500 hover:text-red-700" width="24" height="24"-->
-        <!--                   viewBox="0 0 24 24" stroke-width="2"-->
-        <!--                   stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">-->
-        <!--                <path stroke="none" d="M0 0h24v24H0z"/>-->
-        <!--                <line x1="4" y1="7" x2="20" y2="7"/>-->
-        <!--                <line x1="10" y1="11" x2="10" y2="17"/>-->
-        <!--                <line x1="14" y1="11" x2="14" y2="17"/>-->
-        <!--                <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12"/>-->
-        <!--                <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3"/>-->
-        <!--              </svg>-->
+<!--        <svg class="h-8 w-8 cursor-pointer text-red-500 hover:text-red-700" width="24" height="24"-->
+<!--             viewBox="0 0 24 24" stroke-width="2"-->
+<!--             stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">-->
+<!--          <path stroke="none" d="M0 0h24v24H0z"/>-->
+<!--          <line x1="4" y1="7" x2="20" y2="7"/>-->
+<!--          <line x1="10" y1="11" x2="10" y2="17"/>-->
+<!--          <line x1="14" y1="11" x2="14" y2="17"/>-->
+<!--          <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12"/>-->
+<!--          <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3"/>-->
+<!--        </svg>-->
         <!--            </div>-->
         <!--          </div>-->
         <!--        </div>-->
