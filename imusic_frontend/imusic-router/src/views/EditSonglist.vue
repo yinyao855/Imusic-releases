@@ -1,26 +1,10 @@
 <script setup>
-import axios from "axios";
-
 const props = defineProps({
   songlist: Object,
 })
 
 function show_tag(theme) {
   return theme !== null;
-}
-
-function sendDeleteSonglist() {
-  console.log("delete " + props.songlist.id)
-  axios.delete('http://182.92.100.66:5000/songlists/delete/' + props.songlist.id)
-      .then(function (response) {
-        if (response.data.success === true) {
-          window.alert("delete success");
-          location.reload();
-        }
-      })
-      .catch(function (error) {
-        console.log("error");
-      });
 }
 
 </script>
@@ -31,7 +15,7 @@ function sendDeleteSonglist() {
          :style="{backgroundImage: 'url(' + props.songlist.cover + ')'}"></div>
     <div class="p-5 header_songlist">
       <div class="inline-block">
-        <img :src="props.songlist.cover" class="img_songlist shadow-2xl">
+        <img :src="props.songlist.cover" class="img_songlist shadow-2xl" alt="歌单封面">
       </div>
       <div class="inline-block ml-7 align-top">
         <div>
@@ -106,7 +90,7 @@ function sendDeleteSonglist() {
         <tbody>
         <tr v-for="song in props.songlist.songs" class="text-white transition duration-400 hover:bg-gray-600/40">
           <td class="pl-3 p-1 hover:cursor-pointer">
-            <img :src="song.cover" class="img_song inline-block mr-3">
+            <img :src="song.cover" class="img_song inline-block mr-3" alt="歌曲封面">
             <p class="inline-block">{{ song.title }}</p>
           </td>
           <td class="text-center">{{ song.singer }}</td>
@@ -203,15 +187,6 @@ function sendDeleteSonglist() {
 </template>
 
 <style scoped>
-.bg_img {
-  margin: 0;
-  height: 330px;
-  background-size: cover;
-  filter: blur(30px);
-  float: left;
-  width: 100%;
-}
-
 .header_songlist {
   position: absolute;
 }
@@ -250,8 +225,6 @@ function sendDeleteSonglist() {
   background-repeat: no-repeat;
   background-size: cover;
   -webkit-filter: blur(19px);
-  -moz-filter: blur(19px);
-  -o-filter: blur(19px);
   -ms-filter: blur(19px);
   filter: blur(19px);
 
