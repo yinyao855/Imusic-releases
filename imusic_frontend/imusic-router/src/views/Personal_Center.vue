@@ -2,7 +2,7 @@
 import {computed, defineModel, ref} from "vue"
 import axios from "axios";
 import Upload_Area from "@/views/Upload_Area.vue";
-
+const emits=defineEmits(['updateavatar'])
 const userdata = defineModel('userdata');
 const HasLogin = defineModel('HasLogin')
 const username=defineModel('username');
@@ -28,11 +28,17 @@ const changeHasLogin=()=>{
   HasLogin.value=!HasLogin.value;
 }
 
+const updateavatar=()=>{
+  emits('updateavatar');
+}
+
 const Savemessage=()=>{
   let formData=new FormData();
   const web='http://182.92.100.66:5000/users/update/'+username.value;
   formData.append('bio',userdata.value.bio);
-  formData.append('email',userdata.value.email);
+  if(userdata.value.email!==''&&userdata.value.email!==null){
+    formData.append('email',userdata.value.email);
+  }
   if(AvatarHasChanged.value){
     formData.append('avatar',Avatar.value);
   }
@@ -40,13 +46,21 @@ const Savemessage=()=>{
       .then(response=>{
         console.log(response.data.message);
         if(response.data.success===true){
-          alert('保存成功')
+          updateavatar();
+          alert('保存成功');
+          const webx='http://182.92.100.66:5000/users/info/'+username.value;
+          axios.get(webx)
+              .then(response=>{
+                userdata.value.avatar=response.data.data.avatar;
+              })
+              .catch(error=>{
+                console.log(error.response.data);
+              })
         }
       })
       .catch(error=>{
-        console.log(error.data);
+        console.log(error.response.data);
       })
-
 }
 </script>
 

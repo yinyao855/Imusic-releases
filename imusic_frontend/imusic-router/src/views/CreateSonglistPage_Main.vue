@@ -1,6 +1,6 @@
 <script setup>
 import { defineModel } from "vue"
-import CreateSonglist from "@/views/CreateSonglist.vue";
+import CreateSonglist from "@/views/CreateSonglist_Area.vue";
 const HasLogin=defineModel('HasLogin');
 const username=defineModel('username');
 </script>

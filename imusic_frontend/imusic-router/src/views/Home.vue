@@ -8,7 +8,7 @@ import MusicPlayerView from "./MusicPlayerView.vue";
 import MusicPlayerFullView from "./MusicPlayerFullView.vue";
 import Login from "./Login.vue";
 import Personal_Center from "@/views/Personal_Center.vue";
-import CreateSonglist from "@/views/CreateSonglist.vue";
+import CreateSonglist from "@/views/CreateSonglist_Area.vue";
 import Sign_up from "./Sign_up.vue";
 import axios from "axios";
 import UploadSong from "@/views/UploadSong.vue";
@@ -510,7 +510,41 @@ const getPageinit = () => {
       .catch(error => {
         console.log(error.data.message);
       })
+  GetHomePageRecommendLatest();
 }
+
+const HomePageRecommendLatest=ref([]);
+
+const GetHomePageRecommendLatest=()=>{
+  axios.get('http://182.92.100.66:5000/recommend/latest',{
+    params:{
+      'num':10,
+    }
+  })
+      .then(response=>{
+        console.log(response.data.data);
+        HomePageRecommendLatest.value=response.data.data;
+        let length = HomePageRecommendLatest.value.length;
+        for (let i = 0; i < length; ++i) {
+          HomePageRecommendLatest.value[i].duration = gettime(HomePageRecommendLatest.value[i].duration);
+        }
+      })
+      .catch(error=>{
+        console.log(error.response.data);
+      })
+}
+
+const updateavatar=()=>{
+  const web='http://182.92.100.66:5000/users/info/'+username.value;
+  axios.get(web)
+      .then(response=>{
+        avatar.value=response.data.data.avatar;
+      })
+      .catch(error=>{
+        console.log(error.response.data);
+      })
+}
+
 onMounted(getPageinit);
 
 let createdSonglists;
@@ -660,12 +694,12 @@ function activeSonglist(choose) {
           <Sign_up v-if="RegisterMode" @ChangerRegisterMode="ChangerRegisterMode" v-model:username="username"></Sign_up>
         </div>
         <Personal_Center v-model:userdata="userdata" v-model:HasLogin="HasLogin" v-model:username="username"
-                         v-if="HasLogin&&mode==='0'"></Personal_Center>
+                         v-if="HasLogin&&mode==='0'" @updateavatar="updateavatar"></Personal_Center>
         <HomePage_Main v-model:songlist="songlist" v-model:needshowsonglistpage="needshowsonglistpage"
                        @handlePlayAfter="handlePlayAfter" @handlePlayNow="handlePlayNow" v-if="mode==='1'"
                        @ChangeSongList="ChangeSongList"
-                       v-model:songlists="songlists" v-model:index="index"
-                       v-model:songlistlast="songlistlast"></HomePage_Main>
+                       v-model:songlists="songlists" v-model:index="index" v-model:username="username"
+                       v-model:songlistlast="songlistlast" v-model:HomePageRecommendLatest="HomePageRecommendLatest"></HomePage_Main>
         <ExplorePage_Main v-if="mode==='2'"></ExplorePage_Main>
         <SettingPage_Main v-if="mode==='3'"></SettingPage_Main>
         <CreateCenter v-if="mode==='4'" v-model:HasLogin="HasLogin" v-model:username="username"></CreateCenter>

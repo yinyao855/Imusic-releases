@@ -135,8 +135,6 @@ const gotologin = () => {
   emits('ChangerRegisterMode');
 }
 
-const key=ref('');
-
 
 const verify_code = ref('');
 
@@ -172,8 +170,16 @@ const show = () => {
   formData.append('username', username.value);
   formData.append('password', password.value);
   formData.append('verification_code',verify_code.value);
-  formData.append('sessionId',key.value);
-  axios.post('http://182.92.100.66:5000/users/register', formData)
+  console.log(verify_code.value);
+  const instance = axios.create({
+    baseURL: 'http://182.92.100.66:5000',
+    timeout: 5000, // 设置请求超时时间
+    headers: {
+      'Authorization': `Bearer ${key.value}`,
+    }
+  });
+  axios.defaults.withCredentials=true;
+  instance.post('/users/register', formData)
       .then(response => {
         console.log(response.data);
         if (response.data.success === true) {
@@ -205,11 +211,22 @@ const show = () => {
           gotologin();
         } else {
           WarningShow.value = true;
-          message.value = '注册出现问题';
+          message.value = response.data.message;
         }
       })
       .catch(error => {
-        console.log("error");
+        WarningShow.value = true;
+        message.value = error.response.data.message;
+        if (error.response) {
+          console.log(error.response.data);
+          console.log(error.response.status);
+          console.log(error.response.headers);
+        } else if (error.request) {
+          console.log(error.request);
+        } else {
+          console.log('Error', error.message);
+        }
+        console.log(error.config);
       })
 }
 const timeLeft = ref(60);
@@ -224,14 +241,14 @@ watch(timeLeft, () => {
 
 let interval = null;
 
+const key=ref('');
 const startCountdown = () => {
-  const web='http://182.92.100.66:5000/users/send-code?email='+email.value;
-  console.log(getCookie('sessionId'));
-  axios.get(web)
+  const formData=new FormData();
+  formData.append('email',email.value);
+  axios.post('http://182.92.100.66:5000/users/send-code',formData)
       .then(response=>{
-        key.value=response.data.sessionId;
-        console.log("ok")
         console.log(response.data);
+        key.value=response.data.token;
       })
       .catch(error=>{
         console.log(error.data);
@@ -247,21 +264,6 @@ const startCountdown = () => {
     }
   }, 1000);
 }
-
-function getCookie(cookieName) {
-  const strCookie = document.cookie
-  const cookieList = strCookie.split(';')
-
-  for(let i = 0; i < cookieList.length; i++) {
-    const arr = cookieList[i].split('=')
-    if (cookieName === arr[0].trim()) {
-      return arr[1]
-    }
-  }
-
-  return ''
-}
-
 
 const CloseWarning = () => {
   WarningShow.value = false;

@@ -65,7 +65,7 @@ const deletelike=(index)=>{
             <div class="avatar justify-center">
               <div class="mask mask-squircle w-12 h-12">
                 <img :src="item.cover"
-                     alt="Avatar Tailwind CSS Component"/>
+                     alt="封面"/>
               </div>
             </div>
             <div>
