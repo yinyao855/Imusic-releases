@@ -5,7 +5,6 @@ import axios from "axios";
 const props = defineProps({
   songlist: Object,
 })
-const showSonglistForm = ref(false);
 function show_tag(theme) {
   if (theme === null) return false;
   return true;
@@ -21,7 +20,7 @@ function sendDeleteSonglist() {
         }
       })
       .catch(function (error) {
-        console.log("error");
+        console.log(error.response.data);
       });
 }
 

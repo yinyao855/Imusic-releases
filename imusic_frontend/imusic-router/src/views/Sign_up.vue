@@ -36,7 +36,8 @@
         </svg>
         <input type="text" class="input bg-white" placeholder="Enter your Verification Code" v-model="verify_code">
         <div class="w-1/2 h-full text-black border-black rounded-2xl flex items-center justify-center">
-          <button class="btn text-black hover:text-white hover:bg-black btn-outline w-full" v-if="!showcountdown" @click="startCountdown">
+          <button class="btn text-black hover:text-white hover:bg-black btn-outline w-full" v-if="!showcountdown"
+                  @click="startCountdown">
             {{ content }}
           </button>
 
@@ -122,21 +123,28 @@
 import Warning from "@/views/Warning.vue";
 import confetti from 'canvas-confetti';
 import axios from "axios";
-import { useRouter} from 'vue-router';
+import {useRouter} from 'vue-router';
 import {defineEmits} from "vue"
-const content=ref('获取验证码');
-import { ref, watch} from "vue";
+
+const content = ref('获取验证码');
+import {ref, watch} from "vue";
+
 const showcountdown = ref(false);
-
+const email = ref('');
+const username = ref('');
+const password = ref('');
+const repeatpassword = ref('');
+const message = ref('');
+const WarningShow = ref(false);
+const usernametofather = defineModel('username');
 const emits = defineEmits(['ChangerRegisterMode']);
-
-const router = useRouter();
+let interval = null;
+const key = ref('');
+const verify_code = ref('');
+const timeLeft = ref(60);
 const gotologin = () => {
   emits('ChangerRegisterMode');
 }
-
-
-const verify_code = ref('');
 
 const show = () => {
   const button = document.querySelector('.button-submit');
@@ -152,7 +160,7 @@ const show = () => {
     WarningShow.value = true;
     message.value = '请输入验证码';
     return;
-  }else if (!emailRegex.test(email.value)) {
+  } else if (!emailRegex.test(email.value)) {
     WarningShow.value = true;
     message.value = '邮箱格式不符合要求';
     return;
@@ -169,7 +177,7 @@ const show = () => {
   formData.append('email', email.value)
   formData.append('username', username.value);
   formData.append('password', password.value);
-  formData.append('verification_code',verify_code.value);
+  formData.append('verification_code', verify_code.value);
   console.log(verify_code.value);
   const instance = axios.create({
     baseURL: 'http://182.92.100.66:5000',
@@ -178,7 +186,7 @@ const show = () => {
       'Authorization': `Bearer ${key.value}`,
     }
   });
-  axios.defaults.withCredentials=true;
+  axios.defaults.withCredentials = true;
   instance.post('/users/register', formData)
       .then(response => {
         console.log(response.data);
@@ -229,28 +237,24 @@ const show = () => {
         console.log(error.config);
       })
 }
-const timeLeft = ref(60);
+
 watch(timeLeft, () => {
   let time = timeLeft.value;
-  if(time===0){
-    showcountdown.value=false;
-    content.value='重新获取';
+  if (time === 0) {
+    showcountdown.value = false;
+    content.value = '重新获取';
   }
 })
 
-
-let interval = null;
-
-const key=ref('');
 const startCountdown = () => {
-  const formData=new FormData();
-  formData.append('email',email.value);
-  axios.post('http://182.92.100.66:5000/users/send-code',formData)
-      .then(response=>{
+  const formData = new FormData();
+  formData.append('email', email.value);
+  axios.post('http://182.92.100.66:5000/users/send-code', formData)
+      .then(response => {
         console.log(response.data);
-        key.value=response.data.token;
+        key.value = response.data.token;
       })
-      .catch(error=>{
+      .catch(error => {
         console.log(error.data);
       })
   showcountdown.value = true;
@@ -268,11 +272,5 @@ const startCountdown = () => {
 const CloseWarning = () => {
   WarningShow.value = false;
 }
-const email = ref('');
-const username = ref('');
-const password = ref('');
-const repeatpassword = ref('');
-const message = ref('');
-const WarningShow = ref(false);
-const usernametofather = defineModel('username');
+
 </script>

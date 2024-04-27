@@ -1,5 +1,5 @@
 <script setup>
-import {defineModel, defineProps} from "vue"
+import { defineProps } from "vue"
 const emits=defineEmits(['handleindex'])
 
 const props = defineProps({

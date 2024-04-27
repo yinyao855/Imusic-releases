@@ -116,7 +116,6 @@ const currentTime = defineModel("currentTime");
 const currentduration = defineModel("currentTimeInSeconds");
 const durationInSeconds = defineModel("durationInSeconds");
 const lyric = defineModel("lyric")
-const test = defineModel("test");
 const audioPlayer = defineModel("audioPlayer");
 
 const lyricsshow = ref([{text: '', special: false}, {text: '', special: false}, {text: '', special: false}, {
@@ -132,11 +131,6 @@ const nowline = ref(0);
 
 const togglePlay = () => {
   emit('togglePlay');
-  if (!isPlaying.value) {
-    playAudio();
-  } else {
-    pauseAudio();
-  }
 };
 
 const seek = () => {
@@ -144,15 +138,6 @@ const seek = () => {
     audioPlayer.value.currentTime = currentduration.value;
     console.log(currentduration.value);
   }
-};
-
-const playAudio = () => {
-  const content = document.querySelector('.content');
-}
-
-
-const pauseAudio = () => {
-  const content = document.querySelector('.content');
 };
 
 const back = () => {
@@ -167,12 +152,6 @@ const restart = () => {
   audioPlayer.value.currentTime = 0;
   currentduration.value = 0;
   currentTime.value = '0:00';
-};
-
-const getcurrentTime = () => {
-  const minute = currentduration.value / 60;
-  const second = currentduration.value % 60;
-  displayLyrics(props.lyrics, currentduration.value);
 };
 
 

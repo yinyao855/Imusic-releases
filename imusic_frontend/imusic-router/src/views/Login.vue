@@ -62,17 +62,9 @@
 import confetti from 'canvas-confetti';
 import {ref} from "vue";
 import axios from "axios";
-import { useRouter } from 'vue-router';
 import Warning from "@/views/Warning.vue";
 import { defineEmits,defineModel } from "vue"
 const emits=defineEmits(['ChangerRegisterMode','changeMode','getsonglistinit']);
-const router = useRouter();
-
-
-// const gotosignup = () => {
-//   console.log("signup");
-//   router.push('/sign_up');
-// }
 
 const show = () => {
   const button = document.querySelector('.button-submit');
@@ -138,7 +130,7 @@ const show = () => {
         }
       })
       .catch(error=>{
-        console.log("error");
+        console.log(error.response.data);
       })
 }
 
@@ -155,11 +147,7 @@ const password=ref('');
 const message=ref('');
 const WarningShow=ref(false);
 const usernametofather=defineModel('username');
-// const email=defineModel('email');
-// const bio=defineModel('bio');
 const avatar=defineModel('avatar');
-// const role=defineModel('role');
-// const registration_date=defineModel('registration_date');
 
 const gotosignup = () =>{
   emits('ChangerRegisterMode');
@@ -168,5 +156,4 @@ const gotosignup = () =>{
 const changeMode= ()=>{
   emits('changeMode',1);
 }
-const hasLogin=defineModel('hasLogin')
 </script>

@@ -3,7 +3,7 @@ import { defineEmits } from 'vue';
 const props=defineProps({
  message:String,
 });
-const emit=defineEmits('CloseWarning');
+const emit=defineEmits(['CloseWarning']);
 const CloseWarning = () =>{
   emit('CloseWarning');
 }

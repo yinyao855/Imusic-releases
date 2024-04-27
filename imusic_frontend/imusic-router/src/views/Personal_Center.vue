@@ -7,6 +7,7 @@ const userdata = defineModel('userdata');
 const HasLogin = defineModel('HasLogin')
 const username=defineModel('username');
 const Avatar=ref(null);
+const AvatarHasChanged=ref(false);
 const userrole = computed(() => {
   if (userdata.value.role === 'admin') {
     return '管理员';
@@ -14,14 +15,6 @@ const userrole = computed(() => {
     return '普通用户';
   }
 })
-
-const onCoverFileChange=(event)=>{
-  AvatarHasChanged.value=true;
-  Avatar.value = event.target.files[0];
-}
-
-
-const AvatarHasChanged=ref(false);
 
 const changeHasLogin=()=>{
   username.value='点击登录'

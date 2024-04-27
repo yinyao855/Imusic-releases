@@ -13,10 +13,6 @@ import axios from "axios";
 import CreateSonglistPage_Main from "@/views/CreateSonglistPage_Main.vue";
 import CreatedSonglist from "@/views/CreatedSonglist.vue";
 
-const props = defineProps({
-  lyrics: Object,
-  gradient: Object,
-})
 const showCreatedSonglists = ref("false");
 const needshowsonglistpage = ref(false);
 const cantransformtofull = ref(false);
@@ -24,8 +20,6 @@ const userlike=ref([]);
 const avatar = ref('');
 const index = ref('1');
 const datax = ref([]);
-const lyrics = props.lyrics
-const gradient = props.gradient
 const musicList = ref([
   {
     "id": null,
@@ -54,31 +48,18 @@ const duration = ref("0:00");
 const durationInSeconds = ref(0);
 const currentTimeInSeconds = ref(0);
 const curIndex = defineModel("curIndex")
-const lyric = ref(parseLRC(lyrics[0]))
+const lyric = ref([])
 const currentMusic = ref(musicList.value[curIndex.value])
 const playerMode = ref(0)
 const username = ref('点击登录')
 const HasLogin = ref(false);
-const songlists = ref([
-  {
-    cover: 'http://182.92.100.66:5000/media/covers/%E5%BD%93%E7%A6%BB%E5%88%AB%E5%BC%80%E5%87%BA%E8%8A%B1.webp',
-    title: 'name'
-  },
-]);
+const songlists = ref([]);
 const userdata = ref([]);
 const songlistsearch=ref([]);
 const SearchContent=ref('');
 const ShowSearchView=ref(false);
 const HomePageRecommendLatest=ref([]);
-const songlistlast = ref([
-  {
-    singer: '张杰',
-    uploader: 'yy',
-    cover: 'http://182.92.100.66:5000/media/covers/%E6%98%8E%E5%A4%A9%E8%BF%87%E5%90%8E-%E5%BC%A0%E6%9D%B0.png',
-    id: '22',
-    title: '明天过后'
-  }
-]);
+const songlistlast = ref([]);
 const RegisterMode = ref(false);
 const mode = ref('1');
 const containerClass1 = computed(() => ({
@@ -101,10 +82,7 @@ const containerClass5 = computed(() => ({
   'antialiased text-sm block h-10 my-1 text-white leading-10 transition ease-in duration-400 hover:bg-gray-600/40 pl-4 ml-2 mr-2 rounded-md': mode.value !== '5',
   'antialiased text-sm block h-10 my-1 text-white leading-10 transition ease-in duration-400 px-4 ml-2 mr-2 rounded-md bg-blue-500 hover:bg-blue-500': mode.value === '5',
 }));
-const containerClass6 = computed(() => ({
-  'antialiased text-sm block h-10 my-1 text-white leading-10 transition ease-in duration-400 hover:bg-gray-600/40 pl-4 ml-2 mr-2 rounded-md': mode.value !== '6',
-  'antialiased text-sm block h-10 my-1 text-white leading-10 transition ease-in duration-400 px-4 ml-2 mr-2 rounded-md bg-blue-500 hover:bg-blue-500': mode.value === '6',
-}));
+const songlist = ref([]);
 const changeMode = (newMode) => {
   mode.value = newMode.toString(); // 设置新的 mode 值
 };
@@ -112,9 +90,6 @@ const changeMode = (newMode) => {
 const ChangerRegisterMode = () => {
   RegisterMode.value = !RegisterMode.value;
 }
-
-
-
 
 const updateTime = () => {
   const audio = audioPlayer.value;
@@ -144,11 +119,9 @@ watch(curIndex, () => {
     fetchAndFormatLyrics(currentMusic.value.lyric);
   }
   isPlaying.value = true;
-  console.log(lyric.value);
   const id = currentMusic.value.id;
   updateusersonglist(id);
 })
-
 
 const refresh = () => {
   let index = curIndex.value;
@@ -178,23 +151,20 @@ function backSong() {
   refresh();
 }
 
+
 const fetchAndFormatLyrics = async (lrcUrl) => {
   try {
     const response = await axios.get(lrcUrl);
-    lyric.value = formatLyrics(response.data);
+    const formattedLyrics = response.data.replace(/\[(\d+:\d+\.)(\d{2,3})\]/g, (match, time, ms) => {
+      const truncatedMs = ms.slice(0, 2);
+      return `[${time}${truncatedMs}]`;
+    });
+    lyric.value = parseLRC(formattedLyrics);
   } catch (error) {
     console.error('Error fetching lyrics:', error);
   }
 };
 
-
-const formatLyrics = (rawLyrics) => {
-  const formattedLyrics = rawLyrics.replace(/\[(\d+:\d+\.)(\d{2,3})\]/g, (match, time, ms) => {
-    const truncatedMs = ms.slice(0, 2);
-    return `[${time}${truncatedMs}]`;
-  });
-  return parseLRC(formattedLyrics);
-};
 
 //下一首
 function nextSong() {
@@ -204,14 +174,10 @@ function nextSong() {
   refresh();
 }
 
-function getRandomInt(max) {
-  return Math.floor(Math.random() * max);
-}
-
 //随机选取
 function randomSong() {
   const length = musicList.value.length;
-  curIndex.value = getRandomInt(length)
+  curIndex.value = Math.floor(Math.random() * length);
 }
 
 const togglePlay = () => {
@@ -276,7 +242,6 @@ const refreshNewest_Songs_Page=()=>{
         console.log(error.data.message);
       })
 }
-
 
 function getsonglistinit() {
   axios.get('http://182.92.100.66:5000/feature/recent', {
@@ -363,7 +328,6 @@ const extractDate = (dateTimeString) => {
   return date.toISOString().slice(0, 10);
 }
 
-
 const getuserdata = () => {
   const web = 'http://182.92.100.66:5000/users/info/' + username.value;
   axios.get(web)
@@ -376,27 +340,7 @@ const getuserdata = () => {
       })
 }
 
-const songlist = ref([{
-  cover: 'http://182.92.100.66:5000/media/covers/%E5%BD%93%E7%A6%BB%E5%88%AB%E5%BC%80%E5%87%BA%E8%8A%B1.webp',
-  title: 'name'
-}]);
-
-function ChangeSongList(id) {
-  const web = 'http://182.92.100.66:5000/songlists/info/' + index.value;
-  axios.get(web)
-      .then(response => {
-        musicList.value = response.data.data.songs;
-        curIndex.value = 0;
-        currentMusic.value = musicList.value[curIndex.value]
-        datax.value = response.data.data.songs;
-      })
-      .catch(error => {
-        console.log("get init songlist fail");
-      })
-}
-
-
-function changesonglist() {
+const changesonglist=()=> {
   needshowsonglistpage.value = true;
   const web = 'http://182.92.100.66:5000/songlists/info/' + index.value;
   axios.get(web)
@@ -434,7 +378,6 @@ function changesonglist() {
         console.log(error.response.data);
       })
 }
-
 
 const SearchOperation = () => {
   axios.get('http://182.92.100.66:5000/songs/search', {
@@ -475,11 +418,6 @@ const SearchOperation = () => {
         console.log(error.data.message);
       })
 }
-
-
-watch(index, () => {
-  changesonglist();
-})
 
 function handlePlayNow(id) {
   const web = 'http://182.92.100.66:5000/songs/info/' + id;
@@ -549,7 +487,6 @@ const LoginArea = () => {
   changeMode(0);
 }
 
-
 const getPageinit = () => {
   axios.get('http://182.92.100.66:5000/songlists/initdata')
       .then(response => {
@@ -606,7 +543,6 @@ const updateavatar=()=>{
       })
 }
 
-
 let createdSonglists;
 let chooseSonglist;
 const listCreatedSonglists = () => {
@@ -629,6 +565,7 @@ function activeSonglist(choose) {
   chooseSonglist = choose;
   showCreatedSonglists.value = true;
 }
+
 onMounted(getPageinit);
 </script>
 
@@ -728,32 +665,19 @@ onMounted(getPageinit);
       <!--用户创建的歌单-->
       <div class="collapse bg-zinc-700 rounded-md" @click="listCreatedSonglists">
         <input type="checkbox"/>
-        <span class="collapse-title text-white text-sm">
+        <span class="collapse-title text-white text-sm h-10">
           创建的歌单
         </span>
         <div class="collapse-content">
           <div v-if="showCreatedSonglists">
             <div v-for="createdSonglist in createdSonglists" @click="changeMode(6); activeSonglist(createdSonglist)"
-                 class="m-1 h-10 cursor-pointer overflow-hidden">
+                 class="m-1 h-10 cursor-pointer overflow-hidden px-4">
               <img :src="createdSonglist.cover" class="inline-block h-10 w-10 rounded-md"/>
               <span class="m-2 text-gray-400 hover:text-white"> {{ createdSonglist.title }} </span>
             </div>
           </div>
         </div>
       </div>
-      <!--      <div :class="containerClass6">-->
-      <!--        <details>-->
-      <!--          <summary class="cursor-pointer text-white" @click="listCreatedSonglists">-->
-      <!--            <p class="inline-block text-white px-4 font-medium">创建的歌单</p>-->
-      <!--          </summary>-->
-      <!--          <div v-if="showCreatedSonglists">-->
-      <!--            <div v-for="createdSonglist in createdSonglists" @click="changeMode(6); activeSonglist(createdSonglist)" class="m-1 h-10 cursor-pointer overflow-hidden">-->
-      <!--              <img :src="createdSonglist.cover" class="inline-block h-10 w-10 rounded-md"/>-->
-      <!--              <span class="m-2 text-gray-400 hover:text-white"> {{ createdSonglist.title }} </span>-->
-      <!--            </div>-->
-      <!--          </div>-->
-      <!--        </details>-->
-      <!--      </div>-->
       <div
           class="antialiased text-sm block h-10 my-1 text-white leading-10 transition ease-in duration-400 px-4 hover:bg-gray-600/40 ml-2 mr-2 rounded-md">
         <span class="px-4 font-medium">收藏的歌单</span>
@@ -772,9 +696,9 @@ onMounted(getPageinit);
                          v-if="HasLogin&&mode==='0'" @updateavatar="updateavatar"></Personal_Center>
         <HomePage_Main v-model:songlist="songlist" v-model:needshowsonglistpage="needshowsonglistpage"
                        @handlePlayAfter="handlePlayAfter" @handlePlayNow="handlePlayNow" v-if="mode==='1'"
-                       @ChangeSongList="ChangeSongList" v-model:SearchContent="SearchContent" v-model:ShowSearchView="ShowSearchView" v-model:songlistsearch="songlistsearch" @SearchOperation="SearchOperation"
+                       v-model:SearchContent="SearchContent" v-model:ShowSearchView="ShowSearchView" v-model:songlistsearch="songlistsearch" @SearchOperation="SearchOperation"
                        v-model:songlists="songlists" v-model:index="index" v-model:username="username" v-model:userlike="userlike" @refreshNewest_Songs_Page="refreshNewest_Songs_Page"
-                       v-model:songlistlast="songlistlast" v-model:HomePageRecommendLatest="HomePageRecommendLatest"></HomePage_Main>
+                       v-model:songlistlast="songlistlast" v-model:HomePageRecommendLatest="HomePageRecommendLatest" @changesonglist="changesonglist"></HomePage_Main>
         <ExplorePage_Main v-if="mode==='2'"></ExplorePage_Main>
         <SettingPage_Main v-if="mode==='3'"></SettingPage_Main>
         <CreateCenter v-if="mode==='4'" v-model:HasLogin="HasLogin" v-model:username="username"></CreateCenter>
@@ -795,7 +719,6 @@ onMounted(getPageinit);
       autoplay
       v-if="HasLogin"
   ></audio>
-
   <MusicPlayerView
       :key="1"
       :name="currentMusic.title"
@@ -817,7 +740,6 @@ onMounted(getPageinit);
       :datax="datax"
   >
   </MusicPlayerView>
-
   <Transition name="slide" appear>
     <div v-if="isFull" key="musicPlay" class="transition-container z-50">
       <MusicPlayerFullView
@@ -841,7 +763,6 @@ onMounted(getPageinit);
       ></MusicPlayerFullView>
     </div>
   </Transition>
-
 
 </template>
 

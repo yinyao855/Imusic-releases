@@ -301,15 +301,11 @@ const style = ref('风格');
 const language = ref('语言');
 const introduction = ref('');
 const username = defineModel('username')
-
 const songTitle = ref('');
 const singerName = ref('');
 const mp3File = ref(null);
 const coverImageFile = ref(null);
-
 const coverImageFileUrl = ref('');
-const music_file = ref('0');
-
 const lrcFile = ref(null);
 
 const onLrcFileChange = (event) => {
@@ -322,9 +318,7 @@ const parseLrcFile = () => {
     reader.onload = (e) => {
       let lrcContent = e.target.result;
       lrcContent = lrcContent.replace(/\[(\d+:\d+\.)(\d{2,3})\]/g, (match, time, ms) => {
-        // 截取毫秒位的前两位
         const truncatedMs = ms.slice(0, 2);
-        // 返回替换后的时间字符串
         return `[${time}${truncatedMs}]`;
       });
       lyrics.value = parseLrcContent(lrcContent);
@@ -494,9 +488,6 @@ const HasLogin = defineModel('HasLogin');
 const message = ref('');
 const WarningShow = ref(false);
 
-const gotosignup = () => {
-  emits('ChangerRegisterMode');
-}
 
 const changeMode = () => {
   emits('changeMode');

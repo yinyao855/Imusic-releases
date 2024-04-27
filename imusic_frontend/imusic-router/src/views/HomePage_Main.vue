@@ -9,7 +9,7 @@ import axios from "axios";
 import Search_View from "@/views/Search_View.vue";
 import CurrentUser_SongList from "@/views/CurrentUser_SongList.vue";
 
-const emits = defineEmits(['handlePlayNow', 'handlePlayAfter', 'ChangeSongList', 'refreshNewest_Songs_Page', 'SearchOperation']);
+const emits = defineEmits(['changesonglist','handlePlayNow', 'handlePlayAfter', 'ChangeSongList', 'refreshNewest_Songs_Page', 'SearchOperation']);
 const songlistlast = defineModel('songlistlast')
 const username = defineModel('username')
 const userlike = defineModel('userlike')
@@ -32,12 +32,12 @@ const NaviClass2 = computed(() => ({
   'text-base inline-block mx-5 w-30 rounded-lg antialiased tracking-widest font-medium transition-colors duration-400 hover:bg-gray-600/40': true,
   'text-cyan-700 underline underline-offset-8 decoration-2': NaviMode.value === '2',
 }));
+const CurrentUser_SongListdata = ref([]);
 
 const changeNaviMode = (newMode) => {
   NaviMode.value = newMode.toString();
   console.log(NaviMode.value);
 }
-
 
 function handlePlayNow(id) {
   console.log(id);
@@ -58,16 +58,12 @@ const changesize = () => {
   needshowsonglistpage.value = false;
 }
 
-function ChangeSongList(id) {
-  emits('ChangeSongList', id);
-}
 
 const ChangeSearchViewMode = () => {
   console.log('change');
   ShowSearchView.value = false;
 }
 
-const CurrentUser_SongListdata = ref([]);
 const GetCurrentUser_SongListdata = () => {
   axios.get('http://182.92.100.66:5000/users/songlists', {
     params: {
@@ -96,6 +92,9 @@ const CloseCurrentUser_SongList = () => {
   ShowCurrentUser_SongList.value = false;
 }
 
+const changesonglist=()=>{
+  emits('changesonglist');
+}
 
 const refresh = () => {
   emits('refreshNewest_Songs_Page');
@@ -128,7 +127,7 @@ const refresh = () => {
       <SongList_Page class="w-screen mb-32" v-model:songlist="songlist" v-model:username="username"
                      v-model:userlike="userlike"
                      @changesize="changesize" @handlePlayAfter="handlePlayAfter" @handlePlayNow="handlePlayNow"
-                     @ChangeSongList="ChangeSongList" @addToSongList="addToSongList"></SongList_Page>
+                     @addToSongList="addToSongList"></SongList_Page>
     </div>
   </transition>
   <div class="w-full h-16 pl-6 fixed bg-zinc-900 z-50"
@@ -148,7 +147,7 @@ const refresh = () => {
        v-if="NaviMode==='1'&&!needshowsonglistpage&&!ShowSearchView&&!ShowCurrentUser_SongList">
     歌单
   </div>
-  <Image_Scrool v-model:songlists="songlists" v-model:index="index"
+  <Image_Scrool v-model:songlists="songlists" v-model:index="index" @changesonglist="changesonglist"
                 v-if="NaviMode==='1'&&!needshowsonglistpage&&!ShowSearchView&&!ShowCurrentUser_SongList"></Image_Scrool>
   <hr class="m-5 border-gray-500"
       v-if="NaviMode==='1'&&!needshowsonglistpage&&!ShowSearchView&&!ShowCurrentUser_SongList">

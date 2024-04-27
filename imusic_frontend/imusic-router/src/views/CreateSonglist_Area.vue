@@ -4,16 +4,13 @@ import axios from "axios";
 
 const title = ref("");
 const introduction = ref("");
-
 const theme = ref("")
 const scene = ref("")
 const mood = ref("")
 const style = ref("")
 const language = ref("")
-
 const cover = ref(null);
 const coverImageFileUrl = ref('');
-
 const HasLogin = defineModel('HasLogin');
 const username = defineModel('username');
 const message = ref('');
@@ -85,11 +82,10 @@ function sendPostCreateSonglist() {
         if (response.data.success === true) {
           console.log(response);
           alert("创建成功");
-          emit("activeShowFormCreateSonglist");
         }
       })
       .catch(function (error) {
-        console.log("error");
+        console.log(error.response.data);
       });
 };
 

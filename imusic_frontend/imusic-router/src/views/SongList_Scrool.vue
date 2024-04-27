@@ -17,6 +17,7 @@
 <script setup>
 import { ref, computed, onMounted, onUnmounted ,defineModel} from 'vue';
 const songlists=defineModel('songlists')
+const emits=defineEmits(['changesonglist']);
 const currentIndex = ref(0);
 const imgWidth = 230; // 轮播图图片宽度，根据实际调整
 const transitionTime = 500; // 动画过渡时间，毫秒
@@ -38,7 +39,7 @@ const index=defineModel('index');
 
 const handleindex = (indexx) =>{
   index.value=songlists.value[indexx].id;
-  console.log(index.value)
+  emits('changesonglist');
 }
 
 let intervalId;

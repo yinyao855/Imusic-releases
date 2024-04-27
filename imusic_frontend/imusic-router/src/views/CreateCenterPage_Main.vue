@@ -31,7 +31,6 @@ const uploadSong = (newOne) => {
 const uploadSongSuccess = () => {
   upload.value = '0';
 }
-const songName = ref('');
 const username = defineModel('username')
 
 const HasLogin = defineModel('HasLogin')
