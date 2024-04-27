@@ -95,7 +95,7 @@
 
 <script setup>
 import {ref, defineModel, watch} from 'vue';
-import buttonchangesize from './buttonchangesize.vue'
+import buttonchangesize from '../components/buttonchangesize.vue'
 import {defineEmits} from 'vue';
 
 const emit = defineEmits(['fullsize', 'togglePlay', 'update', 'back', 'next']);

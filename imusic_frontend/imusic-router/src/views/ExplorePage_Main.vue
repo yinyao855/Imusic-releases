@@ -1,7 +1,7 @@
 <script setup>
 import {computed, ref} from "vue";
 import Singer_Show_Area from "@/views/Singer_Show_Area.vue";
-import Search from "@/views/Search.vue";
+import Search from "@/components/Search.vue";
 import List_Show_Area from "@/views/List_Show_Area.vue";
 const NaviMode = ref('1');
 const NaviClass1 = computed(() => ({

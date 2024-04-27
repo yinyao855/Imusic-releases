@@ -1,7 +1,7 @@
 <script setup>
 import {computed, defineModel, ref} from "vue"
 import axios from "axios";
-import Upload_Area from "@/views/Upload_Area.vue";
+import Upload_Area from "@/components/Upload_Area.vue";
 const emits=defineEmits(['updateavatar'])
 const userdata = defineModel('userdata');
 const HasLogin = defineModel('HasLogin')

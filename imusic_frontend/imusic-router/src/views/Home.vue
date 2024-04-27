@@ -16,7 +16,7 @@ import CreatedSonglist from "@/views/CreatedSonglist.vue";
 const showCreatedSonglists = ref("false");
 const needshowsonglistpage = ref(false);
 const cantransformtofull = ref(false);
-const userlike=ref([]);
+const userlike = ref([]);
 const avatar = ref('');
 const index = ref('1');
 const datax = ref([]);
@@ -47,7 +47,7 @@ const currentTime = ref("0:00");
 const duration = ref("0:00");
 const durationInSeconds = ref(0);
 const currentTimeInSeconds = ref(0);
-const curIndex = defineModel("curIndex")
+const curIndex = ref(0);
 const lyric = ref([])
 const currentMusic = ref(musicList.value[curIndex.value])
 const playerMode = ref(0)
@@ -55,10 +55,10 @@ const username = ref('点击登录')
 const HasLogin = ref(false);
 const songlists = ref([]);
 const userdata = ref([]);
-const songlistsearch=ref([]);
-const SearchContent=ref('');
-const ShowSearchView=ref(false);
-const HomePageRecommendLatest=ref([]);
+const songlistsearch = ref([]);
+const SearchContent = ref('');
+const ShowSearchView = ref(false);
+const HomePageRecommendLatest = ref([]);
 const songlistlast = ref([]);
 const RegisterMode = ref(false);
 const mode = ref('1');
@@ -102,6 +102,7 @@ const updateTime = () => {
   currentTimeInSeconds.value = audio.currentTime;
   durationInSeconds.value = audio.duration;
 };
+
 function changeSize() {
   if (currentMusic.value.lyric !== null) {
     fetchAndFormatLyrics(currentMusic.value.lyric);
@@ -208,7 +209,7 @@ function parseLRC(lrc) {
   return lyrics;
 }
 
-const refreshNewest_Songs_Page=()=>{
+const refreshNewest_Songs_Page = () => {
   axios.get('http://182.92.100.66:5000/recommend/latest')
       .then(response => {
         songlistlast.value = response.data.data;
@@ -216,25 +217,25 @@ const refreshNewest_Songs_Page=()=>{
         for (let i = 0; i < length; ++i) {
           songlistlast.value[i].duration = gettime(songlistlast.value[i].duration)
         }
-        axios.get('http://182.92.100.66:5000/like/songs',{
-          params:{
-            'username':username.value,
+        axios.get('http://182.92.100.66:5000/like/songs', {
+          params: {
+            'username': username.value,
           }
         })
-            .then(response2=>{
-              userlike.value=response2.data.songs;
+            .then(response2 => {
+              userlike.value = response2.data.songs;
               console.log(userlike.value);
-              let length2=userlike.value.length;
-              for(let i=0;i<length;++i){
-                for(let j=0;j<length2;++j){
-                  if(songlistlast.value[i].id===userlike.value[j].id){
-                    songlistlast.value[i].user_like=true;
+              let length2 = userlike.value.length;
+              for (let i = 0; i < length; ++i) {
+                for (let j = 0; j < length2; ++j) {
+                  if (songlistlast.value[i].id === userlike.value[j].id) {
+                    songlistlast.value[i].user_like = true;
                   }
                 }
               }
               console.log(songlist.value);
             })
-            .catch(error=>{
+            .catch(error => {
               console.log(error.response.data);
             })
       })
@@ -300,11 +301,11 @@ function getsonglistinit() {
         for (let i = 0; i < length; ++i) {
           songlistlast.value[i].duration = gettime(songlistlast.value[i].duration)
         }
-        let length2=userlike.value.length;
-        for(let i=0;i<length;++i){
-          for(let j=0;j<length2;++j){
-            if(songlistlast.value[i].id===userlike.value[j].id){
-              songlistlast.value[i].user_like=true;
+        let length2 = userlike.value.length;
+        for (let i = 0; i < length; ++i) {
+          for (let j = 0; j < length2; ++j) {
+            if (songlistlast.value[i].id === userlike.value[j].id) {
+              songlistlast.value[i].user_like = true;
             }
           }
         }
@@ -340,7 +341,7 @@ const getuserdata = () => {
       })
 }
 
-const changesonglist=()=> {
+const changesonglist = () => {
   needshowsonglistpage.value = true;
   const web = 'http://182.92.100.66:5000/songlists/info/' + index.value;
   axios.get(web)
@@ -352,25 +353,25 @@ const changesonglist=()=> {
         for (let i = 0; i < length; ++i) {
           songlist.value.songs[i].duration = gettime(songlist.value.songs[i].duration)
         }
-        axios.get('http://182.92.100.66:5000/like/songs',{
-          params:{
-            'username':username.value,
+        axios.get('http://182.92.100.66:5000/like/songs', {
+          params: {
+            'username': username.value,
           }
         })
-            .then(response2=>{
-              userlike.value=response2.data.songs;
+            .then(response2 => {
+              userlike.value = response2.data.songs;
               console.log(userlike.value);
-              let length2=userlike.value.length;
-              for(let i=0;i<length;++i){
-                for(let j=0;j<length2;++j){
-                  if(songlist.value.songs[i].id===userlike.value[j].id){
-                    songlist.value.songs[i].user_like=true;
+              let length2 = userlike.value.length;
+              for (let i = 0; i < length; ++i) {
+                for (let j = 0; j < length2; ++j) {
+                  if (songlist.value.songs[i].id === userlike.value[j].id) {
+                    songlist.value.songs[i].user_like = true;
                   }
                 }
               }
               console.log(songlist.value.songs);
             })
-            .catch(error=>{
+            .catch(error => {
               console.log(error.response.data);
             })
       })
@@ -393,24 +394,24 @@ const SearchOperation = () => {
         for (let i = 0; i < length; ++i) {
           songlistsearch.value[i].duration = gettime(songlistsearch.value[i].duration)
         }
-        axios.get('http://182.92.100.66:5000/like/songs',{
-          params:{
-            'username':username.value,
+        axios.get('http://182.92.100.66:5000/like/songs', {
+          params: {
+            'username': username.value,
           }
         })
-            .then(response2=>{
-              userlike.value=response2.data.songs;
+            .then(response2 => {
+              userlike.value = response2.data.songs;
               console.log(userlike.value);
-              let length2=userlike.value.length;
-              for(let i=0;i<length;++i){
-                for(let j=0;j<length2;++j){
-                  if(songlistsearch.value[i].id===userlike.value[j].id){
-                    songlistsearch.value[i].user_like=true;
+              let length2 = userlike.value.length;
+              for (let i = 0; i < length; ++i) {
+                for (let j = 0; j < length2; ++j) {
+                  if (songlistsearch.value[i].id === userlike.value[j].id) {
+                    songlistsearch.value[i].user_like = true;
                   }
                 }
               }
             })
-            .catch(error=>{
+            .catch(error => {
               console.log(error.response.data);
             })
       })
@@ -513,32 +514,32 @@ const getPageinit = () => {
   GetHomePageRecommendLatest();
 }
 
-const GetHomePageRecommendLatest=()=>{
-  axios.get('http://182.92.100.66:5000/recommend/latest',{
-    params:{
-      'num':10,
+const GetHomePageRecommendLatest = () => {
+  axios.get('http://182.92.100.66:5000/recommend/latest', {
+    params: {
+      'num': 10,
     }
   })
-      .then(response=>{
+      .then(response => {
         console.log(response.data.data);
-        HomePageRecommendLatest.value=response.data.data;
+        HomePageRecommendLatest.value = response.data.data;
         let length = HomePageRecommendLatest.value.length;
         for (let i = 0; i < length; ++i) {
           HomePageRecommendLatest.value[i].duration = gettime(HomePageRecommendLatest.value[i].duration);
         }
       })
-      .catch(error=>{
+      .catch(error => {
         console.log(error.response.data);
       })
 }
 
-const updateavatar=()=>{
-  const web='http://182.92.100.66:5000/users/info/'+username.value;
+const updateavatar = () => {
+  const web = 'http://182.92.100.66:5000/users/info/' + username.value;
   axios.get(web)
-      .then(response=>{
-        avatar.value=response.data.data.avatar;
+      .then(response => {
+        avatar.value = response.data.data.avatar;
       })
-      .catch(error=>{
+      .catch(error => {
         console.log(error.response.data);
       })
 }
@@ -696,9 +697,12 @@ onMounted(getPageinit);
                          v-if="HasLogin&&mode==='0'" @updateavatar="updateavatar"></Personal_Center>
         <HomePage_Main v-model:songlist="songlist" v-model:needshowsonglistpage="needshowsonglistpage"
                        @handlePlayAfter="handlePlayAfter" @handlePlayNow="handlePlayNow" v-if="mode==='1'"
-                       v-model:SearchContent="SearchContent" v-model:ShowSearchView="ShowSearchView" v-model:songlistsearch="songlistsearch" @SearchOperation="SearchOperation"
-                       v-model:songlists="songlists" v-model:index="index" v-model:username="username" v-model:userlike="userlike" @refreshNewest_Songs_Page="refreshNewest_Songs_Page"
-                       v-model:songlistlast="songlistlast" v-model:HomePageRecommendLatest="HomePageRecommendLatest" @changesonglist="changesonglist"></HomePage_Main>
+                       v-model:SearchContent="SearchContent" v-model:ShowSearchView="ShowSearchView"
+                       v-model:songlistsearch="songlistsearch" @SearchOperation="SearchOperation"
+                       v-model:songlists="songlists" v-model:index="index" v-model:username="username"
+                       v-model:userlike="userlike" @refreshNewest_Songs_Page="refreshNewest_Songs_Page"
+                       v-model:songlistlast="songlistlast" v-model:HomePageRecommendLatest="HomePageRecommendLatest"
+                       @changesonglist="changesonglist"></HomePage_Main>
         <ExplorePage_Main v-if="mode==='2'"></ExplorePage_Main>
         <SettingPage_Main v-if="mode==='3'"></SettingPage_Main>
         <CreateCenter v-if="mode==='4'" v-model:HasLogin="HasLogin" v-model:username="username"></CreateCenter>

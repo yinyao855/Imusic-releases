@@ -287,7 +287,7 @@
 import confetti from 'canvas-confetti';
 import {ref, defineModel} from "vue";
 import axios from "axios";
-import Warning from "@/views/Warning.vue";
+import Warning from "@/components/Warning.vue";
 import {defineEmits} from "vue"
 import P from "particles.vue3";
 import CreateCenterPage_Main from "@/views/CreateCenterPage_Main.vue";

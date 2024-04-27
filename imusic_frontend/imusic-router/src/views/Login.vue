@@ -62,7 +62,7 @@
 import confetti from 'canvas-confetti';
 import {ref} from "vue";
 import axios from "axios";
-import Warning from "@/views/Warning.vue";
+import Warning from "@/components/Warning.vue";
 import { defineEmits,defineModel } from "vue"
 const emits=defineEmits(['ChangerRegisterMode','changeMode','getsonglistinit']);
 

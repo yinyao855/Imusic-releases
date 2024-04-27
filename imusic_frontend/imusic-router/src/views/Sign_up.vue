@@ -120,7 +120,7 @@
 </style>
 
 <script setup>
-import Warning from "@/views/Warning.vue";
+import Warning from "@/components/Warning.vue";
 import confetti from 'canvas-confetti';
 import axios from "axios";
 import {useRouter} from 'vue-router';
