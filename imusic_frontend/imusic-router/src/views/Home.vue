@@ -8,7 +8,7 @@ import MusicPlayerView from "./MusicPlayerView.vue";
 import MusicPlayerFullView from "./MusicPlayerFullView.vue";
 import Login from "./Login.vue";
 import Personal_Center from "@/views/Personal_Center.vue";
-import CreateSonglist from "@/views/CreateSonglist.vue";
+import CreateSonglist from "@/views/CreateSonglist_Area.vue";
 import Sign_up from "./Sign_up.vue";
 import axios from "axios";
 import UploadSong from "@/views/UploadSong.vue";

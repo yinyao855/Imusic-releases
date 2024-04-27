@@ -98,11 +98,17 @@ function sendPostCreateSonglist() {
 <template>
   <div class="form_create_container bg-zinc-900 w-full">
     <div class="w-3/5 m-auto mt-4 bg-zinc-900 p-3 rounded-2xl">
-      <div class="">
-        <div class="text-2xl text-white mb-2">
-          <p class="">*歌单标题</p>
-        </div>
-        <input type="text" class="w-full rounded-md p-3" placeholder="请输入歌单标题" v-model="title">
+      <div class="text-2xl text-white mb-2">
+        <p class="">*歌单标题</p>
+      </div>
+      <div class="inputForm bg-zinc-900">
+        <svg t="1713779846725" class="icon fill-white transition" viewBox="0 0 1024 1024" version="1.1"
+             xmlns="http://www.w3.org/2000/svg" p-id="5635" width="24" height="24">
+          <path
+              d="M458.24 594.304l1.6-0.576v-0.64l417.216-417.152A65.6 65.6 0 0 0 784.32 83.2L367.104 500.416h-0.448l-0.384 1.28c-13.888 14.464-19.2 33.408-17.28 51.968l-28.672 86.464 86.656-28.736c18.24 1.792 36.928-3.52 51.264-17.088zM64 768.256V896h896v-127.744H64z"
+              p-id="5636"></path>
+        </svg>
+        <input type="text" class="input bg-zinc-900" placeholder="请输入歌单名" v-model="title">
       </div>
       <div>
         <div class="text-2xl text-white my-2">
@@ -110,8 +116,9 @@ function sendPostCreateSonglist() {
         </div>
         <div class="grid grid-cols-1 space-y-2">
           <div class="flex items-center justify-center w-full">
-            <label class="flex flex-col rounded-lg border-4 border-dashed w-full h-60 pb-6 pt-3 group text-center hover:bg-zinc-800 transition ease-in duration-300"
-                   for="CoverUpLoad">
+            <label
+                class="flex flex-col rounded-lg border-4 border-dashed w-full h-60 pb-6 pt-3 group text-center hover:bg-zinc-800 transition ease-in duration-300"
+                for="CoverUpLoad">
               <div class="h-full content-center mx-auto" v-if="cover!==null">
                 <img :src="coverImageFileUrl" class="w-full h-full object-cover rounded-lg content-center">
               </div>
@@ -126,8 +133,6 @@ function sendPostCreateSonglist() {
                       fill="#1296db" p-id="7432">
                   </path>
                 </svg>
-                <div class="flex flex-auto max-h-48 w-2/5 mx-auto -mt-10">
-                </div>
                 <p v-if="cover===null" class="pointer-none text-gray-500 "><span class="text-sm"></span> 拖拽文件至此处
                   <br/> 或点击此处上传</p>
               </div>
@@ -136,18 +141,26 @@ function sendPostCreateSonglist() {
             </label>
           </div>
         </div>
-        <p class="text-sm text-gray-500">
+        <p class="text-sm text-gray-500 mt-2 mb-1">
           <span>此项为必填项</span>
         </p>
-        <p class="text-sm text-gray-300">
+        <p class="text-sm text-gray-300 mb-1">
           <span>支持格式：webg,jpg,jpeg,png</span>
         </p>
       </div>
       <div>
-        <div class="text-2xl text-white my-2">
+        <div class="text-2xl text-white mb-2">
           <p class="">歌单介绍</p>
         </div>
-        <input type="text" class="w-full rounded-md p-3" placeholder="请为你的歌单写一点介绍" v-model="introduction">
+        <div class="inputForm bg-zinc-900">
+          <svg t="1713779846725" class="icon fill-white transition" viewBox="0 0 1024 1024" version="1.1"
+               xmlns="http://www.w3.org/2000/svg" p-id="5635" width="24" height="24">
+            <path
+                d="M458.24 594.304l1.6-0.576v-0.64l417.216-417.152A65.6 65.6 0 0 0 784.32 83.2L367.104 500.416h-0.448l-0.384 1.28c-13.888 14.464-19.2 33.408-17.28 51.968l-28.672 86.464 86.656-28.736c18.24 1.792 36.928-3.52 51.264-17.088zM64 768.256V896h896v-127.744H64z"
+                p-id="5636"></path>
+          </svg>
+          <input type="text" class="input bg-zinc-900" placeholder="请为你的歌单写一点介绍" v-model="introduction">
+        </div>
       </div>
       <div class="text-2xl text-white my-2">
         <p class="">标签</p>

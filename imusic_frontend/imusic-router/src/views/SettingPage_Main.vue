@@ -3,5 +3,5 @@
 </template>
 
 <script setup>
-import SongList from "@/views/SongList.vue";
+import SongList from "@/views/SongList_Test.vue";
 </script>
