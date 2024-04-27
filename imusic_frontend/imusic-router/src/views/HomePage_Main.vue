@@ -11,7 +11,7 @@ import CurrentUser_SongList from "@/views/CurrentUser_SongList.vue";
 
 const emits = defineEmits(['handlePlayNow', 'handlePlayAfter', 'ChangeSongList']);
 const songlistlast = defineModel('songlistlast')
-const username=defineModel('username')
+const username = defineModel('username')
 
 const NaviMode = ref('1');
 const NaviClass1 = computed(() => ({
@@ -30,7 +30,7 @@ const changeNaviMode = (newMode) => {
 
 const songlists = defineModel('songlists');
 const songlist = defineModel('songlist');
-const HomePageRecommendLatest=defineModel('HomePageRecommendLatest');
+const HomePageRecommendLatest = defineModel('HomePageRecommendLatest');
 const index = defineModel('index');
 const ShowSearchView = ref(false);
 const songlistsearch = ref([]);
@@ -59,9 +59,9 @@ const SearchOperation = () => {
         console.log(response.data.data);
         ShowSearchView.value = true;
         songlistsearch.value = response.data.data;
-        let length=songlistsearch.value.length;
-        for(let i=0;i<length;++i){
-          songlistsearch.value[i].duration=gettime(songlistsearch.value[i].duration)
+        let length = songlistsearch.value.length;
+        for (let i = 0; i < length; ++i) {
+          songlistsearch.value[i].duration = gettime(songlistsearch.value[i].duration)
         }
       })
       .catch(error => {
@@ -93,44 +93,51 @@ const ChangeSearchViewMode = () => {
   ShowSearchView.value = false;
 }
 
-const CurrentUser_SongListdata=ref([]);
-const GetCurrentUser_SongListdata=()=>{
-  axios.get('http://182.92.100.66:5000/users/songlists',{
-    params:{
-      'username':username.value
+const CurrentUser_SongListdata = ref([]);
+const GetCurrentUser_SongListdata = () => {
+  axios.get('http://182.92.100.66:5000/users/songlists', {
+    params: {
+      'username': username.value
     }
   })
-      .then(response=>{
-        CurrentUser_SongListdata.value=response.data.data;
+      .then(response => {
+        CurrentUser_SongListdata.value = response.data.data;
         console.log(response.data.data);
       })
-      .catch(error=>{
+      .catch(error => {
         console.log(error.response.data);
       })
 }
-const ShowCurrentUser_SongList=ref(false);
-const needtoaddSongid=ref(1);
-const addToSongList=(songid)=>{
+const ShowCurrentUser_SongList = ref(false);
+const needtoaddSongid = ref(1);
+const addToSongList = (songid) => {
   console.log(songid);
   GetCurrentUser_SongListdata();
-  ShowCurrentUser_SongList.value=true;
-  needtoaddSongid.value=songid;
-  needshowsonglistpage.value=false;
+  ShowCurrentUser_SongList.value = true;
+  needtoaddSongid.value = songid;
+  needshowsonglistpage.value = false;
+}
+
+const CloseCurrentUser_SongList=()=>{
+  ShowCurrentUser_SongList.value = false;
 }
 </script>
 
 <template>
   <transition name="slide" appear>
     <div class="transition-container-2" v-if="ShowSearchView&&!ShowCurrentUser_SongList">
-      <Search_View v-if="ShowSearchView&&!ShowCurrentUser_SongList" v-model:songlistlast="songlistsearch" @handlePlayNow="handlePlayNow"
-                   @handlePlayAfter="handlePlayAfter" @changesize="ChangeSearchViewMode" class="w-full" @addToSongList="addToSongList"></Search_View>
+      <Search_View v-if="ShowSearchView&&!ShowCurrentUser_SongList" v-model:songlistlast="songlistsearch"
+                   @handlePlayNow="handlePlayNow"
+                   @handlePlayAfter="handlePlayAfter" @changesize="ChangeSearchViewMode" class="w-full"
+                   @addToSongList="addToSongList"></Search_View>
     </div>
   </transition>
 
 
   <transition name="slide" appear>
     <div class="transition-container-2" v-if="ShowCurrentUser_SongList">
-      <CurrentUser_SongList v-if="ShowCurrentUser_SongList" v-model:CurrentUser_SongListdata="CurrentUser_SongListdata" v-model:needtoaddSongid="needtoaddSongid"></CurrentUser_SongList>
+      <CurrentUser_SongList v-if="ShowCurrentUser_SongList" v-model:CurrentUser_SongListdata="CurrentUser_SongListdata"
+                            v-model:needtoaddSongid="needtoaddSongid" @CloseCurrentUser_SongList="CloseCurrentUser_SongList"></CurrentUser_SongList>
     </div>
   </transition>
 
@@ -141,13 +148,15 @@ const addToSongList=(songid)=>{
                      @ChangeSongList="ChangeSongList" @addToSongList="addToSongList"></SongList_Page>
     </div>
   </transition>
-  <div class="w-full h-16 pl-6 fixed bg-zinc-900 z-50" v-if="!needshowsonglistpage&&!ShowSearchView&&!ShowCurrentUser_SongList">
+  <div class="w-full h-16 pl-6 fixed bg-zinc-900 z-50"
+       v-if="!needshowsonglistpage&&!ShowSearchView&&!ShowCurrentUser_SongList">
     <div :class="[NaviClass1, 'text-transition']" @click="changeNaviMode(1)" style="line-height: 56px">推 荐</div>
     <div :class="[NaviClass2, 'text-transition']" @click="changeNaviMode(2)" style="line-height: 56px">最新上传</div>
     <Search v-model:SearchContent="SearchContent" @SearchOperation="SearchOperation"></Search>
   </div>
   <Newest_Songs_Page @handlePlayNow="handlePlayNow" @handlePlayAfter="handlePlayAfter"
-                     v-model:songlistlast="songlistlast" v-if="NaviMode!=='1'&&!needshowsonglistpage&&!ShowSearchView&&!ShowCurrentUser_SongList"
+                     v-model:songlistlast="songlistlast"
+                     v-if="NaviMode!=='1'&&!needshowsonglistpage&&!ShowSearchView&&!ShowCurrentUser_SongList"
                      class="text-2xl mb-32 mx-4 text-white font-serif font-bold mt-16 ml-8 z-50"></Newest_Songs_Page>
   <div class="text-2xl mx-4 text-white font-serif font-bold mt-16 ml-8"
        v-if="NaviMode==='1'&&!needshowsonglistpage&&!ShowSearchView&&!ShowCurrentUser_SongList">
@@ -155,14 +164,16 @@ const addToSongList=(songid)=>{
   </div>
   <Image_Scrool v-model:songlists="songlists" v-model:index="index"
                 v-if="NaviMode==='1'&&!needshowsonglistpage&&!ShowSearchView&&!ShowCurrentUser_SongList"></Image_Scrool>
-  <hr class="m-5 border-gray-500" v-if="NaviMode==='1'&&!needshowsonglistpage&&!ShowSearchView&&!ShowCurrentUser_SongList">
+  <hr class="m-5 border-gray-500"
+      v-if="NaviMode==='1'&&!needshowsonglistpage&&!ShowSearchView&&!ShowCurrentUser_SongList">
   <div class="text-2xl mx-4 text-white font-serif font-bold ml-8"
        v-if="NaviMode==='1'&&!needshowsonglistpage&&!ShowSearchView&&!ShowCurrentUser_SongList">
     推荐艺人
   </div>
   <SingerList_Scrool v-model:songlists="songlists"
                      v-if="NaviMode==='1'&&!needshowsonglistpage&&!ShowSearchView&&!ShowCurrentUser_SongList"></SingerList_Scrool>
-  <hr class="m-5 border-gray-500" v-if="NaviMode==='1'&&!needshowsonglistpage&&!ShowSearchView&&!ShowCurrentUser_SongList">
+  <hr class="m-5 border-gray-500"
+      v-if="NaviMode==='1'&&!needshowsonglistpage&&!ShowSearchView&&!ShowCurrentUser_SongList">
   <div class="mx-4" v-if="NaviMode==='1'&&!needshowsonglistpage&&!ShowSearchView&&!ShowCurrentUser_SongList">
     <div class="grid grid-cols-2 gap-4">
       <div class="grid-col-2">
@@ -291,7 +302,8 @@ const addToSongList=(songid)=>{
             </thead>
             <tbody>
             <!-- row 1 -->
-            <tr class="text-white transition duration-400 hover:bg-gray-600/40 rounded-md" v-for="(item, index) in HomePageRecommendLatest" :key="index">
+            <tr class="text-white transition duration-400 hover:bg-gray-600/40 rounded-md"
+                v-for="(item, index) in HomePageRecommendLatest" :key="index">
               <td>
                 <div class="flex items-center gap-3">
                   <div class="avatar">
@@ -301,7 +313,7 @@ const addToSongList=(songid)=>{
                     </div>
                   </div>
                   <div>
-                    <div class="font-bold">{{item.title}}</div>
+                    <div class="font-bold">{{ item.title }}</div>
                     <div class="text-sm opacity-50">United States</div>
                   </div>
                 </div>
@@ -314,13 +326,15 @@ const addToSongList=(songid)=>{
                 <div
                     class="dropdown dropdown-left dropdown-end my-auto tooltip transition duration-400 hover:bg-gray-600/40 bg-zinc-900 btn btn-sm border-none"
                     data-tip="详细信息">
-                  <svg t="1713774064278" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"
+                  <svg t="1713774064278" class="icon" viewBox="0 0 1024 1024" version="1.1"
+                       xmlns="http://www.w3.org/2000/svg"
                        p-id="2300" width="32" height="32" tabindex="0" role="button">
                     <path
                         d="M170.666667 213.333333h682.666666v85.333334H170.666667V213.333333z m0 512h682.666666v85.333334H170.666667v-85.333334z m0-256h682.666666v85.333334H170.666667v-85.333334z"
                         fill="white" p-id="2301"></path>
                   </svg>
-                  <ul tabindex="0" class="dropdown-content menu p-2 shadow rounded-box bg-zinc-900 text-white text-sm z-50"
+                  <ul tabindex="0"
+                      class="dropdown-content menu p-2 shadow rounded-box bg-zinc-900 text-white text-sm z-50"
                       style="width:300px">
                     <li class="z-50">
                       <div class="z-50">
@@ -374,12 +388,15 @@ const addToSongList=(songid)=>{
       </div>
     </div>
   </div>
-  <hr class="m-5 border-gray-500" v-if="NaviMode==='1'&&!needshowsonglistpage&&!ShowSearchView&&!ShowCurrentUser_SongList">
-  <div class="text-white text-base px-4 my-4" v-if="NaviMode==='1'&&!needshowsonglistpage&&!ShowSearchView&&!ShowCurrentUser_SongList">
+  <hr class="m-5 border-gray-500"
+      v-if="NaviMode==='1'&&!needshowsonglistpage&&!ShowSearchView&&!ShowCurrentUser_SongList">
+  <div class="text-white text-base px-4 my-4"
+       v-if="NaviMode==='1'&&!needshowsonglistpage&&!ShowSearchView&&!ShowCurrentUser_SongList">
     关于ios后台播放<br>
     由于ios限制无法在后台切换歌曲，可以添加到主屏幕、升级到ios16.1.1<br>
   </div>
-  <div class="text-white text-base px-4 mt-4 mb-32" v-if="NaviMode==='1'&&!needshowsonglistpage&&!ShowSearchView&&!ShowCurrentUser_SongList">
+  <div class="text-white text-base px-4 mt-4 mb-32"
+       v-if="NaviMode==='1'&&!needshowsonglistpage&&!ShowSearchView&&!ShowCurrentUser_SongList">
     如有侵权，请联系本人予以删除！邮箱xuehuitian45@gmail.com<br>
     本站本身不储存任何资源文件，资源来自互联网，仅供学习交流试听，请于下载后24小时内删除，支持购买正版专辑！
   </div>
