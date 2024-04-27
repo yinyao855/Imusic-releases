@@ -132,8 +132,8 @@
           <button
               class="border-none my-auto tooltip transition duration-400 hover:bg-gray-600/40 bg-zinc-900 btn btn-sm z-50"
               data-tip="播放列表" @click="ShowPlayMusicListChange" @blur="ShowPlayMusicListChange">
-            <svg t="1713774064278" class="icon border-none" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg"
-                 p-id="2300" width="32" height="32" tabindex="0" role="button" >
+            <svg class="icon border-none" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg"
+                 width="32" height="32" tabindex="0" role="button">
               <path
                   d="M170.666667 213.333333h682.666666v85.333334H170.666667V213.333333z m0 512h682.666666v85.333334H170.666667v-85.333334z m0-256h682.666666v85.333334H170.666667v-85.333334z"
                   fill="white"></path>
@@ -271,7 +271,6 @@ function expandPlayer() {
 function fullSize() {
   emit('fullsize');
 }
-
 
 
 </script>

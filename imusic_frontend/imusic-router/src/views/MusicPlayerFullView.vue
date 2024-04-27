@@ -8,7 +8,8 @@
         <label for="uploadx">
           <div class="card__img">
             <img :src="props.cover"
-                 :class="{'content':true, 'rotate':isPlaying,'stop':!isPlaying, 'rounded-full':true, 'w-[243px]':true, 'h-[243px]':true}">
+                 :class="{'content':true, 'rotate':isPlaying,'stop':!isPlaying, 'rounded-full':true, 'w-[243px]':true, 'h-[243px]':true}"
+                 alt="封面">
           </div>
           <div class="card__title" style="font-weight: bolder !important;">{{ props.name }}</div>
           <div class="card__subtitle">{{ props.singer }}</div>
@@ -23,7 +24,7 @@
         <div class="card__wrapper">
           <button class="card__btn" @click="restart">
             <svg fill="none" height="12" viewBox="0 0 20 12" width="20" xmlns="http://www.w3.org/2000/svg"
-                 xmlns:xlink="http://www.w3.org/1999/xlink">
+            >
               <clipPath id="a">
                 <path d="m0 0h20v12h-20z"></path>
               </clipPath>
@@ -44,7 +45,7 @@
                  v-if="!isPlaying">
               <path d="m0 0v22l18-11z" fill="#000"></path>
             </svg>
-            <svg class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" width="20"
+            <svg class="icon" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" width="20"
                  fill="black"
                  height="20" v-if="isPlaying">
               <path
@@ -59,7 +60,7 @@
           </button>
           <button class="card__btn">
             <svg fill="#fff" height="20" viewBox="0 0 20 20" width="20" xmlns="http://www.w3.org/2000/svg"
-                 xmlns:xlink="http://www.w3.org/1999/xlink">
+            >
               <clipPath id="a">
                 <path d="m0 .5h20v19h-20z"></path>
               </clipPath>
@@ -95,7 +96,7 @@
 
 <script setup>
 import {ref, defineModel, watch} from 'vue';
-import buttonchangesize from './buttonchangesize.vue'
+import buttonchangesize from '../components/buttonchangesize.vue'
 import {defineEmits} from 'vue';
 
 const emit = defineEmits(['fullsize', 'togglePlay', 'update', 'back', 'next']);
@@ -116,7 +117,6 @@ const currentTime = defineModel("currentTime");
 const currentduration = defineModel("currentTimeInSeconds");
 const durationInSeconds = defineModel("durationInSeconds");
 const lyric = defineModel("lyric")
-const test = defineModel("test");
 const audioPlayer = defineModel("audioPlayer");
 
 const lyricsshow = ref([{text: '', special: false}, {text: '', special: false}, {text: '', special: false}, {
@@ -132,11 +132,6 @@ const nowline = ref(0);
 
 const togglePlay = () => {
   emit('togglePlay');
-  if (!isPlaying.value) {
-    playAudio();
-  } else {
-    pauseAudio();
-  }
 };
 
 const seek = () => {
@@ -144,15 +139,6 @@ const seek = () => {
     audioPlayer.value.currentTime = currentduration.value;
     console.log(currentduration.value);
   }
-};
-
-const playAudio = () => {
-  const content = document.querySelector('.content');
-}
-
-
-const pauseAudio = () => {
-  const content = document.querySelector('.content');
 };
 
 const back = () => {
@@ -167,12 +153,6 @@ const restart = () => {
   audioPlayer.value.currentTime = 0;
   currentduration.value = 0;
   currentTime.value = '0:00';
-};
-
-const getcurrentTime = () => {
-  const minute = currentduration.value / 60;
-  const second = currentduration.value % 60;
-  displayLyrics(props.lyrics, currentduration.value);
 };
 
 

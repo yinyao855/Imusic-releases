@@ -1,27 +1,14 @@
 <script setup>
-import {defineEmits, ref} from "vue";
+import {ref} from "vue";
 import axios from "axios";
 
 const props = defineProps({
   songlist: Object,
 })
 
-function show_tag(tag) {
-  if (tag === 'null') return false;
-  return true;
-}
+function show_tag(theme) {
+  return theme !== null;
 
-function gettime(time) {
-  const minute = Math.floor(time / 60);
-  const second = Math.floor(time - minute * 60);
-  if (second < 10) {
-    return `${minute}:0${second}`;
-  }
-  return `${minute}:${second}`;
-}
-
-function ChangeSongList() {
-  emits('ChangeSongList',songlistlast.value.id);
 }
 
 function sendDeleteSonglist() {
@@ -34,36 +21,32 @@ function sendDeleteSonglist() {
         }
       })
       .catch(function (error) {
-        console.log("error");
+        console.log(error.response.data);
       });
 }
 
 function sendEditSonglist() {
-  const tag_theme = props.songlist.tag_theme;
-  const tag_scene = props.songlist.tag_scene;
-  const tag_mood = props.songlist.tag_mood;
-  const tag_style = props.songlist.tag_style;
-  const tag_language = props.songlist.tag_language;
-  const formData = new FormData();
-  formData.append('title', props.songlist.title);
-  formData.append('cover', props.songlist.cover);
-  formData.append('introduction', props.songlist.introduction);
-  formData.append('owner', props.songlist.owner);
-  formData.append('tag_theme', tag_theme);
-  formData.append('tag_scene', tag_scene);
-  formData.append('tag_mood', tag_mood);
-  formData.append('tag_style', tag_style);
-  formData.append('tag_language', tag_language);
-  axios.post('http://182.92.100.66:5000/songlists/update/' + props.songlist.id, formData)
+  showEditSonglist.value = false;
+  return;
+  axios.post(url.value, formData)
       .then(function (response) {
         if (response.data.success === true) {
+          const formData = new FormData();
+          formData.append('title', props.songlist.title);
+          formData.append('cover', props.songlist.cover);
+          formData.append('introduction', props.songlist.introduction);
+          formData.append('owner', props.songlist.owner);
+          formData.append('tag_theme', props.songlist.tag_theme);
+          formData.append('tag_scene', props.songlist.tag_scene);
+          formData.append('tag_mood', props.songlist.tag_mood);
+          formData.append('tag_style', props.songlist.tag_style);
+          formData.append('tag_language', props.songlist.tag_language);
           window.alert("edit success");
           location.reload();
-          showEditSonglist.value = false;
         }
       })
       .catch(function (error) {
-        console.log("error");
+        console.log(error.response.data);
       });
 }
 
@@ -103,10 +86,10 @@ function activeShowEditSonglist() {
       <button @click="sendEditSonglist" v-show="showEditSonglist" class="btn m-1 inline-block float-right ">完成
       </button>
       <div class="inline-block" v-show="!showEditSonglist">
-        <img :src="props.songlist.cover" class="img_songlist shadow-2xl">
+        <img :src="props.songlist.cover" class="img_songlist shadow-2xl" alt="歌单封面">
       </div>
       <div class="inline-block" v-show="showEditSonglist">
-        <img :src="props.songlist.cover" class="img_songlist shadow-2xl">
+        <img :src="props.songlist.cover" class="img_songlist shadow-2xl" alt="歌单封面">
       </div>
       <div class="inline-block ml-7 align-top" v-show="!showEditSonglist">
         <div>
@@ -149,11 +132,11 @@ function activeShowEditSonglist() {
           <div class="text-white">*歌曲名</div>
         </div>
         <div class="inputForm bg-zinc-900">
-          <svg t="1713779846725" class="icon fill-white transition" viewBox="0 0 1024 1024" version="1.1"
-               xmlns="http://www.w3.org/2000/svg" p-id="5635" width="24" height="24">
+          <svg class="icon fill-white transition" viewBox="0 0 1024 1024"
+               xmlns="http://www.w3.org/2000/svg" width="24" height="24">
             <path
                 d="M458.24 594.304l1.6-0.576v-0.64l417.216-417.152A65.6 65.6 0 0 0 784.32 83.2L367.104 500.416h-0.448l-0.384 1.28c-13.888 14.464-19.2 33.408-17.28 51.968l-28.672 86.464 86.656-28.736c18.24 1.792 36.928-3.52 51.264-17.088zM64 768.256V896h896v-127.744H64z"
-                p-id="5636"></path>
+            ></path>
           </svg>
           <input type="text" class="input bg-zinc-900 text-white" placeholder="请输入歌单名"
                  v-model="props.songlist.title">
@@ -162,12 +145,12 @@ function activeShowEditSonglist() {
           <div class="text-white">介绍</div>
         </div>
         <div class="inputForm bg-zinc-900">
-          <svg t="1713789997854" class="icon fill-white" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg"
-               p-id="9038" width="24" height="24">
-            <path d="M0 0v1024h1024V0H0z m938.67 938.67H85.33V85.33h853.33v853.34z" fill="white" p-id="9039"></path>
+          <svg class="icon fill-white" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg"
+               width="24" height="24">
+            <path d="M0 0v1024h1024V0H0z m938.67 938.67H85.33V85.33h853.33v853.34z" fill="white"></path>
             <path
                 d="M341.33 213.33h512v85.33h-512zM170.67 213.33H256v85.33h-85.33zM341.33 384h512v85.33h-512zM341.33 554.67h512V640h-512zM170.67 554.67H256V640h-85.33zM341.33 725.33h512v85.33h-512z"
-                fill="white" p-id="9040"></path>
+                fill="white"></path>
           </svg>
           <input type="text" class="input bg-zinc-900 text-white" placeholder="请为你的歌曲写一点介绍"
                  v-model="props.songlist.introduction">
@@ -228,7 +211,7 @@ function activeShowEditSonglist() {
         </div>
       </div>
       <div class="mt-3">
-        <button @click="ChangeSongList" class="mr-3 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-20 rounded-full">
+        <button class="mr-3 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-20 rounded-full">
           <svg class="h-5 w-5 inline-block align-sub text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                stroke-width="2"
                stroke-linecap="round" stroke-linejoin="round">
@@ -299,11 +282,11 @@ function activeShowEditSonglist() {
         <tbody>
         <tr v-for="song in props.songlist.songs" class="text-white transition duration-400 hover:bg-gray-600/40">
           <td class="pl-3 p-1 hover:cursor-pointer">
-            <img :src="song.cover" class="img_song inline-block mr-3">
+            <img :src="song.cover" class="img_song inline-block mr-3" alt="歌曲封面">
             <p class="inline-block">{{ song.title }}</p>
           </td>
           <td class="text-center">{{ song.singer }}</td>
-          <td class="text-center">{{ gettime(song.duration) }}</td>
+          <td class="text-center">0.00</td>
           <td>
             <div class="menu">
               <button class="font-bold text-xl">···</button>
@@ -396,15 +379,6 @@ function activeShowEditSonglist() {
 </template>
 
 <style scoped>
-.bg_img {
-  margin: 0;
-  height: 330px;
-  background-size: cover;
-  filter: blur(30px);
-  float: left;
-  width: 100%;
-}
-
 .header_songlist {
   position: absolute;
 }
@@ -443,8 +417,6 @@ function activeShowEditSonglist() {
   background-repeat: no-repeat;
   background-size: cover;
   -webkit-filter: blur(19px);
-  -moz-filter: blur(19px);
-  -o-filter: blur(19px);
   -ms-filter: blur(19px);
   filter: blur(19px);
 

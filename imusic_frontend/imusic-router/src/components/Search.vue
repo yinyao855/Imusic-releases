@@ -1,9 +1,10 @@
 <script setup>
-import {defineModel,defineEmits} from "vue"
-const SearchContent=defineModel('SearchContent');
-const emits=defineEmits(['SearchOperation']);
+import {defineModel, defineEmits} from "vue"
 
-const SearchOperation=()=>{
+const SearchContent = defineModel('SearchContent');
+const emits = defineEmits(['SearchOperation']);
+
+const SearchOperation = () => {
   emits('SearchOperation');
 }
 </script>
@@ -27,7 +28,7 @@ const SearchOperation=()=>{
           name="searchbar"
           v-model="SearchContent"
       />
-      <div class="btn btn-md ml-4 text-white tracking-widest"  @click="SearchOperation">搜 索</div>
+      <div class="btn btn-md ml-4 text-white tracking-widest" @click="SearchOperation">搜 索</div>
     </div>
 
   </div>

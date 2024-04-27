@@ -1,28 +1,10 @@
 <script setup>
-import {ref} from "vue";
-import axios from "axios";
-
 const props = defineProps({
   songlist: Object,
 })
 
 function show_tag(theme) {
-  if (theme === null) return false;
-  return true;
-}
-
-function sendDeleteSonglist() {
-  console.log("delete " + props.songlist.id)
-  axios.delete('http://182.92.100.66:5000/songlists/delete/' + props.songlist.id)
-      .then(function (response) {
-        if (response.data.success === true) {
-          window.alert("delete success");
-          location.reload();
-        }
-      })
-      .catch(function (error) {
-        console.log("error");
-      });
+  return theme !== null;
 }
 
 </script>
@@ -33,7 +15,7 @@ function sendDeleteSonglist() {
          :style="{backgroundImage: 'url(' + props.songlist.cover + ')'}"></div>
     <div class="p-5 header_songlist">
       <div class="inline-block">
-        <img :src="props.songlist.cover" class="img_songlist shadow-2xl">
+        <img :src="props.songlist.cover" class="img_songlist shadow-2xl" alt="歌单封面">
       </div>
       <div class="inline-block ml-7 align-top">
         <div>
@@ -90,41 +72,6 @@ function sendDeleteSonglist() {
           收藏歌单
           ({{ props.songlist.like }})
         </button>
-        <!--        <div class="menu top-3">-->
-        <!--          <button>-->
-        <!--            <svg class="h-8 w-8 text-gray-200 mb-1 hover:text-gray-500" width="24" height="24"-->
-        <!--                 viewBox="0 0 24 24" stroke-width="2"-->
-        <!--                 stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">-->
-        <!--              <path stroke="none" d="M0 0h24v24H0z"/>-->
-        <!--              <circle cx="12" cy="12" r="9"/>-->
-        <!--              <line x1="8" y1="12" x2="8" y2="12.01"/>-->
-        <!--              <line x1="12" y1="12" x2="12" y2="12.01"/>-->
-        <!--              <line x1="16" y1="12" x2="16" y2="12.01"/>-->
-        <!--            </svg>-->
-        <!--          </button>-->
-        <!--          <div class="menu_item top-0 left-8">-->
-        <!--            <div class="inline-block ml-5 mr-3">-->
-<!--                      <svg class="h-8 w-8 cursor-pointer text-blue-600 hover:text-blue-800" width="24" height="24"-->
-<!--                           viewBox="0 0 24 24"-->
-<!--                           xmlns="http://www.w3.org/2000/svg" fill="none"-->
-<!--                           stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">-->
-<!--                        <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/>-->
-<!--                      </svg>-->
-        <!--            </div>-->
-        <!--            <div class="inline-block" @click="sendDeleteSonglist">-->
-<!--        <svg class="h-8 w-8 cursor-pointer text-red-500 hover:text-red-700" width="24" height="24"-->
-<!--             viewBox="0 0 24 24" stroke-width="2"-->
-<!--             stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">-->
-<!--          <path stroke="none" d="M0 0h24v24H0z"/>-->
-<!--          <line x1="4" y1="7" x2="20" y2="7"/>-->
-<!--          <line x1="10" y1="11" x2="10" y2="17"/>-->
-<!--          <line x1="14" y1="11" x2="14" y2="17"/>-->
-<!--          <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12"/>-->
-<!--          <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3"/>-->
-<!--        </svg>-->
-        <!--            </div>-->
-        <!--          </div>-->
-        <!--        </div>-->
       </div>
     </div>
   </div>
@@ -143,7 +90,7 @@ function sendDeleteSonglist() {
         <tbody>
         <tr v-for="song in props.songlist.songs" class="text-white transition duration-400 hover:bg-gray-600/40">
           <td class="pl-3 p-1 hover:cursor-pointer">
-            <img :src="song.cover" class="img_song inline-block mr-3">
+            <img :src="song.cover" class="img_song inline-block mr-3" alt="歌曲封面">
             <p class="inline-block">{{ song.title }}</p>
           </td>
           <td class="text-center">{{ song.singer }}</td>
@@ -240,15 +187,6 @@ function sendDeleteSonglist() {
 </template>
 
 <style scoped>
-.bg_img {
-  margin: 0;
-  height: 330px;
-  background-size: cover;
-  filter: blur(30px);
-  float: left;
-  width: 100%;
-}
-
 .header_songlist {
   position: absolute;
 }
@@ -287,8 +225,6 @@ function sendDeleteSonglist() {
   background-repeat: no-repeat;
   background-size: cover;
   -webkit-filter: blur(19px);
-  -moz-filter: blur(19px);
-  -o-filter: blur(19px);
   -ms-filter: blur(19px);
   filter: blur(19px);
 

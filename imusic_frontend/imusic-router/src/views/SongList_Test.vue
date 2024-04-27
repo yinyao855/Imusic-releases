@@ -231,7 +231,8 @@ function playEffect() {
           <p class="inline-block">Play All</p>
         </button>
         <button class="bg-gray-400 hover:bg-gray-500 text-white font-bold py-2 px-20 rounded-full inline-block">
-          <svg class="h-5 w-5 text-white inline-block align-sub" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+          <svg class="h-5 w-5 text-white inline-block align-sub" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+               stroke-width="2"
                stroke-linecap="round" stroke-linejoin="round">
             <polygon
                 points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
