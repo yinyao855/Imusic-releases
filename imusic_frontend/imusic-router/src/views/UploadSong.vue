@@ -252,7 +252,9 @@
         上 传
       </button>
       <button @click="downloadLrcFile" class="mb-5 w-full flex justify-center bg-blue-600 text-white p-4  rounded-full button-submit
-                                    font-semibold  focus:outline-none focus:shadow-outline hover:bg-blue-800 shadow-lg cursor-pointer transition ease-in duration-300 tracking-widest">下载歌词</button>
+                                    font-semibold  focus:outline-none focus:shadow-outline hover:bg-blue-800 shadow-lg cursor-pointer transition ease-in duration-300 tracking-widest">
+        下载歌词
+      </button>
     </div>
   </div>
 </template>
@@ -390,25 +392,15 @@ function fileToBase64(file) {
 const downloadLrcFile = () => {
   const lrcString = convertLyricsToLRC(lyrics.value);
   const filename = songTitle.value ? `${songTitle.value}.lrc` : 'lyrics.lrc';
-  const lrcBlob = new Blob([lrcString], { type: 'text/plain' });
-
-  // 创建Blob URL
+  const lrcBlob = new Blob([lrcString], {type: 'text/plain'});
   const blobUrl = URL.createObjectURL(lrcBlob);
-
-  // 创建一个隐藏的<a>元素
   const link = document.createElement('a');
   link.style.display = 'none';
   document.body.appendChild(link);
-
-  // 设置链接属性并触发下载
   link.href = blobUrl;
   link.download = filename;
   link.click();
-
-  // 清理Blob URL
   URL.revokeObjectURL(blobUrl);
-
-  // 移除临时创建的<a>元素
   document.body.removeChild(link);
 };
 
@@ -513,7 +505,6 @@ const CloseWarning = () => {
 const HasLogin = defineModel('HasLogin');
 const message = ref('');
 const WarningShow = ref(false);
-
 
 const changeMode = () => {
   emits('changeMode');
