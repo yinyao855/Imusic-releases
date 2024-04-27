@@ -732,7 +732,7 @@ onMounted(getPageinit);
         <CreateCenter v-if="mode==='4'" v-model:HasLogin="HasLogin" v-model:username="username"></CreateCenter>
         <CreateSonglistPage_Main v-if="mode==='5'" v-model:HasLogin="HasLogin"
                                  v-model:username="username"></CreateSonglistPage_Main>
-        <CreatedSonglist :songlist="chooseSonglist" v-if="mode==='6'"></CreatedSonglist>
+        <CreatedSonglist :songlist="chooseSonglist" v-if="mode==='6'" @PlaySongList="PlaySongList"></CreatedSonglist>
       </div>
     </div>
   </div>
@@ -764,7 +764,7 @@ onMounted(getPageinit);
       v-model:playerMode="playerMode"
       v-model:curIndex="curIndex"
       @togglePlay="togglePlay"
-      v-if="!isFull&&mode==='1'&&HasLogin"
+      v-if="!isFull&&(mode==='1'||mode==='6')&&HasLogin"
       :datax="datax"
   >
   </MusicPlayerView>
