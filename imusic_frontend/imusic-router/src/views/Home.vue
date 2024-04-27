@@ -156,7 +156,7 @@ function backSong() {
 const fetchAndFormatLyrics = async (lrcUrl) => {
   try {
     const response = await axios.get(lrcUrl);
-    const formattedLyrics = response.data.replace(/\[(\d+:\d+\.)(\d{2,3})/g, (match, time, ms) => {
+    const formattedLyrics = response.data.replace(/\[(\d+:\d+\.)(\d{2,3})\]/g, (match, time, ms) => {
       const truncatedMs = ms.slice(0, 2);
       return `[${time}${truncatedMs}]`;
     });
