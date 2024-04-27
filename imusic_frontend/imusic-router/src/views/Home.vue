@@ -14,7 +14,7 @@ import axios from "axios";
 import UploadSong from "@/views/UploadSong.vue";
 import CreateSonglistPage_Main from "@/views/CreateSonglistPage_Main.vue";
 import CreatedSonglist from "@/views/CreatedSonglist.vue";
-
+const userlike=ref([]);
 const songlistlast = ref([
   {
     singer: '张杰',
@@ -121,6 +121,7 @@ watch(curIndex, () => {
   const id = currentMusic.value.id;
   updateusersonglist(id);
 })
+
 
 const refresh = () => {
   let index = curIndex.value;
@@ -283,6 +284,7 @@ const needshowsonglistpage = ref(false);
 const cantransformtofull = ref(false);
 
 function getsonglistinit(id) {
+  GetUserLike();
   axios.get('http://182.92.100.66:5000/feature/recent', {
     params: {
       'username': username.value,
@@ -339,6 +341,14 @@ function getsonglistinit(id) {
         for (let i = 0; i < length; ++i) {
           songlistlast.value[i].duration = gettime(songlistlast.value[i].duration)
         }
+        let length2=userlike.value.length;
+        for(let i=0;i<length;++i){
+          for(let j=0;j<length2;++j){
+            if(songlistlast.value[i].id===userlike.value[j].id){
+              songlistlast.value[i].user_like=true;
+            }
+          }
+        }
       })
       .catch(error => {
         console.log(error.data.message);
@@ -358,6 +368,21 @@ const extractDate = (dateTimeString) => {
   const date = new Date(dateTimeString);
   const dateString = date.toISOString().slice(0, 10);
   return dateString;
+}
+
+const GetUserLike=()=>{
+  axios.get('http://182.92.100.66:5000/like/songs',{
+    params:{
+      'username':username.value,
+    }
+  })
+      .then(response=>{
+        userlike.value=response.data.songs;
+        console.log(userlike.value);
+      })
+      .catch(error=>{
+        console.log(error.response.data);
+      })
 }
 
 const userdata = ref([]);
@@ -698,7 +723,7 @@ function activeSonglist(choose) {
         <HomePage_Main v-model:songlist="songlist" v-model:needshowsonglistpage="needshowsonglistpage"
                        @handlePlayAfter="handlePlayAfter" @handlePlayNow="handlePlayNow" v-if="mode==='1'"
                        @ChangeSongList="ChangeSongList"
-                       v-model:songlists="songlists" v-model:index="index" v-model:username="username"
+                       v-model:songlists="songlists" v-model:index="index" v-model:username="username" v-model:userlike="userlike"
                        v-model:songlistlast="songlistlast" v-model:HomePageRecommendLatest="HomePageRecommendLatest"></HomePage_Main>
         <ExplorePage_Main v-if="mode==='2'"></ExplorePage_Main>
         <SettingPage_Main v-if="mode==='3'"></SettingPage_Main>

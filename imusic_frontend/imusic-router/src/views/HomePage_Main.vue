@@ -121,6 +121,11 @@ const addToSongList = (songid) => {
 const CloseCurrentUser_SongList=()=>{
   ShowCurrentUser_SongList.value = false;
 }
+
+
+const userlike=defineModel('userlike')
+
+
 </script>
 
 <template>
@@ -150,12 +155,13 @@ const CloseCurrentUser_SongList=()=>{
   </transition>
   <div class="w-full h-16 pl-6 fixed bg-zinc-900 z-50"
        v-if="!needshowsonglistpage&&!ShowSearchView&&!ShowCurrentUser_SongList">
-    <div :class="[NaviClass1, 'text-transition']" @click="changeNaviMode(1)" style="line-height: 56px">推 荐</div>
-    <div :class="[NaviClass2, 'text-transition']" @click="changeNaviMode(2)" style="line-height: 56px">最新上传</div>
+    <div :class="[NaviClass1, 'text-transition']" @click="changeNaviMode(1);refresh()" style="line-height: 56px">推 荐</div>
+    <div :class="[NaviClass2, 'text-transition']" @click="changeNaviMode(2);refresh()" style="line-height: 56px">最新上传</div>
     <Search v-model:SearchContent="SearchContent" @SearchOperation="SearchOperation"></Search>
   </div>
   <Newest_Songs_Page @handlePlayNow="handlePlayNow" @handlePlayAfter="handlePlayAfter"
                      v-model:songlistlast="songlistlast"
+                     v-model:username="username" v-model:userlike="userlike"
                      v-if="NaviMode!=='1'&&!needshowsonglistpage&&!ShowSearchView&&!ShowCurrentUser_SongList"
                      class="text-2xl mb-32 mx-4 text-white font-serif font-bold mt-16 ml-8 z-50"></Newest_Songs_Page>
   <div class="text-2xl mx-4 text-white font-serif font-bold mt-16 ml-8"

@@ -12,7 +12,7 @@ const handleindex=(index)=>{
 </script>
 
 <template>
-  <div class="overflow-x-auto overflow-y-auto max-h-96 mb-32 right-0 z-50 bottom-0 fixed bg-zinc-900 scroll-smooth">
+  <div class="overflow-x-auto overflow-y-auto max-h-96 mb-28 right-0 z-50 bottom-0 fixed bg-zinc-900 scroll-smooth rounded-xl">
     <table class="table">
       <tbody>
       <!-- row 1 -->
