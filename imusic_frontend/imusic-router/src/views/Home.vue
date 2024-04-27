@@ -505,6 +505,28 @@ const getPageinit = () => {
       .catch(error => {
         console.log(error.data.message);
       })
+  GetHomePageRecommendLatest();
+}
+
+const HomePageRecommendLatest=ref([]);
+
+const GetHomePageRecommendLatest=()=>{
+  axios.get('http://182.92.100.66:5000/recommend/latest',{
+    params:{
+      'num':10,
+    }
+  })
+      .then(response=>{
+        console.log(response.data.data);
+        HomePageRecommendLatest.value=response.data.data;
+        let length = HomePageRecommendLatest.value.length;
+        for (let i = 0; i < length; ++i) {
+          HomePageRecommendLatest.value[i].duration = gettime(HomePageRecommendLatest.value[i].duration);
+        }
+      })
+      .catch(error=>{
+        console.log(error.response.data);
+      })
 }
 
 const updateavatar=()=>{
@@ -633,8 +655,8 @@ onMounted(getPageinit);
         <HomePage_Main v-model:songlist="songlist" v-model:needshowsonglistpage="needshowsonglistpage"
                        @handlePlayAfter="handlePlayAfter" @handlePlayNow="handlePlayNow" v-if="mode==='1'"
                        @ChangeSongList="ChangeSongList"
-                       v-model:songlists="songlists" v-model:index="index"
-                       v-model:songlistlast="songlistlast"></HomePage_Main>
+                       v-model:songlists="songlists" v-model:index="index" v-model:username="username"
+                       v-model:songlistlast="songlistlast" v-model:HomePageRecommendLatest="HomePageRecommendLatest"></HomePage_Main>
         <ExplorePage_Main v-if="mode==='2'"></ExplorePage_Main>
         <SettingPage_Main v-if="mode==='3'"></SettingPage_Main>
         <CreateCenter v-if="mode==='4'" v-model:HasLogin="HasLogin" v-model:username="username"></CreateCenter>
