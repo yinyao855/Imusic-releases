@@ -166,7 +166,7 @@ const gotosignup = () =>{
 }
 
 const changeMode= ()=>{
-  emits('changeMode');
+  emits('changeMode',1);
 }
 const hasLogin=defineModel('hasLogin')
 </script>

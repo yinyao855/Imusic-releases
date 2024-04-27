@@ -13,7 +13,63 @@ import axios from "axios";
 import CreateSonglistPage_Main from "@/views/CreateSonglistPage_Main.vue";
 import CreatedSonglist from "@/views/CreatedSonglist.vue";
 
+const props = defineProps({
+  lyrics: Object,
+  gradient: Object,
+})
+const showCreatedSonglists = ref("false");
+const needshowsonglistpage = ref(false);
+const cantransformtofull = ref(false);
 const userlike=ref([]);
+const avatar = ref('');
+const index = ref('1');
+const datax = ref([]);
+const lyrics = props.lyrics
+const gradient = props.gradient
+const musicList = ref([
+  {
+    "id": null,
+    "title": "",
+    "singer": "",
+    "cover": "",
+    "gradient": "",
+    "introduction": "",
+    "audio": "",
+    "duration": "",
+    "lyric": "",
+    "tag_theme": null,
+    "tag_scene": null,
+    "tag_mood": null,
+    "tag_style": null,
+    "tag_language": null,
+    "uploader": "",
+    "like": 0,
+    "upload_date": ""
+  }]);
+const isFull = ref(false);
+const audioPlayer = ref(null);
+const isPlaying = ref(true);
+const currentTime = ref("0:00");
+const duration = ref("0:00");
+const durationInSeconds = ref(0);
+const currentTimeInSeconds = ref(0);
+const curIndex = defineModel("curIndex")
+const lyric = ref(parseLRC(lyrics[0]))
+const currentMusic = ref(musicList.value[curIndex.value])
+const playerMode = ref(0)
+const username = ref('点击登录')
+const HasLogin = ref(false);
+const songlists = ref([
+  {
+    cover: 'http://182.92.100.66:5000/media/covers/%E5%BD%93%E7%A6%BB%E5%88%AB%E5%BC%80%E5%87%BA%E8%8A%B1.webp',
+    title: 'name'
+  },
+]);
+const userdata = ref([]);
+const songlistsearch=ref([]);
+const SearchContent=ref('');
+const ShowSearchView=ref(false);
+const HomePageRecommendLatest=ref([]);
 const songlistlast = ref([
   {
     singer: '张杰',
@@ -57,48 +113,20 @@ const ChangerRegisterMode = () => {
   RegisterMode.value = !RegisterMode.value;
 }
 
-const props = defineProps({
-  lyrics: Object,
-  gradient: Object,
-})
 
-const lyrics = props.lyrics
-const gradient = props.gradient
-const musicList = ref([
-  {
-    "id": null,
-    "title": "",
-    "singer": "",
-    "cover": "",
-    "gradient": "",
-    "introduction": "",
-    "audio": "",
-    "duration": "",
-    "lyric": "",
-    "tag_theme": null,
-    "tag_scene": null,
-    "tag_mood": null,
-    "tag_style": null,
-    "tag_language": null,
-    "uploader": "",
-    "like": 0,
-    "upload_date": ""
-  }]);
-const isFull = ref(false);
-const audioPlayer = ref(null);
-const isPlaying = ref(true);
-//当前播放时间和总时间
-const currentTime = ref("0:00");
-const duration = ref("0:00");
-//当前播放时间和总时间（秒）
-const durationInSeconds = ref(0);
-const currentTimeInSeconds = ref(0);
-//将当前播放歌曲和外部绑定
-const curIndex = defineModel("curIndex")
-const lyric = ref(parseLRC(lyrics[0]))
-const currentMusic = ref(musicList.value[curIndex.value])
-const playerMode = ref(0)
 
+
+const updateTime = () => {
+  const audio = audioPlayer.value;
+  let minutes = Math.floor(audio.currentTime / 60);
+  let seconds = Math.floor(audio.currentTime % 60);
+  currentTime.value = `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
+  minutes = Math.floor(audio.duration / 60);
+  seconds = Math.floor(audio.duration % 60);
+  duration.value = `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
+  currentTimeInSeconds.value = audio.currentTime;
+  durationInSeconds.value = audio.duration;
+};
 function changeSize() {
   if (currentMusic.value.lyric !== null) {
     fetchAndFormatLyrics(currentMusic.value.lyric);
@@ -150,29 +178,21 @@ function backSong() {
   refresh();
 }
 
-const formattedLyrics = ref([]);
 const fetchAndFormatLyrics = async (lrcUrl) => {
   try {
     const response = await axios.get(lrcUrl);
     lyric.value = formatLyrics(response.data);
-    flag.value = true;
   } catch (error) {
     console.error('Error fetching lyrics:', error);
-    flag.value = true;
   }
 };
 
-const flag = ref(false);
 
 const formatLyrics = (rawLyrics) => {
-  // 用正则表达式匹配时间部分，并将毫秒位变成两位数
   const formattedLyrics = rawLyrics.replace(/\[(\d+:\d+\.)(\d{2,3})\]/g, (match, time, ms) => {
-    // 截取毫秒位的前两位
     const truncatedMs = ms.slice(0, 2);
-    // 返回替换后的时间字符串
     return `[${time}${truncatedMs}]`;
   });
-
   return parseLRC(formattedLyrics);
 };
 
@@ -222,54 +242,6 @@ function parseLRC(lrc) {
   return lyrics;
 }
 
-const songlists = ref([
-  {
-    cover: 'http://182.92.100.66:5000/media/covers/%E5%BD%93%E7%A6%BB%E5%88%AB%E5%BC%80%E5%87%BA%E8%8A%B1.webp',
-    title: 'name'
-  },
-  {
-    cover: 'http://182.92.100.66:5000/media/covers/%E5%BD%93%E7%A6%BB%E5%88%AB%E5%BC%80%E5%87%BA%E8%8A%B1.webp',
-    title: 'name'
-  },
-  {
-    cover: 'http://182.92.100.66:5000/media/covers/%E5%BD%93%E7%A6%BB%E5%88%AB%E5%BC%80%E5%87%BA%E8%8A%B1.webp',
-    title: 'name'
-  },
-  {
-    cover: 'http://182.92.100.66:5000/media/covers/%E5%BD%93%E7%A6%BB%E5%88%AB%E5%BC%80%E5%87%BA%E8%8A%B1.webp',
-    title: 'name'
-  },
-  {
-    cover: 'http://182.92.100.66:5000/media/covers/%E5%BD%93%E7%A6%BB%E5%88%AB%E5%BC%80%E5%87%BA%E8%8A%B1.webp',
-    title: 'name'
-  },
-  {
-    cover: 'http://182.92.100.66:5000/media/covers/%E5%BD%93%E7%A6%BB%E5%88%AB%E5%BC%80%E5%87%BA%E8%8A%B1.webp',
-    title: 'name'
-  },
-  {
-    cover: 'http://182.92.100.66:5000/media/covers/%E5%BD%93%E7%A6%BB%E5%88%AB%E5%BC%80%E5%87%BA%E8%8A%B1.webp',
-    title: 'name'
-  },
-]);
-
-const updateTime = () => {
-  const audio = audioPlayer.value;
-  let minutes = Math.floor(audio.currentTime / 60);
-  let seconds = Math.floor(audio.currentTime % 60);
-  currentTime.value = `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
-  minutes = Math.floor(audio.duration / 60);
-  seconds = Math.floor(audio.duration % 60);
-  duration.value = `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
-  currentTimeInSeconds.value = audio.currentTime;
-  durationInSeconds.value = audio.duration;
-};
-const username = ref('点击登录')
-const HasLogin = ref(false);
-const changeModex = () => {
-  mode.value = '1';
-}
-
 const refreshNewest_Songs_Page=()=>{
   axios.get('http://182.92.100.66:5000/recommend/latest')
       .then(response => {
@@ -306,12 +278,7 @@ const refreshNewest_Songs_Page=()=>{
 }
 
 
-const needshowsonglistpage = ref(false);
-
-const cantransformtofull = ref(false);
-
-function getsonglistinit(id) {
-  GetUserLike();
+function getsonglistinit() {
   axios.get('http://182.92.100.66:5000/feature/recent', {
     params: {
       'username': username.value,
@@ -393,26 +360,10 @@ const gettime = (time) => {
 
 const extractDate = (dateTimeString) => {
   const date = new Date(dateTimeString);
-  const dateString = date.toISOString().slice(0, 10);
-  return dateString;
+  return date.toISOString().slice(0, 10);
 }
 
-const GetUserLike=()=>{
-  axios.get('http://182.92.100.66:5000/like/songs',{
-    params:{
-      'username':username.value,
-    }
-  })
-      .then(response=>{
-        userlike.value=response.data.songs;
-        console.log(userlike.value);
-      })
-      .catch(error=>{
-        console.log(error.response.data);
-      })
-}
 
-const userdata = ref([]);
 const getuserdata = () => {
   const web = 'http://182.92.100.66:5000/users/info/' + username.value;
   axios.get(web)
@@ -480,14 +431,9 @@ function changesonglist() {
             })
       })
       .catch(error => {
-        console.log("get init songlist fail");
+        console.log(error.response.data);
       })
 }
-
-
-const songlistsearch=ref([]);
-const SearchContent=ref('');
-const ShowSearchView=ref(false);
 
 
 const SearchOperation = () => {
@@ -530,8 +476,7 @@ const SearchOperation = () => {
       })
 }
 
-const index = ref('1');
-const datax = ref([]);
+
 watch(index, () => {
   changesonglist();
 })
@@ -604,7 +549,6 @@ const LoginArea = () => {
   changeMode(0);
 }
 
-const avatar = ref('');
 
 const getPageinit = () => {
   axios.get('http://182.92.100.66:5000/songlists/initdata')
@@ -631,8 +575,6 @@ const getPageinit = () => {
       })
   GetHomePageRecommendLatest();
 }
-
-const HomePageRecommendLatest=ref([]);
 
 const GetHomePageRecommendLatest=()=>{
   axios.get('http://182.92.100.66:5000/recommend/latest',{
@@ -664,11 +606,9 @@ const updateavatar=()=>{
       })
 }
 
-onMounted(getPageinit);
 
 let createdSonglists;
 let chooseSonglist;
-const showCreatedSonglists = ref("false");
 const listCreatedSonglists = () => {
   const formData = new FormData();
   formData.append('username', username.value);
@@ -680,7 +620,7 @@ const listCreatedSonglists = () => {
         }
       })
       .catch(function (error) {
-        console.log("error");
+        console.log(error.response.data);
       })
 };
 
@@ -689,7 +629,7 @@ function activeSonglist(choose) {
   chooseSonglist = choose;
   showCreatedSonglists.value = true;
 }
-
+onMounted(getPageinit);
 </script>
 
 <template>
@@ -808,7 +748,7 @@ function activeSonglist(choose) {
       <div class="bg-zinc-900 h-screen overflow-auto">
         <div v-if="mode==='0'&&!HasLogin" class="w-full h-full z-50">
           <Login v-if="!RegisterMode" @ChangerRegisterMode="ChangerRegisterMode" v-model:username="username"
-                 @changeMode="changeModex" v-model:HasLogin="HasLogin" @getsonglistinit="getsonglistinit"
+                 @changeMode="changeMode" v-model:HasLogin="HasLogin" @getsonglistinit="getsonglistinit"
                  v-model:avatar="avatar"></Login>
           <Sign_up v-if="RegisterMode" @ChangerRegisterMode="ChangerRegisterMode" v-model:username="username"></Sign_up>
         </div>
