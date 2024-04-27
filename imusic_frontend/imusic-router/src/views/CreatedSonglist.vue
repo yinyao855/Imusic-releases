@@ -6,8 +6,14 @@ const props = defineProps({
   songlist: Object,
 })
 
+const emits = defineEmits(['PlaySongList'])
+
+const PlaySongList = (id) => {
+  emits('PlaySongList', id);
+}
+
 function show_tag(tag) {
-  if (tag === 'null') return false;
+  if (tag === 'null' || tag === null) return false;
   return true;
 }
 
@@ -18,10 +24,6 @@ function gettime(time) {
     return `${minute}:0${second}`;
   }
   return `${minute}:${second}`;
-}
-
-function ChangeSongList() {
-  emits('ChangeSongList', songlistlast.value.id);
 }
 
 function sendDeleteSonglist() {
@@ -228,7 +230,7 @@ function activeShowEditSonglist() {
         </div>
       </div>
       <div class="mt-3">
-        <button @click="ChangeSongList"
+        <button @click="PlaySongList(props.songlist.id)"
                 class="mr-3 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-20 rounded-full">
           <svg class="h-5 w-5 inline-block align-sub text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                stroke-width="2"
