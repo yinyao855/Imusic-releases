@@ -793,19 +793,35 @@ function activeSonglist(choose) {
         </svg>
         <span class="px-4 font-medium">创建歌单</span>
       </div>
-      <div :class="containerClass6">
-        <details>
-          <summary class="cursor-pointer text-white" @click="listCreatedSonglists">
-            <p class="inline-block text-white px-4 font-medium">创建的歌单</p>
-          </summary>
+      <!--用户创建的歌单-->
+      <div class="collapse bg-zinc-700 rounded-md" @click="listCreatedSonglists">
+        <input type="checkbox"/>
+        <span class="collapse-title text-white text-sm">
+          创建的歌单
+        </span>
+        <div class="collapse-content">
           <div v-if="showCreatedSonglists">
-            <div v-for="createdSonglist in createdSonglists" @click="changeMode(6); activeSonglist(createdSonglist)" class="m-1 h-10 cursor-pointer overflow-hidden">
+            <div v-for="createdSonglist in createdSonglists" @click="changeMode(6); activeSonglist(createdSonglist)"
+                 class="m-1 h-10 cursor-pointer overflow-hidden">
               <img :src="createdSonglist.cover" class="inline-block h-10 w-10 rounded-md"/>
               <span class="m-2 text-gray-400 hover:text-white"> {{ createdSonglist.title }} </span>
             </div>
           </div>
-        </details>
+        </div>
       </div>
+      <!--      <div :class="containerClass6">-->
+      <!--        <details>-->
+      <!--          <summary class="cursor-pointer text-white" @click="listCreatedSonglists">-->
+      <!--            <p class="inline-block text-white px-4 font-medium">创建的歌单</p>-->
+      <!--          </summary>-->
+      <!--          <div v-if="showCreatedSonglists">-->
+      <!--            <div v-for="createdSonglist in createdSonglists" @click="changeMode(6); activeSonglist(createdSonglist)" class="m-1 h-10 cursor-pointer overflow-hidden">-->
+      <!--              <img :src="createdSonglist.cover" class="inline-block h-10 w-10 rounded-md"/>-->
+      <!--              <span class="m-2 text-gray-400 hover:text-white"> {{ createdSonglist.title }} </span>-->
+      <!--            </div>-->
+      <!--          </div>-->
+      <!--        </details>-->
+      <!--      </div>-->
       <div
           class="antialiased text-sm block h-10 my-1 text-white leading-10 transition ease-in duration-400 px-4 hover:bg-gray-600/40 ml-2 mr-2 rounded-md">
         <span class="px-4 font-medium">收藏的歌单</span>
