@@ -1,64 +1,46 @@
 <script setup>
-import {defineModel, defineEmits, ref, onMounted} from "vue"
+import {defineModel, defineEmits} from "vue"
 import axios from "axios";
 
 const songlistlast = defineModel('songlistlast');
 const emits = defineEmits(['handlePlayNow', 'handlePlayAfter']);
-const username=defineModel('username');
-const userlike=defineModel('userlike');
+const username = defineModel('username');
 
 function handlePlayNow(index) {
-  //console.log(songlistlast.value[index].id);
   emits('handlePlayNow', songlistlast.value[index].id)
 }
 
 function handlePlayAfter(index) {
-  //console.log(songlistlast.value[index].id);
   emits('handlePlayAfter', songlistlast.value[index].id)
 }
 
-const addlike=(index)=>{
-  const formData=new FormData();
-  formData.append('username',username.value);
-  formData.append('song_id',songlistlast.value[index].id);
-  axios.post('http://182.92.100.66:5000/like/songs/add',formData)
-      .then(response=>{
+const addlike = (index) => {
+  const formData = new FormData();
+  formData.append('username', username.value);
+  formData.append('song_id', songlistlast.value[index].id);
+  axios.post('http://182.92.100.66:5000/like/songs/add', formData)
+      .then(response => {
         console.log(response.data);
-        songlistlast.value[index].user_like=true;
+        songlistlast.value[index].user_like = true;
       })
-      .catch(error=>{
+      .catch(error => {
         console.log(error.response.data);
       })
 }
 
-const deletelike=(index)=>{
-  const formData=new FormData();
-  formData.append('username',username.value);
-  formData.append('song_id',songlistlast.value[index].id);
-  axios.post('http://182.92.100.66:5000/like/songs/delete',formData)
-      .then(response=>{
+const deletelike = (index) => {
+  const formData = new FormData();
+  formData.append('username', username.value);
+  formData.append('song_id', songlistlast.value[index].id);
+  axios.post('http://182.92.100.66:5000/like/songs/delete', formData)
+      .then(response => {
         console.log(response.data);
-        songlistlast.value[index].user_like=false;
+        songlistlast.value[index].user_like = false;
       })
-      .catch(error=>{
+      .catch(error => {
         console.log(error.response.data);
       })
 }
-// const refresh=()=>{
-//   let length1=songlistlast.value.length;
-//   let length2=userlike.value.length;
-//   console.log(length1);
-//   console.log(length2);
-//   for(let i=0;i<length1;++i){
-//     for(let j=0;j<length2;++j){
-//       if(userlike.value[j].id===songlistlast.value[i].id){
-//         console.log(userlike.value[j].id);
-//         songlistlast.value[i].user_like=true;
-//       }
-//     }
-//   }
-// }
-// onMounted(refresh)
 
 </script>
 
@@ -81,13 +63,15 @@ const deletelike=(index)=>{
       <tr class="text-white transition duration-400 hover:bg-gray-600/40 rounded-md"
           v-for="(item, index) in songlistlast" :key="index">
         <td>
-          <svg @click="addlike(index)" v-if="!item.user_like" t="1714113029201" class="icon fill-white mr-4 my-auto" viewBox="0 0 1024 1024" version="1.1"
+          <svg @click="addlike(index)" v-if="!item.user_like" t="1714113029201" class="icon fill-white mr-4 my-auto"
+               viewBox="0 0 1024 1024" version="1.1"
                xmlns="http://www.w3.org/2000/svg" p-id="4703" width="20" height="20">
             <path
                 d="M744.0384 131.6864a209.5104 209.5104 0 0 1 190.976 124.8256c0.4096 0.9216 0.8192 1.9968 1.28 3.1232a241.0496 241.0496 0 0 1 15.0016 59.1872v0.9728a230.4 230.4 0 0 1 1.9456 30.72A247.04 247.04 0 0 1 880.64 526.0288l-363.52 363.52a9.0624 9.0624 0 0 1-6.5536 2.7136 8.9088 8.9088 0 0 1-6.3488-2.56l-359.0656-358.912a252.16 252.16 0 0 1-74.496-184.32v-0.3584A250.4704 250.4704 0 0 1 87.04 259.9424a208.896 208.896 0 0 1 259.6864-116.1216 217.856 217.856 0 0 1 111.36 93.1328A59.8528 59.8528 0 0 0 510.0032 266.24H517.12l6.8608-1.6896a61.696 61.696 0 0 0 34.0992-22.4256l1.792-2.4064 1.536-2.6112a198.912 198.912 0 0 1 21.76-30.1568l0.512-0.5632 0.512-0.5632c2.4064-2.8672 4.7616-5.5296 7.2192-8.0896 1.4336-1.536 3.072-3.2768 3.8912-3.9936l0.8192-0.8192 0.8192-0.768c2.9696-2.9696 5.12-5.12 7.68-7.2192 4.0448-3.5328 7.424-6.2976 10.24-8.4992l0.6144-0.4608 0.5632-0.4608c2.8672-2.2528 6.3488-4.6592 10.24-7.3728s8.2944-5.4272 11.776-7.424c3.5328-2.048 7.0656-3.9424 10.5984-5.7344a210.944 210.944 0 0 1 93.952-22.2208m0-57.4464A268.1856 268.1856 0 0 0 624.2816 102.4c-4.5568 2.304-9.1648 4.8128-13.7728 7.4752s-9.9328 6.144-14.8992 9.3696-9.5744 6.5536-14.1824 10.24-9.216 7.2704-13.6192 11.1104-7.424 6.656-11.0592 10.24c-2.5088 2.304-4.8128 4.8128-7.1168 7.2704-3.2256 3.4816-6.2976 6.912-9.3696 10.5472a258.048 258.048 0 0 0-28.16 38.8608 3.3792 3.3792 0 0 1-2.0992 1.3312 2.6624 2.6624 0 0 1-2.4576-1.3312 275.2512 275.2512 0 0 0-141.5168-117.76A266.24 266.24 0 0 0 34.0992 237.3632v0.3584a314.2144 314.2144 0 0 0 70.656 333.7216l358.9632 358.912a66.56 66.56 0 0 0 93.952 0l363.776-363.52a305.152 305.152 0 0 0 89.6-216.32 280.832 280.832 0 0 0-2.5088-38.2976 299.1616 299.1616 0 0 0-19.1488-74.8544c-0.3584-0.768-0.5632-1.3312-0.768-1.8944a266.9568 266.9568 0 0 0-244.6336-161.2288z"
                 p-id="4704"></path>
           </svg>
-          <svg @click="deletelike(index)" v-if="item.user_like" t="1714114260438" class="icon" viewBox="0 0 1093 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"
+          <svg @click="deletelike(index)" v-if="item.user_like" t="1714114260438" class="icon" viewBox="0 0 1093 1024"
+               version="1.1" xmlns="http://www.w3.org/2000/svg"
                p-id="4901" width="20" height="20">
             <path
                 d="M537.209749 246.735695c22.579939-125.653383 157.939631-190.594584 248.614765-187.827065 137.918426 6.636716 260.062434 134.142516 253.945461 284.241582a304.116193 304.116193 0 0 1-0.728528 11.660897c-0.071076 4.60661-0.017769 9.217661-0.284304 13.997519-12.802554 202.317673-142.422864 310.224281-261.164112 371.709414-198.697242 135.719514-243.279627 247.068863-243.279627 247.068864s-59.392835-104.637115-222.529894-243.301839c-117.524072-114.698804-260.457794-191.896162-267.343276-407.251828-0.155479-4.788742 0.519743-9.386467 0.839584-13.975308 0.008884-3.891408 0.053307-7.765047 0.21767-11.683108 6.094762-150.121277 140.699272-260.493332 278.62214-253.852174 80.497948 3.886966 183.442567 66.882463 213.090121 189.213046z"
@@ -115,7 +99,7 @@ const deletelike=(index)=>{
           {{ item.singer }}
         </td>
         <td>{{ item.uploader }}</td>
-        <td>{{item.duration}}</td>
+        <td>{{ item.duration }}</td>
         <th>
           <div
               class="dropdown dropdown-left dropdown-end my-auto tooltip transition duration-400 hover:bg-gray-600/40 bg-zinc-900 btn btn-sm border-none"

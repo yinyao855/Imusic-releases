@@ -8,12 +8,10 @@ const emits = defineEmits(['handlePlayNow', 'handlePlayAfter', 'changesize','add
 const username=defineModel('username');
 
 function handlePlayNow(index) {
-  //console.log(songlistlast.value[index].id);
   emits('handlePlayNow', songlistlast.value[index].id)
 }
 
 function handlePlayAfter(index) {
-  //console.log(songlistlast.value[index].id);
   emits('handlePlayAfter', songlistlast.value[index].id)
 }
 
@@ -24,7 +22,6 @@ const changesize = () => {
 const addToSongList=(index)=>{
   emits('addToSongList',songlistlast.value[index].id);
 }
-const userlike=defineModel('userlike')
 
 const addlike=(index)=>{
   const formData=new FormData();

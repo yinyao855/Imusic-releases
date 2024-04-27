@@ -9,11 +9,21 @@ import axios from "axios";
 import Search_View from "@/views/Search_View.vue";
 import CurrentUser_SongList from "@/views/CurrentUser_SongList.vue";
 
-const emits = defineEmits(['handlePlayNow', 'handlePlayAfter', 'ChangeSongList','refreshNewest_Songs_Page','SearchOperation']);
+const emits = defineEmits(['handlePlayNow', 'handlePlayAfter', 'ChangeSongList', 'refreshNewest_Songs_Page', 'SearchOperation']);
 const songlistlast = defineModel('songlistlast')
 const username = defineModel('username')
-
+const userlike = defineModel('userlike')
+const songlists = defineModel('songlists');
+const songlist = defineModel('songlist');
+const HomePageRecommendLatest = defineModel('HomePageRecommendLatest');
+const index = defineModel('index');
+const ShowSearchView = defineModel('ShowSearchView');
+const songlistsearch = defineModel('songlistsearch');
+const SearchContent = defineModel('SearchContent');
+const needshowsonglistpage = defineModel('needshowsonglistpage');
 const NaviMode = ref('1');
+const ShowCurrentUser_SongList = ref(false);
+const needtoaddSongid = ref(1);
 const NaviClass1 = computed(() => ({
   'text-base inline-block mx-5 w-30 rounded-lg antialiased tracking-widest font-medium transition-colors duration-400 hover:bg-gray-600/40': true,
   'text-cyan-700 underline underline-offset-8 decoration-2': NaviMode.value === '1',
@@ -28,43 +38,21 @@ const changeNaviMode = (newMode) => {
   console.log(NaviMode.value);
 }
 
-const userlike=defineModel('userlike')
-
-const songlists = defineModel('songlists');
-const songlist = defineModel('songlist');
-const HomePageRecommendLatest = defineModel('HomePageRecommendLatest');
-const index = defineModel('index');
-const ShowSearchView = defineModel('ShowSearchView');
-const songlistsearch = defineModel('songlistsearch');
-
-
 
 function handlePlayNow(id) {
   console.log(id);
   emits('handlePlayNow', id);
 }
 
-
 function handlePlayAfter(id) {
   emits('handlePlayAfter', id);
 }
 
-const SearchContent = defineModel('SearchContent');
 
 const SearchOperation = () => {
   emits('SearchOperation')
 }
 
-const gettime = (time) => {
-  const minute = Math.floor(time / 60);
-  const second = Math.floor(time - minute * 60);
-  if (second < 10) {
-    return `${minute}:0${second}`;
-  }
-  return `${minute}:${second}`;
-}
-
-const needshowsonglistpage = defineModel('needshowsonglistpage');
 
 const changesize = () => {
   needshowsonglistpage.value = false;
@@ -94,8 +82,8 @@ const GetCurrentUser_SongListdata = () => {
         console.log(error.response.data);
       })
 }
-const ShowCurrentUser_SongList = ref(false);
-const needtoaddSongid = ref(1);
+
+
 const addToSongList = (songid) => {
   console.log(songid);
   GetCurrentUser_SongListdata();
@@ -104,13 +92,13 @@ const addToSongList = (songid) => {
   needshowsonglistpage.value = false;
 }
 
-const CloseCurrentUser_SongList=()=>{
+const CloseCurrentUser_SongList = () => {
   ShowCurrentUser_SongList.value = false;
 }
 
 
-const refresh=()=>{
-emits('refreshNewest_Songs_Page');
+const refresh = () => {
+  emits('refreshNewest_Songs_Page');
 }
 
 </script>
@@ -118,7 +106,8 @@ emits('refreshNewest_Songs_Page');
 <template>
   <transition name="slide" appear>
     <div class="transition-container-2" v-if="ShowSearchView&&!ShowCurrentUser_SongList">
-      <Search_View v-if="ShowSearchView&&!ShowCurrentUser_SongList" v-model:songlistlast="songlistsearch" v-model:username="username"
+      <Search_View v-if="ShowSearchView&&!ShowCurrentUser_SongList" v-model:songlistlast="songlistsearch"
+                   v-model:username="username"
                    @handlePlayNow="handlePlayNow" v-model:userlike="userlike"
                    @handlePlayAfter="handlePlayAfter" @changesize="ChangeSearchViewMode" class="w-full"
                    @addToSongList="addToSongList"></Search_View>
@@ -129,13 +118,15 @@ emits('refreshNewest_Songs_Page');
   <transition name="slide" appear>
     <div class="transition-container-2" v-if="ShowCurrentUser_SongList">
       <CurrentUser_SongList v-if="ShowCurrentUser_SongList" v-model:CurrentUser_SongListdata="CurrentUser_SongListdata"
-                            v-model:needtoaddSongid="needtoaddSongid" @CloseCurrentUser_SongList="CloseCurrentUser_SongList"></CurrentUser_SongList>
+                            v-model:needtoaddSongid="needtoaddSongid"
+                            @CloseCurrentUser_SongList="CloseCurrentUser_SongList"></CurrentUser_SongList>
     </div>
   </transition>
 
   <transition name="slide" appear>
     <div class="transition-container z-50 ml-8" v-if="needshowsonglistpage&&!ShowSearchView&&!ShowCurrentUser_SongList">
-      <SongList_Page class="w-screen mb-32" v-model:songlist="songlist" v-model:username="username" v-model:userlike="userlike"
+      <SongList_Page class="w-screen mb-32" v-model:songlist="songlist" v-model:username="username"
+                     v-model:userlike="userlike"
                      @changesize="changesize" @handlePlayAfter="handlePlayAfter" @handlePlayNow="handlePlayNow"
                      @ChangeSongList="ChangeSongList" @addToSongList="addToSongList"></SongList_Page>
     </div>
@@ -143,7 +134,9 @@ emits('refreshNewest_Songs_Page');
   <div class="w-full h-16 pl-6 fixed bg-zinc-900 z-50"
        v-if="!needshowsonglistpage&&!ShowSearchView&&!ShowCurrentUser_SongList">
     <div :class="[NaviClass1, 'text-transition']" @click="changeNaviMode(1);" style="line-height: 56px">推 荐</div>
-    <div :class="[NaviClass2, 'text-transition']" @click="changeNaviMode(2);refresh()" style="line-height: 56px">最新上传</div>
+    <div :class="[NaviClass2, 'text-transition']" @click="changeNaviMode(2);refresh()" style="line-height: 56px">
+      最新上传
+    </div>
     <Search v-model:SearchContent="SearchContent" @SearchOperation="SearchOperation"></Search>
   </div>
   <Newest_Songs_Page @handlePlayNow="handlePlayNow" @handlePlayAfter="handlePlayAfter"
@@ -167,7 +160,7 @@ emits('refreshNewest_Songs_Page');
                      v-if="NaviMode==='1'&&!needshowsonglistpage&&!ShowSearchView&&!ShowCurrentUser_SongList"></SingerList_Scrool>
   <hr class="m-5 border-gray-500"
       v-if="NaviMode==='1'&&!needshowsonglistpage&&!ShowSearchView&&!ShowCurrentUser_SongList">
-  <div class="mx-4" v-if="NaviMode==='1'&&!needshowsonglistpage&&!ShowSearchView&&!ShowCurrentUser_SongList">
+  <div class="mx-4 mb-32" v-if="NaviMode==='1'&&!needshowsonglistpage&&!ShowSearchView&&!ShowCurrentUser_SongList">
     <div class="grid grid-cols-2 gap-4">
       <div class="grid-col-2">
         <div class="text-2xl mx-8 text-white font-serif font-bold my-4">热门单曲</div>
@@ -380,18 +373,6 @@ emits('refreshNewest_Songs_Page');
         </div>
       </div>
     </div>
-  </div>
-  <hr class="m-5 border-gray-500"
-      v-if="NaviMode==='1'&&!needshowsonglistpage&&!ShowSearchView&&!ShowCurrentUser_SongList">
-  <div class="text-white text-base px-4 my-4"
-       v-if="NaviMode==='1'&&!needshowsonglistpage&&!ShowSearchView&&!ShowCurrentUser_SongList">
-    关于ios后台播放<br>
-    由于ios限制无法在后台切换歌曲，可以添加到主屏幕、升级到ios16.1.1<br>
-  </div>
-  <div class="text-white text-base px-4 mt-4 mb-32"
-       v-if="NaviMode==='1'&&!needshowsonglistpage&&!ShowSearchView&&!ShowCurrentUser_SongList">
-    如有侵权，请联系本人予以删除！邮箱xuehuitian45@gmail.com<br>
-    本站本身不储存任何资源文件，资源来自互联网，仅供学习交流试听，请于下载后24小时内删除，支持购买正版专辑！
   </div>
 </template>
 
