@@ -1,14 +1,27 @@
 <script setup>
-import {ref} from "vue";
+import {defineEmits, ref} from "vue";
 import axios from "axios";
 
 const props = defineProps({
   songlist: Object,
 })
-const showSonglistForm = ref(false);
-function show_tag(theme) {
-  if (theme === null) return false;
+
+function show_tag(tag) {
+  if (tag === 'null') return false;
   return true;
+}
+
+function gettime(time) {
+  const minute = Math.floor(time / 60);
+  const second = Math.floor(time - minute * 60);
+  if (second < 10) {
+    return `${minute}:0${second}`;
+  }
+  return `${minute}:${second}`;
+}
+
+function ChangeSongList() {
+  emits('ChangeSongList',songlistlast.value.id);
 }
 
 function sendDeleteSonglist() {
@@ -26,23 +39,27 @@ function sendDeleteSonglist() {
 }
 
 function sendEditSonglist() {
-  showEditSonglist.value = false;
-  return;
-  axios.post(url.value, formData)
+  const tag_theme = props.songlist.tag_theme;
+  const tag_scene = props.songlist.tag_scene;
+  const tag_mood = props.songlist.tag_mood;
+  const tag_style = props.songlist.tag_style;
+  const tag_language = props.songlist.tag_language;
+  const formData = new FormData();
+  formData.append('title', props.songlist.title);
+  formData.append('cover', props.songlist.cover);
+  formData.append('introduction', props.songlist.introduction);
+  formData.append('owner', props.songlist.owner);
+  formData.append('tag_theme', tag_theme);
+  formData.append('tag_scene', tag_scene);
+  formData.append('tag_mood', tag_mood);
+  formData.append('tag_style', tag_style);
+  formData.append('tag_language', tag_language);
+  axios.post('http://182.92.100.66:5000/songlists/update/' + props.songlist.id, formData)
       .then(function (response) {
         if (response.data.success === true) {
-          const formData = new FormData();
-          formData.append('title', props.songlist.title);
-          formData.append('cover', props.songlist.cover);
-          formData.append('introduction', props.songlist.introduction);
-          formData.append('owner', props.songlist.owner);
-          formData.append('tag_theme', props.songlist.tag_theme);
-          formData.append('tag_scene', props.songlist.tag_scene);
-          formData.append('tag_mood', props.songlist.tag_mood);
-          formData.append('tag_style', props.songlist.tag_style);
-          formData.append('tag_language', props.songlist.tag_language);
           window.alert("edit success");
           location.reload();
+          showEditSonglist.value = false;
         }
       })
       .catch(function (error) {
@@ -211,7 +228,7 @@ function activeShowEditSonglist() {
         </div>
       </div>
       <div class="mt-3">
-        <button class="mr-3 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-20 rounded-full">
+        <button @click="ChangeSongList" class="mr-3 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-20 rounded-full">
           <svg class="h-5 w-5 inline-block align-sub text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                stroke-width="2"
                stroke-linecap="round" stroke-linejoin="round">
@@ -286,7 +303,7 @@ function activeShowEditSonglist() {
             <p class="inline-block">{{ song.title }}</p>
           </td>
           <td class="text-center">{{ song.singer }}</td>
-          <td class="text-center">0.00</td>
+          <td class="text-center">{{ gettime(song.duration) }}</td>
           <td>
             <div class="menu">
               <button class="font-bold text-xl">···</button>
