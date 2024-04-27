@@ -166,7 +166,7 @@ const show = () => {
     return;
   }
   const formData = new FormData();
-  // formData.append('email', email.value)
+  formData.append('email', email.value)
   formData.append('username', username.value);
   formData.append('password', password.value);
   formData.append('verification_code',verify_code.value);
