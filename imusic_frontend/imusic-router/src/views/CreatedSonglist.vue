@@ -5,6 +5,7 @@ import axios from "axios";
 const props = defineProps({
   songlist: Object,
 })
+
 function show_tag(theme) {
   return theme !== null;
 
@@ -135,7 +136,7 @@ function activeShowEditSonglist() {
                xmlns="http://www.w3.org/2000/svg" width="24" height="24">
             <path
                 d="M458.24 594.304l1.6-0.576v-0.64l417.216-417.152A65.6 65.6 0 0 0 784.32 83.2L367.104 500.416h-0.448l-0.384 1.28c-13.888 14.464-19.2 33.408-17.28 51.968l-28.672 86.464 86.656-28.736c18.24 1.792 36.928-3.52 51.264-17.088zM64 768.256V896h896v-127.744H64z"
-                ></path>
+            ></path>
           </svg>
           <input type="text" class="input bg-zinc-900 text-white" placeholder="请输入歌单名"
                  v-model="props.songlist.title">

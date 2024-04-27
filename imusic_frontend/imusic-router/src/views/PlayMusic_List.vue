@@ -1,18 +1,20 @@
 <script setup>
-import { defineProps } from "vue"
-const emits=defineEmits(['handleindex'])
+import {defineProps} from "vue"
+
+const emits = defineEmits(['handleindex'])
 
 const props = defineProps({
-  songlistlast:Array,
+  songlistlast: Array,
 });
 
-const handleindex=(index)=>{
-  emits('handleindex',index);
+const handleindex = (index) => {
+  emits('handleindex', index);
 }
 </script>
 
 <template>
-  <div class="overflow-x-auto overflow-y-auto max-h-96 mb-28 right-0 z-50 bottom-0 fixed bg-zinc-900 scroll-smooth rounded-xl">
+  <div
+      class="overflow-x-auto overflow-y-auto max-h-96 mb-28 right-0 z-50 bottom-0 fixed bg-zinc-900 scroll-smooth rounded-xl">
     <table class="table">
       <tbody>
       <!-- row 1 -->

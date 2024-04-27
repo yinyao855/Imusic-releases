@@ -8,7 +8,8 @@
         <label for="uploadx">
           <div class="card__img">
             <img :src="props.cover"
-                 :class="{'content':true, 'rotate':isPlaying,'stop':!isPlaying, 'rounded-full':true, 'w-[243px]':true, 'h-[243px]':true}" alt="封面">
+                 :class="{'content':true, 'rotate':isPlaying,'stop':!isPlaying, 'rounded-full':true, 'w-[243px]':true, 'h-[243px]':true}"
+                 alt="封面">
           </div>
           <div class="card__title" style="font-weight: bolder !important;">{{ props.name }}</div>
           <div class="card__subtitle">{{ props.singer }}</div>
@@ -23,7 +24,7 @@
         <div class="card__wrapper">
           <button class="card__btn" @click="restart">
             <svg fill="none" height="12" viewBox="0 0 20 12" width="20" xmlns="http://www.w3.org/2000/svg"
-                 >
+            >
               <clipPath id="a">
                 <path d="m0 0h20v12h-20z"></path>
               </clipPath>
@@ -59,7 +60,7 @@
           </button>
           <button class="card__btn">
             <svg fill="#fff" height="20" viewBox="0 0 20 20" width="20" xmlns="http://www.w3.org/2000/svg"
-                 >
+            >
               <clipPath id="a">
                 <path d="m0 .5h20v19h-20z"></path>
               </clipPath>

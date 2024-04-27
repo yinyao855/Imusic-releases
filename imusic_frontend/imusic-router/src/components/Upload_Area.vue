@@ -11,7 +11,7 @@ const onFileChange = (e) => {
   if (!files.length)
     return;
   createImage(files[0]);
-};
+};l
 
 const createImage = (file) => {
   console.log(file.name);

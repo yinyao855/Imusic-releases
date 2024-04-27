@@ -1,7 +1,8 @@
 <script setup>
-import { defineEmits } from 'vue';
+import {defineEmits} from 'vue';
+
 const emit = defineEmits(['fullsize']);
-const changesize =()=>{
+const changesize = () => {
   emit('fullsize');
 }
 </script>

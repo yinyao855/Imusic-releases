@@ -3,6 +3,7 @@ import {computed, ref} from "vue";
 import Singer_Show_Area from "@/views/Singer_Show_Area.vue";
 import Search from "@/components/Search.vue";
 import List_Show_Area from "@/views/List_Show_Area.vue";
+
 const NaviMode = ref('1');
 const NaviClass1 = computed(() => ({
   'text-base inline-block mx-5 w-30 rounded-lg antialiased tracking-widest font-medium transition-colors duration-400 hover:bg-gray-600/40': true,
