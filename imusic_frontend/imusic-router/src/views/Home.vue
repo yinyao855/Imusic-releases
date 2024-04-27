@@ -14,7 +14,8 @@ import axios from "axios";
 import UploadSong from "@/views/UploadSong.vue";
 import CreateSonglistPage_Main from "@/views/CreateSonglistPage_Main.vue";
 import CreatedSonglist from "@/views/CreatedSonglist.vue";
-const userlike=ref([]);
+
+const userlike = ref([]);
 const songlistlast = ref([
   {
     singer: '张杰',
@@ -341,11 +342,11 @@ function getsonglistinit(id) {
         for (let i = 0; i < length; ++i) {
           songlistlast.value[i].duration = gettime(songlistlast.value[i].duration)
         }
-        let length2=userlike.value.length;
-        for(let i=0;i<length;++i){
-          for(let j=0;j<length2;++j){
-            if(songlistlast.value[i].id===userlike.value[j].id){
-              songlistlast.value[i].user_like=true;
+        let length2 = userlike.value.length;
+        for (let i = 0; i < length; ++i) {
+          for (let j = 0; j < length2; ++j) {
+            if (songlistlast.value[i].id === userlike.value[j].id) {
+              songlistlast.value[i].user_like = true;
             }
           }
         }
@@ -370,17 +371,17 @@ const extractDate = (dateTimeString) => {
   return dateString;
 }
 
-const GetUserLike=()=>{
-  axios.get('http://182.92.100.66:5000/like/songs',{
-    params:{
-      'username':username.value,
+const GetUserLike = () => {
+  axios.get('http://182.92.100.66:5000/like/songs', {
+    params: {
+      'username': username.value,
     }
   })
-      .then(response=>{
-        userlike.value=response.data.songs;
+      .then(response => {
+        userlike.value = response.data.songs;
         console.log(userlike.value);
       })
-      .catch(error=>{
+      .catch(error => {
         console.log(error.response.data);
       })
 }
@@ -538,34 +539,34 @@ const getPageinit = () => {
   GetHomePageRecommendLatest();
 }
 
-const HomePageRecommendLatest=ref([]);
+const HomePageRecommendLatest = ref([]);
 
-const GetHomePageRecommendLatest=()=>{
-  axios.get('http://182.92.100.66:5000/recommend/latest',{
-    params:{
-      'num':10,
+const GetHomePageRecommendLatest = () => {
+  axios.get('http://182.92.100.66:5000/recommend/latest', {
+    params: {
+      'num': 10,
     }
   })
-      .then(response=>{
+      .then(response => {
         console.log(response.data.data);
-        HomePageRecommendLatest.value=response.data.data;
+        HomePageRecommendLatest.value = response.data.data;
         let length = HomePageRecommendLatest.value.length;
         for (let i = 0; i < length; ++i) {
           HomePageRecommendLatest.value[i].duration = gettime(HomePageRecommendLatest.value[i].duration);
         }
       })
-      .catch(error=>{
+      .catch(error => {
         console.log(error.response.data);
       })
 }
 
-const updateavatar=()=>{
-  const web='http://182.92.100.66:5000/users/info/'+username.value;
+const updateavatar = () => {
+  const web = 'http://182.92.100.66:5000/users/info/' + username.value;
   axios.get(web)
-      .then(response=>{
-        avatar.value=response.data.data.avatar;
+      .then(response => {
+        avatar.value = response.data.data.avatar;
       })
-      .catch(error=>{
+      .catch(error => {
         console.log(error.response.data);
       })
 }
@@ -691,19 +692,35 @@ function activeSonglist(choose) {
         </svg>
         <span class="px-4 font-medium">创建歌单</span>
       </div>
-      <div :class="containerClass6">
-        <details>
-          <summary class="cursor-pointer text-white" @click="listCreatedSonglists">
-            <p class="inline-block text-white px-4 font-medium">创建的歌单</p>
-          </summary>
+      <!--用户创建的歌单-->
+      <div class="collapse bg-zinc-700 rounded-md" @click="listCreatedSonglists">
+        <input type="checkbox"/>
+        <span class="collapse-title text-white text-sm">
+          创建的歌单
+        </span>
+        <div class="collapse-content">
           <div v-if="showCreatedSonglists">
-            <div v-for="createdSonglist in createdSonglists" @click="changeMode(6); activeSonglist(createdSonglist)" class="m-1 h-10 cursor-pointer overflow-hidden">
+            <div v-for="createdSonglist in createdSonglists" @click="changeMode(6); activeSonglist(createdSonglist)"
+                 class="m-1 h-10 cursor-pointer overflow-hidden">
               <img :src="createdSonglist.cover" class="inline-block h-10 w-10 rounded-md"/>
               <span class="m-2 text-gray-400 hover:text-white"> {{ createdSonglist.title }} </span>
             </div>
           </div>
-        </details>
+        </div>
       </div>
+      <!--      <div :class="containerClass6">-->
+      <!--        <details>-->
+      <!--          <summary class="cursor-pointer text-white" @click="listCreatedSonglists">-->
+      <!--            <p class="inline-block text-white px-4 font-medium">创建的歌单</p>-->
+      <!--          </summary>-->
+      <!--          <div v-if="showCreatedSonglists">-->
+      <!--            <div v-for="createdSonglist in createdSonglists" @click="changeMode(6); activeSonglist(createdSonglist)" class="m-1 h-10 cursor-pointer overflow-hidden">-->
+      <!--              <img :src="createdSonglist.cover" class="inline-block h-10 w-10 rounded-md"/>-->
+      <!--              <span class="m-2 text-gray-400 hover:text-white"> {{ createdSonglist.title }} </span>-->
+      <!--            </div>-->
+      <!--          </div>-->
+      <!--        </details>-->
+      <!--      </div>-->
       <div
           class="antialiased text-sm block h-10 my-1 text-white leading-10 transition ease-in duration-400 px-4 hover:bg-gray-600/40 ml-2 mr-2 rounded-md">
         <span class="px-4 font-medium">收藏的歌单</span>
@@ -723,8 +740,10 @@ function activeSonglist(choose) {
         <HomePage_Main v-model:songlist="songlist" v-model:needshowsonglistpage="needshowsonglistpage"
                        @handlePlayAfter="handlePlayAfter" @handlePlayNow="handlePlayNow" v-if="mode==='1'"
                        @ChangeSongList="ChangeSongList"
-                       v-model:songlists="songlists" v-model:index="index" v-model:username="username" v-model:userlike="userlike"
-                       v-model:songlistlast="songlistlast" v-model:HomePageRecommendLatest="HomePageRecommendLatest"></HomePage_Main>
+                       v-model:songlists="songlists" v-model:index="index" v-model:username="username"
+                       v-model:userlike="userlike"
+                       v-model:songlistlast="songlistlast"
+                       v-model:HomePageRecommendLatest="HomePageRecommendLatest"></HomePage_Main>
         <ExplorePage_Main v-if="mode==='2'"></ExplorePage_Main>
         <SettingPage_Main v-if="mode==='3'"></SettingPage_Main>
         <CreateCenter v-if="mode==='4'" v-model:HasLogin="HasLogin" v-model:username="username"></CreateCenter>
