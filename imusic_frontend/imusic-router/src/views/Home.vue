@@ -434,6 +434,11 @@ function handlePlayNow(id) {
             return;
           }
         }
+        for(let i=0;i<musicList.value.length;++i){
+          if(musicList.value[i].audio===''||musicList.value[i].audio===null){
+            musicList.value.splice(i,1);
+          }
+        }
         musicList.value.push(newmusic);
         curIndex.value = musicList.value.length - 1;
         datax.value = musicList.value;
@@ -459,6 +464,11 @@ function handlePlayAfter(id) {
           }
         }
         musicList.value.push(newmusic);
+        for(let i=0;i<musicList.value.length;++i){
+          if(musicList.value[i].audio===''||musicList.value[i].audio===null){
+            musicList.value.splice(i,1);
+          }
+        }
         console.log(curIndex.value);
         datax.value = musicList.value;
         currentMusic.value = musicList.value[curIndex.value]
@@ -560,6 +570,20 @@ const listCreatedSonglists = () => {
         console.log(error.response.data);
       })
 };
+
+const PlaySongList=(id)=>{
+  const web='http://182.92.100.66:5000/songlists/info/'+id;
+  axios.get(web)
+      .then(response=>{
+        musicList.value=response.data.data.songs;
+        curIndex.value=0;
+        currentMusic.value=musicList.value[curIndex.value];
+        datax.value=response.data.data.songs;
+      })
+      .catch(error=>{
+        console.log(error.response.data);
+      })
+}
 
 function activeSonglist(choose) {
   showCreatedSonglists.value = false;
@@ -702,7 +726,7 @@ onMounted(getPageinit);
                        v-model:songlists="songlists" v-model:index="index" v-model:username="username"
                        v-model:userlike="userlike" @refreshNewest_Songs_Page="refreshNewest_Songs_Page"
                        v-model:songlistlast="songlistlast" v-model:HomePageRecommendLatest="HomePageRecommendLatest"
-                       @changesonglist="changesonglist"></HomePage_Main>
+                       @changesonglist="changesonglist" @PlaySongList="PlaySongList"></HomePage_Main>
         <ExplorePage_Main v-if="mode==='2'"></ExplorePage_Main>
         <SettingPage_Main v-if="mode==='3'"></SettingPage_Main>
         <CreateCenter v-if="mode==='4'" v-model:HasLogin="HasLogin" v-model:username="username"></CreateCenter>

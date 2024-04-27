@@ -8,8 +8,9 @@ import SongList_Page from "@/views/SongList_Page.vue";
 import axios from "axios";
 import Search_View from "@/views/Search_View.vue";
 import CurrentUser_SongList from "@/components/CurrentUser_SongList.vue";
+import PlayMusic_List from "@/views/PlayMusic_List.vue";
 
-const emits = defineEmits(['changesonglist','handlePlayNow', 'handlePlayAfter', 'ChangeSongList', 'refreshNewest_Songs_Page', 'SearchOperation']);
+const emits = defineEmits(['changesonglist','handlePlayNow', 'handlePlayAfter', 'PlaySongList', 'refreshNewest_Songs_Page', 'SearchOperation']);
 const songlistlast = defineModel('songlistlast')
 const username = defineModel('username')
 const userlike = defineModel('userlike')
@@ -100,6 +101,10 @@ const refresh = () => {
   emits('refreshNewest_Songs_Page');
 }
 
+const PlaySongList=(id)=>{
+  emits('PlaySongList',id);
+}
+
 </script>
 
 <template>
@@ -127,7 +132,7 @@ const refresh = () => {
       <SongList_Page class="w-screen mb-32" v-model:songlist="songlist" v-model:username="username"
                      v-model:userlike="userlike"
                      @changesize="changesize" @handlePlayAfter="handlePlayAfter" @handlePlayNow="handlePlayNow"
-                     @addToSongList="addToSongList"></SongList_Page>
+                     @addToSongList="addToSongList" v-model:index="index" @ChangeSongList="PlaySongList"></SongList_Page>
     </div>
   </transition>
   <div class="w-full h-16 pl-6 fixed bg-zinc-900 z-50"

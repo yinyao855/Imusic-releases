@@ -30,7 +30,6 @@ const addToSongList=(index)=>{
 }
 
 const username=defineModel('username');
-const userlike=defineModel('userlike');
 const addlike=(index)=>{
   const formData=new FormData();
   formData.append('username',username.value);
