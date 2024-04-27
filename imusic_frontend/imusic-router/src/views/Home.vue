@@ -506,6 +506,18 @@ const getPageinit = () => {
         console.log(error.data.message);
       })
 }
+
+const updateavatar=()=>{
+  const web='http://182.92.100.66:5000/users/info/'+username.value;
+  axios.get(web)
+      .then(response=>{
+        avatar.value=response.data.data.avatar;
+      })
+      .catch(error=>{
+        console.log(error.response.data);
+      })
+}
+
 onMounted(getPageinit);
 </script>
 
@@ -617,7 +629,7 @@ onMounted(getPageinit);
           <Sign_up v-if="RegisterMode" @ChangerRegisterMode="ChangerRegisterMode" v-model:username="username"></Sign_up>
         </div>
         <Personal_Center v-model:userdata="userdata" v-model:HasLogin="HasLogin" v-model:username="username"
-                         v-if="HasLogin&&mode==='0'"></Personal_Center>
+                         v-if="HasLogin&&mode==='0'" @updateavatar="updateavatar"></Personal_Center>
         <HomePage_Main v-model:songlist="songlist" v-model:needshowsonglistpage="needshowsonglistpage"
                        @handlePlayAfter="handlePlayAfter" @handlePlayNow="handlePlayNow" v-if="mode==='1'"
                        @ChangeSongList="ChangeSongList"
