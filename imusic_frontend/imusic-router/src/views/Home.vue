@@ -13,6 +13,7 @@ import Sign_up from "./Sign_up.vue";
 import axios from "axios";
 import UploadSong from "@/views/UploadSong.vue";
 import CreateSonglistPage_Main from "@/views/CreateSonglistPage_Main.vue";
+import CreatedSonglist from "@/views/CreatedSonglist.vue";
 
 const songlistlast = ref([
   {
@@ -44,6 +45,10 @@ const containerClass4 = computed(() => ({
 const containerClass5 = computed(() => ({
   'antialiased text-sm block h-10 my-1 text-white leading-10 transition ease-in duration-400 hover:bg-gray-600/40 pl-4 ml-2 mr-2 rounded-md': mode.value !== '5',
   'antialiased text-sm block h-10 my-1 text-white leading-10 transition ease-in duration-400 px-4 ml-2 mr-2 rounded-md bg-blue-500 hover:bg-blue-500': mode.value === '5',
+}));
+const containerClass6 = computed(() => ({
+  'antialiased text-sm block h-10 my-1 text-white leading-10 transition ease-in duration-400 hover:bg-gray-600/40 pl-4 ml-2 mr-2 rounded-md': mode.value !== '6',
+  'antialiased text-sm block h-10 my-1 text-white leading-10 transition ease-in duration-400 px-4 ml-2 mr-2 rounded-md bg-blue-500 hover:bg-blue-500': mode.value === '6',
 }));
 const changeMode = (newMode) => {
   mode.value = newMode.toString(); // 设置新的 mode 值
@@ -394,7 +399,7 @@ function changesonglist() {
   axios.get(web)
       .then(response => {
         songlist.value = response.data.data;
-        songlist.value.create_date=extractDate(songlist.value.create_date)
+        songlist.value.create_date = extractDate(songlist.value.create_date)
         let length = songlist.value.songs.length;
         console.log(length);
         for (let i = 0; i < length; ++i) {
@@ -507,6 +512,31 @@ const getPageinit = () => {
       })
 }
 onMounted(getPageinit);
+
+let createdSonglists;
+let chooseSonglist;
+const showCreatedSonglists = ref("false");
+const listCreatedSonglists = () => {
+  const formData = new FormData();
+  formData.append('username', username.value);
+  axios.get("http://182.92.100.66:5000/users/songlists?username=" + username.value)
+      .then(function (response) {
+        if (response.data.success === true) {
+          createdSonglists = response.data.data;
+          showCreatedSonglists.value = true;
+        }
+      })
+      .catch(function (error) {
+        console.log("error");
+      })
+};
+
+function activeSonglist(choose) {
+  showCreatedSonglists.value = false;
+  chooseSonglist = choose;
+  showCreatedSonglists.value = true;
+}
+
 </script>
 
 <template>
@@ -592,15 +622,28 @@ onMounted(getPageinit);
         </svg>
         <span class="px-4 font-medium">创作中心</span>
       </div>
-
-        <div :class="containerClass5" @click="changeMode(5)">
-          <svg t="1714138297308" class="icon inline fill-white my-auto" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"
-               p-id="2360" width="16" height="16">
-            <path
-                d="M513.994 950.637c-119.023 0-230.918-46.127-315.082-129.876C114.714 736.94 68.335 625.526 68.335 506.95c0-118.547 46.381-229.991 130.547-313.776 84.165-83.752 196.057-129.877 315.08-129.877s230.918 46.125 315.044 129.877C913.24 276.959 959.59 388.404 959.59 506.92c0.03 118.577-46.351 230.02-130.584 313.8-84.096 83.75-195.99 129.917-315.012 129.917z m0-823.71c-102.087 0-198.033 39.537-270.164 111.353C171.727 310.03 132 405.463 132 506.95c0 101.487 39.694 196.914 111.797 268.638C315.93 847.4 411.872 886.933 513.961 886.933c102.056 0 198.032-39.534 270.163-111.345 72.1-71.784 111.832-167.192 111.797-268.673 0-101.484-39.697-196.885-111.797-268.606-72.102-71.812-168.078-111.382-270.13-111.382z m222.828 348.19H545.826V284.12c0-17.573-14.26-31.833-31.833-31.833s-31.833 14.26-31.833 31.833v190.998H291.164c-17.573 0-31.833 14.26-31.833 31.833 0 17.567 14.26 31.833 31.833 31.833H482.16V729.78c0 17.606 14.262 31.831 31.835 31.831 17.576 0 31.83-14.225 31.83-31.831V538.783h190.997c17.607 0 31.833-14.266 31.833-31.833 0-17.578-14.226-31.833-31.833-31.833z"
-                p-id="2361"></path>
-          </svg>
-          <span class="px-4 font-medium">创建歌单</span>
+      <div :class="containerClass5" @click="changeMode(5)">
+        <svg t="1714138297308" class="icon inline fill-white my-auto" viewBox="0 0 1024 1024" version="1.1"
+             xmlns="http://www.w3.org/2000/svg"
+             p-id="2360" width="16" height="16">
+          <path
+              d="M513.994 950.637c-119.023 0-230.918-46.127-315.082-129.876C114.714 736.94 68.335 625.526 68.335 506.95c0-118.547 46.381-229.991 130.547-313.776 84.165-83.752 196.057-129.877 315.08-129.877s230.918 46.125 315.044 129.877C913.24 276.959 959.59 388.404 959.59 506.92c0.03 118.577-46.351 230.02-130.584 313.8-84.096 83.75-195.99 129.917-315.012 129.917z m0-823.71c-102.087 0-198.033 39.537-270.164 111.353C171.727 310.03 132 405.463 132 506.95c0 101.487 39.694 196.914 111.797 268.638C315.93 847.4 411.872 886.933 513.961 886.933c102.056 0 198.032-39.534 270.163-111.345 72.1-71.784 111.832-167.192 111.797-268.673 0-101.484-39.697-196.885-111.797-268.606-72.102-71.812-168.078-111.382-270.13-111.382z m222.828 348.19H545.826V284.12c0-17.573-14.26-31.833-31.833-31.833s-31.833 14.26-31.833 31.833v190.998H291.164c-17.573 0-31.833 14.26-31.833 31.833 0 17.567 14.26 31.833 31.833 31.833H482.16V729.78c0 17.606 14.262 31.831 31.835 31.831 17.576 0 31.83-14.225 31.83-31.831V538.783h190.997c17.607 0 31.833-14.266 31.833-31.833 0-17.578-14.226-31.833-31.833-31.833z"
+              p-id="2361"></path>
+        </svg>
+        <span class="px-4 font-medium">创建歌单</span>
+      </div>
+      <div :class="containerClass6">
+        <details>
+          <summary class="cursor-pointer text-white" @click="listCreatedSonglists">
+            <p class="inline-block text-white px-4 font-medium">创建的歌单</p>
+          </summary>
+          <div v-if="showCreatedSonglists">
+            <div v-for="createdSonglist in createdSonglists" @click="changeMode(6); activeSonglist(createdSonglist)" class="m-1 h-10 cursor-pointer overflow-hidden">
+              <img :src="createdSonglist.cover" class="inline-block h-10 w-10 rounded-md"/>
+              <span class="m-2 text-gray-400 hover:text-white"> {{ createdSonglist.title }} </span>
+            </div>
+          </div>
+        </details>
       </div>
       <div
           class="antialiased text-sm block h-10 my-1 text-white leading-10 transition ease-in duration-400 px-4 hover:bg-gray-600/40 ml-2 mr-2 rounded-md">
@@ -627,7 +670,8 @@ onMounted(getPageinit);
         <SettingPage_Main v-if="mode==='3'"></SettingPage_Main>
         <CreateCenter v-if="mode==='4'" v-model:HasLogin="HasLogin" v-model:username="username"></CreateCenter>
         <CreateSonglistPage_Main v-if="mode==='5'" v-model:HasLogin="HasLogin"
-                        v-model:username="username"></CreateSonglistPage_Main>
+                                 v-model:username="username"></CreateSonglistPage_Main>
+        <CreatedSonglist :songlist="chooseSonglist" v-if="mode==='6'"></CreatedSonglist>
       </div>
     </div>
   </div>
