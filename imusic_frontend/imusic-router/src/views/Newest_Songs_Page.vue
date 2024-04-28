@@ -3,9 +3,10 @@ import {defineModel, defineEmits} from "vue"
 import axios from "axios";
 
 const songlistlast = defineModel('songlistlast');
-const emits = defineEmits(['handlePlayNow', 'handlePlayAfter','addToSongList']);
+const emits = defineEmits(['handlePlayNow', 'handlePlayAfter', 'addToSongList']);
 const username = defineModel('username');
-const token=defineModel('token')
+const token = defineModel('token')
+
 function handlePlayNow(index) {
   emits('handlePlayNow', songlistlast.value[index].id)
 }
@@ -58,8 +59,8 @@ const deletelike = (index) => {
       })
 }
 
-const addToSongList=(id)=>{
-  emits('addToSongList',id);
+const addToSongList = (id) => {
+  emits('addToSongList', id);
 }
 
 </script>

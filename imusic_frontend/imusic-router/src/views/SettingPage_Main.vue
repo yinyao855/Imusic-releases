@@ -4,5 +4,6 @@
 
 <script setup>
 import CurrentUser_SongList from "@/components/CurrentUser_SongList.vue";
-const token=defineModel('token')
+
+const token = defineModel('token')
 </script>
