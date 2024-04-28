@@ -423,5 +423,6 @@ const PlaySongList = (id) => {
 .transition-container-2 {
   right: 0;
   top: 0;
+  height:100%;
 }
 </style>

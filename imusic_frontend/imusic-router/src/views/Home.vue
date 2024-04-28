@@ -240,7 +240,7 @@ const refreshNewest_Songs_Page = () => {
           }
         })
             .then(response2 => {
-              userlike.value = response2.data.songs;
+              userlike.value = response2.data.data;
               console.log(userlike.value);
               let length2 = userlike.value.length;
               for (let i = 0; i < length; ++i) {
@@ -408,7 +408,7 @@ const changesonglist = () => {
           }
         })
             .then(response2 => {
-              userlike.value = response2.data.songs;
+              userlike.value = response2.data.data;
               console.log(userlike.value);
               let length2 = userlike.value.length;
               for (let i = 0; i < length; ++i) {
@@ -421,7 +421,7 @@ const changesonglist = () => {
               console.log(songlist.value.songs);
             })
             .catch(error => {
-              console.log(error.response.data);
+              console.log("changesonglisterror");
             })
       })
       .catch(error => {
@@ -444,7 +444,6 @@ const SearchOperation = () => {
     }
   })
       .then(response => {
-        console.log(response.data.data);
         ShowSearchView.value = true;
         songlistsearch.value = response.data.data;
         let length = songlistsearch.value.length;
@@ -465,7 +464,8 @@ const SearchOperation = () => {
           }
         })
             .then(response2 => {
-              userlike.value = response2.data.songs;
+              console.log(response2.data.data);
+              userlike.value = response2.data.data;
               console.log(userlike.value);
               let length2 = userlike.value.length;
               for (let i = 0; i < length; ++i) {
@@ -477,11 +477,11 @@ const SearchOperation = () => {
               }
             })
             .catch(error => {
-              console.log(error.response.data);
+              console.log("likeerror");
             })
       })
       .catch(error => {
-        console.log(error.data.message);
+        console.log('SearchOperationerror');
       })
 }
 
