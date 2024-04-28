@@ -32,10 +32,16 @@ const wrapperStyle = computed(() => ({
 
 const nextSlide = () => {
   currentIndex.value = (currentIndex.value + 1) % songlists.value.length;
+  if(currentIndex.value>=songlists.value.length-4){
+    currentIndex.value=0;
+  }
 };
 
 const prevSlide = () => {
   currentIndex.value = (currentIndex.value - 1 + songlists.value.length) % songlists.value.length;
+  if(currentIndex.value>=songlists.value.length-4){
+    currentIndex.value=0;
+  }
 };
 
 const index = defineModel('index');
