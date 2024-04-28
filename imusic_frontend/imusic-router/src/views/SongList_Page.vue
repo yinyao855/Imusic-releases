@@ -4,7 +4,7 @@ import buttonchangesize from '../components/buttonchangesize.vue'
 import axios from "axios";
 
 const songlistlast = defineModel('songlist');
-
+const token=defineModel('token')
 const emits = defineEmits(['handlePlayNow', 'handlePlayAfter', 'changesize', 'ChangeSongList', 'addToSongList']);
 
 function handlePlayNow(index) {
@@ -34,7 +34,15 @@ const addlike = (index) => {
   formData.append('username', username.value);
   formData.append('song_id', songlistlast.value.songs[index].id);
   console.log(songlistlast.value.songs[index].id);
-  axios.post('http://182.92.100.66:5000/like/songs/add', formData)
+  const instance = axios.create({
+    baseURL: 'http://182.92.100.66:5000',
+    timeout: 5000, // 设置请求超时时间
+    headers: {
+      'Authorization': `Bearer ${token.value}`,
+    }
+  });
+  axios.defaults.withCredentials = true;
+  instance.post('/like/songs/add', formData)
       .then(response => {
         console.log(response.data);
         songlistlast.value.songs[index].user_like = true;
@@ -48,7 +56,15 @@ const deletelike = (index) => {
   const formData = new FormData();
   formData.append('username', username.value);
   formData.append('song_id', songlistlast.value.songs[index].id);
-  axios.post('http://182.92.100.66:5000/like/songs/delete', formData)
+  const instance = axios.create({
+    baseURL: 'http://182.92.100.66:5000',
+    timeout: 5000, // 设置请求超时时间
+    headers: {
+      'Authorization': `Bearer ${token.value}`,
+    }
+  });
+  axios.defaults.withCredentials = true;
+  instance.post('/like/songs/delete', formData)
       .then(response => {
         console.log(response.data);
         songlistlast.value.songs[index].user_like = false;
@@ -64,7 +80,7 @@ const deletelike = (index) => {
   <div class="bgx bg-cover bg-center h-2/5 relative z-40">
     <div class="bg-blur w-full h-full absolute top-0 left-0"
          :style="{backgroundImage: `url(${songlistlast.cover})`}"></div>
-    <buttonchangesize class="absolute top-5 left-5" @fullsize="changesize"></buttonchangesize>
+    <buttonchangesize class="absolute top-5 left-5" @fullsize="changesize" v-model:token="token"></buttonchangesize>
     <img class="absolute top-10 left-24 w-60 aspect-square rounded-2xl" :src="songlistlast.cover" alt="歌单封面">
     <div class="absolute top-10 left-96">
       <div class="text-4xl text-white my-8">

@@ -4,6 +4,7 @@ import UploadSong from "@/views/UploadSong.vue";
 
 const NaviMode = ref('1');
 const upload = ref('0');
+const token=defineModel('token')
 const NaviClass1 = computed(() => ({
   'text-base inline-block mx-3 w-20 text-center rounded-lg antialiased tracking-widest font-medium transition-colors duration-400 hover:bg-gray-600/40': true,
   'text-cyan-700 underline underline-offset-8 decoration-2': NaviMode.value === '1',
@@ -39,7 +40,7 @@ const HasLogin = defineModel('HasLogin')
   <div class="w-full h-14 pl-6">
     <div :class="[NaviClass1, 'text-transition']" @click="changeNaviMode(1)" style="line-height: 56px">我的创作</div>
     <div :class="[NaviClass2, 'text-transition']" @click="changeNaviMode(2)" style="line-height: 56px">创意空间</div>
-    <Search></Search>
+    <Search v-model:token="token"></Search>
   </div>
   <div v-if="NaviMode==='1'">
     <div class="grid-col">
@@ -88,7 +89,7 @@ const HasLogin = defineModel('HasLogin')
     </div>
     <div v-if="upload==='1'" class="w-full h-full">
       <UploadSong @uploadSongSuccess="uploadSongSuccess" v-model:HasLogin="HasLogin"
-                  v-model:username="username"></UploadSong>
+                  v-model:username="username" v-model:token="token"></UploadSong>
     </div>
   </div>
 

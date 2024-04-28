@@ -5,6 +5,7 @@ const CoverFile = defineModel('Avatar');
 let needshow = ref(false);
 const imageUrl = ref('');
 const AvatarHasChanged = defineModel('AvatarHasChanged')
+const token=defineModel('token');
 
 const onFileChange = (e) => {
   const files = e.target.files || e.dataTransfer.files;

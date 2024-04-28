@@ -140,7 +140,7 @@
             </svg>
           </button>
           <transition name="slide">
-            <PlayMusic_List :songlistlast="datax" v-if="ShowPlayMusicList" @handleindex="handleindex"></PlayMusic_List>
+            <PlayMusic_List :songlistlast="datax" v-if="ShowPlayMusicList" @handleindex="handleindex" v-model:token="token"></PlayMusic_List>
           </transition>
 
 
@@ -178,7 +178,7 @@
 import {ref} from 'vue';
 import {defineProps, defineModel} from 'vue';
 import PlayMusic_List from "@/views/PlayMusic_List.vue";
-
+const token=defineModel('token')
 const ShowPlayMusicList = ref(false);
 const index = defineModel('curIndex');
 

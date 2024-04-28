@@ -5,7 +5,7 @@ import axios from "axios";
 const props = defineProps({
   songlist: Object,
 })
-
+const token=defineModel('token')
 const emits = defineEmits(['PlaySongList'])
 
 const PlaySongList = (id) => {
@@ -28,7 +28,15 @@ function gettime(time) {
 
 function sendDeleteSonglist() {
   console.log("delete " + props.songlist.id)
-  axios.delete('http://182.92.100.66:5000/songlists/delete/' + props.songlist.id)
+  const instance = axios.create({
+    baseURL: 'http://182.92.100.66:5000',
+    timeout: 5000, // 设置请求超时时间
+    headers: {
+      'Authorization': `Bearer ${token.value}`,
+    }
+  });
+  axios.defaults.withCredentials = true;
+  instance.delete('/songlists/delete/' + props.songlist.id)
       .then(function (response) {
         if (response.data.success === true) {
           window.alert("delete success");
@@ -56,7 +64,15 @@ function sendEditSonglist() {
   formData.append('tag_mood', tag_mood);
   formData.append('tag_style', tag_style);
   formData.append('tag_language', tag_language);
-  axios.post('http://182.92.100.66:5000/songlists/update/' + props.songlist.id, formData)
+  const instance = axios.create({
+    baseURL: 'http://182.92.100.66:5000',
+    timeout: 5000, // 设置请求超时时间
+    headers: {
+      'Authorization': `Bearer ${token.value}`,
+    }
+  });
+  axios.defaults.withCredentials = true;
+  instance.post('/songlists/update/' + props.songlist.id, formData)
       .then(function (response) {
         if (response.data.success === true) {
           window.alert("edit success");
@@ -65,7 +81,7 @@ function sendEditSonglist() {
         }
       })
       .catch(function (error) {
-        console.log("error");
+        console.log(error.response.data);
       });
 }
 

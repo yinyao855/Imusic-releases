@@ -14,6 +14,7 @@ import CreateSonglistPage_Main from "@/views/CreateSonglistPage_Main.vue";
 import CreatedSonglist from "@/views/CreatedSonglist.vue";
 
 const showCreatedSonglists = ref("false");
+const token = ref('');
 const needshowsonglistpage = ref(false);
 const cantransformtofull = ref(false);
 const userlike = ref([]);
@@ -210,14 +211,30 @@ function parseLRC(lrc) {
 }
 
 const refreshNewest_Songs_Page = () => {
-  axios.get('http://182.92.100.66:5000/recommend/latest')
+  const instance = axios.create({
+    baseURL: 'http://182.92.100.66:5000',
+    timeout: 5000, // 设置请求超时时间
+    headers: {
+      'Authorization': `Bearer ${token.value}`,
+    }
+  });
+  axios.defaults.withCredentials = true;
+  instance.get('/recommend/latest')
       .then(response => {
         songlistlast.value = response.data.data;
         let length = songlistlast.value.length;
         for (let i = 0; i < length; ++i) {
           songlistlast.value[i].duration = gettime(songlistlast.value[i].duration)
         }
-        axios.get('http://182.92.100.66:5000/like/songs', {
+        const instance = axios.create({
+          baseURL: 'http://182.92.100.66:5000',
+          timeout: 5000, // 设置请求超时时间
+          headers: {
+            'Authorization': `Bearer ${token.value}`,
+          }
+        });
+        axios.defaults.withCredentials = true;
+        instance.get('/like/songs', {
           params: {
             'username': username.value,
           }
@@ -245,7 +262,15 @@ const refreshNewest_Songs_Page = () => {
 }
 
 function getsonglistinit() {
-  axios.get('http://182.92.100.66:5000/feature/recent', {
+  const instance = axios.create({
+    baseURL: 'http://182.92.100.66:5000',
+    timeout: 5000, // 设置请求超时时间
+    headers: {
+      'Authorization': `Bearer ${token.value}`,
+    }
+  });
+  axios.defaults.withCredentials = true;
+  instance.get('/feature/recent', {
     params: {
       'username': username.value,
     }
@@ -283,7 +308,7 @@ function getsonglistinit() {
       .catch(error => {
         console.log(error.response.data);
       })
-  axios.get('http://182.92.100.66:5000/songlists/initdata')
+  instance.get('/songlists/initdata')
       .then(response => {
         songlists.value = response.data.data;
         let length = songlists.value;
@@ -294,7 +319,7 @@ function getsonglistinit() {
       .catch(error => {
         console.log(error.response.data);
       })
-  axios.get('http://182.92.100.66:5000/recommend/latest')
+  instance.get('/recommend/latest')
       .then(response => {
         songlistlast.value = response.data.data;
         let length = songlistlast.value.length;
@@ -330,8 +355,16 @@ const extractDate = (dateTimeString) => {
 }
 
 const getuserdata = () => {
-  const web = 'http://182.92.100.66:5000/users/info/' + username.value;
-  axios.get(web)
+  const instance = axios.create({
+    baseURL: 'http://182.92.100.66:5000',
+    timeout: 5000, // 设置请求超时时间
+    headers: {
+      'Authorization': `Bearer ${token.value}`,
+    }
+  });
+  axios.defaults.withCredentials = true;
+  const web = '/users/info/' + username.value;
+  instance.get(web)
       .then(response => {
         console.log(response.data.data);
         userdata.value = response.data.data;
@@ -343,8 +376,16 @@ const getuserdata = () => {
 
 const changesonglist = () => {
   needshowsonglistpage.value = true;
-  const web = 'http://182.92.100.66:5000/songlists/info/' + index.value;
-  axios.get(web)
+  const instance = axios.create({
+    baseURL: 'http://182.92.100.66:5000',
+    timeout: 5000, // 设置请求超时时间
+    headers: {
+      'Authorization': `Bearer ${token.value}`,
+    }
+  });
+  axios.defaults.withCredentials = true;
+  const web = '/songlists/info/' + index.value;
+  instance.get(web)
       .then(response => {
         songlist.value = response.data.data;
         songlist.value.create_date = extractDate(songlist.value.create_date)
@@ -353,7 +394,15 @@ const changesonglist = () => {
         for (let i = 0; i < length; ++i) {
           songlist.value.songs[i].duration = gettime(songlist.value.songs[i].duration)
         }
-        axios.get('http://182.92.100.66:5000/like/songs', {
+        const instance = axios.create({
+          baseURL: 'http://182.92.100.66:5000',
+          timeout: 5000, // 设置请求超时时间
+          headers: {
+            'Authorization': `Bearer ${token.value}`,
+          }
+        });
+        axios.defaults.withCredentials = true;
+        instance.get('/like/songs', {
           params: {
             'username': username.value,
           }
@@ -381,7 +430,15 @@ const changesonglist = () => {
 }
 
 const SearchOperation = () => {
-  axios.get('http://182.92.100.66:5000/songs/search', {
+  const instance = axios.create({
+    baseURL: 'http://182.92.100.66:5000',
+    timeout: 5000, // 设置请求超时时间
+    headers: {
+      'Authorization': `Bearer ${token.value}`,
+    }
+  });
+  axios.defaults.withCredentials = true;
+  instance.get('/songs/search', {
     params: {
       keyword: SearchContent.value
     }
@@ -394,7 +451,15 @@ const SearchOperation = () => {
         for (let i = 0; i < length; ++i) {
           songlistsearch.value[i].duration = gettime(songlistsearch.value[i].duration)
         }
-        axios.get('http://182.92.100.66:5000/like/songs', {
+        const instance = axios.create({
+          baseURL: 'http://182.92.100.66:5000',
+          timeout: 5000, // 设置请求超时时间
+          headers: {
+            'Authorization': `Bearer ${token.value}`,
+          }
+        });
+        axios.defaults.withCredentials = true;
+        instance.get('/like/songs', {
           params: {
             'username': username.value,
           }
@@ -421,8 +486,16 @@ const SearchOperation = () => {
 }
 
 function handlePlayNow(id) {
-  const web = 'http://182.92.100.66:5000/songs/info/' + id;
-  axios.get(web)
+  const instance = axios.create({
+    baseURL: 'http://182.92.100.66:5000',
+    timeout: 5000, // 设置请求超时时间
+    headers: {
+      'Authorization': `Bearer ${token.value}`,
+    }
+  });
+  axios.defaults.withCredentials = true;
+  const web = '/songs/info/' + id;
+  instance.get(web)
       .then(response => {
         let newmusic = response.data.data;
         const idx = newmusic.id;
@@ -450,8 +523,16 @@ function handlePlayNow(id) {
 }
 
 function handlePlayAfter(id) {
-  const web = 'http://182.92.100.66:5000/songs/info/' + id;
-  axios.get(web)
+  const instance = axios.create({
+    baseURL: 'http://182.92.100.66:5000',
+    timeout: 5000, // 设置请求超时时间
+    headers: {
+      'Authorization': `Bearer ${token.value}`,
+    }
+  });
+  axios.defaults.withCredentials = true;
+  const web = '/songs/info/' + id;
+  instance.get(web)
       .then(response => {
         let newmusic = response.data.data;
         const idx = newmusic.id;
@@ -482,7 +563,15 @@ const updateusersonglist = (songid) => {
   const formData = new FormData();
   formData.append('username', username.value);
   formData.append('song_id', songid);
-  axios.post('http://182.92.100.66:5000/feature/addrecent', formData)
+  const instance = axios.create({
+    baseURL: 'http://182.92.100.66:5000',
+    timeout: 5000, // 设置请求超时时间
+    headers: {
+      'Authorization': `Bearer ${token.value}`,
+    }
+  });
+  axios.defaults.withCredentials = true;
+  instance.post('/feature/addrecent', formData)
       .then(response => {
         console.log(response.data);
       })
@@ -499,7 +588,15 @@ const LoginArea = () => {
 }
 
 const getPageinit = () => {
-  axios.get('http://182.92.100.66:5000/songlists/initdata')
+  const instance = axios.create({
+    baseURL: 'http://182.92.100.66:5000',
+    timeout: 5000, // 设置请求超时时间
+    headers: {
+      'Authorization': `Bearer ${token.value}`,
+    }
+  });
+  axios.defaults.withCredentials = true;
+  instance.get('/songlists/initdata')
       .then(response => {
         songlists.value = response.data.data;
         let length = songlists.value.length;
@@ -510,7 +607,7 @@ const getPageinit = () => {
       .catch(error => {
         console.log(error.response.data);
       })
-  axios.get('http://182.92.100.66:5000/recommend/latest')
+  instance.get('/recommend/latest')
       .then(response => {
         songlistlast.value = response.data.data;
         let length = songlistlast.value.length;
@@ -525,7 +622,15 @@ const getPageinit = () => {
 }
 
 const GetHomePageRecommendLatest = () => {
-  axios.get('http://182.92.100.66:5000/recommend/latest', {
+  const instance = axios.create({
+    baseURL: 'http://182.92.100.66:5000',
+    timeout: 5000, // 设置请求超时时间
+    headers: {
+      'Authorization': `Bearer ${token.value}`,
+    }
+  });
+  axios.defaults.withCredentials = true;
+  instance.get('/recommend/latest', {
     params: {
       'num': 10,
     }
@@ -544,8 +649,16 @@ const GetHomePageRecommendLatest = () => {
 }
 
 const updateavatar = () => {
-  const web = 'http://182.92.100.66:5000/users/info/' + username.value;
-  axios.get(web)
+  const instance = axios.create({
+    baseURL: 'http://182.92.100.66:5000',
+    timeout: 5000, // 设置请求超时时间
+    headers: {
+      'Authorization': `Bearer ${token.value}`,
+    }
+  });
+  axios.defaults.withCredentials = true;
+  const web = '/users/info/' + username.value;
+  instance.get(web)
       .then(response => {
         avatar.value = response.data.data.avatar;
       })
@@ -559,7 +672,15 @@ let chooseSonglist;
 const listCreatedSonglists = () => {
   const formData = new FormData();
   formData.append('username', username.value);
-  axios.get("http://182.92.100.66:5000/users/songlists?username=" + username.value)
+  const instance = axios.create({
+    baseURL: 'http://182.92.100.66:5000',
+    timeout: 5000, // 设置请求超时时间
+    headers: {
+      'Authorization': `Bearer ${token.value}`,
+    }
+  });
+  axios.defaults.withCredentials = true;
+  instance.get("/users/songlists?username=" + username.value)
       .then(function (response) {
         if (response.data.success === true) {
           createdSonglists = response.data.data;
@@ -572,8 +693,16 @@ const listCreatedSonglists = () => {
 };
 
 const PlaySongList = (id) => {
-  const web = 'http://182.92.100.66:5000/songlists/info/' + id;
-  axios.get(web)
+  const instance = axios.create({
+    baseURL: 'http://182.92.100.66:5000',
+    timeout: 5000, // 设置请求超时时间
+    headers: {
+      'Authorization': `Bearer ${token.value}`,
+    }
+  });
+  axios.defaults.withCredentials = true;
+  const web = '/songlists/info/' + id;
+  instance.get(web)
       .then(response => {
         musicList.value = response.data.data.songs;
         curIndex.value = 0;
@@ -714,11 +843,13 @@ onMounted(getPageinit);
         <div v-if="mode==='0'&&!HasLogin" class="w-full h-full z-50">
           <Login v-if="!RegisterMode" @ChangerRegisterMode="ChangerRegisterMode" v-model:username="username"
                  @changeMode="changeMode" v-model:HasLogin="HasLogin" @getsonglistinit="getsonglistinit"
-                 v-model:avatar="avatar"></Login>
-          <Sign_up v-if="RegisterMode" @ChangerRegisterMode="ChangerRegisterMode" v-model:username="username"></Sign_up>
+                 v-model:avatar="avatar" v-model:token="token"></Login>
+          <Sign_up v-if="RegisterMode" @ChangerRegisterMode="ChangerRegisterMode" v-model:username="username"
+                   v-model:token="token"></Sign_up>
         </div>
         <Personal_Center v-model:userdata="userdata" v-model:HasLogin="HasLogin" v-model:username="username"
-                         v-if="HasLogin&&mode==='0'" @updateavatar="updateavatar"></Personal_Center>
+                         v-if="HasLogin&&mode==='0'" @updateavatar="updateavatar"
+                         v-model:token="token"></Personal_Center>
         <HomePage_Main v-model:songlist="songlist" v-model:needshowsonglistpage="needshowsonglistpage"
                        @handlePlayAfter="handlePlayAfter" @handlePlayNow="handlePlayNow" v-if="mode==='1'"
                        v-model:SearchContent="SearchContent" v-model:ShowSearchView="ShowSearchView"
@@ -726,13 +857,16 @@ onMounted(getPageinit);
                        v-model:songlists="songlists" v-model:index="index" v-model:username="username"
                        v-model:userlike="userlike" @refreshNewest_Songs_Page="refreshNewest_Songs_Page"
                        v-model:songlistlast="songlistlast" v-model:HomePageRecommendLatest="HomePageRecommendLatest"
+                       v-model:token="token"
                        @changesonglist="changesonglist" @PlaySongList="PlaySongList"></HomePage_Main>
-        <ExplorePage_Main v-if="mode==='2'"></ExplorePage_Main>
-        <SettingPage_Main v-if="mode==='3'"></SettingPage_Main>
-        <CreateCenter v-if="mode==='4'" v-model:HasLogin="HasLogin" v-model:username="username"></CreateCenter>
+        <ExplorePage_Main v-if="mode==='2'" v-model:token="token"></ExplorePage_Main>
+        <SettingPage_Main v-if="mode==='3'" v-model:token="token"></SettingPage_Main>
+        <CreateCenter v-if="mode==='4'" v-model:HasLogin="HasLogin" v-model:username="username"
+                      v-model:token="token"></CreateCenter>
         <CreateSonglistPage_Main v-if="mode==='5'" v-model:HasLogin="HasLogin"
-                                 v-model:username="username"></CreateSonglistPage_Main>
-        <CreatedSonglist :songlist="chooseSonglist" v-if="mode==='6'" @PlaySongList="PlaySongList"></CreatedSonglist>
+                                 v-model:username="username" v-model:token="token"></CreateSonglistPage_Main>
+        <CreatedSonglist :songlist="chooseSonglist" v-if="mode==='6'" @PlaySongList="PlaySongList"
+                         v-model:token="token"></CreatedSonglist>
       </div>
     </div>
   </div>
@@ -763,6 +897,7 @@ onMounted(getPageinit);
       v-model:audioPlayer="audioPlayer"
       v-model:playerMode="playerMode"
       v-model:curIndex="curIndex"
+      v-model:token="token"
       @togglePlay="togglePlay"
       v-if="!isFull&&(mode==='1'||mode==='6')&&HasLogin"
       :datax="datax"
@@ -778,6 +913,7 @@ onMounted(getPageinit);
           v-model:isPlaying="isPlaying"
           v-model:duration="duration"
           v-model:currentTimeInSeconds="currentTimeInSeconds"
+          v-model:token="token"
           @fullsize="changeSize"
           :name="currentMusic.title"
           :singer="currentMusic.singer"

@@ -4,6 +4,7 @@ import {defineEmits} from 'vue';
 const props = defineProps({
   message: String,
 });
+const token=defineModel('token')
 const emit = defineEmits(['CloseWarning']);
 const CloseWarning = () => {
   emit('CloseWarning');

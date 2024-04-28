@@ -2,6 +2,7 @@
 const props = defineProps({
   songlist: Object,
 })
+const token=defineModel('token')
 
 function show_tag(theme) {
   return theme !== null;

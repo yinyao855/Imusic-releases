@@ -3,6 +3,7 @@ import {computed, defineModel, ref} from "vue"
 import axios from "axios";
 import Upload_Area from "@/components/Upload_Area.vue";
 
+const token=defineModel('token')
 const emits = defineEmits(['updateavatar'])
 const userdata = defineModel('userdata');
 const HasLogin = defineModel('HasLogin')
@@ -28,7 +29,7 @@ const updateavatar = () => {
 
 const Savemessage = () => {
   let formData = new FormData();
-  const web = 'http://182.92.100.66:5000/users/update/' + username.value;
+  const web = '/users/update/' + username.value;
   formData.append('bio', userdata.value.bio);
   if (userdata.value.email !== '' && userdata.value.email !== null) {
     formData.append('email', userdata.value.email);
@@ -36,14 +37,30 @@ const Savemessage = () => {
   if (AvatarHasChanged.value) {
     formData.append('avatar', Avatar.value);
   }
-  axios.post(web, formData)
+  const instance = axios.create({
+    baseURL: 'http://182.92.100.66:5000',
+    timeout: 5000, // 设置请求超时时间
+    headers: {
+      'Authorization': `Bearer ${token.value}`,
+    }
+  });
+  axios.defaults.withCredentials = true;
+  instance.post(web, formData)
       .then(response => {
         console.log(response.data.message);
         if (response.data.success === true) {
           updateavatar();
           alert('保存成功');
-          const webx = 'http://182.92.100.66:5000/users/info/' + username.value;
-          axios.get(webx)
+          const webx = '/users/info/' + username.value;
+          const instance = axios.create({
+            baseURL: 'http://182.92.100.66:5000',
+            timeout: 5000, // 设置请求超时时间
+            headers: {
+              'Authorization': `Bearer ${token.value}`,
+            }
+          });
+          axios.defaults.withCredentials = true;
+          instance.get(webx)
               .then(response => {
                 userdata.value.avatar = response.data.data.avatar;
               })
@@ -103,7 +120,7 @@ const Savemessage = () => {
         <input type="text" class="input bg-zinc-900" placeholder="" v-model="userdata.email" readonly>
       </div>
     </div>
-    <Upload_Area v-model:avatar="Avatar" v-model:AvatarHasChanged="AvatarHasChanged"></Upload_Area>
+    <Upload_Area v-model:avatar="Avatar" v-model:AvatarHasChanged="AvatarHasChanged" v-model:token="token"></Upload_Area>
 
     <div
         class="w-1/5 bg-blue-600 hover:bg-blue-800 transition ease-in duration-300 my-6 mx-auto rounded-md h-10 text-white text-center tracking-widest items-center flex justify-center"

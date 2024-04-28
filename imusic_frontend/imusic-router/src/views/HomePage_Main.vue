@@ -24,6 +24,7 @@ const needshowsonglistpage = defineModel('needshowsonglistpage');
 const NaviMode = ref('1');
 const ShowCurrentUser_SongList = ref(false);
 const needtoaddSongid = ref(1);
+const token=defineModel('token');
 const NaviClass1 = computed(() => ({
   'text-base inline-block mx-5 w-30 rounded-lg antialiased tracking-widest font-medium transition-colors duration-400 hover:bg-gray-600/40': true,
   'text-cyan-700 underline underline-offset-8 decoration-2': NaviMode.value === '1',
@@ -65,7 +66,15 @@ const ChangeSearchViewMode = () => {
 }
 
 const GetCurrentUser_SongListdata = () => {
-  axios.get('http://182.92.100.66:5000/users/songlists', {
+  const instance = axios.create({
+    baseURL: 'http://182.92.100.66:5000',
+    timeout: 5000, // 设置请求超时时间
+    headers: {
+      'Authorization': `Bearer ${token.value}`,
+    }
+  });
+  axios.defaults.withCredentials = true;
+  instance.get('/users/songlists', {
     params: {
       'username': username.value
     }
@@ -113,7 +122,7 @@ const PlaySongList = (id) => {
                    v-model:username="username"
                    @handlePlayNow="handlePlayNow" v-model:userlike="userlike"
                    @handlePlayAfter="handlePlayAfter" @changesize="ChangeSearchViewMode" class="w-full"
-                   @addToSongList="addToSongList"></Search_View>
+                   @addToSongList="addToSongList" v-model:token="token"></Search_View>
     </div>
   </transition>
 
@@ -122,7 +131,7 @@ const PlaySongList = (id) => {
     <div class="transition-container-2" v-if="ShowCurrentUser_SongList">
       <CurrentUser_SongList v-if="ShowCurrentUser_SongList" v-model:CurrentUser_SongListdata="CurrentUser_SongListdata"
                             v-model:needtoaddSongid="needtoaddSongid"
-                            @CloseCurrentUser_SongList="CloseCurrentUser_SongList"></CurrentUser_SongList>
+                            @CloseCurrentUser_SongList="CloseCurrentUser_SongList" v-model:token="token"></CurrentUser_SongList>
     </div>
   </transition>
 
@@ -132,7 +141,7 @@ const PlaySongList = (id) => {
                      v-model:userlike="userlike"
                      @changesize="changesize" @handlePlayAfter="handlePlayAfter" @handlePlayNow="handlePlayNow"
                      @addToSongList="addToSongList" v-model:index="index"
-                     @ChangeSongList="PlaySongList"></SongList_Page>
+                     @ChangeSongList="PlaySongList" v-model:token="token"></SongList_Page>
     </div>
   </transition>
   <div class="w-full h-16 pl-6 fixed bg-zinc-900 z-50"
@@ -141,19 +150,19 @@ const PlaySongList = (id) => {
     <div :class="[NaviClass2, 'text-transition']" @click="changeNaviMode(2);refresh()" style="line-height: 56px">
       最新上传
     </div>
-    <Search v-model:SearchContent="SearchContent" @SearchOperation="SearchOperation"></Search>
+    <Search v-model:SearchContent="SearchContent" @SearchOperation="SearchOperation" v-model:token="token"></Search>
   </div>
   <Newest_Songs_Page @handlePlayNow="handlePlayNow" @handlePlayAfter="handlePlayAfter"
                      v-model:songlistlast="songlistlast"
                      v-model:username="username" v-model:userlike="userlike"
                      v-if="NaviMode!=='1'&&!needshowsonglistpage&&!ShowSearchView&&!ShowCurrentUser_SongList"
-                     class="text-2xl mb-32 mx-4 text-white font-serif font-bold mt-16 ml-8 z-50"></Newest_Songs_Page>
+                     class="text-2xl mb-32 mx-4 text-white font-serif font-bold mt-16 ml-8 z-50" v-model:token="token"></Newest_Songs_Page>
   <div class="text-2xl mx-4 text-white font-serif font-bold mt-16 ml-8"
        v-if="NaviMode==='1'&&!needshowsonglistpage&&!ShowSearchView&&!ShowCurrentUser_SongList">
     歌单
   </div>
   <Image_Scrool v-model:songlists="songlists" v-model:index="index" @changesonglist="changesonglist"
-                v-if="NaviMode==='1'&&!needshowsonglistpage&&!ShowSearchView&&!ShowCurrentUser_SongList"></Image_Scrool>
+                v-if="NaviMode==='1'&&!needshowsonglistpage&&!ShowSearchView&&!ShowCurrentUser_SongList" v-model:token="token"></Image_Scrool>
   <hr class="m-5 border-gray-500"
       v-if="NaviMode==='1'&&!needshowsonglistpage&&!ShowSearchView&&!ShowCurrentUser_SongList">
   <div class="text-2xl mx-4 text-white font-serif font-bold ml-8"
@@ -161,7 +170,7 @@ const PlaySongList = (id) => {
     推荐艺人
   </div>
   <SingerList_Scrool v-model:songlists="songlists"
-                     v-if="NaviMode==='1'&&!needshowsonglistpage&&!ShowSearchView&&!ShowCurrentUser_SongList"></SingerList_Scrool>
+                     v-if="NaviMode==='1'&&!needshowsonglistpage&&!ShowSearchView&&!ShowCurrentUser_SongList" v-model:token="token"></SingerList_Scrool>
   <hr class="m-5 border-gray-500"
       v-if="NaviMode==='1'&&!needshowsonglistpage&&!ShowSearchView&&!ShowCurrentUser_SongList">
   <div class="mx-4 mb-32" v-if="NaviMode==='1'&&!needshowsonglistpage&&!ShowSearchView&&!ShowCurrentUser_SongList">

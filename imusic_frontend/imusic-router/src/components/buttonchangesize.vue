@@ -2,6 +2,7 @@
 import {defineEmits} from 'vue';
 
 const emit = defineEmits(['fullsize']);
+const token=defineModel('token')
 const changesize = () => {
   emit('fullsize');
 }

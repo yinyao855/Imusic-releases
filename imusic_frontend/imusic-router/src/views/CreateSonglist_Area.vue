@@ -15,7 +15,7 @@ const HasLogin = defineModel('HasLogin');
 const username = defineModel('username');
 const message = ref('');
 const WarningShow = ref(false);
-
+const token=defineModel('token')
 const onCoverFileChange = (event) => {
   cover.value = event.target.files[0];
   const files = event.target.files || event.dataTransfer.files;
@@ -76,8 +76,15 @@ function sendPostCreateSonglist() {
   formData.append('tag_mood', mood.value);
   formData.append('tag_style', style.value);
   formData.append('tag_language', language.value);
-
-  axios.post('http://182.92.100.66:5000/songlists/create', formData)
+  const instance = axios.create({
+    baseURL: 'http://182.92.100.66:5000',
+    timeout: 5000, // 设置请求超时时间
+    headers: {
+      'Authorization': `Bearer ${token.value}`,
+    }
+  });
+  axios.defaults.withCredentials = true;
+  instance.post('/songlists/create', formData)
       .then(function (response) {
         if (response.data.success === true) {
           console.log(response);

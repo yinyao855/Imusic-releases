@@ -2,7 +2,7 @@
   <div id="login" class="h-full w-full flex items-center" @keypress.enter="show">
     <transition name="vx">
       <div class="w-full absolute top-0 left-1/2 transform -translate-x-1/2" v-if="WarningShow">
-        <Warning :message="message" @CloseWarning="CloseWarning" class="mx-auto"></Warning>
+        <Warning :message="message" @CloseWarning="CloseWarning" class="mx-auto" v-model:token="token"></Warning>
       </div>
     </transition>
     <div class="formx mx-auto my-auto">
@@ -67,7 +67,7 @@ import Warning from "@/components/Warning.vue";
 import {defineEmits, defineModel} from "vue"
 
 const emits = defineEmits(['ChangerRegisterMode', 'changeMode', 'getsonglistinit']);
-
+const token=defineModel('token')
 const show = () => {
   const button = document.querySelector('.button-submit');
   const rect = button.getBoundingClientRect();
@@ -87,11 +87,20 @@ const show = () => {
   formData.append('username', username.value);
   formData.append('password', password.value);
   console.log(formData);
-  axios.post('http://182.92.100.66:5000/users/login', formData)
+  const instance = axios.create({
+    baseURL: 'http://182.92.100.66:5000',
+    timeout: 5000, // 设置请求超时时间
+    headers: {
+      'Authorization': `Bearer ${token.value}`,
+    }
+  });
+  axios.defaults.withCredentials = true;
+  instance.post('/users/login', formData)
       .then(response => {
         if (response.data.success === true) {
           HasLogin.value = true;
           usernametofather.value = username.value;
+          token.value=response.data.token;
           confetti({
             particleCount: 500,
             angle: 90,

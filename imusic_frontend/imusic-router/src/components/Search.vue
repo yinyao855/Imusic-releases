@@ -3,7 +3,7 @@ import {defineModel, defineEmits} from "vue"
 
 const SearchContent = defineModel('SearchContent');
 const emits = defineEmits(['SearchOperation']);
-
+const token=defineModel('token')
 const SearchOperation = () => {
   emits('SearchOperation');
 }

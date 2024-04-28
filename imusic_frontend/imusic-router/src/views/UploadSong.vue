@@ -1,7 +1,7 @@
 <template>
   <transition name="vx">
     <div class="w-full absolute top-0 left-1/2 transform -translate-x-1/2" v-if="WarningShow">
-      <Warning :message="message" @CloseWarning="CloseWarning" class="mx-auto"></Warning>
+      <Warning :message="message" @CloseWarning="CloseWarning" class="mx-auto" v-model:token="token"></Warning>
     </div>
   </transition>
   <div class="h-full w-full flex items-center" @keypress.enter="submitSong">
@@ -310,6 +310,7 @@ const mp3File = ref(null);
 const coverImageFile = ref(null);
 const coverImageFileUrl = ref('');
 const lrcFile = ref(null);
+const token=defineModel('token')
 
 const onLrcFileChange = (event) => {
   lrcFile.value = event.target.files[0];
@@ -445,7 +446,15 @@ const submitSong = () => {
   formData.append('tag_language', language.value);
   formData.append('lyric', lrcBlob, filename);
   formData.append('introduction', introduction.value);
-  axios.post('http://182.92.100.66:5000/songs/upload', formData, {
+  const instance = axios.create({
+    baseURL: 'http://182.92.100.66:5000',
+    timeout: 5000, // 设置请求超时时间
+    headers: {
+      'Authorization': `Bearer ${token.value}`,
+    }
+  });
+  axios.defaults.withCredentials = true;
+  instance.post('/songs/upload', formData, {
     headers: {
       'Content-Type': 'multipart/form-data'
     },

@@ -23,6 +23,7 @@ const songlists = defineModel('songlists')
 const currentIndex = ref(0);
 const imgWidth = 230; // 轮播图图片宽度，根据实际调整
 const transitionTime = 500; // 动画过渡时间，毫秒
+const token=defineModel('token')
 
 const wrapperStyle = computed(() => ({
   transform: `translateX(-${currentIndex.value * imgWidth}px)`,

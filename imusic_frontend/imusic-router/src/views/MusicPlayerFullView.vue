@@ -2,7 +2,7 @@
   <div class="outcontainer" :style="sty">
     <div class="col1">
       <div class="button_div">
-        <buttonchangesize style="display: block" @fullsize="changesize"></buttonchangesize>
+        <buttonchangesize style="display: block" @fullsize="changesize" v-model:token="token"></buttonchangesize>
       </div>
       <div class="card">
         <label for="uploadx">
@@ -118,7 +118,7 @@ const currentduration = defineModel("currentTimeInSeconds");
 const durationInSeconds = defineModel("durationInSeconds");
 const lyric = defineModel("lyric")
 const audioPlayer = defineModel("audioPlayer");
-
+const token=defineModel('token')
 const lyricsshow = ref([{text: '', special: false}, {text: '', special: false}, {text: '', special: false}, {
   text: '',
   special: false

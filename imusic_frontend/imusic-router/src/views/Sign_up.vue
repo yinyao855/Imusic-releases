@@ -2,7 +2,7 @@
   <div id="sign_up" class="h-full w-full flex items-center" @keypress.enter="show">
     <transition>
       <div class="w-full absolute top-0 left-1/2 transform -translate-x-1/2" v-if="WarningShow">
-        <Warning :message="message" @CloseWarning="CloseWarning" class="mx-auto"></Warning>
+        <Warning :message="message" @CloseWarning="CloseWarning" class="mx-auto" v-model:token="token"></Warning>
       </div>
     </transition>
     <div class="formx mx-auto my-auto">
@@ -138,7 +138,7 @@ const WarningShow = ref(false);
 const usernametofather = defineModel('username');
 const emits = defineEmits(['ChangerRegisterMode']);
 let interval = null;
-const key = ref('');
+const token = defineModel('token');
 const verify_code = ref('');
 const timeLeft = ref(60);
 const gotologin = () => {
@@ -182,7 +182,7 @@ const show = () => {
     baseURL: 'http://182.92.100.66:5000',
     timeout: 5000, // 设置请求超时时间
     headers: {
-      'Authorization': `Bearer ${key.value}`,
+      'Authorization': `Bearer ${token.value}`,
     }
   });
   axios.defaults.withCredentials = true;
@@ -251,7 +251,7 @@ const startCountdown = () => {
   axios.post('http://182.92.100.66:5000/users/send-code', formData)
       .then(response => {
         console.log(response.data);
-        key.value = response.data.token;
+        token.value = response.data.token;
       })
       .catch(error => {
         console.log(error.data);

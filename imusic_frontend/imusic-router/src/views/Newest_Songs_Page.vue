@@ -5,7 +5,7 @@ import axios from "axios";
 const songlistlast = defineModel('songlistlast');
 const emits = defineEmits(['handlePlayNow', 'handlePlayAfter']);
 const username = defineModel('username');
-
+const token=defineModel('token')
 function handlePlayNow(index) {
   emits('handlePlayNow', songlistlast.value[index].id)
 }
@@ -18,7 +18,15 @@ const addlike = (index) => {
   const formData = new FormData();
   formData.append('username', username.value);
   formData.append('song_id', songlistlast.value[index].id);
-  axios.post('http://182.92.100.66:5000/like/songs/add', formData)
+  const instance = axios.create({
+    baseURL: 'http://182.92.100.66:5000',
+    timeout: 5000, // 设置请求超时时间
+    headers: {
+      'Authorization': `Bearer ${token.value}`,
+    }
+  });
+  axios.defaults.withCredentials = true;
+  instance.post('/like/songs/add', formData)
       .then(response => {
         console.log(response.data);
         songlistlast.value[index].user_like = true;
@@ -32,7 +40,15 @@ const deletelike = (index) => {
   const formData = new FormData();
   formData.append('username', username.value);
   formData.append('song_id', songlistlast.value[index].id);
-  axios.post('http://182.92.100.66:5000/like/songs/delete', formData)
+  const instance = axios.create({
+    baseURL: 'http://182.92.100.66:5000',
+    timeout: 5000, // 设置请求超时时间
+    headers: {
+      'Authorization': `Bearer ${token.value}`,
+    }
+  });
+  axios.defaults.withCredentials = true;
+  instance.post('/like/songs/delete', formData)
       .then(response => {
         console.log(response.data);
         songlistlast.value[index].user_like = false;
