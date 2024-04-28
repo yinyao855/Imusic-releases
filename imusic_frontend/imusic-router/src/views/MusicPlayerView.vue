@@ -131,7 +131,7 @@
 
           <button
               class="border-none my-auto tooltip transition duration-400 hover:bg-gray-600/40 bg-zinc-900 btn btn-sm z-50"
-              data-tip="播放列表" @click="ShowPlayMusicListChange" @blur="ShowPlayMusicListChange">
+              data-tip="播放列表" @click="ShowPlayMusicListChange" v-click-outside="ShowPlayMusicListFalse">
             <svg class="icon border-none" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg"
                  width="32" height="32" tabindex="0" role="button">
               <path
@@ -182,14 +182,6 @@ const token=defineModel('token')
 const ShowPlayMusicList = ref(false);
 const index = defineModel('curIndex');
 
-const handleindex = (indexx) => {
-  index.value = indexx;
-}
-
-const ShowPlayMusicListChange = () => {
-  ShowPlayMusicList.value = !ShowPlayMusicList.value;
-}
-
 const props = defineProps({
   cover: String,
   name: String,
@@ -222,6 +214,18 @@ const modeList = ['列表循环', '单曲循环', '随机播放'];
 const isMinimized = ref(false);
 //音量
 const volume = ref(40);
+
+const handleindex = (indexx) => {
+  index.value = indexx;
+}
+
+const ShowPlayMusicListFalse=()=>{
+  ShowPlayMusicList.value=false;
+}
+
+const ShowPlayMusicListChange = () => {
+  ShowPlayMusicList.value = !ShowPlayMusicList.value;
+}
 
 //改变音量
 const changeVolume = () => {
@@ -345,7 +349,5 @@ function fullSize() {
 
 .animate-spin1:hover {
   animation-play-state: paused;
-  /* transform: scale(1.1);
-    transition-duration: 0.5s; */
 }
 </style>
