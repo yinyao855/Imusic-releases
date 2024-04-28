@@ -1,5 +1,5 @@
 <script setup>
-import {defineEmits, defineModel} from "vue"
+import {defineEmits, defineModel, ref} from "vue"
 import buttonchangesize from '../components/buttonchangesize.vue'
 import axios from "axios";
 
@@ -82,12 +82,17 @@ const deletelike = (index) => {
          :style="{backgroundImage: `url(${songlistlast.cover})`}"></div>
     <buttonchangesize class="absolute top-5 left-5" @fullsize="changesize" v-model:token="token"></buttonchangesize>
     <img class="absolute top-10 left-24 w-60 aspect-square rounded-2xl" :src="songlistlast.cover" alt="歌单封面">
-    <div class="absolute top-10 left-96">
-      <div class="text-4xl text-white my-8">
+    <div class="absolute top-4 left-96">
+      <div class="text-4xl text-white mt-8 mb-4">
         {{ songlistlast.title }}
       </div>
       <div class="text-2xl text-white font-base">{{ songlistlast.owner }} 创建于 {{ songlistlast.create_date }}</div>
-      <div>{{ songlistlast.introduction }}</div>
+      <details class="dropdown">
+        <summary class="mb-1 mt-1 btn mr-4 bg-blue-600 rounded-2xl hover:bg-blue-800 border-none text-white w-28">歌单简介</summary>
+        <ul class="p-2 shadow menu dropdown-content z-[1] bg-base-100 rounded-box w-52">
+          <li><a>{{ songlistlast.introduction==='null'||songlistlast.introduction===null?'无简介':songlistlast.introduction }}</a></li>
+        </ul>
+      </details>
       <div class="btn btn-xl my-8 bg-blue-600 border-none rounded-2xl hover:bg-blue-800 text-white fill-white"
            @click="ChangeSongList">播放全部
         <svg class="icon" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg"
@@ -147,7 +152,7 @@ const deletelike = (index) => {
             </div>
             <div>
               <div class="font-bold">{{ item.title }}</div>
-              <div class="text-sm opacity-50">United States</div>
+<!--              <div class="text-sm opacity-50">United States</div>-->
             </div>
           </div>
         </td>

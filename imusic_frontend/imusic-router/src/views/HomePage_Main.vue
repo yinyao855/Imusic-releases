@@ -155,7 +155,7 @@ const PlaySongList = (id) => {
   <Newest_Songs_Page @handlePlayNow="handlePlayNow" @handlePlayAfter="handlePlayAfter"
                      v-model:songlistlast="songlistlast"
                      v-model:username="username" v-model:userlike="userlike"
-                     v-if="NaviMode!=='1'&&!needshowsonglistpage&&!ShowSearchView&&!ShowCurrentUser_SongList"
+                     v-if="NaviMode!=='1'&&!needshowsonglistpage&&!ShowSearchView&&!ShowCurrentUser_SongList" @addToSongList="addToSongList"
                      class="text-2xl mb-32 mx-4 text-white font-serif font-bold mt-16 ml-8 z-50" v-model:token="token"></Newest_Songs_Page>
   <div class="text-2xl mx-4 text-white font-serif font-bold mt-16 ml-8"
        v-if="NaviMode==='1'&&!needshowsonglistpage&&!ShowSearchView&&!ShowCurrentUser_SongList">
