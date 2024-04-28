@@ -161,7 +161,7 @@ const PlaySongList = (id) => {
        v-if="NaviMode==='1'&&!needshowsonglistpage&&!ShowSearchView&&!ShowCurrentUser_SongList">
     歌单
   </div>
-  <Image_Scrool v-model:songlists="songlists" v-model:index="index" @changesonglist="changesonglist"
+  <Image_Scrool v-model:SongLists="songlists" v-model:index="index" @changesonglist="changesonglist"
                 v-if="NaviMode==='1'&&!needshowsonglistpage&&!ShowSearchView&&!ShowCurrentUser_SongList" v-model:token="token"></Image_Scrool>
   <hr class="m-5 border-gray-500"
       v-if="NaviMode==='1'&&!needshowsonglistpage&&!ShowSearchView&&!ShowCurrentUser_SongList">

@@ -215,7 +215,7 @@ const isMinimized = ref(false);
 //音量
 const volume = ref(40);
 
-const handleindex = (indexx) => {
+const HandleIndex = (indexx) => {
   index.value = indexx;
 }
 

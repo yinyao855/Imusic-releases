@@ -1,7 +1,7 @@
 <script setup>
 import {defineProps} from "vue"
 
-const emits = defineEmits(['handleindex'])
+const emits = defineEmits(['HandleIndex'])
 const token=defineModel('token')
 const props = defineProps({
   songlistlast: Array,
