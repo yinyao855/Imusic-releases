@@ -19,7 +19,7 @@
 <script setup>
 import {ref, computed, onMounted, onUnmounted, defineModel} from 'vue';
 
-const SongLists = defineModel('SongLists')
+const SongLists = defineModel('songlists')
 const currentIndex = ref(0);
 const imgWidth = 230; // 轮播图图片宽度，根据实际调整
 const transitionTime = 500; // 动画过渡时间，毫秒
