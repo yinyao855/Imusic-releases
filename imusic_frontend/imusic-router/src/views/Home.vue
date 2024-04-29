@@ -12,6 +12,8 @@ import Sign_up from "./Sign_up.vue";
 import axios from "axios";
 import CreateSonglistPage_Main from "@/views/CreateSonglistPage_Main.vue";
 import CreatedSonglist from "@/views/CreatedSonglist.vue";
+import Mine_Page from "@/views/Mine_Page.vue";
+import Warning from "@/components/Warning.vue";
 
 const showCreatedSonglists = ref(false);
 const token = ref('');
@@ -63,6 +65,8 @@ const HomePageRecommendLatest = ref([]);
 const songlistlast = ref([]);
 const RegisterMode = ref(false);
 const mode = ref('1');
+const WarningShow = ref(false);
+const message = ref('');
 const containerClass1 = computed(() => ({
   'antialiased text-sm block h-10 my-1 text-white leading-10 transition ease-in duration-400 hover:bg-gray-600/40 px-4 ml-2 mr-2 rounded-md': mode.value !== '1',
   'antialiased text-sm block h-10 my-1 text-white leading-10 transition ease-in duration-400 px-4 ml-2 mr-2 rounded-md bg-blue-500 hover:bg-blue-500': mode.value === '1',
@@ -82,6 +86,10 @@ const containerClass4 = computed(() => ({
 const containerClass5 = computed(() => ({
   'antialiased text-sm block h-10 my-1 text-white leading-10 transition ease-in duration-400 hover:bg-gray-600/40 pl-4 ml-2 mr-2 rounded-md': mode.value !== '5',
   'antialiased text-sm block h-10 my-1 text-white leading-10 transition ease-in duration-400 px-4 ml-2 mr-2 rounded-md bg-blue-500 hover:bg-blue-500': mode.value === '5',
+}));
+const containerClass7 = computed(() => ({
+  'antialiased text-sm block h-10 my-1 text-white leading-10 transition ease-in duration-400 hover:bg-gray-600/40 pl-4 ml-2 mr-2 rounded-md': mode.value !== '7',
+  'antialiased text-sm block h-10 my-1 text-white leading-10 transition ease-in duration-400 px-4 ml-2 mr-2 rounded-md bg-blue-500 hover:bg-blue-500': mode.value === '7',
 }));
 const songlist = ref([]);
 const changeMode = (newMode) => {
@@ -742,11 +750,24 @@ function activeSonglist(index) {
         console.log(error.response.data);
       })
 }
+const checkLogin = () => {
+  if (HasLogin.value === false) {
+    WarningShow.value = true;
+    message.value = '请先登录';
+    changeMode(0);
+  }
+}
+const CloseWarning = () => {
+  WarningShow.value = false;
+}
 
 onMounted(getPageinit);
 </script>
 
 <template>
+  <div class="w-full absolute top-0 left-1/2 transform -translate-x-1/2" v-if="WarningShow">
+    <Warning :message="message" @CloseWarning="CloseWarning" class="mx-auto" v-model:token="token"></Warning>
+  </div>
   <div class="flex w-full h-screen bg-zinc-900">
     <div class="w-1/6 h-screen fixed hidden lg:block" style="background-color:#2E2E30">
       <div
@@ -839,6 +860,9 @@ onMounted(getPageinit);
         </svg>
         <span class="px-4 font-medium">创建歌单</span>
       </div>
+      <div :class="containerClass7" @click="changeMode(7);checkLogin()">
+        <span class="px-4 font-medium">我的</span>
+      </div>
       <!--用户创建的歌单-->
       <div class="collapse rounded-md" @click="listCreatedSonglists" style="background-color:#2E2E30">
         <input type="checkbox"/>
@@ -890,6 +914,8 @@ onMounted(getPageinit);
                                  v-model:username="username" v-model:token="token"></CreateSonglistPage_Main>
         <CreatedSonglist :songlist="currentUserSongList" v-if="mode==='6'&&showUserSongList" @PlaySongList="PlaySongList"
                          v-model:token="token"></CreatedSonglist>
+        <Mine_Page v-if="mode==='7'&& (HasLogin)" v-model:HasLogin="HasLogin"
+                   v-model:username="username"></Mine_Page>
       </div>
     </div>
   </div>
