@@ -870,7 +870,7 @@ onMounted(getPageinit);
         <span class="px-4 font-medium">创建歌单</span>
       </div>
       <!--用户创建的歌单-->
-      <div class="collapse bg-zinc-700 rounded-md" @click="listCreatedSonglists">
+      <div class="collapse rounded-md" @click="listCreatedSonglists">
         <input type="checkbox"/>
         <span class="collapse-title text-white text-sm h-10">
           创建的歌单
@@ -878,14 +878,14 @@ onMounted(getPageinit);
         <div class="collapse-content">
           <div v-if="showCreatedSonglists">
             <div v-for="(createdSonglist, index) in createdSonglists" :key="index" @click="changeMode(6); activeSonglist(index, 'created')"
-                 class="m-1 h-10 cursor-pointer overflow-hidden px-4">
+                 class="my-1 h-10 cursor-pointer overflow-hidden px-4">
               <img :src="createdSonglist.cover" class="inline-block h-10 w-10 rounded-md" alt="封面"/>
-              <span class="m-2 text-gray-400 hover:text-white"> {{ createdSonglist.title }} </span>
+              <span class="m-2 text-white text-sm font-medium"> {{ createdSonglist.title }} </span>
             </div>
           </div>
         </div>
       </div>
-      <div class="collapse bg-zinc-700 rounded-md" @click="listLikedSonglists">
+      <div class="collapse rounded-md" @click="listLikedSonglists">
         <input type="checkbox"/>
         <span class="collapse-title text-white text-sm h-10">
           收藏的歌单
