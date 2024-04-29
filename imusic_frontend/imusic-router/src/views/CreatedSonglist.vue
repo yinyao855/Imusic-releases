@@ -34,6 +34,26 @@ function addToSongList(songid) {
   ShowCurrentUser_SongList.value = true;
   needtoaddSongid.value = songid;
   needshowsonglistpage.value = false;
+  const songlistid = CurrentUser_SongListdata.value[songid].id;
+  const formData = new FormData();
+  formData.append('song_id', needtoaddSongid.value);
+  formData.append('songlist_id', songlistid.value);
+  const instance = axios.create({
+    baseURL: 'http://182.92.100.66:5000',
+    timeout: 5000, // 设置请求超时时间
+    headers: {
+      'Authorization': `Bearer ${token.value}`,
+    }
+  });
+  axios.defaults.withCredentials = true;
+  instance.post('/songlists/addsong', formData)
+      .then(response => {
+        console.log(response.data);
+        alert('歌曲添加成功');
+      })
+      .catch(error => {
+        console.log(error.response.data);
+      })
 }
 
 const GetCurrentUser_SongListdata = () => {
