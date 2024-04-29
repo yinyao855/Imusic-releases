@@ -396,7 +396,7 @@ function activeShowEditSonglist() {
               <p class="inline-block">{{ song.title }}</p>
             </td>
             <td class="text-center">{{ song.singer }}</td>
-            <td class="text-center">{{ gettime(song.duration) }}</td>
+            <td class="text-center">{{ song.duration }}</td>
             <td>
               <div class="menu">
                 <button class="font-bold text-xl">···</button>

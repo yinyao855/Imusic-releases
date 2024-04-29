@@ -735,6 +735,7 @@ function activeSonglist(index) {
         console.log(length);
         for (let i = 0; i < length; ++i) {
           currentUserSongList.value.songs[i].duration = gettime(currentUserSongList.value.songs[i].duration)
+          console.log(currentUserSongList.value.songs[i].duration);
         }
       })
       .catch(error => {
