@@ -667,9 +667,9 @@ const updateavatar = () => {
       })
 }
 
-const createdSonglists = ref([]);
-const currentUserSongList = ref([]);
-const showUserSongList = ref(false);
+const createdSonglists=ref([]);
+const currentUserSongList=ref([]);
+const showUserSongList=ref(false);
 const listCreatedSonglists = () => {
   const formData = new FormData();
   formData.append('username', username.value);
@@ -686,7 +686,7 @@ const listCreatedSonglists = () => {
         if (response.data.success === true) {
           createdSonglists.value = response.data.data;
         }
-        showCreatedSonglists.value = true;
+        showCreatedSonglists.value=true;
       })
       .catch(function (error) {
         console.log(error.response.data);
@@ -716,8 +716,8 @@ const PlaySongList = (id) => {
 }
 
 function activeSonglist(index) {
-  let SongListId = createdSonglists.value[index].id;
-  showUserSongList.value = true;
+  let SongListId=createdSonglists.value[index].id;
+  showUserSongList.value=true;
   const instance = axios.create({
     baseURL: 'http://182.92.100.66:5000',
     timeout: 5000, // 设置请求超时时间
@@ -839,28 +839,20 @@ onMounted(getPageinit);
         <span class="px-4 font-medium">创建歌单</span>
       </div>
       <!--用户创建的歌单-->
-      <div class="collapse rounded-md border-none" @click="listCreatedSonglists">
-        <div class="w-2 border-none"></div>
-          <input type="checkbox" class="antialiased text-sm block h-10 my-1 text-white leading-10 transition ease-in duration-400 hover:bg-gray-600/40 px-4 ml-2 mr-2 rounded-md w-full"/>
-          <div class="collapse-title text-white text-sm h-10 w-full inline px-4">
-            <svg class="icon inline fill-white my-auto" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" width="20" height="20">
-              <path
-                  d="M964.608 234.496c-46.08-52.565333-104.789333-93.696-169.642667-118.784a34.030933 34.030933 0 0 0-46.421333 31.744v420.352a178.005333 178.005333 0 0 0-110.933333-38.741333c-98.816 0-179.2 80.384-179.2 179.2S538.794667 887.466667 637.610667 887.466667s179.2-80.384 179.2-179.2c0-1.877333-0.170667-3.754667-0.341334-5.632 0-1.024 0.341333-1.877333 0.341334-2.901334V201.216c36.181333 20.309333 69.12 46.933333 96.597333 78.165333 12.458667 14.165333 34.133333 15.530667 48.128 3.072 14.165333-12.288 15.530667-33.792 3.072-47.957333zM637.610667 819.2c-61.098667 0-110.933333-49.834667-110.933334-110.933333s49.834667-110.933333 110.933334-110.933334 110.933333 49.834667 110.933333 110.933334-49.834667 110.933333-110.933333 110.933333zM185.344 307.2h392.533333c18.773333 0 34.133333-15.36 34.133334-34.133333s-15.36-34.133333-34.133334-34.133334h-392.533333a34.133333 34.133333 0 1 0 0 68.266667zM424.277333 460.8h-238.933333c-18.773333 0-34.133333 15.36-34.133333 34.133333s15.36 34.133333 34.133333 34.133334h238.933333c18.773333 0 34.133333-15.36 34.133334-34.133334s-15.36-34.133333-34.133334-34.133333zM321.877333 682.666667h-136.533333c-18.773333 0-34.133333 15.36-34.133333 34.133333s15.36 34.133333 34.133333 34.133333h136.533333c18.773333 0 34.133333-15.36 34.133334-34.133333s-15.36-34.133333-34.133334-34.133333z"></path>
-            </svg>
-            <span class="px-4 inline font-medium">创建的歌单</span>
-          </div>
-          <div class="collapse-content">
-            <div v-if="showCreatedSonglists">
-              <ul>
-                <li v-for="(createdSonglist, index) in createdSonglists" :key="index"
-                    @click="changeMode(6); activeSonglist(index)"
-                    class="h-12 cursor-pointer overflow-hidden py-1 hover:bg-gray-600/40 transition ease-in duration-400 rounded-md">
-                  <img :src="createdSonglist.cover" class="inline-block h-10 w-10 rounded-md" alt="封面"/>
-                  <span class="m-2 text-white font-medium text-sm mx-4"> {{ createdSonglist.title }} </span>
-                </li>
-              </ul>
+      <div class="collapse rounded-md" @click="listCreatedSonglists" style="background-color:#2E2E30">
+        <input type="checkbox"/>
+        <span class="collapse-title text-white text-sm h-10 px-4">
+          创建的歌单
+        </span>
+        <div class="collapse-content">
+          <div v-if="showCreatedSonglists">
+            <div v-for="(createdSonglist, index) in createdSonglists" :key="index" @click="changeMode(6); activeSonglist(index)"
+                 class="m-1 h-10 cursor-pointer overflow-hidden px-4">
+              <img :src="createdSonglist.cover" class="inline-block h-10 w-10 rounded-md" alt="封面"/>
+              <span class="m-2 text-gray-400 hover:text-white"> {{ createdSonglist.title }} </span>
             </div>
           </div>
+        </div>
       </div>
       <div
           class="antialiased text-sm block h-10 my-1 text-white leading-10 transition ease-in duration-400 px-4 hover:bg-gray-600/40 ml-2 mr-2 rounded-md">
@@ -895,8 +887,7 @@ onMounted(getPageinit);
                       v-model:token="token"></CreateCenter>
         <CreateSonglistPage_Main v-if="mode==='5'" v-model:HasLogin="HasLogin"
                                  v-model:username="username" v-model:token="token"></CreateSonglistPage_Main>
-        <CreatedSonglist :songlist="currentUserSongList" v-if="mode==='6'&&showUserSongList"
-                         @PlaySongList="PlaySongList"
+        <CreatedSonglist :songlist="currentUserSongList" v-if="mode==='6'&&showUserSongList" @PlaySongList="PlaySongList"
                          v-model:token="token"></CreatedSonglist>
       </div>
     </div>
