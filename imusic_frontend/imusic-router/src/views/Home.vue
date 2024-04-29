@@ -6,7 +6,7 @@ import CreateCenter from "@/views/CreateCenterPage_Main.vue";
 import SettingPage_Main from "@/views/SettingPage_Main.vue";
 import MusicPlayerView from "./MusicPlayerView.vue";
 import MusicPlayerFullView from "./MusicPlayerFullView.vue";
-import Login from "./Login.vue";
+import Login from "../components/Login.vue";
 import Personal_Center from "@/views/Personal_Center.vue";
 import Sign_up from "./Sign_up.vue";
 import axios from "axios";
@@ -14,7 +14,6 @@ import CreateSonglistPage_Main from "@/views/CreateSonglistPage_Main.vue";
 import CreatedSonglist from "@/views/CreatedSonglist.vue";
 
 const showCreatedSonglists = ref(false);
-const showLikedSonglists = ref(false);
 const token = ref('');
 const needshowsonglistpage = ref(false);
 const cantransformtofull = ref(false);
@@ -669,7 +668,6 @@ const updateavatar = () => {
 }
 
 const createdSonglists=ref([]);
-const likedSonglists=ref([]);
 const currentUserSongList=ref([]);
 const showUserSongList=ref(false);
 const listCreatedSonglists = () => {
@@ -689,29 +687,6 @@ const listCreatedSonglists = () => {
           createdSonglists.value = response.data.data;
         }
         showCreatedSonglists.value=true;
-      })
-      .catch(function (error) {
-        console.log(error.response.data);
-      })
-};
-
-const listLikedSonglists = () => {
-  const formData = new FormData();
-  formData.append('username', username.value);
-  const instance = axios.create({
-    baseURL: 'http://182.92.100.66:5000',
-    timeout: 5000, // 设置请求超时时间
-    headers: {
-      'Authorization': `Bearer ${token.value}`,
-    }
-  });
-  axios.defaults.withCredentials = true;
-  instance.get("/like/songlists?username=" + username.value)
-      .then(function (response) {
-        if (response.data.success === true) {
-          likedSonglists.value = response.data.data;
-        }
-        showLikedSonglists.value=true;
       })
       .catch(function (error) {
         console.log(error.response.data);
@@ -740,14 +715,8 @@ const PlaySongList = (id) => {
       })
 }
 
-function activeSonglist(index, type) {
-  let SongListId;
-  if (type == "liked") {
-    SongListId=likedSonglists.value[index].id;
-  }
-  else if (type == "created") {
-    SongListId=createdSonglists.value[index].id;
-  }
+function activeSonglist(index) {
+  let SongListId=createdSonglists.value[index].id;
   showUserSongList.value=true;
   const instance = axios.create({
     baseURL: 'http://182.92.100.66:5000',
@@ -870,35 +839,24 @@ onMounted(getPageinit);
         <span class="px-4 font-medium">创建歌单</span>
       </div>
       <!--用户创建的歌单-->
-      <div class="collapse rounded-md" @click="listCreatedSonglists">
+      <div class="collapse rounded-md" @click="listCreatedSonglists" style="background-color:#2E2E30">
         <input type="checkbox"/>
-        <span class="collapse-title text-white text-sm h-10">
+        <span class="collapse-title text-white text-sm h-10 px-4">
           创建的歌单
         </span>
         <div class="collapse-content">
           <div v-if="showCreatedSonglists">
-            <div v-for="(createdSonglist, index) in createdSonglists" :key="index" @click="changeMode(6); activeSonglist(index, 'created')"
-                 class="my-1 h-10 cursor-pointer overflow-hidden px-4">
+            <div v-for="(createdSonglist, index) in createdSonglists" :key="index" @click="changeMode(6); activeSonglist(index)"
+                 class="m-1 h-10 cursor-pointer overflow-hidden px-4 transition ease-in duration-400 hover:bg-gray-600/40">
               <img :src="createdSonglist.cover" class="inline-block h-10 w-10 rounded-md" alt="封面"/>
-              <span class="m-2 text-white text-sm font-medium"> {{ createdSonglist.title }} </span>
+              <span class="m-2 text-white text-sm font-medium "> {{ createdSonglist.title }} </span>
             </div>
           </div>
         </div>
       </div>
-      <div class="collapse rounded-md" @click="listLikedSonglists">
-        <input type="checkbox"/>
-        <span class="collapse-title text-white text-sm h-10">
-          收藏的歌单
-        </span>
-        <div class="collapse-content">
-          <div v-if="showLikedSonglists">
-            <div v-for="(likedSonglist, index) in likedSonglists" :key="index" @click="changeMode(6); activeSonglist(index, 'liked')"
-                 class="m-1 h-10 cursor-pointer overflow-hidden px-4">
-              <img :src="likedSonglist.cover" class="inline-block h-10 w-10 rounded-md" alt="封面"/>
-              <span class="m-2 text-gray-400 hover:text-white"> {{ likedSonglist.title }} </span>
-            </div>
-          </div>
-        </div>
+      <div
+          class="antialiased text-sm block h-10 my-1 text-white leading-10 transition ease-in duration-400 px-4 hover:bg-gray-600/40 ml-2 mr-2 rounded-md">
+        <span class="px-4 font-medium">收藏的歌单</span>
       </div>
     </div>
     <div class="lg:w-1/6 w-0 h-full mr-0"></div>
@@ -930,9 +888,6 @@ onMounted(getPageinit);
         <CreateSonglistPage_Main v-if="mode==='5'" v-model:HasLogin="HasLogin"
                                  v-model:username="username" v-model:token="token"></CreateSonglistPage_Main>
         <CreatedSonglist :songlist="currentUserSongList" v-if="mode==='6'&&showUserSongList" @PlaySongList="PlaySongList"
-                         @handlePlayAfter="handlePlayAfter" @handlePlayNow="handlePlayNow"
-                         v-model:needshowsonglistpage="needshowsonglistpage"
-                         v-model:username="username"
                          v-model:token="token"></CreatedSonglist>
       </div>
     </div>
