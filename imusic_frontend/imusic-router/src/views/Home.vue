@@ -13,7 +13,7 @@ import axios from "axios";
 import CreateSonglistPage_Main from "@/views/CreateSonglistPage_Main.vue";
 import CreatedSonglist from "@/views/CreatedSonglist.vue";
 
-const showCreatedSonglists = ref("false");
+const showCreatedSonglists = ref(false);
 const token = ref('');
 const needshowsonglistpage = ref(false);
 const cantransformtofull = ref(false);
@@ -667,8 +667,9 @@ const updateavatar = () => {
       })
 }
 
-let createdSonglists;
-let chooseSonglist;
+const createdSonglists=ref([]);
+const currentUserSongList=ref([]);
+const showUserSongList=ref(false);
 const listCreatedSonglists = () => {
   const formData = new FormData();
   formData.append('username', username.value);
@@ -683,9 +684,9 @@ const listCreatedSonglists = () => {
   instance.get("/users/songlists?username=" + username.value)
       .then(function (response) {
         if (response.data.success === true) {
-          createdSonglists = response.data.data;
-          showCreatedSonglists.value = true;
+          createdSonglists.value = response.data.data;
         }
+        showCreatedSonglists.value=true;
       })
       .catch(function (error) {
         console.log(error.response.data);
@@ -714,10 +715,31 @@ const PlaySongList = (id) => {
       })
 }
 
-function activeSonglist(choose) {
-  showCreatedSonglists.value = false;
-  chooseSonglist = choose;
-  showCreatedSonglists.value = true;
+function activeSonglist(index) {
+  let SongListId=createdSonglists.value[index].id;
+  showUserSongList.value=true;
+  const instance = axios.create({
+    baseURL: 'http://182.92.100.66:5000',
+    timeout: 5000, // 设置请求超时时间
+    headers: {
+      'Authorization': `Bearer ${token.value}`,
+    }
+  });
+  axios.defaults.withCredentials = true;
+  const web = '/songlists/info/' + SongListId;
+  instance.get(web)
+      .then(response => {
+        currentUserSongList.value = response.data.data;
+        currentUserSongList.value.create_date = extractDate(currentUserSongList.value.create_date)
+        let length = currentUserSongList.value.songs.length;
+        console.log(length);
+        for (let i = 0; i < length; ++i) {
+          currentUserSongList.value.songs[i].duration = gettime(currentUserSongList.value.songs[i].duration)
+        }
+      })
+      .catch(error => {
+        console.log(error.response.data);
+      })
 }
 
 onMounted(getPageinit);
@@ -824,7 +846,7 @@ onMounted(getPageinit);
         </span>
         <div class="collapse-content">
           <div v-if="showCreatedSonglists">
-            <div v-for="createdSonglist in createdSonglists" @click="changeMode(6); activeSonglist(createdSonglist)"
+            <div v-for="(createdSonglist, index) in createdSonglists" :key="index" @click="changeMode(6); activeSonglist(index)"
                  class="m-1 h-10 cursor-pointer overflow-hidden px-4">
               <img :src="createdSonglist.cover" class="inline-block h-10 w-10 rounded-md" alt="封面"/>
               <span class="m-2 text-gray-400 hover:text-white"> {{ createdSonglist.title }} </span>
@@ -865,7 +887,7 @@ onMounted(getPageinit);
                       v-model:token="token"></CreateCenter>
         <CreateSonglistPage_Main v-if="mode==='5'" v-model:HasLogin="HasLogin"
                                  v-model:username="username" v-model:token="token"></CreateSonglistPage_Main>
-        <CreatedSonglist :songlist="chooseSonglist" v-if="mode==='6'" @PlaySongList="PlaySongList"
+        <CreatedSonglist :songlist="currentUserSongList" v-if="mode==='6'&&showUserSongList" @PlaySongList="PlaySongList"
                          v-model:token="token"></CreatedSonglist>
       </div>
     </div>
