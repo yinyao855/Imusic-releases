@@ -6,7 +6,7 @@ import CreateCenter from "@/views/CreateCenterPage_Main.vue";
 import SettingPage_Main from "@/views/SettingPage_Main.vue";
 import MusicPlayerView from "./MusicPlayerView.vue";
 import MusicPlayerFullView from "./MusicPlayerFullView.vue";
-import Login from "./Login.vue";
+import Login from "../components/Login.vue";
 import Personal_Center from "@/views/Personal_Center.vue";
 import Sign_up from "./Sign_up.vue";
 import axios from "axios";
@@ -870,9 +870,9 @@ onMounted(getPageinit);
         <span class="px-4 font-medium">创建歌单</span>
       </div>
       <!--用户创建的歌单-->
-      <div class="collapse bg-zinc-700 rounded-md" @click="listCreatedSonglists">
+      <div class="collapse rounded-md" @click="listCreatedSonglists" style="background-color:#2E2E30">
         <input type="checkbox"/>
-        <span class="collapse-title text-white text-sm h-10">
+        <span class="collapse-title text-white text-sm h-10 px-4">
           创建的歌单
         </span>
         <div class="collapse-content">
