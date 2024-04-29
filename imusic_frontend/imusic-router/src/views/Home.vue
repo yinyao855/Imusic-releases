@@ -14,6 +14,7 @@ import CreateSonglistPage_Main from "@/views/CreateSonglistPage_Main.vue";
 import CreatedSonglist from "@/views/CreatedSonglist.vue";
 
 const showCreatedSonglists = ref("false");
+const showLikedSonglists = ref("false");
 const token = ref('');
 const needshowsonglistpage = ref(false);
 const cantransformtofull = ref(false);
@@ -670,8 +671,6 @@ const updateavatar = () => {
 let createdSonglists;
 let chooseSonglist;
 const listCreatedSonglists = () => {
-  const formData = new FormData();
-  formData.append('username', username.value);
   const instance = axios.create({
     baseURL: 'http://182.92.100.66:5000',
     timeout: 5000, // 设置请求超时时间
@@ -685,6 +684,28 @@ const listCreatedSonglists = () => {
         if (response.data.success === true) {
           createdSonglists = response.data.data;
           showCreatedSonglists.value = true;
+        }
+      })
+      .catch(function (error) {
+        console.log(error.response.data);
+      })
+};
+
+let likedSonglists;
+const listLikedSonglists = () => {
+  const instance = axios.create({
+    baseURL: 'http://182.92.100.66:5000',
+    timeout: 5000, // 设置请求超时时间
+    headers: {
+      'Authorization': `Bearer ${token.value}`,
+    }
+  });
+  axios.defaults.withCredentials = true;
+  instance.get("/like/songlists?username=" + username.value)
+      .then(function (response) {
+        if (response.data.success === true) {
+          likedSonglists = response.data.data;
+          showLikedSonglists.value = true;
         }
       })
       .catch(function (error) {
@@ -714,10 +735,16 @@ const PlaySongList = (id) => {
       })
 }
 
-function activeSonglist(choose) {
-  showCreatedSonglists.value = false;
-  chooseSonglist = choose;
-  showCreatedSonglists.value = true;
+function activeSonglist(choose, type) {
+  if (type === "created") {
+    showCreatedSonglists.value = false;
+    chooseSonglist = choose;
+    showCreatedSonglists.value = true;
+  } else if (type === "liked") {
+    showLikedSonglists.value = false;
+    chooseSonglist = choose;
+    showLikedSonglists.value = true;
+  }
 }
 
 onMounted(getPageinit);
@@ -824,7 +851,8 @@ onMounted(getPageinit);
         </span>
         <div class="collapse-content">
           <div v-if="showCreatedSonglists">
-            <div v-for="createdSonglist in createdSonglists" @click="changeMode(6); activeSonglist(createdSonglist)"
+            <div v-for="createdSonglist in createdSonglists"
+                 @click="changeMode(6); activeSonglist(createdSonglist, 'created')"
                  class="m-1 h-10 cursor-pointer overflow-hidden px-4">
               <img :src="createdSonglist.cover" class="inline-block h-10 w-10 rounded-md" alt="封面"/>
               <span class="m-2 text-gray-400 hover:text-white"> {{ createdSonglist.title }} </span>
@@ -832,9 +860,20 @@ onMounted(getPageinit);
           </div>
         </div>
       </div>
-      <div
-          class="antialiased text-sm block h-10 my-1 text-white leading-10 transition ease-in duration-400 px-4 hover:bg-gray-600/40 ml-2 mr-2 rounded-md">
-        <span class="px-4 font-medium">收藏的歌单</span>
+      <div class="collapse bg-zinc-700 rounded-md" @click="listLikedSonglists">
+        <input type="checkbox"/>
+        <span class="collapse-title text-white text-sm h-10">
+          收藏的歌单
+        </span>
+        <div class="collapse-content">
+          <div v-if="showLikedSonglists">
+            <div v-for="likedSonglist in likedSonglists" @click="changeMode(6); activeSonglist(likedSonglist, 'liked')"
+                 class="m-1 h-10 cursor-pointer overflow-hidden px-4">
+              <img :src="likedSonglist.cover" class="inline-block h-10 w-10 rounded-md" alt="封面"/>
+              <span class="m-2 text-gray-400 hover:text-white"> {{ likedSonglist.title }} </span>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
     <div class="lg:w-1/6 w-0 h-full mr-0"></div>
@@ -866,6 +905,9 @@ onMounted(getPageinit);
         <CreateSonglistPage_Main v-if="mode==='5'" v-model:HasLogin="HasLogin"
                                  v-model:username="username" v-model:token="token"></CreateSonglistPage_Main>
         <CreatedSonglist :songlist="chooseSonglist" v-if="mode==='6'" @PlaySongList="PlaySongList"
+                         @handlePlayAfter="handlePlayAfter" @handlePlayNow="handlePlayNow"
+                         v-model:needshowsonglistpage="needshowsonglistpage"
+                         v-model:username="username"
                          v-model:token="token"></CreatedSonglist>
       </div>
     </div>
