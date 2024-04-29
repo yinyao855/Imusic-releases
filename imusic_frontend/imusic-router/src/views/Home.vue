@@ -847,9 +847,9 @@ onMounted(getPageinit);
         <div class="collapse-content">
           <div v-if="showCreatedSonglists">
             <div v-for="(createdSonglist, index) in createdSonglists" :key="index" @click="changeMode(6); activeSonglist(index)"
-                 class="m-1 h-10 cursor-pointer overflow-hidden px-4">
+                 class="m-1 h-10 cursor-pointer overflow-hidden px-4 transition ease-in duration-400 hover:bg-gray-600/40">
               <img :src="createdSonglist.cover" class="inline-block h-10 w-10 rounded-md" alt="封面"/>
-              <span class="m-2 text-gray-400 hover:text-white"> {{ createdSonglist.title }} </span>
+              <span class="m-2 text-white text-sm font-medium "> {{ createdSonglist.title }} </span>
             </div>
           </div>
         </div>
