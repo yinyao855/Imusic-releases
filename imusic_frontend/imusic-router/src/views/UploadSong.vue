@@ -246,12 +246,12 @@
           ></path>
         </svg>
       </div>
-      <button class="mt-5 w-full flex justify-center bg-blue-600 text-white p-4  rounded-full button-submit
+      <button class="mt-5 w-full flex justify-center bg-blue-600 text-white p-4  rounded-full
                                     font-semibold  focus:outline-none focus:shadow-outline hover:bg-blue-800 shadow-lg cursor-pointer transition ease-in duration-300 tracking-widest"
               @click="submitSong">
         上 传
       </button>
-      <button @click="downloadLrcFile" class="mb-5 w-full flex justify-center bg-blue-600 text-white p-4  rounded-full button-submit
+      <button @click="downloadLrcFile" class="mb-5 w-full flex justify-center bg-blue-600 text-white p-4  rounded-full
                                     font-semibold  focus:outline-none focus:shadow-outline hover:bg-blue-800 shadow-lg cursor-pointer transition ease-in duration-300 tracking-widest">
         下载歌词
       </button>
@@ -391,6 +391,9 @@ function fileToBase64(file) {
 }
 
 const downloadLrcFile = () => {
+  if(lyrics.value.length===1){
+    return;
+  }
   const lrcString = convertLyricsToLRC(lyrics.value);
   const filename = songTitle.value ? `${songTitle.value}.lrc` : 'lyrics.lrc';
   const lrcBlob = new Blob([lrcString], {type: 'text/plain'});
