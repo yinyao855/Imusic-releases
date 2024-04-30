@@ -21,6 +21,7 @@ const changeNaviMode=(NewMode)=>{
 
 const SongLists=ref([]);
 const Get_Admin_SongList_Data=()=>{
+  console.log("refresh");
   const instance = axios.create({
     baseURL: 'http://182.92.100.66:5000',
     timeout: 5000, // 设置请求超时时间

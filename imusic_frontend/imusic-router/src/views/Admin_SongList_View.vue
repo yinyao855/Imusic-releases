@@ -1,5 +1,6 @@
 <script setup>
 import axios from "axios";
+import { defineEmits } from "vue";
 
 const SongLists = defineModel('SongLists');
 const token = defineModel('token');
@@ -21,12 +22,12 @@ const DeleteSongList=(index)=>{
         console.log(response.data);
         if(response.data.success===true){
           alert('删除成功');
+          refresh();
         }
       })
       .catch(error=>{
         console.log(error.response.data);
       })
-  refresh();
 }
 const refresh=()=>{
   emits('refresh');
