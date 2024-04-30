@@ -4,7 +4,8 @@ import Admin_SongList_View from "@/views/Admin_SongList_View.vue";
 import {computed, ref} from "vue";
 import axios from "axios";
 import Admin_Song_View from "@/views/Admin_Song_View.vue";
-import Search_View from "@/views/Search_View.vue";
+import Admin_Search_Song_View from "@/views/Admin_Search_Song_View.vue";
+import Admin_Search_Songlist_View from "@/views/Admin_Search_Songlist_View.vue";
 const NaviClass1 = computed(() => ({
   'text-base inline-block mx-5 w-30 rounded-lg antialiased tracking-widest font-medium transition-colors duration-400 hover:bg-gray-600/40': true,
   'text-cyan-700 underline underline-offset-8 decoration-2': NaviMode.value === '1',
@@ -80,16 +81,15 @@ const Get_Admin_Songs_Data=()=>{
       })
 }
 
-
 const token=defineModel('token');
 const SearchContent=defineModel('SearchContent');
-// onMounted(Get_Admin_SongList_Data);
 </script>
 
 <template>
   <transition name="slide" appear>
-    <div class="transition-container-2" v-if="ShowSearchView&&!ShowCurrentUser_SongList">
-
+    <div class="transition-container-2" v-if="ShowSearchView">
+      <Admin_Search_Song_View :SearchContent="SearchContent"></Admin_Search_Song_View>
+      <Admin_Search_Songlist_View :SearchContent="SearchContent"></Admin_Search_Songlist_View>
     </div>
   </transition>
 

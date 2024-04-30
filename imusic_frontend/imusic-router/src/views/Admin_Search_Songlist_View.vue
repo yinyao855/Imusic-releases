@@ -6,6 +6,7 @@ import {defineEmits} from "vue";
 import axios from "axios";
 const SongLists = defineModel('SongLists');
 const token = defineModel('token');
+const props=defineProps(['SearchContent'])
 const emits=defineEmits(['refresh']);
 const DeleteSongList=(index)=>{
   let SongListId=SongLists.value[index].id
