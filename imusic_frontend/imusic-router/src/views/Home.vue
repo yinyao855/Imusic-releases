@@ -321,11 +321,11 @@ const SearchOperation = () => {
 }
 const MusicPlayer_Cell_Ref = ref(null);
 
-function handlePlayNow(id) {
+const handlePlayNow=(id)=> {
   MusicPlayer_Cell_Ref.value.handlePlayNow(id);
 }
 
-function handlePlayAfter(id) {
+const handlePlayAfter=(id)=> {
   MusicPlayer_Cell_Ref.value.handlePlayAfter(id);
 }
 
