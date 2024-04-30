@@ -34,7 +34,7 @@ const emits = defineEmits(['checkLogin']);
 const createdSonglists = defineModel('createdSonglists');
 const currentUserSongList = defineModel('currentUserSongList');
 const mode = defineModel('mode');
-const UserRole=defineModel('UserRole');
+const UserRole = defineModel('UserRole');
 const changeMode = (newMode) => {
   mode.value = newMode.toString();
   console.log(mode.value);
@@ -106,7 +106,7 @@ function activeSonglist(index) {
         currentUserSongList.value = response.data.data;
         console.log(currentUserSongList.value);
         console.log('bye');
-        showUserSongList.value=true;
+        showUserSongList.value = true;
         currentUserSongList.value.create_date = extractDate(currentUserSongList.value.create_date);
         let length = currentUserSongList.value.songs.length;
         console.log(length);
@@ -116,16 +116,16 @@ function activeSonglist(index) {
 
       })
       .catch(error => {
-        console.log("获取不到当前歌单");
+        console.log(error.response.data);
       })
 }
 
-const showUserSongList=defineModel('showUserSongList');
+const showUserSongList = defineModel('showUserSongList');
 
 const listCreatedSonglists = () => {
-  if(props.HasLogin===false){
-    message.value='请先登录';
-    WarningShow.value=true;
+  if (props.HasLogin === false) {
+    message.value = '请先登录';
+    WarningShow.value = true;
     return;
   }
   const formData = new FormData();
@@ -152,10 +152,10 @@ const listCreatedSonglists = () => {
 
 const token = defineModel('token');
 const userdata = defineModel('userdata');
-const message=ref('错误消息');
-const WarningShow=ref(false);
-const CloseWarning=()=>{
-  WarningShow.value=false;
+const message = ref('错误消息');
+const WarningShow = ref(false);
+const CloseWarning = () => {
+  WarningShow.value = false;
 }
 
 </script>
@@ -193,15 +193,14 @@ const CloseWarning=()=>{
     </div>
     <div
         :class="containerClass7" @click="changeMode(7)" v-if="UserRole==='admin'">
-      <svg class="icon inline fill-white my-auto" viewBox="0 0 1024 1024"
-           xmlns="http://www.w3.org/2000/svg"
+      <svg class="icon inline fill-white my-auto" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg"
            width="16" height="16">
         <path
-            d="M640 896h192V469.376h42.666667V896.213333c0 23.466667-19.029333 42.474667-42.666667 42.474667H597.333333V725.333333h-170.666666v213.333334H192c-23.573333 0-42.666667-18.986667-42.666667-42.453334V469.354667h42.666667V896h192V682.666667h256v213.333333z"
-        ></path>
+            d="M109.696 624.32a32 32 0 0 1-32-32V450.304a32 32 0 0 1 64 0v142.016a32 32 0 0 1-32 32zM787.008 956.032H237.696a160.192 160.192 0 0 1-160-160v-20.672a32 32 0 0 1 64 0v20.672c0 52.928 43.072 96 96 96h549.312c52.928 0 96-43.072 96-96V604.288a32 32 0 0 1 64 0v191.68a160.192 160.192 0 0 1-160 160.064zM915.008 443.328a32 32 0 0 1-32-32V228.032c0-52.928-43.072-96-96-96H237.696c-52.928 0-96 43.072-96 96v15.232a32 32 0 0 1-64 0v-15.232c0-88.192 71.808-160 160-160h549.312c88.256 0 160 71.808 160 160v183.296a32 32 0 0 1-32 32z"
+            ></path>
         <path
-            d="M100.032 506.133333a21.333333 21.333333 0 1 1-29.397333-30.933333L466.282667 99.349333a66.688 66.688 0 0 1 91.434666 0L953.386667 475.2a21.333333 21.333333 0 1 1-29.397334 30.933333L528.341333 130.282667a24.021333 24.021333 0 0 0-32.682666 0L100.053333 506.133333zM832 192h-128a21.333333 21.333333 0 0 1 0-42.666667h149.333333a21.333333 21.333333 0 0 1 21.333334 21.333334v149.333333a21.333333 21.333333 0 0 1-42.666667 0V192z"
-        ></path>
+            d="M913.472 619.008c-60.544 0-109.824-49.344-109.824-109.888s49.28-109.824 109.824-109.824 109.888 49.28 109.888 109.824-49.28 109.888-109.888 109.888z m0-168.512a58.624 58.624 0 1 0 0.192 117.312 58.624 58.624 0 0 0-0.192-117.312zM185.856 379.328H34.816a32 32 0 0 1 0-64h150.976a32 32 0 0 1 0.064 64zM711.36 379.328H353.344a32 32 0 0 1 0-64h358.016a32 32 0 0 1 0 64zM711.36 553.344H353.344a32 32 0 0 1 0-64h358.016a32 32 0 0 1 0 64zM711.36 715.328H353.344a32 32 0 0 1 0-64h358.016a32 32 0 0 1 0 64zM185.856 710.336H34.816a32 32 0 0 1 0-64h150.976a32 32 0 0 1 0.064 64z"
+            ></path>
       </svg>
       <span class="px-4 font-medium">管理员界面</span>
     </div>
