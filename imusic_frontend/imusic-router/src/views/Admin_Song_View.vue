@@ -35,7 +35,7 @@ const refresh=()=>{
 </script>
 
 <template>
-  <div class="overflow-x-auto">
+  <div class="overflow-x-auto mx-4">
     <table class="table">
       <!-- head -->
       <thead>
