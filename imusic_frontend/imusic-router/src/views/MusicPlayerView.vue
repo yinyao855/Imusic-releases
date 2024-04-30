@@ -140,7 +140,7 @@
             </svg>
           </button>
           <transition name="slide">
-            <PlayMusic_List :songlistlast="datax" v-if="ShowPlayMusicList" @handleindex="handleindex" v-model:token="token"></PlayMusic_List>
+            <PlayMusic_List :songlistlast="datax" v-if="ShowPlayMusicList" @HandleIndex="HandleIndex" v-model:token="token"></PlayMusic_List>
           </transition>
 
 
@@ -243,6 +243,7 @@ const goNext = () => {
   emit('next');
   console.log('next');
 }
+
 
 //改变播放模式
 const changeMode = () => {

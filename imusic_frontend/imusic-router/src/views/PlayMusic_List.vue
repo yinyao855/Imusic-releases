@@ -8,7 +8,7 @@ const props = defineProps({
 });
 
 const handleindex = (index) => {
-  emits('handleindex', index);
+  emits('HandleIndex', index);
 }
 </script>
 
