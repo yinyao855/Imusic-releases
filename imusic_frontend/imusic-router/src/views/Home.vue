@@ -13,6 +13,7 @@ import CreatedSonglist from "@/views/CreatedSonglist.vue";
 import Warning from "@/components/Warning.vue";
 import SideBar from "@/views/SideBar.vue";
 import MusicPlayer_Cell from "@/components/MusicPlayer_Cell.vue";
+import AdminPage_Main from "@/views/AdminPage_Main.vue";
 
 const token = ref('');
 const needshowsonglistpage = ref(false);
@@ -487,6 +488,7 @@ onMounted(getPageinit);
         <CreatedSonglist :songlist="currentUserSongList" v-if="mode==='6'&&showUserSongList"
                          @PlaySongList="PlaySongList"
                          v-model:token="token"></CreatedSonglist>
+        <AdminPage_Main v-model:token="token" v-if="mode==='7'"></AdminPage_Main>
       </div>
     </div>
   </div>
