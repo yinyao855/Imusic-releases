@@ -70,6 +70,22 @@ const checkLogin = () => {
   emits('checkLogin');
 }
 
+
+const extractDate = (dateTimeString) => {
+  const date = new Date(dateTimeString);
+  return date.toISOString().slice(0, 10);
+}
+
+
+const gettime = (time) => {
+  const minute = Math.floor(time / 60);
+  const second = Math.floor(time - minute * 60);
+  if (second < 10) {
+    return `${minute}:0${second}`;
+  }
+  return `${minute}:${second}`;
+}
+
 function activeSonglist(index) {
   let SongListId = createdSonglists.value[index].id;
   const instance = axios.create({
@@ -83,19 +99,26 @@ function activeSonglist(index) {
   const web = '/songlists/info/' + SongListId;
   instance.get(web)
       .then(response => {
+        console.log("hello");
+        console.log(response.data.data);
         currentUserSongList.value = response.data.data;
-        currentUserSongList.value.create_date = extractDate(currentUserSongList.value.create_date)
+        console.log(currentUserSongList.value);
+        console.log('bye');
+        showUserSongList.value=true;
+        currentUserSongList.value.create_date = extractDate(currentUserSongList.value.create_date);
         let length = currentUserSongList.value.songs.length;
         console.log(length);
         for (let i = 0; i < length; ++i) {
           currentUserSongList.value.songs[i].duration = gettime(currentUserSongList.value.songs[i].duration)
-          console.log(currentUserSongList.value.songs[i].duration);
         }
+
       })
       .catch(error => {
-        console.log(error.response.data);
+        console.log("获取不到当前歌单");
       })
 }
+
+const showUserSongList=defineModel('showUserSongList');
 
 const listCreatedSonglists = () => {
   const formData = new FormData();

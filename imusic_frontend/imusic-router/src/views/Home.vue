@@ -15,7 +15,6 @@ import Warning from "@/components/Warning.vue";
 import SideBar from "@/views/SideBar.vue";
 import MusicPlayer_Cell from "@/components/MusicPlayer_Cell.vue";
 
-const showCreatedSonglists = ref(false);
 const token = ref('');
 const needshowsonglistpage = ref(false);
 const cantransformtofull = ref(false);
@@ -63,39 +62,6 @@ const changeMode = (newMode) => {
 
 const ChangerRegisterMode = () => {
   RegisterMode.value = !RegisterMode.value;
-}
-
-
-const fetchAndFormatLyrics = async (lrcUrl) => {
-  try {
-    const response = await axios.get(lrcUrl);
-    const formattedLyrics = response.data.replace(/\[(\d+:\d+\.)(\d{2,3})\]/g, (match, time, ms) => {
-      const truncatedMs = ms.slice(0, 2);
-      return `[${time}${truncatedMs}]`;
-    });
-    lyric.value = parseLRC(formattedLyrics);
-  } catch (error) {
-    console.error('Error fetching lyrics:', error);
-  }
-};
-
-function parseLRC(lrc) {
-  const lines = lrc.split("\n");
-  const lyrics = [];
-  const timeRegex = /\[(\d{2}):(\d{2})\.(\d{2})](.*)/;
-
-  lines.forEach((line) => {
-    const match = timeRegex.exec(line);
-    if (match) {
-      const minute = parseInt(match[1]);
-      const second = parseInt(match[2]);
-      const millisecond = parseInt(match[3]);
-      const timestamp = minute * 60 + second + millisecond / 1000;
-      const text = match[4].trim();
-      lyrics.push({timestamp, text});
-    }
-  });
-  return lyrics;
 }
 
 const refreshNewest_Songs_Page = () => {
@@ -488,7 +454,8 @@ onMounted(getPageinit);
   </div>
   <div class="flex w-full h-screen bg-zinc-900">
     <SideBar :HasLogin="HasLogin" :avatar="avatar" :username="username" @checkLogin="checkLogin" v-model:mode="mode"
-             v-model:userdata="userdata" v-model:token="token" v-model:createdSonglists="createdSonglists" v-model:currentUserSongList="currentUserSongList"></SideBar>
+             v-model:userdata="userdata" v-model:token="token" v-model:createdSonglists="createdSonglists"
+             v-model:currentUserSongList="currentUserSongList" v-model:showUserSongList="showUserSongList"></SideBar>
     <div class="lg:w-1/6 w-0 h-full mr-0"></div>
     <div class="w-full lg:w-5/6 h-full mr-0">
       <div class="bg-zinc-900 h-screen overflow-auto">
@@ -528,7 +495,6 @@ onMounted(getPageinit);
   <MusicPlayer_Cell ref="MusicPlayer_Cell_Ref" v-model:musicList="musicList" v-model:token="token" v-model:mode="mode"
                     :HasLogin="HasLogin" v-model:datax="datax" v-model:username="username"
                     v-model:cantransformtofull="cantransformtofull"></MusicPlayer_Cell>
-
 </template>
 
 <style scoped>

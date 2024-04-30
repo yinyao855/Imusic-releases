@@ -17,7 +17,7 @@
 </template>
 
 <script setup>
-import {ref, computed, onMounted, onUnmounted, defineModel, nextTick} from 'vue';
+import {ref, computed, onMounted, onUnmounted, defineModel } from 'vue';
 
 const songlists = defineModel('songlists')
 const emits = defineEmits(['changesonglist']);
