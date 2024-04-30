@@ -1,5 +1,5 @@
 <script setup>
-import {computed, onMounted, ref, watch} from "vue";
+import { onMounted, ref } from "vue";
 import HomePage_Main from "@/views/HomePage_Main.vue";
 import ExplorePage_Main from "@/views/ExplorePage_Main.vue";
 import CreateCenter from "@/views/CreateCenterPage_Main.vue";
@@ -10,7 +10,6 @@ import Sign_up from "./Sign_up.vue";
 import axios from "axios";
 import CreateSonglistPage_Main from "@/views/CreateSonglistPage_Main.vue";
 import CreatedSonglist from "@/views/CreatedSonglist.vue";
-import Mine_Page from "@/views/Mine_Page.vue";
 import Warning from "@/components/Warning.vue";
 import SideBar from "@/views/SideBar.vue";
 import MusicPlayer_Cell from "@/components/MusicPlayer_Cell.vue";
@@ -22,6 +21,7 @@ const userlike = ref([]);
 const avatar = ref('');
 const index = ref('1');
 const datax = ref([]);
+const UserRole=ref('');
 const musicList = ref([
   {
     "id": null,
@@ -453,16 +453,16 @@ onMounted(getPageinit);
     <Warning :message="message" @CloseWarning="CloseWarning" class="mx-auto" v-model:token="token"></Warning>
   </div>
   <div class="flex w-full h-screen bg-zinc-900">
-    <SideBar :HasLogin="HasLogin" :avatar="avatar" :username="username" @checkLogin="checkLogin" v-model:mode="mode"
+    <SideBar :HasLogin="HasLogin" :avatar="avatar" @checkLogin="checkLogin" v-model:mode="mode" :username="username"
              v-model:userdata="userdata" v-model:token="token" v-model:createdSonglists="createdSonglists"
-             v-model:currentUserSongList="currentUserSongList" v-model:showUserSongList="showUserSongList"></SideBar>
+             v-model:currentUserSongList="currentUserSongList" v-model:showUserSongList="showUserSongList" v-model:UserRole="UserRole"></SideBar>
     <div class="lg:w-1/6 w-0 h-full mr-0"></div>
     <div class="w-full lg:w-5/6 h-full mr-0">
       <div class="bg-zinc-900 h-screen overflow-auto">
         <div v-if="mode==='0'&&!HasLogin" class="w-full h-full z-50">
           <Login v-if="!RegisterMode" @ChangerRegisterMode="ChangerRegisterMode" v-model:username="username"
                  @changeMode="changeMode" v-model:HasLogin="HasLogin" @getsonglistinit="getsonglistinit"
-                 v-model:avatar="avatar" v-model:token="token"></Login>
+                 v-model:avatar="avatar" v-model:token="token" v-model:UserRole="UserRole"></Login>
           <Sign_up v-if="RegisterMode" @ChangerRegisterMode="ChangerRegisterMode" v-model:username="username"
                    v-model:token="token"></Sign_up>
         </div>
@@ -487,8 +487,6 @@ onMounted(getPageinit);
         <CreatedSonglist :songlist="currentUserSongList" v-if="mode==='6'&&showUserSongList"
                          @PlaySongList="PlaySongList"
                          v-model:token="token"></CreatedSonglist>
-        <Mine_Page v-if="mode==='7'&& (HasLogin)" v-model:HasLogin="HasLogin"
-                   v-model:username="username"></Mine_Page>
       </div>
     </div>
   </div>

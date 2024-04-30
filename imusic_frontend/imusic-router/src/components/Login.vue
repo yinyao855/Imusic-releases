@@ -67,7 +67,8 @@ import Warning from "@/components/Warning.vue";
 import {defineEmits, defineModel} from "vue"
 
 const emits = defineEmits(['ChangerRegisterMode', 'changeMode', 'getsonglistinit']);
-const token=defineModel('token')
+const token=defineModel('token');
+const UserRole=defineModel('UserRole');
 const show = () => {
   const button = document.querySelector('.button-submit');
   const rect = button.getBoundingClientRect();
@@ -129,6 +130,7 @@ const show = () => {
           getsonglistinit(username.value);
           changeMode();
           avatar.value = response.data.data.avatar;
+          UserRole.value=response.data.data.role;
           if (response.data.data.avatar === null) {
             avatar.value = '';
           }

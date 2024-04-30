@@ -1,8 +1,8 @@
 <script setup>
 import {computed, ref} from "vue";
 import axios from "axios";
+import Warning from "@/components/Warning.vue";
 
-const username = defineModel('username');
 const props = defineProps(['HasLogin', 'avatar', 'username'])
 
 const containerClass1 = computed(() => ({
@@ -29,10 +29,12 @@ const containerClass7 = computed(() => ({
   'antialiased text-sm block h-10 my-1 text-white leading-10 transition ease-in duration-400 hover:bg-gray-600/40 pl-4 ml-2 mr-2 rounded-md': mode.value !== '7',
   'antialiased text-sm block h-10 my-1 text-white leading-10 transition ease-in duration-400 px-4 ml-2 mr-2 rounded-md bg-blue-500 hover:bg-blue-500': mode.value === '7',
 }));
+
 const emits = defineEmits(['checkLogin']);
 const createdSonglists = defineModel('createdSonglists');
 const currentUserSongList = defineModel('currentUserSongList');
 const mode = defineModel('mode');
+const UserRole=defineModel('UserRole');
 const changeMode = (newMode) => {
   mode.value = newMode.toString();
   console.log(mode.value);
@@ -121,6 +123,11 @@ function activeSonglist(index) {
 const showUserSongList=defineModel('showUserSongList');
 
 const listCreatedSonglists = () => {
+  if(props.HasLogin===false){
+    message.value='请先登录';
+    WarningShow.value=true;
+    return;
+  }
   const formData = new FormData();
   formData.append('username', props.username);
   const instance = axios.create({
@@ -145,11 +152,18 @@ const listCreatedSonglists = () => {
 
 const token = defineModel('token');
 const userdata = defineModel('userdata');
-
+const message=ref('错误消息');
+const WarningShow=ref(false);
+const CloseWarning=()=>{
+  WarningShow.value=false;
+}
 
 </script>
 
 <template>
+  <div class="w-full absolute top-0 left-1/2 transform -translate-x-1/2" v-if="WarningShow">
+    <Warning :message="message" @CloseWarning="CloseWarning" class="mx-auto" v-model:token="token"></Warning>
+  </div>
   <div class="w-1/6 h-screen fixed hidden lg:block" style="background-color:#2E2E30">
     <div
         class="group flex antialiased w-full mt-3 hover:text-blue-500 my-1 font-medium text-white transition ease-in duration-400 bg-yellow-95000 text-base"
@@ -176,6 +190,20 @@ const userdata = defineModel('userdata');
             d="M312.888889 995.555556c-17.066667 0-28.444444-5.688889-39.822222-17.066667-22.755556-22.755556-17.066667-56.888889 5.688889-79.644445l364.088888-329.955555c11.377778-11.377778 17.066667-22.755556 17.066667-34.133333 0-11.377778-5.688889-22.755556-17.066667-34.133334L273.066667 187.733333c-22.755556-22.755556-28.444444-56.888889-5.688889-79.644444 22.755556-22.755556 56.888889-28.444444 79.644444-5.688889l364.088889 312.888889c34.133333 28.444444 56.888889 73.955556 56.888889 119.466667s-17.066667 85.333333-51.2 119.466666l-364.088889 329.955556c-11.377778 5.688889-28.444444 11.377778-39.822222 11.377778z"
         ></path>
       </svg>
+    </div>
+    <div
+        :class="containerClass7" @click="changeMode(7)" v-if="UserRole==='admin'">
+      <svg class="icon inline fill-white my-auto" viewBox="0 0 1024 1024"
+           xmlns="http://www.w3.org/2000/svg"
+           width="16" height="16">
+        <path
+            d="M640 896h192V469.376h42.666667V896.213333c0 23.466667-19.029333 42.474667-42.666667 42.474667H597.333333V725.333333h-170.666666v213.333334H192c-23.573333 0-42.666667-18.986667-42.666667-42.453334V469.354667h42.666667V896h192V682.666667h256v213.333333z"
+        ></path>
+        <path
+            d="M100.032 506.133333a21.333333 21.333333 0 1 1-29.397333-30.933333L466.282667 99.349333a66.688 66.688 0 0 1 91.434666 0L953.386667 475.2a21.333333 21.333333 0 1 1-29.397334 30.933333L528.341333 130.282667a24.021333 24.021333 0 0 0-32.682666 0L100.053333 506.133333zM832 192h-128a21.333333 21.333333 0 0 1 0-42.666667h149.333333a21.333333 21.333333 0 0 1 21.333334 21.333334v149.333333a21.333333 21.333333 0 0 1-42.666667 0V192z"
+        ></path>
+      </svg>
+      <span class="px-4 font-medium">管理员界面</span>
     </div>
     <div
         :class="containerClass1" @click="changeMode(1)">
@@ -241,10 +269,6 @@ const userdata = defineModel('userdata');
       </svg>
       <span class="px-4 font-medium">创建歌单</span>
     </div>
-    <div :class="containerClass7" @click="changeMode(7);checkLogin()">
-      <span class="px-4 font-medium">我的</span>
-    </div>
-    <!--用户创建的歌单-->
     <div class="collapse rounded-md" @click="listCreatedSonglists" style="background-color:#2E2E30">
       <input type="checkbox"/>
       <span class="collapse-title text-white text-sm h-10 px-4">
