@@ -7,13 +7,22 @@ const props = defineProps({
   songlist: Object,
 })
 const token = defineModel('token')
-const emits = defineEmits(['PlaySongList', 'handlePlayAfter', 'handlePlayNow'])
+const emits = defineEmits(['gettime', 'PlaySongList', 'handlePlayAfter', 'handlePlayNow'])
 
 const username = defineModel('username')
 const CurrentUser_SongListdata = ref([]);
 
 const ShowCurrentUser_SongList = ref(false);
 const needtoaddSongid = ref(1);
+
+const gettime = (time) => {
+  const minute = Math.floor(time / 60);
+  const second = Math.floor(time - minute * 60);
+  if (second < 10) {
+    return `${minute}:0${second}`;
+  }
+  return `${minute}:${second}`;
+}
 
 const PlaySongList = (id) => {
   emits('PlaySongList', id);
@@ -327,7 +336,6 @@ function activeShowEditSonglist() {
               <polygon
                   points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
             </svg>
-
             收藏歌单
             ({{ props.songlist.like }})
           </button>
@@ -389,7 +397,7 @@ function activeShowEditSonglist() {
               <p class="inline-block">{{ song.title }}</p>
             </td>
             <td class="text-center">{{ song.singer }}</td>
-            <td class="text-center">{{ song.duration }}</td>
+            <td class="text-center">{{ gettime(song.duration) }}</td>
             <td>
               <div class="menu">
                 <button class="font-bold text-xl">···</button>
