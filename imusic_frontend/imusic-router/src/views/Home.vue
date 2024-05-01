@@ -486,8 +486,8 @@ onMounted(getPageinit);
         <CreateSonglistPage_Main v-if="mode==='5'" v-model:HasLogin="HasLogin"
                                  v-model:username="username" v-model:token="token"></CreateSonglistPage_Main>
         <CreatedSonglist :songlist="currentUserSongList" v-if="mode==='6'&&showUserSongList"
-                         @PlaySongList="PlaySongList"
-                         v-model:token="token"></CreatedSonglist>
+                         @PlaySongList="PlaySongList" @handlePlayAfter="handlePlayAfter" @handlePlayNow="handlePlayNow"
+                         v-model:token="token" v-model:username="username"></CreatedSonglist>
         <AdminPage_Main v-model:token="token" v-if="mode==='7'"></AdminPage_Main>
       </div>
     </div>
