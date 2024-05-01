@@ -2,6 +2,7 @@
 import {defineEmits, defineModel, ref} from "vue";
 import axios from "axios";
 import CurrentUser_SongList from "@/components/CurrentUser_SongList.vue";
+import SongPage from "@/views/SongPage.vue";
 
 const props = defineProps({
   songlist: Object,
@@ -13,10 +14,14 @@ const username = defineModel('username')
 const CurrentUser_SongListdata = ref([]);
 
 const ShowCurrentUser_SongList = ref(false);
+const ShowSong = ref(false)
+const SongData = ref([])
 const needtoaddSongid = ref(1);
 
 const cover = ref(null);
 const coverImageFileUrl = ref('');
+
+const lyrics = ref([]);
 
 const gettime = (time) => {
   const minute = Math.floor(time / 60);
@@ -198,10 +203,38 @@ function activeShowEditSonglist() {
   showEditSonglist.value = true;
 }
 
+const CloseSong = () => {
+  ShowSong.value = false;
+}
+
+const activeShowSong = (songid) => {
+  SongData.value = props.songlist.songs[songid];
+  console.log(SongData.value);
+  ShowSong.value = true;
+}
+
+const fetchAndFormatLyrics = async (lrcUrl) => {
+  try {
+    const response = await axios.get(lrcUrl);
+    const lines = response.data.split("\n");
+    const timeRegex = /\[(\d{2}):(\d{2})\.(\d{2})](.*)/;
+
+    lines.forEach((line) => {
+      const match = timeRegex.exec(line);
+      if (match) {
+        const text = match[4].trim();
+        lyrics.value.push(text);
+      }
+    });
+  } catch (error) {
+    console.error('Error fetching lyrics:', error);
+  }
+};
+
 </script>
 
 <template>
-  <div v-if="!ShowCurrentUser_SongList">
+  <div v-if="!ShowCurrentUser_SongList&!ShowSong">
     <div class="bg-cover bg-center h-72 relative z-40">
       <div class="bg-blur w-full h-full absolute top-0 left-0"
            :style="{backgroundImage: 'url(' + props.songlist.cover + ')'}"></div>
@@ -461,8 +494,8 @@ function activeShowEditSonglist() {
               <div class="menu">
                 <button class="font-bold text-xl">···</button>
                 <div class="menu_item font-bold right-7 -bottom-1 bg-gray-600 text-white opacity-90">
-                  <div
-                      class="hover:bg-white hover:text-blue-500 hover:cursor-pointer rounded-md py-2 w-44 inline-block">
+                  <div @click="activeShowSong(index); fetchAndFormatLyrics(song.lyric)"
+                       class="hover:bg-white hover:text-blue-500 hover:cursor-pointer rounded-md py-2 w-44 inline-block">
                     <p>
                       <svg class="ml-5 h-5 w-5 text-gray-900 inline-block align-sub" fill="none" viewBox="0 0 24 24"
                            stroke="currentColor">
@@ -569,6 +602,14 @@ function activeShowEditSonglist() {
                             v-model:needtoaddSongid="needtoaddSongid"
                             @CloseCurrentUser_SongList="CloseCurrentUser_SongList"
                             v-model:token="token"></CurrentUser_SongList>
+    </div>
+  </transition>
+  <transition name="slide" appear>
+    <div class="transition-container-2" v-if="ShowSong">
+      <SongPage v-if="ShowSong" v-model:SongData="SongData"
+                v-model:lyrics="lyrics"
+                @CloseSong="CloseSong"
+                v-model:token="token"></SongPage>
     </div>
   </transition>
 </template>
