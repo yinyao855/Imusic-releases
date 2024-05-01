@@ -15,6 +15,9 @@ const CurrentUser_SongListdata = ref([]);
 const ShowCurrentUser_SongList = ref(false);
 const needtoaddSongid = ref(1);
 
+const cover = ref(null);
+const coverImageFileUrl = ref('');
+
 const gettime = (time) => {
   const minute = Math.floor(time / 60);
   const second = Math.floor(time - minute * 60);
@@ -94,6 +97,36 @@ const CloseCurrentUser_SongList = () => {
   ShowCurrentUser_SongList.value = false;
 }
 
+const onCoverFileChange = (event) => {
+  cover.value = event.target.files[0];
+  const files = event.target.files || event.dataTransfer.files;
+  createImage(files[0]);
+};
+
+const createImage = (file) => {
+  fileToBase64(file).then(function (base64) {
+    coverImageFileUrl.value = base64;// 输出文件的 base64 形式
+  }).catch(function (error) {
+    console.error('Error:', error.data);
+  });
+};
+
+function fileToBase64(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+
+    reader.onload = function (event) {
+      resolve(event.target.result);
+    };
+
+    reader.onerror = function (error) {
+      reject(error);
+    };
+
+    reader.readAsDataURL(file);
+  });
+}
+
 function show_tag(tag) {
   if (tag === 'null' || tag === null) return false;
   return true;
@@ -122,6 +155,7 @@ function sendDeleteSonglist() {
 }
 
 function sendEditSonglist() {
+  showEditSonglist.value = false;
   const tag_theme = props.songlist.tag_theme;
   const tag_scene = props.songlist.tag_scene;
   const tag_mood = props.songlist.tag_mood;
@@ -129,7 +163,7 @@ function sendEditSonglist() {
   const tag_language = props.songlist.tag_language;
   const formData = new FormData();
   formData.append('title', props.songlist.title);
-  formData.append('cover', props.songlist.cover);
+  formData.append('cover', cover.value);
   formData.append('introduction', props.songlist.introduction);
   formData.append('owner', props.songlist.owner);
   formData.append('tag_theme', tag_theme);
@@ -149,7 +183,6 @@ function sendEditSonglist() {
       .then(function (response) {
         if (response.data.success === true) {
           window.alert("edit success");
-          showEditSonglist.value = false;
         }
       })
       .catch(function (error) {
@@ -160,6 +193,8 @@ function sendEditSonglist() {
 const showEditSonglist = ref(false);
 
 function activeShowEditSonglist() {
+  cover.value = props.songlist.cover;
+  coverImageFileUrl.value = props.songlist.cover;
   showEditSonglist.value = true;
 }
 
@@ -196,8 +231,32 @@ function activeShowEditSonglist() {
         <div class="inline-block" v-show="!showEditSonglist">
           <img :src="props.songlist.cover" class="img_songlist shadow-2xl">
         </div>
-        <div class="inline-block" v-show="showEditSonglist">
-          <img :src="props.songlist.cover" class="img_songlist shadow-2xl">
+        <div class="inline-block " v-show="showEditSonglist">
+          <div>
+            <div class="grid grid-cols-1 space-y-2">
+              <div class="flex items-center justify-center w-full">
+                <label
+                    class="flex flex-col rounded-3xl border-4 border-dashed w-full h-52 group text-center transition ease-in duration-300"
+                    for="CoverUpLoad">
+                  <div class="h-full content-center mx-auto">
+                    <img :src="coverImageFileUrl" class="img_songlist shadow-2xl" alt="图像">
+                  </div>
+                  <div
+                      class="absolute m-16">
+                    <svg class="icon fill-gray-300 transition hover:fill-gray-400" viewBox="0 0 1194 1024"
+                         xmlns="http://www.w3.org/2000/svg" width="80" height="80">
+                      <path
+                          d="M152.62673094 991.65443843a51.27435943 51.27435943 0 0 1-52.15426311-48.79463341l102.38873717-552.73919819v-1.5198328c0-27.67695563 23.35743091-50.15448278 52.23425434-50.15448278h843.90717007c28.31688465 0 51.51433311 21.75760687 52.3942369 48.79463253l-102.38873725 552.73919807v1.5198328a51.27435943 51.27435943 0 0 1-52.31424564 50.15448382H152.62673094z m636.80995128-262.85108717c13.27853904 0 26.47708777-15.91824934 30.95659499-31.83649784 0-15.91824934-4.47950719-37.11591754-13.27854002-47.67475592L657.05124401 447.87425375c-17.59806379-21.19766814-44.15514285-21.19766814-61.75320652 0L445.23454444 649.2920975C431.95600436 659.85093594 431.95600436 681.04860501 431.95600436 696.96685342c0 15.91824934 13.27853904 31.83649781 30.87660374 31.83649784h105.98834157v132.46542936c0 21.19766814 13.1985478 37.11591754 30.87660377 37.11591755h61.75320656c17.67805497 0 30.87660377-15.91824934 30.87660375-37.11591755V728.80335124H789.51667344zM202.94119625 271.81362032c-37.83583785 0-68.71244156 28.95681469-68.79243277 64.47290816L32.95989401 868.70796219V97.03284595C33.03988525 61.59674467 60.63684963 32.79991158 94.79309279 32.79991158H403.95908469l92.70980156 96.46938842h463.46901844c34.15624311 0 61.83319876 28.79683219 61.83319876 64.31292572V271.97360282H202.94119625z"
+                          fill="">
+                      </path>
+                    </svg>
+                  </div>
+                  <input type="file" @change="onCoverFileChange" id="CoverUpLoad" class="absolute -left-10 -top-10"
+                         accept="image/jpeg, image/png, image/gif, image/webp">
+                </label>
+              </div>
+            </div>
+          </div>
         </div>
         <div class="inline-block ml-7 align-top" v-show="!showEditSonglist">
           <div>
@@ -265,7 +324,7 @@ function activeShowEditSonglist() {
           </div>
           <div class="inline-block mt-5">
             <select v-model="props.songlist.tag_theme"
-                    class="text-xs inline-flex items-center font-bold leading-sm px-1 py-1 bg-blue-200 text-blue-700 rounded-full">
+                    class="text-xs inline-flex items-center font-bold leading-sm px-0 py-1 bg-blue-200 text-blue-700 rounded-full">
               <option :value="null">-- 主题 --</option>
               <option>背景音乐</option>
               <option>经典老歌</option>
@@ -276,7 +335,7 @@ function activeShowEditSonglist() {
           </div>
           <div class="inline-block">
             <select v-model="props.songlist.tag_scene"
-                    class="ml-1 text-xs inline-flex items-center font-bold leading-sm px-1 py-1 bg-green-200 text-green-700 rounded-full">
+                    class="ml-1 text-xs inline-flex items-center font-bold leading-sm px-0 py-1 bg-green-200 text-green-700 rounded-full">
               <option :value="null">-- 场景 --</option>
               <option>咖啡馆</option>
               <option>运动</option>
@@ -287,7 +346,7 @@ function activeShowEditSonglist() {
           </div>
           <div class="inline-block">
             <select v-model="props.songlist.tag_mood"
-                    class="ml-1 text-xs inline-flex items-center font-bold leading-sm px-1 py-1 bg-red-200 text-red-700 rounded-full">
+                    class="ml-1 text-xs inline-flex items-center font-bold leading-sm px-0 py-1 bg-red-200 text-red-700 rounded-full">
               <option :value="null">-- 心情 --</option>
               <option>伤感</option>
               <option>安静</option>
@@ -298,7 +357,7 @@ function activeShowEditSonglist() {
           </div>
           <div class="inline-block">
             <select v-model="props.songlist.tag_style"
-                    class="ml-1 text-xs inline-flex items-center font-bold leading-sm px-1 py-1 bg-orange-200 text-orange-700 rounded-full">
+                    class="ml-1 text-xs inline-flex items-center font-bold leading-sm px-0 py-1 bg-orange-200 text-orange-700 rounded-full">
               <option :value="null">-- 风格 --</option>
               <option>摇滚</option>
               <option>民谣</option>
@@ -309,7 +368,7 @@ function activeShowEditSonglist() {
           </div>
           <div class="inline-block">
             <select v-model="props.songlist.tag_language"
-                    class="ml-1 text-xs inline-flex items-center font-bold leading-sm px-1 py-1 bg-purple-200 text-purple-700 rounded-full">
+                    class="ml-1 text-xs inline-flex items-center font-bold leading-sm px-0 py-1 bg-purple-200 text-purple-700 rounded-full">
               <option :value="null">-- 语言 --</option>
               <option>英语</option>
               <option>日语</option>
@@ -437,50 +496,50 @@ function activeShowEditSonglist() {
                       加入歌单
                     </p>
                   </div>
-<!--                  <div-->
-<!--                      class="hover:bg-white hover:text-blue-500 hover:cursor-pointer rounded-md py-2 w-44 inline-block">-->
-<!--                    <p>-->
-<!--                      <svg class="ml-5 h-5 w-5 text-gray-900 inline-block align-sub" viewBox="0 0 24 24" fill="none"-->
-<!--                           stroke="currentColor"-->
-<!--                           stroke-width="2" stroke-linecap="round" stroke-linejoin="round">-->
-<!--                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>-->
-<!--                        <polyline points="7 10 12 15 17 10"/>-->
-<!--                        <line x1="12" y1="15" x2="12" y2="3"/>-->
-<!--                      </svg>-->
-<!--                      下载-->
-<!--                    </p>-->
-<!--                  </div>-->
-<!--                  <div-->
-<!--                      class="hover:bg-white hover:text-blue-500 hover:cursor-pointer rounded-md py-2 w-44 inline-block">-->
-<!--                    <p>-->
-<!--                      <svg class="ml-5 h-5 w-5 text-gray-900 inline-block align-sub" viewBox="0 0 24 24" fill="none"-->
-<!--                           stroke="currentColor"-->
-<!--                           stroke-width="2" stroke-linecap="round" stroke-linejoin="round">-->
-<!--                        <circle cx="18" cy="5" r="3"/>-->
-<!--                        <circle cx="6" cy="12" r="3"/>-->
-<!--                        <circle cx="18" cy="19" r="3"/>-->
-<!--                        <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/>-->
-<!--                        <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>-->
-<!--                      </svg>-->
-<!--                      分享-->
-<!--                    </p>-->
-<!--                  </div>-->
-<!--                  <div-->
-<!--                      class="hover:bg-white hover:text-blue-500 hover:cursor-pointer rounded-md py-2 w-44 inline-block">-->
-<!--                    <p>-->
-<!--                      <svg class="ml-5 h-5 w-5 text-gray-900 inline-block align-sub" viewBox="0 0 24 24" fill="none"-->
-<!--                           stroke="currentColor"-->
-<!--                           stroke-width="2" stroke-linecap="round" stroke-linejoin="round">-->
-<!--                        <path-->
-<!--                            d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>-->
-<!--                        <line x1="12" y1="9" x2="12" y2="13"/>-->
-<!--                        <line x1="12" y1="17" x2="12.01" y2="17"/>-->
-<!--                      </svg>-->
-<!--                      举报-->
-<!--                    </p>-->
-<!--                  </div>-->
+                  <!--                  <div-->
+                  <!--                      class="hover:bg-white hover:text-blue-500 hover:cursor-pointer rounded-md py-2 w-44 inline-block">-->
+                  <!--                    <p>-->
+                  <!--                      <svg class="ml-5 h-5 w-5 text-gray-900 inline-block align-sub" viewBox="0 0 24 24" fill="none"-->
+                  <!--                           stroke="currentColor"-->
+                  <!--                           stroke-width="2" stroke-linecap="round" stroke-linejoin="round">-->
+                  <!--                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>-->
+                  <!--                        <polyline points="7 10 12 15 17 10"/>-->
+                  <!--                        <line x1="12" y1="15" x2="12" y2="3"/>-->
+                  <!--                      </svg>-->
+                  <!--                      下载-->
+                  <!--                    </p>-->
+                  <!--                  </div>-->
+                  <!--                  <div-->
+                  <!--                      class="hover:bg-white hover:text-blue-500 hover:cursor-pointer rounded-md py-2 w-44 inline-block">-->
+                  <!--                    <p>-->
+                  <!--                      <svg class="ml-5 h-5 w-5 text-gray-900 inline-block align-sub" viewBox="0 0 24 24" fill="none"-->
+                  <!--                           stroke="currentColor"-->
+                  <!--                           stroke-width="2" stroke-linecap="round" stroke-linejoin="round">-->
+                  <!--                        <circle cx="18" cy="5" r="3"/>-->
+                  <!--                        <circle cx="6" cy="12" r="3"/>-->
+                  <!--                        <circle cx="18" cy="19" r="3"/>-->
+                  <!--                        <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/>-->
+                  <!--                        <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>-->
+                  <!--                      </svg>-->
+                  <!--                      分享-->
+                  <!--                    </p>-->
+                  <!--                  </div>-->
+                  <!--                  <div-->
+                  <!--                      class="hover:bg-white hover:text-blue-500 hover:cursor-pointer rounded-md py-2 w-44 inline-block">-->
+                  <!--                    <p>-->
+                  <!--                      <svg class="ml-5 h-5 w-5 text-gray-900 inline-block align-sub" viewBox="0 0 24 24" fill="none"-->
+                  <!--                           stroke="currentColor"-->
+                  <!--                           stroke-width="2" stroke-linecap="round" stroke-linejoin="round">-->
+                  <!--                        <path-->
+                  <!--                            d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>-->
+                  <!--                        <line x1="12" y1="9" x2="12" y2="13"/>-->
+                  <!--                        <line x1="12" y1="17" x2="12.01" y2="17"/>-->
+                  <!--                      </svg>-->
+                  <!--                      举报-->
+                  <!--                    </p>-->
+                  <!--                  </div>-->
                   <div @click="deleteFromSongList(index)"
-                      class="hover:bg-white hover:text-blue-500 hover:cursor-pointer rounded-md py-2 w-44 inline-block">
+                       class="hover:bg-white hover:text-blue-500 hover:cursor-pointer rounded-md py-2 w-44 inline-block">
                     <p>
                       <svg class="ml-5 h-5 w-5 text-black inline-block align-sub" width="24" height="24"
                            viewBox="0 0 24 24" stroke-width="2"
@@ -508,7 +567,8 @@ function activeShowEditSonglist() {
     <div class="transition-container-2" v-if="ShowCurrentUser_SongList">
       <CurrentUser_SongList v-if="ShowCurrentUser_SongList" v-model:CurrentUser_SongListdata="CurrentUser_SongListdata"
                             v-model:needtoaddSongid="needtoaddSongid"
-                            @CloseCurrentUser_SongList="CloseCurrentUser_SongList" v-model:token="token"></CurrentUser_SongList>
+                            @CloseCurrentUser_SongList="CloseCurrentUser_SongList"
+                            v-model:token="token"></CurrentUser_SongList>
     </div>
   </transition>
 </template>
