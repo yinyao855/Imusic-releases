@@ -1,18 +1,31 @@
 <script setup>
+// 修改歌单信息界面
 import {defineModel, ref} from "vue";
 import axios from "axios";
 
-const props = defineProps({
-  currentUserSongList: Object,
-})
+// global variables
 const token = defineModel('token')
 const username = defineModel('username')
-const showEditSonglist = defineModel('showEditSonglist')
-const needtoaddSongid = ref(1);
 
+// defineEmits(将歌曲从当前歌单删除)
+const emits = defineEmits(['deleteFromSongList'])
+
+// props
+const props = defineProps({
+  currentUserSongList: Object, // 选中的歌单
+})
+
+// v-model
+const showEditSonglist = defineModel('showEditSonglist')
 const cover = defineModel('cover')
 const coverImageFileUrl = defineModel('coverImageFileUrl')
 
+// emits
+const deleteFromSongList = (index) => {
+  emits('deleteFromSongList', index);
+}
+
+// global function: 获取歌曲时长
 const gettime = (time) => {
   const minute = Math.floor(time / 60);
   const second = Math.floor(time - minute * 60);
@@ -22,36 +35,14 @@ const gettime = (time) => {
   return `${minute}:${second}`;
 }
 
-function deleteFromSongList(songid) {
-  needtoaddSongid.value = props.currentUserSongList.songs[songid].id;
-  console.log(props.currentUserSongList.id);
-  const formData = new FormData();
-  formData.append('song_id', needtoaddSongid.value);
-  formData.append('songlist_id', props.currentUserSongList.id);
-  const instance = axios.create({
-    baseURL: 'http://182.92.100.66:5000',
-    timeout: 5000, // 设置请求超时时间
-    headers: {
-      'Authorization': `Bearer ${token.value}`,
-    }
-  });
-  axios.defaults.withCredentials = true;
-  instance.post('/songlists/delsong', formData)
-      .then(response => {
-        console.log(response.data);
-        alert('歌曲删除成功');
-      })
-      .catch(error => {
-        console.log(error.response.data);
-      })
-}
-
+// 处理歌单图片，若修改了图片，可以直接展示新选择的图片即使还没完成修改
 const onCoverFileChange = (event) => {
   cover.value = event.target.files[0];
   const files = event.target.files || event.dataTransfer.files;
   createImage(files[0]);
 };
 
+// 将图片转换为url形式
 const createImage = (file) => {
   fileToBase64(file).then(function (base64) {
     coverImageFileUrl.value = base64;// 输出文件的 base64 形式
@@ -76,6 +67,7 @@ function fileToBase64(file) {
   });
 }
 
+// 修改该歌单
 function sendEditSonglist(id) {
   showEditSonglist.value = false;
   const formData = new FormData();
@@ -110,16 +102,19 @@ function sendEditSonglist(id) {
 </script>
 
 <template>
+  <!--  修改歌单界面-->
   <div>
     <div class="h-72 relative">
       <div class="bg-center bg-cover bg-blur w-full h-full absolute top-0 left-0"
            :style="{backgroundImage: 'url(' + props.currentUserSongList.cover + ')'}">
       </div>
       <div class="p-5 absolute w-full">
+        <!--        点击后即保存修改后的信息-->
         <button @click="sendEditSonglist(props.currentUserSongList.id)" class="btn m-1 inline-block float-right ">完成
         </button>
         <div class="inline-block">
           <div>
+            <!--            展示图片-->
             <div class="grid grid-cols-1 space-y-2">
               <div class="flex items-center justify-center w-full">
                 <label
@@ -172,6 +167,7 @@ function sendEditSonglist(id) {
             <input type="text" class="input bg-zinc-900 text-white" placeholder="请为你的歌曲写一点介绍"
                    v-model="props.currentUserSongList.introduction">
           </div>
+          <!--          标签-->
           <div class="inline-block mt-5">
             <select v-model="props.currentUserSongList.tag_theme"
                     class="text-xs inline-flex items-center font-bold leading-sm px-0 py-1 bg-blue-200 text-blue-700 rounded-full">
@@ -230,6 +226,7 @@ function sendEditSonglist(id) {
         </div>
       </div>
     </div>
+    <!--    批量进行将歌单中的歌曲删除的操作-->
     <div class="mt-3 overflow-auto">
       <hr class="mx-5 border-gray-500">
       <div class="mt-3 m-5">

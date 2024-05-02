@@ -430,6 +430,7 @@ function show_tag(tag) {
   </transition>
   <!--  展示修改歌单信息界面（当showEditSonglist为true）-->
   <EditSonglist :currentUserSongList="currentUserSongList" v-if="showEditSonglist"
+                @deleteFromSongList="deleteFromSongList"
                 v-model:showEditSonglist="showEditSonglist"
                 v-model:cover="cover" v-model:coverImageFileUrl="coverImageFileUrl"
                 v-model:token="token" v-model:username="username"></EditSonglist>

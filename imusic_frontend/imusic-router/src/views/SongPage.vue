@@ -1,15 +1,25 @@
 <script setup>
+// 展示歌曲详细信息界面
 import {defineModel, ref} from "vue";
 import buttonchangesize from "@/components/buttonchangesize.vue";
 import axios from "axios";
 
-const songData = defineModel('SongData')
-const emits = defineEmits(['CloseSong'])
+// global variables
 const token = defineModel('token')
-const lyrics = defineModel('lyrics')
+
+// defineEmits(关闭当前页面/回到上一个页面展示歌单)
+const emits = defineEmits(['CloseSong'])
+
+// v-model
+const songData = defineModel('SongData') // 存储歌曲的详细信息
+const lyrics = defineModel('lyrics') // 存储歌词（字符串数组）
+
+// emits
 const fullsize = () => {
   emits('CloseSong');
 }
+
+// global function: 获取歌曲时长
 const gettime = (time) => {
   const minute = Math.floor(time / 60);
   const second = Math.floor(time - minute * 60);
@@ -22,11 +32,14 @@ const gettime = (time) => {
 </script>
 
 <template>
+  <!--  回到歌单界面-->
   <buttonchangesize class="left-4 top-4" @fullsize="fullsize" v-model:token="token"></buttonchangesize>
+  <!--  歌曲详细信息新界面-->
   <div>
     <div>
       <h1 class="text-4xl text-white text-center my-5">{{ songData.title }}</h1>
     </div>
+    <!--    歌曲基本信息（可以考虑把评论加到这部分）-->
     <div class="my-10 flex flex-col w-full lg:flex-row">
       <div class="grid flex-grow h-full card rounded-box place-items-center">
         <div class="">
@@ -78,6 +91,7 @@ const gettime = (time) => {
         </div>
       </div>
       <div class="divider lg:divider-horizontal"></div>
+      <!--      歌词-->
       <div class="grid flex-grow h-full card rounded-box mb-28 place-items-center mr-16 py-8">
         <div v-for="lyric in lyrics" class="text-gray-300">
           <p>{{ lyric }}</p>
