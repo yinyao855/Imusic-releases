@@ -202,10 +202,10 @@ const CloseWarning = () => {
            width="16" height="16">
         <path
             d="M109.696 624.32a32 32 0 0 1-32-32V450.304a32 32 0 0 1 64 0v142.016a32 32 0 0 1-32 32zM787.008 956.032H237.696a160.192 160.192 0 0 1-160-160v-20.672a32 32 0 0 1 64 0v20.672c0 52.928 43.072 96 96 96h549.312c52.928 0 96-43.072 96-96V604.288a32 32 0 0 1 64 0v191.68a160.192 160.192 0 0 1-160 160.064zM915.008 443.328a32 32 0 0 1-32-32V228.032c0-52.928-43.072-96-96-96H237.696c-52.928 0-96 43.072-96 96v15.232a32 32 0 0 1-64 0v-15.232c0-88.192 71.808-160 160-160h549.312c88.256 0 160 71.808 160 160v183.296a32 32 0 0 1-32 32z"
-            ></path>
+        ></path>
         <path
             d="M913.472 619.008c-60.544 0-109.824-49.344-109.824-109.888s49.28-109.824 109.824-109.824 109.888 49.28 109.888 109.824-49.28 109.888-109.888 109.888z m0-168.512a58.624 58.624 0 1 0 0.192 117.312 58.624 58.624 0 0 0-0.192-117.312zM185.856 379.328H34.816a32 32 0 0 1 0-64h150.976a32 32 0 0 1 0.064 64zM711.36 379.328H353.344a32 32 0 0 1 0-64h358.016a32 32 0 0 1 0 64zM711.36 553.344H353.344a32 32 0 0 1 0-64h358.016a32 32 0 0 1 0 64zM711.36 715.328H353.344a32 32 0 0 1 0-64h358.016a32 32 0 0 1 0 64zM185.856 710.336H34.816a32 32 0 0 1 0-64h150.976a32 32 0 0 1 0.064 64z"
-            ></path>
+        ></path>
       </svg>
       <span class="px-4 font-medium">管理员界面</span>
     </div>
@@ -273,22 +273,29 @@ const CloseWarning = () => {
       </svg>
       <span class="px-4 font-medium">创建歌单</span>
     </div>
-<!--    <div class="collapse rounded-md" @click="listCreatedSonglists" style="background-color:#2E2E30">-->
-<!--      <input type="checkbox"/>-->
-<!--      <span class="collapse-title text-white text-sm h-10 px-4">-->
-<!--          创建的歌单-->
-<!--        </span>-->
-<!--      <div class="collapse-content">-->
-<!--        <div v-for="(createdSonglist, index) in createdSonglists" :key="index"-->
-<!--             @click="changeMode(6); activeSonglist(index)"-->
-<!--             class="m-1 h-12 cursor-pointer overflow-hidden py-1 px-1 transition ease-in duration-400 hover:bg-gray-600/40 my-auto rounded-md">-->
-<!--          <img :src="createdSonglist.cover" class="inline-block h-10 w-10 rounded-md" alt="封面"/>-->
-<!--          <span class="m-2 text-white text-sm font-medium "> {{ createdSonglist.title }} </span>-->
-<!--        </div>-->
-<!--      </div>-->
-<!--    </div>-->
+    <!--    <div class="collapse rounded-md" @click="listCreatedSonglists" style="background-color:#2E2E30">-->
+    <!--      <input type="checkbox"/>-->
+    <!--      <span class="collapse-title text-white text-sm h-10 px-4">-->
+    <!--          创建的歌单-->
+    <!--        </span>-->
+    <!--      <div class="collapse-content">-->
+    <!--        <div v-for="(createdSonglist, index) in createdSonglists" :key="index"-->
+    <!--             @click="changeMode(6); activeSonglist(index)"-->
+    <!--             class="m-1 h-12 cursor-pointer overflow-hidden py-1 px-1 transition ease-in duration-400 hover:bg-gray-600/40 my-auto rounded-md">-->
+    <!--          <img :src="createdSonglist.cover" class="inline-block h-10 w-10 rounded-md" alt="封面"/>-->
+    <!--          <span class="m-2 text-white text-sm font-medium "> {{ createdSonglist.title }} </span>-->
+    <!--        </div>-->
+    <!--      </div>-->
+    <!--    </div>-->
     <div :class="containerClass6" @click="listCreatedSonglists">
-      <input type="checkbox"/>
+      <svg class="icon inline text-white my-auto" width="16" height="16" viewBox="0 0 24 24" stroke-width="2"
+           stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+        <path stroke="none" d="M0 0h24v24H0z"/>
+        <path d="M14 3v4a1 1 0 0 0 1 1h4"/>
+        <path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z"/>
+        <circle cx="11" cy="16" r="1"/>
+        <polyline points="12 16 12 11 14 12"/>
+      </svg>
       <span class="px-4 font-medium">创建的歌单</span>
     </div>
     <div
