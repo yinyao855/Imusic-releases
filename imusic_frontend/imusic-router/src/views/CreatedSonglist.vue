@@ -173,14 +173,14 @@ const fetchAndFormatLyrics = async (lrcUrl) => {
 </script>
 
 <template>
-  <buttonchangesize class="left-4 top-4" @fullsize="fullsize" v-model:token="token"></buttonchangesize>
-  <div v-if="!showEditSonglist">
-    <div v-if="!ShowCurrentUserSongList&!ShowSong">
+  <div v-if="!ShowCurrentUserSongList&!ShowSong">
+    <buttonchangesize class="left-4 top-4" @fullsize="fullsize" v-model:token="token"></buttonchangesize>
+    <div v-if="!showEditSonglist">
       <div class="h-72 relative">
         <div class="bg-center bg-cover bg-blur w-full h-full absolute top-0 left-0"
              :style="{backgroundImage: 'url(' + props.currentUserSongList.cover + ')'}">
         </div>
-        <div class="p-5 absolute w-full">
+        <div class="px-10 py-6 absolute top-0 w-full">
           <svg @click="sendDeleteSonglist"
                class="inline-block float-right h-8 w-8 cursor-pointer text-red-600 hover:text-red-800" width="24"
                height="24"
@@ -268,7 +268,7 @@ const fetchAndFormatLyrics = async (lrcUrl) => {
           </div>
         </div>
       </div>
-      <div class="mt-3 overflow-auto">
+      <div class="mt-3">
         <hr class="mx-5 border-gray-500">
         <div class="mt-3 m-5">
           <table class="w-full mb-32">
@@ -457,7 +457,7 @@ const fetchAndFormatLyrics = async (lrcUrl) => {
 }
 
 .bg-blur {
-  float: left;
+  position: relative;
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
@@ -466,6 +466,5 @@ const fetchAndFormatLyrics = async (lrcUrl) => {
   -o-filter: blur(19px);
   -ms-filter: blur(19px);
   filter: blur(19px);
-
 }
 </style>

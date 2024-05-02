@@ -77,7 +77,7 @@ const deletelike = (index) => {
 </script>
 
 <template>
-  <div class="bgx bg-cover bg-center h-2/5 relative z-40">
+  <div class="bgx bg-cover bg-center h-2/5 relative">
     <div class="bg-blur w-full h-full absolute top-0 left-0"
          :style="{backgroundImage: `url(${songlistlast.cover})`}"></div>
     <buttonchangesize class="absolute top-5 left-5" @fullsize="changesize" v-model:token="token"></buttonchangesize>
@@ -106,7 +106,7 @@ const deletelike = (index) => {
   </div>
 
 
-  <div class="mt-6 overflow-auto">
+  <div class="mt-6">
     <table class="table">
       <!-- head -->
       <thead>
