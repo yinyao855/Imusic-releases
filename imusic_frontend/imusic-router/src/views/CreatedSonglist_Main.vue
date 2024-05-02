@@ -1,15 +1,23 @@
 <script setup>
+// 展示用户创建的歌单主界面
 import {defineEmits, defineModel, ref} from "vue";
-import axios from "axios";
 import CreatedSonglist from "@/views/CreatedSonglist.vue";
 
-const createdSonglists = defineModel('createdSonglists')
+// global variables
 const token = defineModel('token')
-const emits = defineEmits(['PlaySongList', 'handlePlayAfter', 'handlePlayNow'])
 const username = defineModel('username')
-const showCurrentSongList = ref(false);
-const currentUserSongList = ref([]);
 
+// defineEmits(播放歌单全部歌曲，加入播放列表，立即播放)
+const emits = defineEmits(['PlaySongList', 'handlePlayAfter', 'handlePlayNow'])
+
+// v-model
+const createdSonglists = defineModel('createdSonglists') // 用户创建的歌单
+
+// 点击歌单后需要的属性
+const showCurrentSongList = ref(false); // 是否展示选中的歌单信息页面（默认：否），选择歌单后为true
+const currentUserSongList = ref([]); // 选中的歌单
+
+// emits
 const PlaySongList = (id) => {
   emits('PlaySongList', id);
 }
@@ -22,45 +30,26 @@ function handlePlayNow(index) {
   emits('handlePlayNow', currentUserSongList.songs[index].id)
 }
 
+// back: 不展示选中的歌单信息页面（回到选择创建的歌单的主界面）
 function closeSonglist() {
   showCurrentSongList.value = false;
 }
 
+// choose: 展示选中的歌单信息页面（进入歌单信息界面）
 function activeSonglist(index) {
   showCurrentSongList.value = true;
-  let SongListId = createdSonglists.value[index].id;
-  const instance = axios.create({
-    baseURL: 'http://182.92.100.66:5000',
-    timeout: 5000, // 设置请求超时时间
-    headers: {
-      'Authorization': `Bearer ${token.value}`,
-    }
-  });
-  axios.defaults.withCredentials = true;
-  const web = '/songlists/info/' + SongListId;
-  instance.get(web)
-      .then(response => {
-        currentUserSongList.value = response.data.data;
-        currentUserSongList.value.create_date = extractDate(currentUserSongList.value.create_date);
-        let length = currentUserSongList.value.songs.length;
-        console.log(length);
-        for (let i = 0; i < length; ++i) {
-          currentUserSongList.value.songs[i].duration = gettime(currentUserSongList.value.songs[i].duration)
-        }
-
-      })
-      .catch(error => {
-        console.log(error.response.data);
-      })
+  currentUserSongList.value = createdSonglists.value[index]; // 保存选中的歌单
 }
-
 </script>
 
 <template>
+  <!--  展示用户创建的歌单主界面-->
   <div class="bg-gray-95000 w-full h-full mb-48" v-if="!showCurrentSongList">
+    <!--    标题-->
     <div class="w-full h-32 flex">
       <div class="text-4xl text-white text-center m-auto">我创建的歌单</div>
     </div>
+    <!--    内容：创建的歌单（v-for依次输出创建的歌单）-->
     <div v-for="(songlist, index) in createdSonglists" class="all inline-block px-8 pb-6">
       <div @click="activeSonglist(index)" class="card bg-gray-300 cursor-pointer">
         <div class="content">
@@ -78,8 +67,10 @@ function activeSonglist(index) {
       </div>
     </div>
   </div>
+  <!--  展示选中的歌单信息页面（当showCurrentSongList==true）-->
   <CreatedSonglist :currentUserSongList="currentUserSongList" v-if="showCurrentSongList"
-                   @PlaySongList="PlaySongList" @handlePlayAfter="handlePlayAfter" @handlePlayNow="handlePlayNow" @closeSonglist="closeSonglist"
+                   @PlaySongList="PlaySongList" @handlePlayAfter="handlePlayAfter" @handlePlayNow="handlePlayNow"
+                   @closeSonglist="closeSonglist" v-model:createdSonglists="createdSonglists"
                    v-model:token="token" v-model:username="username"></CreatedSonglist>
 </template>
 

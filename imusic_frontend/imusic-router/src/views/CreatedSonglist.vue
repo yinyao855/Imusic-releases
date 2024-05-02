@@ -1,4 +1,5 @@
 <script setup>
+// 展示歌单信息页面
 import {defineEmits, defineModel, ref} from "vue";
 import axios from "axios";
 import CurrentUser_SongList from "@/components/CurrentUser_SongList.vue";
@@ -6,35 +7,36 @@ import SongPage from "@/views/SongPage.vue";
 import Buttonchangesize from "@/components/buttonchangesize.vue";
 import EditSonglist from "@/views/EditSonglist.vue";
 
-const props = defineProps({
-  currentUserSongList: Object,
-})
+// global variables
 const token = defineModel('token')
+const username = defineModel('username')
+
+// defineEmits(播放歌单全部歌曲，加入播放列表，立即播放，关闭当前页面/回到上一个页面展示创建的歌单)
 const emits = defineEmits(['PlaySongList', 'handlePlayAfter', 'handlePlayNow', 'closeSonglist'])
 
-const username = defineModel('username')
-const CurrentUser_SongListdata = ref([]);
-const ShowCurrentUserSongList = ref(false);
-const ShowSong = ref(false)
-const SongData = ref([])
-const needtoaddSongid = ref(1);
+// props
+const props = defineProps({
+  currentUserSongList: Object, // 选中的歌单
+})
 
-const cover = ref(null);
-const coverImageFileUrl = ref('');
+// v-model
+const CurrentUser_SongListdata = defineModel("createdSonglists"); // 用户创建的所有歌单
 
-const showEditSonglist = ref(false);
+// EditSonglist需要的属性（用于修改歌单）
+const showEditSonglist = ref(false); // 是否展示修改歌单信息页面（默认：否），点击修改的icon后为true
+const cover = ref(null); // 存储当前歌单图片
+const coverImageFileUrl = ref(''); // 存储当前歌单图片url，若修改了图片，可以直接展示新选择的图片即使还没完成修改
 
-const lyrics = ref([]);
+// SongPage需要的属性（用于歌曲详细信息）
+const ShowSong = ref(false); // 是否展示歌曲信息页面（默认：否），点击查看歌曲详细信息后为true
+const SongData = ref([]); // 存储要查看的歌曲信息
+const lyrics = ref([]); // 存储要查看的歌曲的歌词（字符串数组）
 
-const gettime = (time) => {
-  const minute = Math.floor(time / 60);
-  const second = Math.floor(time - minute * 60);
-  if (second < 10) {
-    return `${minute}:0${second}`;
-  }
-  return `${minute}:${second}`;
-}
+// CurrentUser_SongList需要的属性（用于选择将歌曲加入哪个歌单）
+const ShowCurrentUserSongList = ref(false); // 是否展示选择歌单页面（默认：否），点击加入歌单后为true
+const needtoaddSongid = ref(1); // 存储需要加入歌单的歌曲id
 
+// emits
 const PlaySongList = (id) => {
   emits('PlaySongList', id);
 }
@@ -51,18 +53,68 @@ const fullsize = () => {
   emits('closeSonglist');
 }
 
-function addToSongList(songid) {
-  console.log(songid);
-  GetCurrentUser_SongListdata();
-  ShowCurrentUserSongList.value = true;
-  needtoaddSongid.value = props.currentUserSongList.songs[songid].id;
+// global function: 获取歌曲时长
+const gettime = (time) => {
+  const minute = Math.floor(time / 60);
+  const second = Math.floor(time - minute * 60);
+  if (second < 10) {
+    return `${minute}:0${second}`;
+  }
+  return `${minute}:${second}`;
 }
 
-function deleteFromSongList(songid) {
-  needtoaddSongid.value = props.currentUserSongList.songs[songid].id;
+/* 对歌单进行管理 */
+
+// 删除此歌单
+function deleteSonglist() {
+  console.log("delete " + props.currentUserSongList.id)
+  const instance = axios.create({
+    baseURL: 'http://182.92.100.66:5000',
+    timeout: 5000, // 设置请求超时时间
+    headers: {
+      'Authorization': `Bearer ${token.value}`,
+    }
+  });
+  axios.defaults.withCredentials = true;
+  instance.delete('/songlists/delete/' + props.currentUserSongList.id)
+      .then(function (response) {
+        if (response.data.success === true) {
+          window.alert("delete success");
+        }
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+}
+
+// 存储歌单图片，进入修改歌单界面（showEditSonglist为true）
+function activeShowEditSonglist(imgUrl) {
+  cover.value = imgUrl;
+  coverImageFileUrl.value = imgUrl;
+  showEditSonglist.value = true;
+}
+
+
+/* 对该歌单中的歌曲进行管理 */
+
+// 存储选择加入歌单的歌曲id，进入选择歌单界面（ShowCurrentUserSongList为true）
+function activeAddToSongList(index) {
+  ShowCurrentUserSongList.value = true;
+  needtoaddSongid.value = props.currentUserSongList.songs[index].id;
+}
+
+// back: 不展示选择歌单页面（回到歌单的主界面）
+const CloseCurrentUser_SongList = () => {
+  ShowCurrentUserSongList.value = false;
+}
+
+// 将歌曲从当前歌单删除
+function deleteFromSongList(index) {
+  const needtodeleteSongid = ref(1);
+  needtodeleteSongid.value = props.currentUserSongList.songs[index].id;
   console.log(props.currentUserSongList.id);
   const formData = new FormData();
-  formData.append('song_id', needtoaddSongid.value);
+  formData.append('song_id', needtodeleteSongid.value);
   formData.append('songlist_id', props.currentUserSongList.id);
   const instance = axios.create({
     baseURL: 'http://182.92.100.66:5000',
@@ -82,76 +134,18 @@ function deleteFromSongList(songid) {
       })
 }
 
-const GetCurrentUser_SongListdata = () => {
-  const instance = axios.create({
-    baseURL: 'http://182.92.100.66:5000',
-    timeout: 5000, // 设置请求超时时间
-    headers: {
-      'Authorization': `Bearer ${token.value}`,
-    }
-  });
-  axios.defaults.withCredentials = true;
-  instance.get('/users/songlists', {
-    params: {
-      'username': username.value
-    }
-  })
-      .then(response => {
-        CurrentUser_SongListdata.value = response.data.data;
-        console.log(CurrentUser_SongListdata);
-      })
-      .catch(error => {
-        console.log(error.response.data);
-      })
+// 存储歌曲信息，进入歌曲详细信息界面（ShowSong为true）
+const activeShowSong = (index) => {
+  SongData.value = props.currentUserSongList.songs[index];
+  ShowSong.value = true;
 }
 
-const CloseCurrentUser_SongList = () => {
-  ShowCurrentUserSongList.value = false;
-}
-
-function show_tag(tag) {
-  if (tag === 'null' || tag === null) return false;
-  return true;
-}
-
-function sendDeleteSonglist() {
-  console.log("delete " + props.currentUserSongList.id)
-  const instance = axios.create({
-    baseURL: 'http://182.92.100.66:5000',
-    timeout: 5000, // 设置请求超时时间
-    headers: {
-      'Authorization': `Bearer ${token.value}`,
-    }
-  });
-  axios.defaults.withCredentials = true;
-  instance.delete('/songlists/delete/' + props.currentUserSongList.id)
-      .then(function (response) {
-        if (response.data.success === true) {
-          window.alert("delete success");
-          location.reload();
-        }
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-}
-
-function activeShowEditSonglist(imgUrl) {
-  cover.value = imgUrl;
-  coverImageFileUrl.value = imgUrl;
-  showEditSonglist.value = true;
-}
-
+// back: 不展示歌曲详细信息页面（回到歌单的主界面）
 const CloseSong = () => {
   ShowSong.value = false;
 }
 
-const activeShowSong = (songid) => {
-  SongData.value = props.currentUserSongList.songs[songid];
-  console.log(SongData.value);
-  ShowSong.value = true;
-}
-
+// 从歌词url解析歌词，存储到字符串数组中lyrics
 const fetchAndFormatLyrics = async (lrcUrl) => {
   try {
     const response = await axios.get(lrcUrl);
@@ -170,18 +164,28 @@ const fetchAndFormatLyrics = async (lrcUrl) => {
   }
 };
 
+// 判断是否需要展示该标签（若值为空表示没有此标签，不用展示false）
+function show_tag(tag) {
+  if (tag === 'null' || tag === null) return false;
+  return true;
+}
 </script>
 
 <template>
   <div v-if="!ShowCurrentUserSongList&!ShowSong">
+    <!--    回到选择歌单界面-->
     <buttonchangesize class="left-4 top-4" @fullsize="fullsize" v-model:token="token"></buttonchangesize>
+    <!--  展示歌单主界面-->
     <div v-if="!showEditSonglist">
+      <!--      展示歌单信息-->
       <div class="h-72 relative">
         <div class="bg-center bg-cover bg-blur w-full h-full absolute top-0 left-0"
              :style="{backgroundImage: 'url(' + props.currentUserSongList.cover + ')'}">
         </div>
+        <!--        对歌单进行的操作-->
         <div class="px-10 py-6 absolute top-0 w-full">
-          <svg @click="sendDeleteSonglist"
+          <!--          删除歌单-->
+          <svg @click="deleteSonglist"
                class="inline-block float-right h-8 w-8 cursor-pointer text-red-600 hover:text-red-800" width="24"
                height="24"
                viewBox="0 0 24 24" stroke-width="2"
@@ -193,6 +197,7 @@ const fetchAndFormatLyrics = async (lrcUrl) => {
             <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12"/>
             <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3"/>
           </svg>
+          <!--          修改歌单信息-->
           <svg @click="activeShowEditSonglist(props.currentUserSongList.cover)"
                class="m-1 inline-block float-right h-7 w-7 cursor-pointer text-blue-700 hover:text-blue-900" width="24"
                height="24"
@@ -219,6 +224,7 @@ const fetchAndFormatLyrics = async (lrcUrl) => {
                 </div>
               </details>
             </div>
+            <!--            标签-->
             <div class="mt-16 inline-block">
               <div v-if="show_tag(props.currentUserSongList.tag_theme)"
                    class="text-xs inline-flex items-center font-bold leading-sm px-2 py-1 bg-blue-200 text-blue-700 rounded-full">
@@ -243,6 +249,7 @@ const fetchAndFormatLyrics = async (lrcUrl) => {
             </div>
           </div>
           <div class="mt-3">
+            <!--            播放歌单中所有歌曲-->
             <button @click="PlaySongList(props.currentUserSongList.id)"
                     class="mr-3 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-20 rounded-full">
               <svg class="h-5 w-5 inline-block align-sub text-white" viewBox="0 0 24 24" fill="none"
@@ -253,6 +260,7 @@ const fetchAndFormatLyrics = async (lrcUrl) => {
               </svg>
               <p class="inline-block">Play All</p>
             </button>
+            <!--            收藏歌单（未实现）-->
             <button
                 class="mr-3 bg-gray-400 hover:bg-gray-500 text-white font-bold py-2 px-16 rounded-full inline-block">
               <svg class="h-5 w-5 text-white inline-block align-sub" viewBox="0 0 24 24" fill="none"
@@ -268,6 +276,7 @@ const fetchAndFormatLyrics = async (lrcUrl) => {
           </div>
         </div>
       </div>
+      <!--      展示歌单中的所有歌曲-->
       <div class="mt-3">
         <hr class="mx-5 border-gray-500">
         <div class="mt-3 m-5">
@@ -290,9 +299,11 @@ const fetchAndFormatLyrics = async (lrcUrl) => {
               <td class="text-center">{{ song.singer }}</td>
               <td class="text-center">{{ gettime(song.duration) }}</td>
               <td>
+                <!--                对歌曲进行的操作-->
                 <div class="menu">
                   <button class="font-bold text-xl">···</button>
                   <div class="menu_item font-bold right-7 -bottom-1 bg-gray-600 text-white opacity-90">
+                    <!--                    查看歌曲信息(SongPage)-->
                     <div @click="activeShowSong(index); fetchAndFormatLyrics(song.lyric)"
                          class="hover:bg-white hover:text-blue-500 hover:cursor-pointer rounded-md py-2 w-44 inline-block">
                       <p>
@@ -304,6 +315,7 @@ const fetchAndFormatLyrics = async (lrcUrl) => {
                         查看歌曲信息
                       </p>
                     </div>
+                    <!--                    加入播放列表-->
                     <div @click="handlePlayAfter(index)"
                          class="hover:bg-white hover:text-blue-500 hover:cursor-pointer rounded-md py-2 w-44 inline-block">
                       <p>
@@ -317,7 +329,8 @@ const fetchAndFormatLyrics = async (lrcUrl) => {
                         加入播放列表
                       </p>
                     </div>
-                    <div @click="addToSongList(index)"
+                    <!--                    加入歌单(CurrentUser_Songlist)-->
+                    <div @click="activeAddToSongList(index)"
                          class="hover:bg-white hover:text-blue-500 hover:cursor-pointer rounded-md py-2 w-44 inline-block">
                       <p>
                         <svg class="ml-5 h-5 w-5 text-gray-900 inline-block align-sub" fill="none" viewBox="0 0 24 24"
@@ -370,6 +383,7 @@ const fetchAndFormatLyrics = async (lrcUrl) => {
                     <!--                      举报-->
                     <!--                    </p>-->
                     <!--                  </div>-->
+                    <!--                    从歌单中移除-->
                     <div @click="deleteFromSongList(index)"
                          class="hover:bg-white hover:text-blue-500 hover:cursor-pointer rounded-md py-2 w-44 inline-block">
                       <p>
@@ -396,6 +410,7 @@ const fetchAndFormatLyrics = async (lrcUrl) => {
       </div>
     </div>
   </div>
+  <!--  展示选择加入的歌单界面(当ShowCurrentUserSongList为true)-->
   <transition name="slide" appear>
     <div class="transition-container-2" v-if="ShowCurrentUserSongList">
       <CurrentUser_SongList v-if="ShowCurrentUserSongList" v-model:CurrentUser_SongListdata="CurrentUser_SongListdata"
@@ -404,6 +419,7 @@ const fetchAndFormatLyrics = async (lrcUrl) => {
                             v-model:token="token"></CurrentUser_SongList>
     </div>
   </transition>
+  <!--  展示歌曲详细信息界面（当ShowSong为true）-->
   <transition name="slide" appear>
     <div class="transition-container-2" v-if="ShowSong">
       <SongPage v-if="ShowSong" v-model:SongData="SongData"
@@ -412,6 +428,7 @@ const fetchAndFormatLyrics = async (lrcUrl) => {
                 v-model:token="token"></SongPage>
     </div>
   </transition>
+  <!--  展示修改歌单信息界面（当showEditSonglist为true）-->
   <EditSonglist :currentUserSongList="currentUserSongList" v-if="showEditSonglist"
                 v-model:showEditSonglist="showEditSonglist"
                 v-model:cover="cover" v-model:coverImageFileUrl="coverImageFileUrl"
