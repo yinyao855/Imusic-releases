@@ -25,6 +25,10 @@ const containerClass5 = computed(() => ({
   'antialiased text-sm block h-10 my-1 text-white leading-10 transition ease-in duration-400 hover:bg-gray-600/40 pl-4 ml-2 mr-2 rounded-md': mode.value !== '5',
   'antialiased text-sm block h-10 my-1 text-white leading-10 transition ease-in duration-400 px-4 ml-2 mr-2 rounded-md bg-blue-500 hover:bg-blue-500': mode.value === '5',
 }));
+const containerClass6 = computed(() => ({
+  'antialiased text-sm block h-10 my-1 text-white leading-10 transition ease-in duration-400 hover:bg-gray-600/40 pl-4 ml-2 mr-2 rounded-md': mode.value !== '6',
+  'antialiased text-sm block h-10 my-1 text-white leading-10 transition ease-in duration-400 px-4 ml-2 mr-2 rounded-md bg-blue-500 hover:bg-blue-500': mode.value === '6',
+}));
 const containerClass7 = computed(() => ({
   'antialiased text-sm block h-10 my-1 text-white leading-10 transition ease-in duration-400 hover:bg-gray-600/40 pl-4 ml-2 mr-2 rounded-md': mode.value !== '7',
   'antialiased text-sm block h-10 my-1 text-white leading-10 transition ease-in duration-400 px-4 ml-2 mr-2 rounded-md bg-blue-500 hover:bg-blue-500': mode.value === '7',
@@ -283,11 +287,9 @@ const CloseWarning = () => {
 <!--        </div>-->
 <!--      </div>-->
 <!--    </div>-->
-    <div class="collapse rounded-md" @click="listCreatedSonglists" style="background-color:#2E2E30">
+    <div :class="containerClass6" @click="listCreatedSonglists">
       <input type="checkbox"/>
-      <span class="collapse-title text-white text-sm h-10 px-4">
-          创建的歌单
-      </span>
+      <span class="px-4 font-medium">创建的歌单</span>
     </div>
     <div
         class="antialiased text-sm block h-10 my-1 text-white leading-10 transition ease-in duration-400 px-4 hover:bg-gray-600/40 ml-2 mr-2 rounded-md">
