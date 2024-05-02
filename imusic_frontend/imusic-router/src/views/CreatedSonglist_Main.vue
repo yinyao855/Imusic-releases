@@ -78,7 +78,7 @@ function activeSonglist(index) {
       </div>
     </div>
   </div>
-  <CreatedSonglist :currentUserSongList="currentUserSongList" v-model:showCurrentSongList="showCurrentSongList" v-if="showCurrentSongList"
+  <CreatedSonglist :currentUserSongList="currentUserSongList" v-if="showCurrentSongList"
                    @PlaySongList="PlaySongList" @handlePlayAfter="handlePlayAfter" @handlePlayNow="handlePlayNow" @closeSonglist="closeSonglist"
                    v-model:token="token" v-model:username="username"></CreatedSonglist>
 </template>
