@@ -14,6 +14,7 @@ import Warning from "@/components/Warning.vue";
 import SideBar from "@/views/SideBar.vue";
 import MusicPlayer_Cell from "@/components/MusicPlayer_Cell.vue";
 import AdminPage_Main from "@/views/AdminPage_Main.vue";
+import CreatedSonglist_Main from "@/views/CreatedSonglist_Main.vue";
 
 const token = ref('');
 const needshowsonglistpage = ref(false);
@@ -485,9 +486,12 @@ onMounted(getPageinit);
                       v-model:token="token"></CreateCenter>
         <CreateSonglistPage_Main v-if="mode==='5'" v-model:HasLogin="HasLogin"
                                  v-model:username="username" v-model:token="token"></CreateSonglistPage_Main>
-        <CreatedSonglist :songlist="currentUserSongList" v-if="mode==='6'&&showUserSongList"
+<!--        <CreatedSonglist :songlist="currentUserSongList" v-if="mode==='6'&&showUserSongList"-->
+<!--                         @PlaySongList="PlaySongList" @handlePlayAfter="handlePlayAfter" @handlePlayNow="handlePlayNow"-->
+<!--                         v-model:token="token" v-model:username="username"></CreatedSonglist>-->
+        <CreatedSonglist_Main v-model:createdSonglists="createdSonglists" v-if="mode==='6'"
                          @PlaySongList="PlaySongList" @handlePlayAfter="handlePlayAfter" @handlePlayNow="handlePlayNow"
-                         v-model:token="token" v-model:username="username"></CreatedSonglist>
+                         v-model:token="token" v-model:username="username"></CreatedSonglist_Main>
         <AdminPage_Main v-model:token="token" v-if="mode==='7'"></AdminPage_Main>
       </div>
     </div>

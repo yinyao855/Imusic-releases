@@ -123,6 +123,7 @@ function activeSonglist(index) {
 const showUserSongList = defineModel('showUserSongList');
 
 const listCreatedSonglists = () => {
+  changeMode(6)
   if (props.HasLogin === false) {
     message.value = '请先登录';
     WarningShow.value = true;
@@ -268,19 +269,25 @@ const CloseWarning = () => {
       </svg>
       <span class="px-4 font-medium">创建歌单</span>
     </div>
+<!--    <div class="collapse rounded-md" @click="listCreatedSonglists" style="background-color:#2E2E30">-->
+<!--      <input type="checkbox"/>-->
+<!--      <span class="collapse-title text-white text-sm h-10 px-4">-->
+<!--          创建的歌单-->
+<!--        </span>-->
+<!--      <div class="collapse-content">-->
+<!--        <div v-for="(createdSonglist, index) in createdSonglists" :key="index"-->
+<!--             @click="changeMode(6); activeSonglist(index)"-->
+<!--             class="m-1 h-12 cursor-pointer overflow-hidden py-1 px-1 transition ease-in duration-400 hover:bg-gray-600/40 my-auto rounded-md">-->
+<!--          <img :src="createdSonglist.cover" class="inline-block h-10 w-10 rounded-md" alt="封面"/>-->
+<!--          <span class="m-2 text-white text-sm font-medium "> {{ createdSonglist.title }} </span>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </div>-->
     <div class="collapse rounded-md" @click="listCreatedSonglists" style="background-color:#2E2E30">
       <input type="checkbox"/>
       <span class="collapse-title text-white text-sm h-10 px-4">
           创建的歌单
-        </span>
-      <div class="collapse-content">
-        <div v-for="(createdSonglist, index) in createdSonglists" :key="index"
-             @click="changeMode(6); activeSonglist(index)"
-             class="m-1 h-12 cursor-pointer overflow-hidden py-1 px-1 transition ease-in duration-400 hover:bg-gray-600/40 my-auto rounded-md">
-          <img :src="createdSonglist.cover" class="inline-block h-10 w-10 rounded-md" alt="封面"/>
-          <span class="m-2 text-white text-sm font-medium "> {{ createdSonglist.title }} </span>
-        </div>
-      </div>
+      </span>
     </div>
     <div
         class="antialiased text-sm block h-10 my-1 text-white leading-10 transition ease-in duration-400 px-4 hover:bg-gray-600/40 ml-2 mr-2 rounded-md">

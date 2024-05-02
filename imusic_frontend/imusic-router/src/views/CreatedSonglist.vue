@@ -3,16 +3,16 @@ import {defineEmits, defineModel, ref} from "vue";
 import axios from "axios";
 import CurrentUser_SongList from "@/components/CurrentUser_SongList.vue";
 import SongPage from "@/views/SongPage.vue";
+import Buttonchangesize from "@/components/buttonchangesize.vue";
 
 const props = defineProps({
-  songlist: Object,
+  currentUserSongList: Object,
 })
 const token = defineModel('token')
-const emits = defineEmits(['gettime', 'PlaySongList', 'handlePlayAfter', 'handlePlayNow'])
+const emits = defineEmits(['PlaySongList', 'handlePlayAfter', 'handlePlayNow', 'closeSonglist'])
 
 const username = defineModel('username')
 const CurrentUser_SongListdata = ref([]);
-
 const ShowCurrentUser_SongList = ref(false);
 const ShowSong = ref(false)
 const SongData = ref([])
@@ -37,26 +37,30 @@ const PlaySongList = (id) => {
 }
 
 function handlePlayAfter(index) {
-  emits('handlePlayAfter', props.songlist.songs[index].id)
+  emits('handlePlayAfter', props.currentUserSongList.songs[index].id)
 }
 
 function handlePlayNow(index) {
-  emits('handlePlayNow', props.songlist.songs[index].id)
+  emits('handlePlayNow', props.currentUserSongList.songs[index].id)
+}
+
+const fullsize = () => {
+  emits('closeSonglist');
 }
 
 function addToSongList(songid) {
   console.log(songid);
   GetCurrentUser_SongListdata();
   ShowCurrentUser_SongList.value = true;
-  needtoaddSongid.value = props.songlist.songs[songid].id;
+  needtoaddSongid.value = props.currentUserSongList.songs[songid].id;
 }
 
 function deleteFromSongList(songid) {
-  needtoaddSongid.value = props.songlist.songs[songid].id;
-  console.log(props.songlist.id);
+  needtoaddSongid.value = props.currentUserSongList.songs[songid].id;
+  console.log(props.currentUserSongList.id);
   const formData = new FormData();
   formData.append('song_id', needtoaddSongid.value);
-  formData.append('songlist_id', props.songlist.id);
+  formData.append('songlist_id', props.currentUserSongList.id);
   const instance = axios.create({
     baseURL: 'http://182.92.100.66:5000',
     timeout: 5000, // 设置请求超时时间
@@ -138,7 +142,7 @@ function show_tag(tag) {
 }
 
 function sendDeleteSonglist() {
-  console.log("delete " + props.songlist.id)
+  console.log("delete " + props.currentUserSongList.id)
   const instance = axios.create({
     baseURL: 'http://182.92.100.66:5000',
     timeout: 5000, // 设置请求超时时间
@@ -147,7 +151,7 @@ function sendDeleteSonglist() {
     }
   });
   axios.defaults.withCredentials = true;
-  instance.delete('/songlists/delete/' + props.songlist.id)
+  instance.delete('/songlists/delete/' + props.currentUserSongList.id)
       .then(function (response) {
         if (response.data.success === true) {
           window.alert("delete success");
@@ -159,23 +163,23 @@ function sendDeleteSonglist() {
       });
 }
 
-function sendEditSonglist() {
+function sendEditSonglist(id) {
   showEditSonglist.value = false;
-  const tag_theme = props.songlist.tag_theme;
-  const tag_scene = props.songlist.tag_scene;
-  const tag_mood = props.songlist.tag_mood;
-  const tag_style = props.songlist.tag_style;
-  const tag_language = props.songlist.tag_language;
+  // const tag_theme = currentUserSongList.tag_theme;
+  // const tag_scene = currentUserSongList.tag_scene;
+  // const tag_mood = currentUserSongList.tag_mood;
+  // const tag_style = currentUserSongList.tag_style;
+  // const tag_language = currentUserSongList.tag_language;
   const formData = new FormData();
-  formData.append('title', props.songlist.title);
+  formData.append('title', props.currentUserSongList.title);
   formData.append('cover', cover.value);
-  formData.append('introduction', props.songlist.introduction);
-  formData.append('owner', props.songlist.owner);
-  formData.append('tag_theme', tag_theme);
-  formData.append('tag_scene', tag_scene);
-  formData.append('tag_mood', tag_mood);
-  formData.append('tag_style', tag_style);
-  formData.append('tag_language', tag_language);
+  formData.append('introduction', props.currentUserSongList.introduction);
+  formData.append('owner', props.currentUserSongList.owner);
+  formData.append('tag_theme', props.currentUserSongList.tag_theme);
+  formData.append('tag_scene', props.currentUserSongList.tag_scene);
+  formData.append('tag_mood', props.currentUserSongList.tag_mood);
+  formData.append('tag_style', props.currentUserSongList.tag_style);
+  formData.append('tag_language', props.currentUserSongList.tag_language);
   const instance = axios.create({
     baseURL: 'http://182.92.100.66:5000',
     timeout: 5000, // 设置请求超时时间
@@ -184,22 +188,22 @@ function sendEditSonglist() {
     }
   });
   axios.defaults.withCredentials = true;
-  instance.post('/songlists/update/' + props.songlist.id, formData)
+  instance.post('/songlists/update/' + id, formData)
       .then(function (response) {
         if (response.data.success === true) {
           window.alert("edit success");
         }
       })
       .catch(function (error) {
-        console.log(error.response.data);
+        console.log(error);
       });
 }
 
 const showEditSonglist = ref(false);
 
-function activeShowEditSonglist() {
-  cover.value = props.songlist.cover;
-  coverImageFileUrl.value = props.songlist.cover;
+function activeShowEditSonglist(imgUrl) {
+  cover.value = imgUrl;
+  coverImageFileUrl.value = imgUrl;
   showEditSonglist.value = true;
 }
 
@@ -208,7 +212,7 @@ const CloseSong = () => {
 }
 
 const activeShowSong = (songid) => {
-  SongData.value = props.songlist.songs[songid];
+  SongData.value = props.currentUserSongList.songs[songid];
   console.log(SongData.value);
   ShowSong.value = true;
 }
@@ -234,10 +238,12 @@ const fetchAndFormatLyrics = async (lrcUrl) => {
 </script>
 
 <template>
+  <buttonchangesize class="left-4 top-4" @fullsize="fullsize" v-model:token="token"></buttonchangesize>
   <div v-if="!ShowCurrentUser_SongList&!ShowSong">
-    <div class="bg-cover bg-center h-72 relative z-40">
-      <div class="bg-blur w-full h-full absolute top-0 left-0"
-           :style="{backgroundImage: 'url(' + props.songlist.cover + ')'}"></div>
+    <div class="h-72 relative">
+      <div class="bg-center bg-cover bg-blur w-full h-full absolute top-0 left-0"
+           :style="{backgroundImage: 'url(' + props.currentUserSongList.cover + ')'}">
+      </div>
       <div class="p-5 absolute w-full">
         <svg v-show="!showEditSonglist" @click="sendDeleteSonglist"
              class="inline-block float-right h-8 w-8 cursor-pointer text-red-600 hover:text-red-800" width="24"
@@ -251,7 +257,7 @@ const fetchAndFormatLyrics = async (lrcUrl) => {
           <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12"/>
           <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3"/>
         </svg>
-        <svg v-show="!showEditSonglist" @click="activeShowEditSonglist"
+        <svg v-show="!showEditSonglist" @click="activeShowEditSonglist(props.currentUserSongList.cover)"
              class="m-1 inline-block float-right h-7 w-7 cursor-pointer text-blue-700 hover:text-blue-900" width="24"
              height="24"
              viewBox="0 0 24 24"
@@ -259,10 +265,10 @@ const fetchAndFormatLyrics = async (lrcUrl) => {
              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/>
         </svg>
-        <button @click="sendEditSonglist" v-show="showEditSonglist" class="btn m-1 inline-block float-right ">完成
+        <button @click="sendEditSonglist(props.currentUserSongList.id)" v-show="showEditSonglist" class="btn m-1 inline-block float-right ">完成
         </button>
         <div class="inline-block" v-show="!showEditSonglist">
-          <img :src="props.songlist.cover" class="img_songlist shadow-2xl">
+          <img :src="props.currentUserSongList.cover" class="img_songlist shadow-2xl">
         </div>
         <div class="inline-block " v-show="showEditSonglist">
           <div>
@@ -274,8 +280,7 @@ const fetchAndFormatLyrics = async (lrcUrl) => {
                   <div class="h-full content-center mx-auto">
                     <img :src="coverImageFileUrl" class="img_songlist shadow-2xl" alt="图像">
                   </div>
-                  <div
-                      class="absolute m-16">
+                  <div class="absolute m-16">
                     <svg class="icon fill-gray-300 transition hover:fill-gray-400" viewBox="0 0 1194 1024"
                          xmlns="http://www.w3.org/2000/svg" width="80" height="80">
                       <path
@@ -284,7 +289,7 @@ const fetchAndFormatLyrics = async (lrcUrl) => {
                       </path>
                     </svg>
                   </div>
-                  <input type="file" @change="onCoverFileChange" id="CoverUpLoad" class="absolute -left-10 -top-10"
+                  <input type="file" @change="onCoverFileChange" id="CoverUpLoad" class="absolute opacity-0"
                          accept="image/jpeg, image/png, image/gif, image/webp">
                 </label>
               </div>
@@ -293,37 +298,37 @@ const fetchAndFormatLyrics = async (lrcUrl) => {
         </div>
         <div class="inline-block ml-7 align-top" v-show="!showEditSonglist">
           <div>
-            <h1 class="mt-2 text-white font-extrabold text-3xl">{{ props.songlist.title }}</h1>
-            <p class="mt-2 text-white">{{ props.songlist.owner }} · {{ props.songlist.create_date }}</p>
+            <h1 class="mt-2 text-white font-extrabold text-3xl">{{ props.currentUserSongList.title }}</h1>
+            <p class="mt-2 text-white">{{ props.currentUserSongList.owner }} · {{ props.currentUserSongList.create_date }}</p>
           </div>
           <div>
             <details class="text-white text-sm">
               <summary class="mt-3 text-white font-bold">介绍</summary>
               <div class="mt-3 absolute">
-                {{ props.songlist.introduction }}
+                {{ props.currentUserSongList.introduction }}
               </div>
             </details>
           </div>
           <div class="mt-16 inline-block">
-            <div v-if="show_tag(props.songlist.tag_theme)"
+            <div v-if="show_tag(props.currentUserSongList.tag_theme)"
                  class="text-xs inline-flex items-center font-bold leading-sm px-2 py-1 bg-blue-200 text-blue-700 rounded-full">
-              {{ props.songlist.tag_theme }}
+              {{ props.currentUserSongList.tag_theme }}
             </div>
-            <div v-if="show_tag(props.songlist.tag_scene)"
+            <div v-if="show_tag(props.currentUserSongList.tag_scene)"
                  class="ml-1 text-xs inline-flex items-center font-bold leading-sm px-2 py-1 bg-green-200 text-green-700 rounded-full">
-              {{ props.songlist.tag_scene }}
+              {{ props.currentUserSongList.tag_scene }}
             </div>
-            <div v-if="show_tag(props.songlist.tag_mood)"
+            <div v-if="show_tag(props.currentUserSongList.tag_mood)"
                  class="ml-1 text-xs inline-flex items-center font-bold leading-sm px-2 py-1 bg-red-200 text-red-700 rounded-full">
-              {{ props.songlist.tag_mood }}
+              {{ props.currentUserSongList.tag_mood }}
             </div>
-            <div v-if="show_tag(props.songlist.tag_style)"
+            <div v-if="show_tag(props.currentUserSongList.tag_style)"
                  class="ml-1 text-xs inline-flex items-center font-bold leading-sm px-2 py-1 bg-orange-200 text-orange-700 rounded-full">
-              {{ props.songlist.tag_style }}
+              {{ props.currentUserSongList.tag_style }}
             </div>
-            <div v-if="show_tag(props.songlist.tag_language)"
+            <div v-if="show_tag(props.currentUserSongList.tag_language)"
                  class="ml-1 text-xs inline-flex items-center font-bold leading-sm px-2 py-1 bg-purple-200 text-purple-700 rounded-full">
-              {{ props.songlist.tag_language }}
+              {{ props.currentUserSongList.tag_language }}
             </div>
           </div>
         </div>
@@ -339,7 +344,7 @@ const fetchAndFormatLyrics = async (lrcUrl) => {
                   p-id="5636"></path>
             </svg>
             <input type="text" class="input bg-zinc-900 text-white" placeholder="请输入歌单名"
-                   v-model="props.songlist.title">
+                   v-model="props.currentUserSongList.title">
           </div>
           <div class="flex-column text-md">
             <div class="text-white">介绍</div>
@@ -353,10 +358,10 @@ const fetchAndFormatLyrics = async (lrcUrl) => {
                   fill="white" p-id="9040"></path>
             </svg>
             <input type="text" class="input bg-zinc-900 text-white" placeholder="请为你的歌曲写一点介绍"
-                   v-model="props.songlist.introduction">
+                   v-model="props.currentUserSongList.introduction">
           </div>
           <div class="inline-block mt-5">
-            <select v-model="props.songlist.tag_theme"
+            <select v-model="props.currentUserSongList.tag_theme"
                     class="text-xs inline-flex items-center font-bold leading-sm px-0 py-1 bg-blue-200 text-blue-700 rounded-full">
               <option :value="null">-- 主题 --</option>
               <option>背景音乐</option>
@@ -367,7 +372,7 @@ const fetchAndFormatLyrics = async (lrcUrl) => {
             </select>
           </div>
           <div class="inline-block">
-            <select v-model="props.songlist.tag_scene"
+            <select v-model="props.currentUserSongList.tag_scene"
                     class="ml-1 text-xs inline-flex items-center font-bold leading-sm px-0 py-1 bg-green-200 text-green-700 rounded-full">
               <option :value="null">-- 场景 --</option>
               <option>咖啡馆</option>
@@ -378,7 +383,7 @@ const fetchAndFormatLyrics = async (lrcUrl) => {
             </select>
           </div>
           <div class="inline-block">
-            <select v-model="props.songlist.tag_mood"
+            <select v-model="props.currentUserSongList.tag_mood"
                     class="ml-1 text-xs inline-flex items-center font-bold leading-sm px-0 py-1 bg-red-200 text-red-700 rounded-full">
               <option :value="null">-- 心情 --</option>
               <option>伤感</option>
@@ -389,7 +394,7 @@ const fetchAndFormatLyrics = async (lrcUrl) => {
             </select>
           </div>
           <div class="inline-block">
-            <select v-model="props.songlist.tag_style"
+            <select v-model="props.currentUserSongList.tag_style"
                     class="ml-1 text-xs inline-flex items-center font-bold leading-sm px-0 py-1 bg-orange-200 text-orange-700 rounded-full">
               <option :value="null">-- 风格 --</option>
               <option>摇滚</option>
@@ -400,7 +405,7 @@ const fetchAndFormatLyrics = async (lrcUrl) => {
             </select>
           </div>
           <div class="inline-block">
-            <select v-model="props.songlist.tag_language"
+            <select v-model="props.currentUserSongList.tag_language"
                     class="ml-1 text-xs inline-flex items-center font-bold leading-sm px-0 py-1 bg-purple-200 text-purple-700 rounded-full">
               <option :value="null">-- 语言 --</option>
               <option>英语</option>
@@ -412,7 +417,7 @@ const fetchAndFormatLyrics = async (lrcUrl) => {
           </div>
         </div>
         <div class="mt-3">
-          <button @click="PlaySongList(props.songlist.id)"
+          <button @click="PlaySongList(props.currentUserSongList.id)"
                   class="mr-3 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-20 rounded-full">
             <svg class="h-5 w-5 inline-block align-sub text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                  stroke-width="2"
@@ -429,7 +434,7 @@ const fetchAndFormatLyrics = async (lrcUrl) => {
                   points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
             </svg>
             收藏歌单
-            ({{ props.songlist.like }})
+            ({{ props.currentUserSongList.like }})
           </button>
           <!--        <div class="menu top-3">-->
           <!--          <button>-->
@@ -482,7 +487,7 @@ const fetchAndFormatLyrics = async (lrcUrl) => {
           </tr>
           </thead>
           <tbody>
-          <tr v-for="(song, index) in props.songlist.songs"
+          <tr v-for="(song, index) in props.currentUserSongList.songs"
               class="text-white transition duration-400 hover:bg-gray-600/40">
             <td class="pl-3 p-1 hover:cursor-pointer" @click="handlePlayNow(index)">
               <img :src="song.cover" class="img_song inline-block mr-3">
