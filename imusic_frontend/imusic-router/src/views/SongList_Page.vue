@@ -171,10 +171,10 @@ const deletelike = (index) => {
                   d="M170.666667 213.333333h682.666666v85.333334H170.666667V213.333333z m0 512h682.666666v85.333334H170.666667v-85.333334z m0-256h682.666666v85.333334H170.666667v-85.333334z"
                   fill="white"></path>
             </svg>
-            <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow rounded-box bg-zinc-900 text-white text-sm"
+            <ul tabindex="0" class="dropdown-content menu p-2 shadow rounded-box bg-zinc-900 text-white text-sm"
                 style="width:300px">
               <li>
-                <div class="z-50">
+                <div>
                   <img :src="item.cover" alt="封面" class="aspect-square h-12 w-12 ml-0 pl-0">
                   <a class="font-semibold text-sm">{{ item.title }}</a>
                   <br>

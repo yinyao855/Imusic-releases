@@ -1,7 +1,7 @@
 <script setup>
 import Search from "@/components/Search.vue";
 import Admin_SongList_View from "@/views/Admin_SongList_View.vue";
-import {computed, ref} from "vue";
+import {computed, onMounted, ref} from "vue";
 import axios from "axios";
 import Admin_Song_View from "@/views/Admin_Song_View.vue";
 import Admin_Search_Song_View from "@/views/Admin_Search_Song_View.vue";
@@ -83,6 +83,7 @@ const Get_Admin_Songs_Data=()=>{
 
 const token=defineModel('token');
 const SearchContent=defineModel('SearchContent');
+onMounted(Get_Admin_SongList_Data);
 </script>
 
 <template>
