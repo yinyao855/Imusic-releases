@@ -295,7 +295,7 @@ import Warning from "@/components/Warning.vue";
 import {defineEmits} from "vue"
 import P from "particles.vue3";
 
-const emits = defineEmits(['ChangerRegisterMode', 'changeMode']);
+const emits = defineEmits(['ChangerRegisterMode', 'changeMode', 'uploadSongSuccess']);
 const lyrics = ref([{'time': '', 'text': ''}]);
 const theme = ref('主题');
 const scene = ref('场景');
@@ -409,10 +409,11 @@ const downloadLrcFile = () => {
 };
 
 const submitSong = () => {
-  const button = document.querySelector('.button-submit');
-  const rect = button.getBoundingClientRect();
-  const x = rect.left + rect.width / 2 + window.scrollX;
-  const y = rect.top + rect.height / 2 + window.scrollY;
+  console.log("ok");
+  // const button = document.querySelector('.button-submit');
+  // const rect = button.getBoundingClientRect();
+  // const x = rect.left + rect.width / 2 + window.scrollX;
+  // const y = rect.top + rect.height / 2 + window.scrollY;
   if (HasLogin.value === false) {
     WarningShow.value = true;
     message.value = '请先登录';
@@ -464,32 +465,32 @@ const submitSong = () => {
   })
       .then(response => {
         alert('上传成功');
-        upLoadSongSuccess();
+        uploadSongSuccess();
         console.log(response.data);
-        confetti({
-          particleCount: 500,
-          angle: 90,
-          spread: 45,
-          startVelocity: 45,
-          decay: 0.9,
-          gravity: 1,
-          drift: 0,
-          ticks: 200,
-          origin: {x: x / window.innerWidth, y: y / window.innerHeight},
-          shapes: ["square", "circle"],
-          zIndex: 100,
-          colors: [
-            "#26ccff",
-            "#a25afd",
-            "#ff5e7e",
-            "#88ff5a",
-            "#fcff42",
-            "#ffa62d",
-            "#ff36ff"
-          ],
-          disableForReducedMotion: false,
-          scalar: 1
-        });
+        // confetti({
+        //   particleCount: 500,
+        //   angle: 90,
+        //   spread: 45,
+        //   startVelocity: 45,
+        //   decay: 0.9,
+        //   gravity: 1,
+        //   drift: 0,
+        //   ticks: 200,
+        //   origin: {x: x / window.innerWidth, y: y / window.innerHeight},
+        //   shapes: ["square", "circle"],
+        //   zIndex: 100,
+        //   colors: [
+        //     "#26ccff",
+        //     "#a25afd",
+        //     "#ff5e7e",
+        //     "#88ff5a",
+        //     "#fcff42",
+        //     "#ffa62d",
+        //     "#ff36ff"
+        //   ],
+        //   disableForReducedMotion: false,
+        //   scalar: 1
+        // });
       })
       .catch(error => {
         alert('上传失败');
@@ -520,6 +521,10 @@ const WarningShow = ref(false);
 
 const changeMode = () => {
   emits('changeMode');
+}
+
+const uploadSongSuccess = () => {
+  emits('uploadSongSuccess');
 }
 
 </script>
