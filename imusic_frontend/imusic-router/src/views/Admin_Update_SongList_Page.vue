@@ -390,4 +390,7 @@ onMounted(GetSongListData);
   -ms-filter: blur(19px);
   filter: blur(19px);
 }
+
+
+
 </style>
