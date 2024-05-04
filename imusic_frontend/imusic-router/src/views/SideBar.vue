@@ -37,6 +37,7 @@ const containerClass7 = computed(() => ({
 const emits = defineEmits(['checkLogin']);
 const createdSonglists = defineModel('createdSonglists');
 const currentUserSongList = defineModel('currentUserSongList');
+const userUploadedSongs = defineModel('userUploadedSongs');
 const mode = defineModel('mode');
 const UserRole = defineModel('UserRole');
 const changeMode = (newMode) => {
@@ -154,6 +155,33 @@ const listCreatedSonglists = () => {
       })
 };
 
+// 获取用户上传的所有歌曲
+function getUserUploadedSongs() {
+  console.log("ok");
+  changeMode(4)
+  if (props.HasLogin === false) {
+    message.value = '请先登录';
+    WarningShow.value = true;
+    return;
+  }
+  const instance = axios.create({
+    baseURL: 'http://182.92.100.66:5000',
+    timeout: 5000, // 设置请求超时时间
+    headers: {
+      'Authorization': `Bearer ${token.value}`,
+    }
+  });
+  axios.defaults.withCredentials = true;
+  instance.get("/users/songs?username=" + props.username)
+      .then(function (response) {
+        if (response.data.success === true) {
+          userUploadedSongs.value = response.data.data;
+        }
+      })
+      .catch(function (error) {
+        console.log(error.response.data);
+      })
+}
 
 const token = defineModel('token');
 const userdata = defineModel('userdata');
@@ -252,7 +280,7 @@ const CloseWarning = () => {
       </svg>
       <span class="px-4 font-medium">设置</span>
     </div>
-    <div :class="containerClass4" @click="changeMode(4)">
+    <div :class="containerClass4" @click="getUserUploadedSongs">
       <svg class="icon inline fill-white my-auto" viewBox="0 0 1024 1024"
            xmlns="http://www.w3.org/2000/svg"
            width="16" height="16">

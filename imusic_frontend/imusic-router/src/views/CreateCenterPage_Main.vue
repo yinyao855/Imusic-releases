@@ -1,10 +1,11 @@
 <script setup>
 import {computed, ref, defineModel} from "vue";
 import UploadSong from "@/views/UploadSong.vue";
+import axios from "axios";
 
 const NaviMode = ref('1');
 const upload = ref('0');
-const token=defineModel('token')
+const token = defineModel('token')
 const NaviClass1 = computed(() => ({
   'text-base inline-block mx-3 w-20 text-center rounded-lg antialiased tracking-widest font-medium transition-colors duration-400 hover:bg-gray-600/40': true,
   'text-cyan-700 underline underline-offset-8 decoration-2': NaviMode.value === '1',
@@ -34,6 +35,14 @@ const uploadSongSuccess = () => {
 const username = defineModel('username')
 
 const HasLogin = defineModel('HasLogin')
+
+const userUploadedSongs = defineModel("userUploadedSongs") // 存储用户上传的所有歌曲
+
+// 判断是否需要展示该标签（若值为空表示没有此标签，不用展示false）
+function show_tag(tag) {
+  if (tag === 'null' || tag === null) return false;
+  return true;
+}
 </script>
 
 <template>
@@ -43,22 +52,54 @@ const HasLogin = defineModel('HasLogin')
     <Search v-model:token="token"></Search>
   </div>
   <div v-if="NaviMode==='1'">
-    <div class="grid-col">
+    <div class="">
       <div class="text-2xl mx-4 text-white font-serif font-bold my-4">我的上传</div>
-      <div class="overflow-x-auto">
-        <table class="table">
+      <div class="">
+        <table class="w-full text-gray-400">
           <!-- head -->
           <thead>
           <tr>
-            <th class="text-center text-sm font-semibold">音乐标题</th>
-            <th class="text-center text-sm font-semibold">歌手</th>
-            <th class="text-center text-sm font-semibold">标签</th>
-            <th class="text-center text-sm font-semibold">喜欢人数</th>
+            <th class="text-left p-3 text-sm font-semibold text-white">音乐标题</th>
+            <th class="text-center text-sm font-semibold text-white">歌手</th>
+            <th class="text-center text-sm font-semibold text-white">标签</th>
+            <th class="text-center text-sm font-semibold text-white">喜欢人数</th>
             <th></th>
           </tr>
           </thead>
           <tbody>
-
+          <tr v-for="song in userUploadedSongs">
+            <td class="pl-3 p-1 hover:cursor-pointer">
+              <img :src="song.cover" class="img_song inline-block mr-3">
+              <p class="inline-block">{{ song.title }}</p>
+            </td>
+            <td class="text-center">{{ song.singer }}</td>
+            <td class="text-center w-1/3">
+              <!--            标签-->
+              <div class="inline-block">
+                <div v-if="show_tag(song.tag_theme)"
+                     class="text-xs inline-flex items-center font-bold leading-sm px-2 py-1 bg-blue-200 text-blue-700 rounded-full">
+                  {{ song.tag_theme }}
+                </div>
+                <div v-if="show_tag(song.tag_scene)"
+                     class="ml-1 text-xs inline-flex items-center font-bold leading-sm px-2 py-1 bg-green-200 text-green-700 rounded-full">
+                  {{ song.tag_scene }}
+                </div>
+                <div v-if="show_tag(song.tag_mood)"
+                     class="ml-1 text-xs inline-flex items-center font-bold leading-sm px-2 py-1 bg-red-200 text-red-700 rounded-full">
+                  {{ song.tag_mood }}
+                </div>
+                <div v-if="show_tag(song.tag_style)"
+                     class="ml-1 text-xs inline-flex items-center font-bold leading-sm px-2 py-1 bg-orange-200 text-orange-700 rounded-full">
+                  {{ song.tag_style }}
+                </div>
+                <div v-if="show_tag(song.tag_language)"
+                     class="ml-1 text-xs inline-flex items-center font-bold leading-sm px-2 py-1 bg-purple-200 text-purple-700 rounded-full">
+                  {{ song.tag_language }}
+                </div>
+              </div>
+            </td>
+            <td class="text-center">{{ song.like }}</td>
+          </tr>
           </tbody>
         </table>
       </div>
@@ -98,6 +139,11 @@ const HasLogin = defineModel('HasLogin')
 <style scoped>
 .text-transition {
   transition: color 0.5s ease;
+}
 
+.img_song {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
 }
 </style>

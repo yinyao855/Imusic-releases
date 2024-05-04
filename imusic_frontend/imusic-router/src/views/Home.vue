@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, ref } from "vue";
+import {onMounted, ref} from "vue";
 import HomePage_Main from "@/views/HomePage_Main.vue";
 import ExplorePage_Main from "@/views/ExplorePage_Main.vue";
 import CreateCenter from "@/views/CreateCenterPage_Main.vue";
@@ -23,7 +23,7 @@ const userlike = ref([]);
 const avatar = ref('');
 const index = ref('1');
 const datax = ref([]);
-const UserRole=ref('');
+const UserRole = ref('');
 const musicList = ref([
   {
     "id": null,
@@ -322,11 +322,11 @@ const SearchOperation = () => {
 }
 const MusicPlayer_Cell_Ref = ref(null);
 
-const handlePlayNow=(id)=> {
+const handlePlayNow = (id) => {
   MusicPlayer_Cell_Ref.value.handlePlayNow(id);
 }
 
-const handlePlayAfter=(id)=> {
+const handlePlayAfter = (id) => {
   MusicPlayer_Cell_Ref.value.handlePlayAfter(id);
 }
 
@@ -411,6 +411,7 @@ const updateavatar = () => {
       })
 }
 
+const userUploadedSongs = ref([]);
 const createdSonglists = ref([]);
 const currentUserSongList = ref([]);
 const showUserSongList = ref(false);
@@ -457,7 +458,9 @@ onMounted(getPageinit);
   <div class="flex w-full h-screen bg-zinc-900">
     <SideBar :HasLogin="HasLogin" :avatar="avatar" @checkLogin="checkLogin" v-model:mode="mode" :username="username"
              v-model:userdata="userdata" v-model:token="token" v-model:createdSonglists="createdSonglists"
-             v-model:currentUserSongList="currentUserSongList" v-model:showUserSongList="showUserSongList" v-model:UserRole="UserRole"></SideBar>
+             v-model:currentUserSongList="currentUserSongList" v-model:userUploadedSongs="userUploadedSongs"
+             v-model:showUserSongList="showUserSongList"
+             v-model:UserRole="UserRole"></SideBar>
     <div class="lg:w-1/6 w-0 h-full mr-0"></div>
     <div class="w-full lg:w-5/6 h-full mr-0">
       <div class="bg-zinc-900 h-screen overflow-auto">
@@ -482,16 +485,18 @@ onMounted(getPageinit);
                        @changesonglist="changesonglist" @PlaySongList="PlaySongList"></HomePage_Main>
         <ExplorePage_Main v-if="mode==='2'" v-model:token="token"></ExplorePage_Main>
         <SettingPage_Main v-if="mode==='3'" v-model:token="token"></SettingPage_Main>
-        <CreateCenter v-if="mode==='4'" v-model:HasLogin="HasLogin" v-model:username="username"
+        <CreateCenter v-if="mode==='4'" v-model:userUploadedSongs="userUploadedSongs"
+                      v-model:HasLogin="HasLogin" v-model:username="username"
                       v-model:token="token"></CreateCenter>
         <CreateSonglistPage_Main v-if="mode==='5'" v-model:HasLogin="HasLogin"
                                  v-model:username="username" v-model:token="token"></CreateSonglistPage_Main>
-<!--        <CreatedSonglist :songlist="currentUserSongList" v-if="mode==='6'&&showUserSongList"-->
-<!--                         @PlaySongList="PlaySongList" @handlePlayAfter="handlePlayAfter" @handlePlayNow="handlePlayNow"-->
-<!--                         v-model:token="token" v-model:username="username"></CreatedSonglist>-->
+        <!--        <CreatedSonglist :songlist="currentUserSongList" v-if="mode==='6'&&showUserSongList"-->
+        <!--                         @PlaySongList="PlaySongList" @handlePlayAfter="handlePlayAfter" @handlePlayNow="handlePlayNow"-->
+        <!--                         v-model:token="token" v-model:username="username"></CreatedSonglist>-->
         <CreatedSonglist_Main v-model:createdSonglists="createdSonglists" v-if="mode==='6'"
-                         @PlaySongList="PlaySongList" @handlePlayAfter="handlePlayAfter" @handlePlayNow="handlePlayNow"
-                         v-model:token="token" v-model:username="username"></CreatedSonglist_Main>
+                              @PlaySongList="PlaySongList" @handlePlayAfter="handlePlayAfter"
+                              @handlePlayNow="handlePlayNow"
+                              v-model:token="token" v-model:username="username"></CreatedSonglist_Main>
         <AdminPage_Main v-model:token="token" v-if="mode==='7'"></AdminPage_Main>
       </div>
     </div>

@@ -112,7 +112,7 @@
 
       主题
       <div class="join w-full">
-        <input class="join-item btn w-1/6" type="radio" name="options1" aria-label="默认" value="默认" v-model="theme"/>
+        <input class="join-item btn w-1/6" type="radio" name="options1" aria-label="默认" value="" v-model="theme"/>
         <input class="join-item btn w-1/6" type="radio" name="options1" aria-label="背景音乐" value="背景音乐"
                v-model="theme"/>
         <input class="join-item btn w-1/6" type="radio" name="options1" aria-label="经典老歌" value="经典老歌"
@@ -126,7 +126,7 @@
       </div>
       场景
       <div class="join w-full">
-        <input class="join-item btn w-1/6" type="radio" name="options2" aria-label="默认" value="默认" v-model="scene"/>
+        <input class="join-item btn w-1/6" type="radio" name="options2" aria-label="默认" :value="null" v-model="scene"/>
         <input class="join-item btn w-1/6" type="radio" name="options2" aria-label="咖啡馆" value="咖啡馆"
                v-model="scene"/>
         <input class="join-item btn w-1/6" type="radio" name="options2" aria-label="运动" value="运动" v-model="scene"/>
@@ -136,7 +136,7 @@
       </div>
       心情
       <div class="join w-full">
-        <input class="join-item btn w-1/6" type="radio" name="options3" aria-label="默认" value="默认" v-model="mood"/>
+        <input class="join-item btn w-1/6" type="radio" name="options3" aria-label="默认" :value="null" v-model="mood"/>
         <input class="join-item btn w-1/6" type="radio" name="options3" aria-label="伤感" value="伤感" v-model="mood"/>
         <input class="join-item btn w-1/6" type="radio" name="options3" aria-label="安静" value="安静" v-model="mood"/>
         <input class="join-item btn w-1/6" type="radio" name="options3" aria-label="思念" value="思念" v-model="mood"/>
@@ -145,7 +145,7 @@
       </div>
       风格
       <div class="join w-full">
-        <input class="join-item btn w-1/6" type="radio" name="options4" aria-label="默认" value="默认" v-model="style"/>
+        <input class="join-item btn w-1/6" type="radio" name="options4" aria-label="默认" :value="null" v-model="style"/>
         <input class="join-item btn w-1/6" type="radio" name="options4" aria-label="摇滚" value="摇滚" v-model="style"/>
         <input class="join-item btn w-1/6" type="radio" name="options4" aria-label="民谣" value="民谣" v-model="style"/>
         <input class="join-item btn w-1/6" type="radio" name="options4" aria-label="轻音乐" value="轻音乐"
@@ -155,7 +155,7 @@
       </div>
       语言
       <div class="join w-full">
-        <input class="join-item btn w-1/6" type="radio" name="options5" aria-label="默认" value="默认"
+        <input class="join-item btn w-1/6" type="radio" name="options5" aria-label="默认" :value="null"
                v-model="language"/>
         <input class="join-item btn w-1/6" type="radio" name="options5" aria-label="英语" value="英语"
                v-model="language"/>
