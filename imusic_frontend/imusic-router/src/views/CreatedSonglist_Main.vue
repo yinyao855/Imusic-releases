@@ -22,12 +22,12 @@ const PlaySongList = (id) => {
   emits('PlaySongList', id);
 }
 
-function handlePlayAfter(index) {
-  emits('handlePlayAfter', currentUserSongList.songs[index].id)
+function handlePlayAfter(id) {
+  emits('handlePlayAfter', id)
 }
 
-function handlePlayNow(index) {
-  emits('handlePlayNow', currentUserSongList.songs[index].id)
+function handlePlayNow(id) {
+  emits('handlePlayNow', id)
 }
 
 // back: 不展示选中的歌单信息页面（回到选择创建的歌单的主界面）
