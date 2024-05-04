@@ -68,10 +68,6 @@ const changesize = () => {
     </div>
   </transition>
 
-<!--  <div class="w-full h-full" v-if="ShowUpdateSongList">-->
-<!--    <Admin_Update_SongList_Page v-model:token="token" v-model:SongListId="SongListId"-->
-<!--                                @changesize="changesize" @DeleteSongListId="DeleteSongListId"></Admin_Update_SongList_Page>-->
-<!--  </div>-->
   <div class="overflow-x-auto mx-4" v-if="!ShowUpdateSongList">
     <table class="table">
       <!-- head -->
