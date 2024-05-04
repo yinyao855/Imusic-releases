@@ -131,6 +131,7 @@ function handlePlayAfter(id) {
       })
 }
 
+
 const fetchAndFormatLyrics = async (lrcUrl) => {
   try {
     const response = await axios.get(lrcUrl);

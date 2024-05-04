@@ -3,6 +3,7 @@ import axios from "axios";
 import {defineEmits, ref} from "vue";
 import Admin_Update_SongList_Page from "@/views/Admin_Update_SongList_Page.vue";
 import P from "particles.vue3";
+import Search_View from "@/views/Search_View.vue";
 
 const SongLists = defineModel('SongLists');
 const token = defineModel('token');
@@ -60,10 +61,17 @@ const changesize = () => {
 </script>
 
 <template>
-  <div class="w-full h-full" v-if="ShowUpdateSongList">
-    <Admin_Update_SongList_Page v-model:token="token" v-model:SongListId="SongListId"
-                                @changesize="changesize" @DeleteSongListId="DeleteSongListId"></Admin_Update_SongList_Page>
-  </div>
+  <transition name="slide" appear>
+    <div class="transition-container-2" v-if="ShowUpdateSongList">
+      <Admin_Update_SongList_Page v-model:token="token" v-model:SongListId="SongListId"
+                                  @changesize="changesize" @DeleteSongListId="DeleteSongListId"></Admin_Update_SongList_Page>
+    </div>
+  </transition>
+
+<!--  <div class="w-full h-full" v-if="ShowUpdateSongList">-->
+<!--    <Admin_Update_SongList_Page v-model:token="token" v-model:SongListId="SongListId"-->
+<!--                                @changesize="changesize" @DeleteSongListId="DeleteSongListId"></Admin_Update_SongList_Page>-->
+<!--  </div>-->
   <div class="overflow-x-auto mx-4" v-if="!ShowUpdateSongList">
     <table class="table">
       <!-- head -->
@@ -130,5 +138,32 @@ const changesize = () => {
 </template>
 
 <style scoped>
+.transition-container-2 {
+  right: 0;
+  top: 0;
+  height:100%;
+}
 
+.text-transition {
+  transition: color 0.5s ease;
+}
+
+
+.slide-leave-active {
+  transition: transform 0.5s ease;
+}
+
+.slide-enter-active {
+  transition: transform 0.5s ease;
+}
+
+.slide-enter-from,
+.slide-leave-to {
+  transform: translateX(100%);
+}
+
+.slide-enter-to,
+.slide-leave-from {
+  transform: translateX(0);
+}
 </style>
