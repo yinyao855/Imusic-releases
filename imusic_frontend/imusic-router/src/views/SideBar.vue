@@ -157,7 +157,6 @@ const listCreatedSonglists = () => {
 
 // 获取用户上传的所有歌曲
 function getUserUploadedSongs() {
-  console.log("ok");
   changeMode(4)
   if (props.HasLogin === false) {
     message.value = '请先登录';
