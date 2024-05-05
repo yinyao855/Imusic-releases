@@ -74,7 +74,7 @@ const changesize = () => {
       <!-- head -->
       <thead>
       <tr>
-        <th class="text-left text-sm font-semibold">音乐标题</th>
+        <th class="text-left text-sm font-semibold">歌单标题</th>
         <th class="text-left text-sm font-semibold">上传者</th>
         <th class="text-left text-sm font-semibold">上传日期</th>
         <th class="text-left text-sm font-semibold">操作</th>

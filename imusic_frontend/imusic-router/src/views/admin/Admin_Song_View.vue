@@ -2,7 +2,7 @@
 import axios from "axios";
 import Admin_Update_Song_Page from "@/views/admin/Admin_Update_Song_Page.vue";
 import {defineEmits, ref} from "vue";
-import Admin_Search_Song_View from "@/views/admin/Admin_Search_Song_View.vue";
+import Personal_Center from "@/views/Personal_Center.vue";
 
 const Songs = defineModel('Songs');
 const token = defineModel('token');
