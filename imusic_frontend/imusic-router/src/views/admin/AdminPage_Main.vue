@@ -7,6 +7,7 @@ import Admin_Song_View from "@/views/admin/Admin_Song_View.vue";
 import Admin_Search_Song_View from "@/views/admin/Admin_Search_Song_View.vue";
 import Admin_Search_Songlist_View from "@/views/admin/Admin_Search_Songlist_View.vue";
 import Admin_Update_Song_Page from "@/views/admin/Admin_Update_Song_Page.vue";
+import Admin_Update_SongList_Page from "@/views/admin/Admin_Update_SongList_Page.vue";
 
 const NaviClass1 = computed(() => ({
   'text-base inline-block mx-5 w-30 rounded-lg antialiased tracking-widest font-medium transition-colors duration-400 hover:bg-gray-600/40': true,
@@ -85,7 +86,7 @@ const Get_Admin_Songs_Data = () => {
 const token = defineModel('token');
 const SearchContent = ref('');
 onMounted(Get_Admin_SongList_Data);
-
+const SongListId=ref(0);
 const ChangeShowSearchView = () => {
   ShowSearchView.value = false;
 }
@@ -98,6 +99,12 @@ const ChangeShowUpdateView = () => {
 const UpdateSong = (id) => {
   ShowUpdateSongView.value = true;
   SongId.value = id;
+}
+
+
+const UpdateSongList = (id) => {
+  ShowUpdateSongView.value = true;
+  SongListId.value = id;
 }
 
 const SongId = ref(0);
@@ -116,15 +123,17 @@ const SearchOperation = () => {
                               @UpdateSong="UpdateSong"></Admin_Search_Song_View>
       <Admin_Search_Songlist_View v-if="NaviMode==='1'" :SearchContent="SearchContent"
                                   @changesize="ChangeShowSearchView" @refresh="Get_Admin_Songs_Data"
-                                  v-model:token="token" @UpdateSong="UpdateSong"></Admin_Search_Songlist_View>
+                                  v-model:token="token" @UpdateSongList="UpdateSongList"></Admin_Search_Songlist_View>
     </div>
   </transition>
 
 
   <transition name="slide" appear>
     <div class="transition-container-2" v-if="ShowUpdateSongView">
-      <Admin_Update_Song_Page v-model:token="token" v-model:SongId="SongId"
+      <Admin_Update_Song_Page v-model:token="token" v-model:SongId="SongId" v-if="NaviMode==='2'"
                               @changesize="ChangeShowUpdateView"></Admin_Update_Song_Page>
+      <Admin_Update_SongList_Page v-model:token="token" v-model:SongListId="SongListId" v-if="NaviMode==='1'"
+                                  @changesize="ChangeShowUpdateView"></Admin_Update_SongList_Page>
     </div>
   </transition>
 

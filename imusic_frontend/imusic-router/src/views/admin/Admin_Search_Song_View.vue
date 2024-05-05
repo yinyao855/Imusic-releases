@@ -1,9 +1,9 @@
 <script setup>
-import {defineEmits, onMounted} from "vue";
+import {defineEmits, onMounted, ref} from "vue";
 import axios from "axios";
 import buttonchangesize from "@/components/buttonchangesize.vue"
 
-const Songs = defineModel('Songs');
+const Songs = ref([]);
 const token = defineModel('token');
 const SearchContent = defineModel('SearchContent');
 const emits = defineEmits(['refresh', 'changesize', 'UpdateSong']);
@@ -38,6 +38,15 @@ const changesize = () => {
   emits('changesize');
 }
 
+const gettime = (time) => {
+  const minute = Math.floor(time / 60);
+  const second = Math.floor(time - minute * 60);
+  if (second < 10) {
+    return `${minute}:0${second}`;
+  }
+  return `${minute}:${second}`;
+}
+
 const GetSearchResult = () => {
   console.log('hello');
   const instance = axios.create({
@@ -55,6 +64,10 @@ const GetSearchResult = () => {
   })
       .then(response => {
         Songs.value = response.data.data;
+        let length=Songs.value.length;
+        for(let i=0;i<length;++i){
+          Songs.value[i].duration=gettime(Songs.value[i].duration);
+        }
       })
       .catch(error => {
         console.log(error.response.data);
@@ -79,8 +92,9 @@ onMounted(GetSearchResult);
       <thead>
       <tr>
         <th class="text-left text-sm font-semibold">音乐标题</th>
+        <th class="text-left text-sm font-semibold">歌手</th>
         <th class="text-left text-sm font-semibold">上传者</th>
-        <th class="text-left text-sm font-semibold">上传日期</th>
+        <th class="text-left text-sm font-semibold">时长</th>
         <th class="text-left text-sm font-semibold">操作</th>
       </tr>
       </thead>
@@ -103,9 +117,12 @@ onMounted(GetSearchResult);
           </div>
         </td>
         <td>
+          {{ item.singer }}
+        </td>
+        <td>
           {{ item.uploader }}
         </td>
-        <td>{{ item.upload_date }}</td>
+        <td>{{ item.duration }}</td>
         <td>
           <div class="inline pr-4" @click="DeleteSong(index)">
             <svg class="icon fill-red-600 hover:fill-red-800 inline" viewBox="0 0 1024 1024"
