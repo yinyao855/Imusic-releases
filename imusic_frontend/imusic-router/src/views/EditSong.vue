@@ -1,10 +1,248 @@
+<script setup>
+import P from "particles.vue3";
+import axios from "axios";
+import {defineEmits, onMounted, ref} from "vue";
+import Buttonchangesize from "@/components/buttonchangesize.vue";
+
+// global variables
+const token = defineModel('token')
+const username = defineModel('username')
+
+const emits = defineEmits(['closeEditSong'])
+
+// v-model
+const songId = defineModel('songId')
+const showEditSong = defineModel('showEditSong')
+const songData = ref([]);
+
+const lyrics=ref([]);
+
+const GetSongData=()=>{
+  console.log(songId);
+  const instance = axios.create({
+    baseURL: 'http://182.92.100.66:5000',
+    timeout: 5000, // 设置请求超时时间
+    headers: {
+      'Authorization': `Bearer ${token.value}`,
+    }
+  });
+  axios.defaults.withCredentials = true;
+  instance.get('/songs/info/'+songId.value)
+      .then(response=>{
+        songData.value=response.data.data;
+        fetchAndFormatLyrics(songData.value.lyric);
+        console.log(songData.value);
+      })
+      .then(error=>{
+        console.log(error.response.data);
+      })
+}
+
+const fetchAndFormatLyrics = async (lrcUrl) => {
+  try {
+    const response = await axios.get(lrcUrl);
+    const formattedLyrics = response.data.replace(/\[(\d+:\d+\.)(\d{2,3})\]/g, (match, time, ms) => {
+      const truncatedMs = ms.slice(0, 2);
+      return `[${time}${truncatedMs}]`;
+    });
+    lyrics.value = parseLRC(formattedLyrics);
+  } catch (error) {
+    console.error('Error fetching lyrics:', error);
+  }
+};
+
+
+function parseLRC(lrc) {
+  const lines = lrc.split("\n");
+  const lyrics = [];
+  const timeRegex = /\[(\d{2}):(\d{2})\.(\d{2})](.*)/;
+
+  lines.forEach((line) => {
+    const match = timeRegex.exec(line);
+    if (match) {
+      const minute = parseInt(match[1]);
+      const second = parseInt(match[2]);
+      const millisecond = parseInt(match[3]);
+      const timestamp = gettime(minute * 60 + second + millisecond / 1000);
+      const text = match[4].trim();
+      lyrics.push({timestamp, text});
+    }
+  });
+  return lyrics;
+}
+
+const gettime = (time) => {
+  const minute = Math.floor(time / 60);
+  const second = Math.floor(time - minute * 60);
+  if (second < 10) {
+    return `${minute}:0${second}`;
+  }
+  return `${minute}:${second}`;
+}
+
+
+const addline = () => {
+  lyrics.value.push({'time': '', 'content': ''});
+}
+
+const deleteline = (index) => {
+  console.log(lyrics.value.length)
+  if (lyrics.value.length === 1) {
+
+  } else {
+    lyrics.value.splice(index, 1);
+  }
+}
+const coverImageFile=ref(null);
+const CoverImageUrl=ref('');
+
+const onCoverFileChange = (event) => {
+  coverImageFile.value = event.target.files[0];
+  const files = event.target.files || event.dataTransfer.files;
+  createImage(files[0]);
+};
+
+const createImage = (file) => {
+  fileToBase64(file).then(function (base64) {
+    CoverImageUrl.value=songData.value.cover;
+    songData.value.cover = base64;// 输出文件的 base64 形式
+  }).catch(function (error) {
+    console.error('Error:', error.data);
+  });
+};
+
+
+function fileToBase64(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+
+    reader.onload = function (event) {
+      resolve(event.target.result);
+    };
+
+    reader.onerror = function (error) {
+      reject(error);
+    };
+
+    reader.readAsDataURL(file);
+  });
+}
+
+// const cancel=()=>{
+//   songData.value.cover=CoverImageUrl.value;
+// }
+const mp3File=ref(null);
+const onMp3FileChange = (event) => {
+  mp3File.value = event.target.files[0];
+  flag.value=true;
+};
+const lrcFile=ref(null);
+
+const onLrcFileChange = (event) => {
+  lrcFile.value = event.target.files[0];
+};
+
+const parseLrcFile = () => {
+  if (lrcFile.value) {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      let lrcContent = e.target.result;
+      lrcContent = lrcContent.replace(/\[(\d+:\d+\.)(\d{2,3})\]/g, (match, time, ms) => {
+        const truncatedMs = ms.slice(0, 2);
+        return `[${time}${truncatedMs}]`;
+      });
+      lyrics.value = parseLrcContent(lrcContent);
+    };
+    reader.readAsText(lrcFile.value);
+  }
+};
+
+function convertLyricsToLRC(lyricsArray) {
+  let lrcContent = '';
+  for (const lyric of lyricsArray) {
+    lrcContent += `[${lyric.time}]${lyric.text}\n`;
+  }
+  return lrcContent;
+}
+
+const parseLrcContent = (lrcContent) => {
+  const lines = lrcContent.split('\n');
+  const pattern = /\[(\d{2}):(\d{2})\.(\d{2})\](.*)/;
+  return lines.map(line => {
+    const match = line.match(pattern);
+    if (match) {
+      return {
+        time: `${match[1]}:${match[2]}.${match[3]}`,
+        text: match[4].trim()
+      };
+    }
+    return {time: '', text: ''};
+  }).filter(line => line.text !== '');
+};
+const flag=ref(false);
+
+const editSong = () => {
+  showEditSong.value = false;
+  let formData = new FormData();
+  const lrcString = convertLyricsToLRC(lyrics.value);
+  let filename = songData.value.title + '.lrc';
+  const lrcBlob = new Blob([lrcString], {type: 'text/plain'});
+  formData.append('title', songData.value.title);
+  formData.append('singer', songData.value.singer);
+  formData.append('cover', songData.value.cover);
+  if(flag.value){
+    formData.append('audio',mp3File.value);
+  }
+  if(songData.value.tag_theme){
+    formData.append('tag_theme', songData.value.tag_theme);
+  }
+  if(songData.value.tag_scene) {
+    formData.append('tag_scene', songData.value.tag_scene);
+  }
+  if(songData.value.tag_style) {
+    formData.append('tag_style', songData.value.tag_style);
+  }
+  if(songData.value.tag_mood) {
+    formData.append('tag_mood', songData.value.tag_mood);
+  }
+  if(songData.value.tag_language) {
+    formData.append('tag_language', songData.value.tag_language);
+  }
+  formData.append('lyric', lrcBlob, filename);
+  formData.append('introduction', songData.value.introduction);
+  const instance = axios.create({
+    baseURL: 'http://182.92.100.66:5000',
+    timeout: 5000, // 设置请求超时时间
+    headers: {
+      'Authorization': `Bearer ${token.value}`,
+    }
+  });
+  axios.defaults.withCredentials = true;
+  instance.post('/songs/update/'+songId.value, formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    },
+  })
+      .then(response => {
+        alert('上传成功');
+        console.log(response.data);
+      })
+      .catch(error => {
+        alert('上传失败');
+        console.error(error.response ? error.response : error);
+      });
+}
+
+const fullsize=()=>{
+  emits('closeEditSong');
+}
+
+onMounted(GetSongData)
+</script>
+
 <template>
-  <transition name="vx">
-    <div class="w-full absolute top-0 left-1/2 transform -translate-x-1/2" v-if="WarningShow">
-      <Warning :message="message" @CloseWarning="CloseWarning" class="mx-auto" v-model:token="token"></Warning>
-    </div>
-  </transition>
-  <div class="h-full w-full flex items-center" @keypress.enter="submitSong">
+  <buttonchangesize class="left-4 top-4" @fullsize="fullsize" v-model:token="token"></buttonchangesize>
+  <div class="h-full w-full flex items-center">
     <div class="formx2 my-auto mx-auto width:800px flexible bg-zinc-900">
       <div class="flex-column text-2xl">
         <div class="text-white">*歌曲名</div>
@@ -16,7 +254,7 @@
               d="M458.24 594.304l1.6-0.576v-0.64l417.216-417.152A65.6 65.6 0 0 0 784.32 83.2L367.104 500.416h-0.448l-0.384 1.28c-13.888 14.464-19.2 33.408-17.28 51.968l-28.672 86.464 86.656-28.736c18.24 1.792 36.928-3.52 51.264-17.088zM64 768.256V896h896v-127.744H64z"
           ></path>
         </svg>
-        <input type="text" class="input bg-zinc-900" placeholder="请输入歌曲名" v-model="songTitle">
+        <input type="text" class="input bg-zinc-900" placeholder="请输入歌曲名" v-model="songData.title">
       </div>
       <p class="text-sm text-gray-500">
         <span>此项为必填项</span>
@@ -32,7 +270,7 @@
           >
           </path>
         </svg>
-        <input type="text" class="input bg-zinc-900" placeholder="请输入歌曲歌手" v-model="singerName">
+        <input type="text" class="input bg-zinc-900" placeholder="请输入歌曲歌手" v-model="songData.singer">
       </div>
       <p class="text-sm text-gray-500">
         <span>此项为必填项</span>
@@ -53,10 +291,10 @@
               </svg>
               <div class="flex flex-auto max-h-48 w-2/5 mx-auto -mt-10">
               </div>
-              <p v-if="mp3File===null" class="pointer-none text-gray-500 "><span class="text-sm"></span> 拖拽文件至此处
+              <p v-if="songData.audio===null" class="pointer-none text-gray-500 "><span class="text-sm"></span> 拖拽文件至此处
                 <br/> 或点击此处上传</p>
-              <p v-if="mp3File!==null" class="pointer-none text-gray-500 "><span class="text-sm"></span>
-                {{ mp3File.name }}</p>
+              <p v-if="songData.audio!==null" class="pointer-none text-gray-500 "><span class="text-sm"></span>
+              </p>
             </div>
             <input type="file" @change="onMp3FileChange" class="absolute -left-10 -top-10"
                    accept="audio/mpeg, audio/wav, audio/ogg">
@@ -76,12 +314,10 @@
         <div class="flex items-center justify-center w-full">
           <label class="flex flex-col rounded-lg border-4 border-dashed w-full h-60 group text-center p-0"
                  for="CoverUpLoad">
-            <div class="h-4/5 content-center m-auto" v-if="coverImageFile!==null">
-              <img :src="coverImageFileUrl" class="w-full h-full object-cover rounded-lg content-center" alt="封面">
+            <div class="h-4/5 content-center m-auto" v-if="songData.cover!==''">
+              <img :src="songData.cover" class="w-full h-full object-cover rounded-lg content-center" alt="封面">
             </div>
-            <p v-if="coverImageFile!==null" class="pointer-none text-gray-500 "><span
-                class="text-sm"></span>{{ coverImageFile.name }}</p>
-            <div v-if="coverImageFile===null"
+            <div v-if="songData.cover===''"
                  class="h-full w-full text-center flex flex-col items-center justify-center  ">
               <svg class="icon fill-white transition hover:fill-blue-600" viewBox="0 0 1194 1024"
                    xmlns="http://www.w3.org/2000/svg" width="80" height="80">
@@ -112,61 +348,61 @@
 
       主题
       <div class="join w-full">
-        <input class="join-item btn w-1/6" type="radio" name="options1" aria-label="默认" value="默认" v-model="theme"/>
+        <input class="join-item btn w-1/6" type="radio" name="options1" aria-label="默认" value="" v-model="songData.tag_theme"/>
         <input class="join-item btn w-1/6" type="radio" name="options1" aria-label="背景音乐" value="背景音乐"
-               v-model="theme"/>
+               v-model="songData.tag_theme"/>
         <input class="join-item btn w-1/6" type="radio" name="options1" aria-label="经典老歌" value="经典老歌"
-               v-model="theme"/>
+               v-model="songData.tag_theme"/>
         <input class="join-item btn w-1/6" type="radio" name="options1" aria-label="KTV金曲" value="KTV金曲"
-               v-model="theme"/>
+               v-model="songData.tag_theme"/>
         <input class="join-item btn w-1/6" type="radio" name="options1" aria-label="游戏配乐" value="游戏配乐"
-               v-model="theme"/>
+               v-model="songData.tag_theme"/>
         <input class="join-item btn w-1/6" type="radio" name="options1" aria-label="电影配乐" value="电影配乐"
-               v-model="theme"/>
+               v-model="songData.tag_theme"/>
       </div>
       场景
       <div class="join w-full">
-        <input class="join-item btn w-1/6" type="radio" name="options2" aria-label="默认" value="默认" v-model="scene"/>
+        <input class="join-item btn w-1/6" type="radio" name="options2" aria-label="默认" value="" v-model="songData.tag_scene"/>
         <input class="join-item btn w-1/6" type="radio" name="options2" aria-label="咖啡馆" value="咖啡馆"
                v-model="scene"/>
-        <input class="join-item btn w-1/6" type="radio" name="options2" aria-label="运动" value="运动" v-model="scene"/>
-        <input class="join-item btn w-1/6" type="radio" name="options2" aria-label="睡前" value="睡前" v-model="scene"/>
-        <input class="join-item btn w-1/6" type="radio" name="options2" aria-label="旅行" value="旅行" v-model="scene"/>
-        <input class="join-item btn w-1/6" type="radio" name="options2" aria-label="派对" value="派对" v-model="scene"/>
+        <input class="join-item btn w-1/6" type="radio" name="options2" aria-label="运动" value="运动" v-model="songData.tag_scene"/>
+        <input class="join-item btn w-1/6" type="radio" name="options2" aria-label="睡前" value="睡前" v-model="songData.tag_scene"/>
+        <input class="join-item btn w-1/6" type="radio" name="options2" aria-label="旅行" value="旅行" v-model="songData.tag_scene"/>
+        <input class="join-item btn w-1/6" type="radio" name="options2" aria-label="派对" value="派对" v-model="songData.tag_scene"/>
       </div>
       心情
       <div class="join w-full">
-        <input class="join-item btn w-1/6" type="radio" name="options3" aria-label="默认" value="默认" v-model="mood"/>
-        <input class="join-item btn w-1/6" type="radio" name="options3" aria-label="伤感" value="伤感" v-model="mood"/>
-        <input class="join-item btn w-1/6" type="radio" name="options3" aria-label="安静" value="安静" v-model="mood"/>
-        <input class="join-item btn w-1/6" type="radio" name="options3" aria-label="思念" value="思念" v-model="mood"/>
-        <input class="join-item btn w-1/6" type="radio" name="options3" aria-label="宣泄" value="宣泄" v-model="mood"/>
-        <input class="join-item btn w-1/6" type="radio" name="options3" aria-label="开心" value="开心" v-model="mood"/>
+        <input class="join-item btn w-1/6" type="radio" name="options3" aria-label="默认" value="" v-model="songData.tag_mood"/>
+        <input class="join-item btn w-1/6" type="radio" name="options3" aria-label="伤感" value="伤感" v-model="songData.tag_mood"/>
+        <input class="join-item btn w-1/6" type="radio" name="options3" aria-label="安静" value="安静" v-model="songData.tag_mood"/>
+        <input class="join-item btn w-1/6" type="radio" name="options3" aria-label="思念" value="思念" v-model="songData.tag_mood"/>
+        <input class="join-item btn w-1/6" type="radio" name="options3" aria-label="宣泄" value="宣泄" v-model="songData.tag_mood"/>
+        <input class="join-item btn w-1/6" type="radio" name="options3" aria-label="开心" value="开心" v-model="songData.tag_mood"/>
       </div>
       风格
       <div class="join w-full">
-        <input class="join-item btn w-1/6" type="radio" name="options4" aria-label="默认" value="默认" v-model="style"/>
-        <input class="join-item btn w-1/6" type="radio" name="options4" aria-label="摇滚" value="摇滚" v-model="style"/>
-        <input class="join-item btn w-1/6" type="radio" name="options4" aria-label="民谣" value="民谣" v-model="style"/>
+        <input class="join-item btn w-1/6" type="radio" name="options4" aria-label="默认" value="" v-model="songData.tag_style"/>
+        <input class="join-item btn w-1/6" type="radio" name="options4" aria-label="摇滚" value="摇滚" v-model="songData.tag_style"/>
+        <input class="join-item btn w-1/6" type="radio" name="options4" aria-label="民谣" value="民谣" v-model="songData.tag_style"/>
         <input class="join-item btn w-1/6" type="radio" name="options4" aria-label="轻音乐" value="轻音乐"
-               v-model="style"/>
-        <input class="join-item btn w-1/6" type="radio" name="options4" aria-label="电音" value="电音" v-model="style"/>
-        <input class="join-item btn w-1/6" type="radio" name="options4" aria-label="流行" value="流行" v-model="style"/>
+               v-model="songData.tag_style"/>
+        <input class="join-item btn w-1/6" type="radio" name="options4" aria-label="电音" value="电音" v-model="songData.tag_style"/>
+        <input class="join-item btn w-1/6" type="radio" name="options4" aria-label="流行" value="流行" v-model="songData.tag_style"/>
       </div>
       语言
       <div class="join w-full">
-        <input class="join-item btn w-1/6" type="radio" name="options5" aria-label="默认" value="默认"
-               v-model="language"/>
+        <input class="join-item btn w-1/6" type="radio" name="options5" aria-label="默认" value=""
+               v-model="songData.tag_language"/>
         <input class="join-item btn w-1/6" type="radio" name="options5" aria-label="英语" value="英语"
-               v-model="language"/>
+               v-model="songData.tag_language"/>
         <input class="join-item btn w-1/6" type="radio" name="options5" aria-label="日语" value="日语"
-               v-model="language"/>
+               v-model="songData.tag_language"/>
         <input class="join-item btn w-1/6" type="radio" name="options5" aria-label="粤语" value="粤语"
-               v-model="language"/>
+               v-model="songData.tag_language"/>
         <input class="join-item btn w-1/6" type="radio" name="options5" aria-label="国语" value="国语"
-               v-model="language"/>
+               v-model="songData.tag_language"/>
         <input class="join-item btn w-1/6" type="radio" name="options5" aria-label="韩语" value="韩语"
-               v-model="language"/>
+               v-model="songData.tag_language"/>
       </div>
 
 
@@ -181,7 +417,7 @@
               d="M341.33 213.33h512v85.33h-512zM170.67 213.33H256v85.33h-85.33zM341.33 384h512v85.33h-512zM341.33 554.67h512V640h-512zM170.67 554.67H256V640h-85.33zM341.33 725.33h512v85.33h-512z"
               fill="white"></path>
         </svg>
-        <input type="text" class="input bg-zinc-900" placeholder="请为你的歌曲写一点介绍" v-model="introduction">
+        <input type="text" class="input bg-zinc-900" placeholder="请为你的歌曲写一点介绍" v-model="songData.introduction">
       </div>
       <div class="flex-column text-2xl">
         <div class="text-white">歌词</div>
@@ -207,7 +443,7 @@
                 d="M341.33 213.33h512v85.33h-512zM170.67 213.33H256v85.33h-85.33zM341.33 384h512v85.33h-512zM341.33 554.67h512V640h-512zM170.67 554.67H256V640h-85.33zM341.33 725.33h512v85.33h-512z"
                 fill="white"></path>
           </svg>
-          <input type="text" class="input bg-zinc-900" placeholder="[00:00:00]" v-model="lyric.time">
+          <input type="text" class="input bg-zinc-900" placeholder="[00:00:00]" v-model="lyric.timestamp">
         </div>
         <div class="inputForm bg-zinc-900 col-span-6">
           <svg class="icon fill-white" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg"
@@ -248,283 +484,13 @@
       </div>
       <button class="mt-5 w-full flex justify-center bg-blue-600 text-white p-4  rounded-full
                                     font-semibold  focus:outline-none focus:shadow-outline hover:bg-blue-800 shadow-lg cursor-pointer transition ease-in duration-300 tracking-widest"
-              @click="submitSong">
-        上 传
-      </button>
-      <button @click="downloadLrcFile" class="mb-5 w-full flex justify-center bg-blue-600 text-white p-4  rounded-full
-                                    font-semibold  focus:outline-none focus:shadow-outline hover:bg-blue-800 shadow-lg cursor-pointer transition ease-in duration-300 tracking-widest">
-        下载歌词
+              @click="editSong">
+        更 新
       </button>
     </div>
   </div>
 </template>
 
-<style>
-@import url('../css/Login.css');
+<style scoped>
 
-.vx-enter-active,
-.vx-leave-active {
-  transition: opacity 0.3s ease;
-}
-
-.vx-enter-from,
-.vx-leave-to {
-  opacity: 0;
-}
-
-.formx2 {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  padding: 30px;
-  width: 800px;
-  border-radius: 20px;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-}
-
-.text-white {
-  color: white;
-}
 </style>
-
-<script setup>
-import confetti from 'canvas-confetti';
-import {ref, defineModel} from "vue";
-import axios from "axios";
-import Warning from "@/components/Warning.vue";
-import {defineEmits} from "vue"
-import P from "particles.vue3";
-
-const emits = defineEmits(['ChangerRegisterMode', 'changeMode', 'uploadSongSuccess']);
-const lyrics = ref([{'time': '', 'text': ''}]);
-const theme = ref("默认");
-const scene = ref("默认");
-const mood = ref("默认");
-const style = ref("默认");
-const language = ref("默认");
-const introduction = ref('');
-const username = defineModel('username')
-const songTitle = ref('');
-const singerName = ref('');
-const mp3File = ref(null);
-const coverImageFile = ref(null);
-const coverImageFileUrl = ref('');
-const lrcFile = ref(null);
-const token=defineModel('token')
-
-const onLrcFileChange = (event) => {
-  lrcFile.value = event.target.files[0];
-};
-
-const parseLrcFile = () => {
-  if (lrcFile.value) {
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      let lrcContent = e.target.result;
-      lrcContent = lrcContent.replace(/\[(\d+:\d+\.)(\d{2,3})\]/g, (match, time, ms) => {
-        const truncatedMs = ms.slice(0, 2);
-        return `[${time}${truncatedMs}]`;
-      });
-      lyrics.value = parseLrcContent(lrcContent);
-    };
-    reader.readAsText(lrcFile.value);
-  }
-};
-
-const parseLrcContent = (lrcContent) => {
-  const lines = lrcContent.split('\n');
-  const pattern = /\[(\d{2}):(\d{2})\.(\d{2})\](.*)/;
-  return lines.map(line => {
-    const match = line.match(pattern);
-    if (match) {
-      return {
-        time: `${match[1]}:${match[2]}.${match[3]}`,
-        text: match[4].trim()
-      };
-    }
-    return {time: '', text: ''};
-  }).filter(line => line.text !== '');
-};
-
-
-function convertLyricsToLRC(lyricsArray) {
-  let lrcContent = '';
-  for (const lyric of lyricsArray) {
-    lrcContent += `[${lyric.time}]${lyric.text}\n`;
-  }
-  return lrcContent;
-}
-
-const onMp3FileChange = (event) => {
-  mp3File.value = event.target.files[0];
-};
-
-const onCoverFileChange = (event) => {
-  coverImageFile.value = event.target.files[0];
-  const files = event.target.files || event.dataTransfer.files;
-  createImage(files[0]);
-};
-
-const createImage = (file) => {
-  fileToBase64(file).then(function (base64) {
-    coverImageFileUrl.value = base64;// 输出文件的 base64 形式
-  }).catch(function (error) {
-    console.error('Error:', error.data);
-  });
-};
-
-
-function fileToBase64(file) {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-
-    reader.onload = function (event) {
-      resolve(event.target.result);
-    };
-
-    reader.onerror = function (error) {
-      reject(error);
-    };
-
-    reader.readAsDataURL(file);
-  });
-}
-
-const downloadLrcFile = () => {
-  if(lyrics.value.length===1){
-    return;
-  }
-  const lrcString = convertLyricsToLRC(lyrics.value);
-  const filename = songTitle.value ? `${songTitle.value}.lrc` : 'lyrics.lrc';
-  const lrcBlob = new Blob([lrcString], {type: 'text/plain'});
-  const blobUrl = URL.createObjectURL(lrcBlob);
-  const link = document.createElement('a');
-  link.style.display = 'none';
-  document.body.appendChild(link);
-  link.href = blobUrl;
-  link.download = filename;
-  link.click();
-  URL.revokeObjectURL(blobUrl);
-  document.body.removeChild(link);
-};
-
-const submitSong = () => {
-  console.log("ok");
-  // const button = document.querySelector('.button-submit');
-  // const rect = button.getBoundingClientRect();
-  // const x = rect.left + rect.width / 2 + window.scrollX;
-  // const y = rect.top + rect.height / 2 + window.scrollY;
-  if (HasLogin.value === false) {
-    WarningShow.value = true;
-    message.value = '请先登录';
-    return;
-  }
-  if (songTitle.value === '') {
-    WarningShow.value = true;
-    message.value = '请输入歌曲名';
-    return;
-  }
-  if (mp3File.value === null) {
-    WarningShow.value = true;
-    message.value = '请上传歌曲';
-    return;
-  }
-  if (coverImageFile.value === null) {
-    WarningShow.value = true;
-    message.value = '请上传封面';
-    return;
-  }
-  let formData = new FormData();
-  const lrcString = convertLyricsToLRC(lyrics.value);
-  let filename = songTitle.value + '.lrc';
-  const lrcBlob = new Blob([lrcString], {type: 'text/plain'});
-  formData.append('title', songTitle.value);
-  formData.append('singer', singerName.value);
-  formData.append('cover', coverImageFile.value);
-  formData.append('audio', mp3File.value);
-  formData.append('uploader', username.value);
-  formData.append('tag_theme', theme.value);
-  formData.append('tag_scene', scene.value);
-  formData.append('tag_style', style.value);
-  formData.append('tag_mood', mood.value);
-  formData.append('tag_language', language.value);
-  formData.append('lyric', lrcBlob, filename);
-  formData.append('introduction', introduction.value);
-  const instance = axios.create({
-    baseURL: 'http://182.92.100.66:5000',
-    timeout: 5000, // 设置请求超时时间
-    headers: {
-      'Authorization': `Bearer ${token.value}`,
-    }
-  });
-  axios.defaults.withCredentials = true;
-  instance.post('/songs/upload', formData, {
-    headers: {
-      'Content-Type': 'multipart/form-data'
-    },
-  })
-      .then(response => {
-        alert('上传成功');
-        uploadSongSuccess();
-        console.log(response.data);
-        // confetti({
-        //   particleCount: 500,
-        //   angle: 90,
-        //   spread: 45,
-        //   startVelocity: 45,
-        //   decay: 0.9,
-        //   gravity: 1,
-        //   drift: 0,
-        //   ticks: 200,
-        //   origin: {x: x / window.innerWidth, y: y / window.innerHeight},
-        //   shapes: ["square", "circle"],
-        //   zIndex: 100,
-        //   colors: [
-        //     "#26ccff",
-        //     "#a25afd",
-        //     "#ff5e7e",
-        //     "#88ff5a",
-        //     "#fcff42",
-        //     "#ffa62d",
-        //     "#ff36ff"
-        //   ],
-        //   disableForReducedMotion: false,
-        //   scalar: 1
-        // });
-      })
-      .catch(error => {
-        alert('上传失败');
-        console.error(error.response ? error.response : error);
-      });
-};
-
-
-const addline = () => {
-  lyrics.value.push({'time': '', 'content': ''});
-}
-
-const deleteline = (index) => {
-  console.log(lyrics.value.length)
-  if (lyrics.value.length === 1) {
-
-  } else {
-    lyrics.value.splice(index, 1);
-  }
-}
-
-const CloseWarning = () => {
-  WarningShow.value = false;
-}
-const HasLogin = defineModel('HasLogin');
-const message = ref('');
-const WarningShow = ref(false);
-
-const changeMode = () => {
-  emits('changeMode');
-}
-
-const uploadSongSuccess = () => {
-  emits('uploadSongSuccess');
-}
-
-</script>
