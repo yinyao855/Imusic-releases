@@ -3,13 +3,13 @@ import {onMounted, ref} from "vue";
 import axios from "axios";
 import buttonchangesize from '@/components/buttonchangesize.vue'
 
-const token=defineModel('token');
-const UserId=defineModel('UserId');
-const emits=defineEmits(['changesize']);
-const userdata=ref([]);
+const token = defineModel('token');
+const UserId = defineModel('UserId');
+const emits = defineEmits(['changesize']);
+const userdata = ref([]);
 
 
-const GetUserData=()=>{
+const GetUserData = () => {
   const instance = axios.create({
     baseURL: 'http://182.92.100.66:5000',
     timeout: 5000, // 设置请求超时时间
@@ -18,17 +18,16 @@ const GetUserData=()=>{
     }
   });
   axios.defaults.withCredentials = true;
-  instance.get('/users/info/'+UserId.value)
-      .then(response=>{
-        userdata.value=response.data.data;
-        if(userdata.value.role==='admin'){
-          userdata.value.role='管理员';
-        }
-        else{
-          userdata.value.role='普通用户';
+  instance.get('/users/info/' + UserId.value)
+      .then(response => {
+        userdata.value = response.data.data;
+        if (userdata.value.role === 'admin') {
+          userdata.value.role = '管理员';
+        } else {
+          userdata.value.role = '普通用户';
         }
       })
-      .catch(error=>{
+      .catch(error => {
         console.log(error.response.data);
       })
 }
