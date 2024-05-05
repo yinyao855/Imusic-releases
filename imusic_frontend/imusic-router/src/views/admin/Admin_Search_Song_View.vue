@@ -48,7 +48,7 @@ const GetSearchResult = () => {
     }
   });
   axios.defaults.withCredentials = true;
-  instance.get('/songs/search', {
+  instance.get('/search/songs', {
     params: {
       'keyword': SearchContent.value
     }
