@@ -6,6 +6,7 @@ import axios from "axios";
 import Admin_Song_View from "@/views/Admin_Song_View.vue";
 import Admin_Search_Song_View from "@/views/Admin_Search_Song_View.vue";
 import Admin_Search_Songlist_View from "@/views/Admin_Search_Songlist_View.vue";
+import Admin_Update_Song_Page from "@/views/Admin_Update_Song_Page.vue";
 const NaviClass1 = computed(() => ({
   'text-base inline-block mx-5 w-30 rounded-lg antialiased tracking-widest font-medium transition-colors duration-400 hover:bg-gray-600/40': true,
   'text-cyan-700 underline underline-offset-8 decoration-2': NaviMode.value === '1',
@@ -82,15 +83,43 @@ const Get_Admin_Songs_Data=()=>{
 }
 
 const token=defineModel('token');
-const SearchContent=defineModel('SearchContent');
+const SearchContent=ref('');
 onMounted(Get_Admin_SongList_Data);
+
+const ChangeShowSearchView=()=>{
+  ShowSearchView.value=false;
+}
+const ShowUpdateSongView=ref(false);
+
+const ChangeShowUpdateView=()=>{
+  ShowUpdateSongView.value=false;
+}
+
+const UpdateSong = (id) => {
+  ShowUpdateSongView.value = true;
+  SongId.value = id;
+}
+
+const SongId=ref(0);
+
+const SearchOperation=()=>{
+  console.log(SearchContent.value);
+  ShowSearchView.value=true;
+}
 </script>
 
 <template>
   <transition name="slide" appear>
-    <div class="transition-container-2" v-if="ShowSearchView">
-      <Admin_Search_Song_View :SearchContent="SearchContent"></Admin_Search_Song_View>
-      <Admin_Search_Songlist_View :SearchContent="SearchContent"></Admin_Search_Songlist_View>
+    <div class="transition-container-2" v-if="ShowSearchView&&!ShowUpdateSongView">
+      <Admin_Search_Song_View v-if="NaviMode==='2'" :SearchContent="SearchContent" @changesize="ChangeShowSearchView" @refresh="Get_Admin_SongList_Data" v-model:token="token" @UpdateSong="UpdateSong"></Admin_Search_Song_View>
+      <Admin_Search_Songlist_View v-if="NaviMode==='1'" :SearchContent="SearchContent" @changesize="ChangeShowSearchView" @refresh="Get_Admin_Songs_Data" v-model:token="token" @UpdateSong="UpdateSong"></Admin_Search_Songlist_View>
+    </div>
+  </transition>
+
+
+  <transition name="slide" appear>
+    <div class="transition-container-2" v-if="ShowUpdateSongView">
+      <Admin_Update_Song_Page v-model:token="token" v-model:SongId="SongId" @changesize="ChangeShowUpdateView"></Admin_Update_Song_Page>
     </div>
   </transition>
 
@@ -102,11 +131,38 @@ onMounted(Get_Admin_SongList_Data);
     <Search v-model:SearchContent="SearchContent" @SearchOperation="SearchOperation" v-model:token="token"></Search>
   </div>
   <div class="w-full mt-16" v-if="!ShowSearchView">
-    <Admin_SongList_View v-if="NaviMode==='1'" v-model:token="token" v-model:SongLists="SongLists" @refresh="Get_Admin_SongList_Data"></Admin_SongList_View>
-    <Admin_Song_View v-if="NaviMode==='2'" v-model:token="token" v-model:Songs="Songs" @refresh="Get_Admin_Songs_Data"></Admin_Song_View>
+    <Admin_SongList_View v-if="NaviMode==='1'" v-model:token="token" v-model:SongLists="SongLists" @refresh="Get_Admin_SongList_Data" v-model:SearchContent="SearchContent"></Admin_SongList_View>
+    <Admin_Song_View v-if="NaviMode==='2'" v-model:token="token" v-model:Songs="Songs" @refresh="Get_Admin_Songs_Data" v-model:SearchContent="SearchContent"></Admin_Song_View>
   </div>
 </template>
 
 <style scoped>
+.transition-container-2 {
+  right: 0;
+  top: 0;
+  height:100%;
+}
 
+.text-transition {
+  transition: color 0.5s ease;
+}
+
+
+.slide-leave-active {
+  transition: transform 0.5s ease;
+}
+
+.slide-enter-active {
+  transition: transform 0.5s ease;
+}
+
+.slide-enter-from,
+.slide-leave-to {
+  transform: translateX(100%);
+}
+
+.slide-enter-to,
+.slide-leave-from {
+  transform: translateX(0);
+}
 </style>

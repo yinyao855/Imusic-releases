@@ -7,6 +7,7 @@ import buttonchangesize from "@/components/buttonchangesize.vue"
 const SongLists = defineModel('SongLists');
 const token = defineModel('token');
 
+
 const DeleteSongList = (index) => {
   let SongListId = SongLists.value[index].id
   console.log(SongListId);

@@ -2,11 +2,12 @@
 import axios from "axios";
 import Admin_Update_Song_Page from "@/views/Admin_Update_Song_Page.vue";
 import {defineEmits, ref} from "vue";
-import Search_View from "@/views/Search_View.vue";
+import Admin_Search_Song_View from "@/views/Admin_Search_Song_View.vue";
 
 const Songs = defineModel('Songs');
 const token = defineModel('token');
 const emits = defineEmits(['refresh']);
+
 const DeleteSong = (index) => {
   let SongId = Songs.value[index].id
   console.log(SongId);
@@ -61,7 +62,6 @@ const changesize=()=>{
       <Admin_Update_Song_Page v-model:token="token" v-model:SongId="SongId" @changesize="changesize"></Admin_Update_Song_Page>
     </div>
   </transition>
-
   <div class="overflow-x-auto mx-4" v-if="!ShowUpdateSongPage">
     <table class="table">
       <!-- head -->
