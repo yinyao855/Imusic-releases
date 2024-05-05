@@ -5,7 +5,7 @@ import buttonchangesize from "@/components/buttonchangesize.vue"
 
 const Songs = defineModel('Songs');
 const token = defineModel('token');
-const props=defineProps(['SearchContent'])
+const props=defineProps(['SearchContent']);
 const emits=defineEmits(['refresh']);
 const DeleteSongList=(index)=>{
   let SongId=Songs.value[index].id
