@@ -13,7 +13,7 @@ import CreatedSonglist from "@/views/CreatedSonglist.vue";
 import Warning from "@/components/Warning.vue";
 import SideBar from "@/views/SideBar.vue";
 import MusicPlayer_Cell from "@/components/MusicPlayer_Cell.vue";
-import AdminPage_Main from "@/views/AdminPage_Main.vue";
+import AdminPage_Main from "@/views/admin/AdminPage_Main.vue";
 import CreatedSonglist_Main from "@/views/CreatedSonglist_Main.vue";
 
 const token = ref('');

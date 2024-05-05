@@ -1,13 +1,13 @@
 <script setup>
 import axios from "axios";
 import {defineEmits, ref} from "vue";
-import Admin_Update_SongList_Page from "@/views/Admin_Update_SongList_Page.vue";
-import buttonchangesize from "@/components/buttonchangesize.vue"
+import Admin_Update_SongList_Page from "@/views/admin/Admin_Update_SongList_Page.vue";
+import P from "particles.vue3";
+import Search_View from "@/views/Search_View.vue";
 
 const SongLists = defineModel('SongLists');
 const token = defineModel('token');
-
-
+const emits = defineEmits(['refresh']);
 const DeleteSongList = (index) => {
   let SongListId = SongLists.value[index].id
   console.log(SongListId);
@@ -61,10 +61,6 @@ const changesize = () => {
 </script>
 
 <template>
-  <div class="text-2xl mx-auto my-6 w-full text-center text-white font-semibold">
-    <buttonchangesize class="absolute top-5 left-5" @fullsize="changesize" v-model:token="token"></buttonchangesize>
-    搜索结果
-  </div>
   <transition name="slide" appear>
     <div class="transition-container-2" v-if="ShowUpdateSongList">
       <Admin_Update_SongList_Page v-model:token="token" v-model:SongListId="SongListId"

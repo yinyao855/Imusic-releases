@@ -4,11 +4,13 @@ import {onMounted, ref} from "vue";
 import Warning from "@/components/Warning.vue";
 import P from "particles.vue3";
 import axios from "axios";
-const SongId=defineModel('SongId');
-const token=defineModel('token');
-const Song=ref([]);
+
+const SongId = defineModel('SongId');
+const token = defineModel('token');
+const Song = ref([]);
 import buttonchangesize from '@/components/buttonchangesize.vue'
-const GetSongData=()=>{
+
+const GetSongData = () => {
   console.log(SongId);
   const instance = axios.create({
     baseURL: 'http://182.92.100.66:5000',
@@ -18,18 +20,18 @@ const GetSongData=()=>{
     }
   });
   axios.defaults.withCredentials = true;
-  instance.get('/songs/info/'+SongId.value)
-      .then(response=>{
-        Song.value=response.data.data;
+  instance.get('/songs/info/' + SongId.value)
+      .then(response => {
+        Song.value = response.data.data;
         fetchAndFormatLyrics(Song.value.lyric);
         console.log(Song.value);
       })
-      .then(error=>{
+      .then(error => {
         console.log(error.response.data);
       })
 }
 
-const lyrics=ref([]);
+const lyrics = ref([]);
 
 const fetchAndFormatLyrics = async (lrcUrl) => {
   try {
@@ -86,8 +88,8 @@ const deleteline = (index) => {
     lyrics.value.splice(index, 1);
   }
 }
-const coverImageFile=ref(null);
-const CoverImageUrl=ref('');
+const coverImageFile = ref(null);
+const CoverImageUrl = ref('');
 
 const onCoverFileChange = (event) => {
   coverImageFile.value = event.target.files[0];
@@ -97,7 +99,7 @@ const onCoverFileChange = (event) => {
 
 const createImage = (file) => {
   fileToBase64(file).then(function (base64) {
-    CoverImageUrl.value=Song.value.cover;
+    CoverImageUrl.value = Song.value.cover;
     Song.value.cover = base64;// 输出文件的 base64 形式
   }).catch(function (error) {
     console.error('Error:', error.data);
@@ -121,17 +123,17 @@ function fileToBase64(file) {
   });
 }
 
-const cancel=()=>{
-  Song.value.cover=CoverImageUrl.value;
+const cancel = () => {
+  Song.value.cover = CoverImageUrl.value;
 }
 
-const emits=defineEmits(['changesize']);
-const mp3File=ref(null);
+const emits = defineEmits(['changesize']);
+const mp3File = ref(null);
 const onMp3FileChange = (event) => {
   mp3File.value = event.target.files[0];
-  flag.value=true;
+  flag.value = true;
 };
-const lrcFile=ref(null);
+const lrcFile = ref(null);
 
 const onLrcFileChange = (event) => {
   lrcFile.value = event.target.files[0];
@@ -174,8 +176,8 @@ const parseLrcContent = (lrcContent) => {
     return {time: '', text: ''};
   }).filter(line => line.text !== '');
 };
-const flag=ref(false);
-const submitSong=()=>{
+const flag = ref(false);
+const submitSong = () => {
   let formData = new FormData();
   const lrcString = convertLyricsToLRC(lyrics.value);
   let filename = Song.value.title + '.lrc';
@@ -183,22 +185,22 @@ const submitSong=()=>{
   formData.append('title', Song.value.title);
   formData.append('singer', Song.value.singer);
   formData.append('cover', Song.value.cover);
-  if(flag.value){
-    formData.append('audio',mp3File.value);
+  if (flag.value) {
+    formData.append('audio', mp3File.value);
   }
-  if(Song.value.tag_theme){
+  if (Song.value.tag_theme) {
     formData.append('tag_theme', Song.value.tag_theme);
   }
-  if(Song.value.tag_scene) {
+  if (Song.value.tag_scene) {
     formData.append('tag_scene', Song.value.tag_scene);
   }
-  if(Song.value.tag_style) {
+  if (Song.value.tag_style) {
     formData.append('tag_style', Song.value.tag_style);
   }
-  if(Song.value.tag_mood) {
+  if (Song.value.tag_mood) {
     formData.append('tag_mood', Song.value.tag_mood);
   }
-  if(Song.value.tag_language) {
+  if (Song.value.tag_language) {
     formData.append('tag_language', Song.value.tag_language);
   }
   formData.append('lyric', lrcBlob, filename);
@@ -211,7 +213,7 @@ const submitSong=()=>{
     }
   });
   axios.defaults.withCredentials = true;
-  instance.post('/songs/update/'+SongId.value, formData, {
+  instance.post('/songs/update/' + SongId.value, formData, {
     headers: {
       'Content-Type': 'multipart/form-data'
     },
@@ -250,7 +252,7 @@ const submitSong=()=>{
       });
 }
 
-const changesize=()=>{
+const changesize = () => {
   emits('changesize');
 }
 
@@ -258,11 +260,11 @@ onMounted(GetSongData);
 </script>
 
 <template>
-<!--  <transition name="vx">-->
-<!--    <div class="w-full absolute top-0 left-1/2 transform -translate-x-1/2" v-if="WarningShow">-->
-<!--      <Warning :message="message" @CloseWarning="CloseWarning" class="mx-auto" v-model:token="token"></Warning>-->
-<!--    </div>-->
-<!--  </transition>-->
+  <!--  <transition name="vx">-->
+  <!--    <div class="w-full absolute top-0 left-1/2 transform -translate-x-1/2" v-if="WarningShow">-->
+  <!--      <Warning :message="message" @CloseWarning="CloseWarning" class="mx-auto" v-model:token="token"></Warning>-->
+  <!--    </div>-->
+  <!--  </transition>-->
   <buttonchangesize class="absolute top-2 left-2" @fullsize="changesize" v-model:token="token"></buttonchangesize>
   <div class="h-full w-full flex items-center" @keypress.enter="submitSong">
     <div class="formx2 my-auto mx-auto width:800px flexible bg-zinc-900">
@@ -316,7 +318,7 @@ onMounted(GetSongData);
               <p v-if="Song.audio===null" class="pointer-none text-gray-500 "><span class="text-sm"></span> 拖拽文件至此处
                 <br/> 或点击此处上传</p>
               <p v-if="Song.audio!==null" class="pointer-none text-gray-500 "><span class="text-sm"></span>
-                </p>
+              </p>
             </div>
             <input type="file" @change="onMp3FileChange" class="absolute -left-10 -top-10"
                    accept="audio/mpeg, audio/wav, audio/ogg">
@@ -370,7 +372,8 @@ onMounted(GetSongData);
 
       主题
       <div class="join w-full">
-        <input class="join-item btn w-1/6" type="radio" name="options1" aria-label="默认" value="默认" v-model="Song.tag_theme"/>
+        <input class="join-item btn w-1/6" type="radio" name="options1" aria-label="默认" value="默认"
+               v-model="Song.tag_theme"/>
         <input class="join-item btn w-1/6" type="radio" name="options1" aria-label="背景音乐" value="背景音乐"
                v-model="Song.tag_theme"/>
         <input class="join-item btn w-1/6" type="radio" name="options1" aria-label="经典老歌" value="经典老歌"
@@ -384,32 +387,48 @@ onMounted(GetSongData);
       </div>
       场景
       <div class="join w-full">
-        <input class="join-item btn w-1/6" type="radio" name="options2" aria-label="默认" value="默认" v-model="Song.tag_scene"/>
+        <input class="join-item btn w-1/6" type="radio" name="options2" aria-label="默认" value="默认"
+               v-model="Song.tag_scene"/>
         <input class="join-item btn w-1/6" type="radio" name="options2" aria-label="咖啡馆" value="咖啡馆"
                v-model="scene"/>
-        <input class="join-item btn w-1/6" type="radio" name="options2" aria-label="运动" value="运动" v-model="Song.tag_scene"/>
-        <input class="join-item btn w-1/6" type="radio" name="options2" aria-label="睡前" value="睡前" v-model="Song.tag_scene"/>
-        <input class="join-item btn w-1/6" type="radio" name="options2" aria-label="旅行" value="旅行" v-model="Song.tag_scene"/>
-        <input class="join-item btn w-1/6" type="radio" name="options2" aria-label="派对" value="派对" v-model="Song.tag_scene"/>
+        <input class="join-item btn w-1/6" type="radio" name="options2" aria-label="运动" value="运动"
+               v-model="Song.tag_scene"/>
+        <input class="join-item btn w-1/6" type="radio" name="options2" aria-label="睡前" value="睡前"
+               v-model="Song.tag_scene"/>
+        <input class="join-item btn w-1/6" type="radio" name="options2" aria-label="旅行" value="旅行"
+               v-model="Song.tag_scene"/>
+        <input class="join-item btn w-1/6" type="radio" name="options2" aria-label="派对" value="派对"
+               v-model="Song.tag_scene"/>
       </div>
       心情
       <div class="join w-full">
-        <input class="join-item btn w-1/6" type="radio" name="options3" aria-label="默认" value="默认" v-model="Song.tag_mood"/>
-        <input class="join-item btn w-1/6" type="radio" name="options3" aria-label="伤感" value="伤感" v-model="Song.tag_mood"/>
-        <input class="join-item btn w-1/6" type="radio" name="options3" aria-label="安静" value="安静" v-model="Song.tag_mood"/>
-        <input class="join-item btn w-1/6" type="radio" name="options3" aria-label="思念" value="思念" v-model="Song.tag_mood"/>
-        <input class="join-item btn w-1/6" type="radio" name="options3" aria-label="宣泄" value="宣泄" v-model="Song.tag_mood"/>
-        <input class="join-item btn w-1/6" type="radio" name="options3" aria-label="开心" value="开心" v-model="Song.tag_mood"/>
+        <input class="join-item btn w-1/6" type="radio" name="options3" aria-label="默认" value="默认"
+               v-model="Song.tag_mood"/>
+        <input class="join-item btn w-1/6" type="radio" name="options3" aria-label="伤感" value="伤感"
+               v-model="Song.tag_mood"/>
+        <input class="join-item btn w-1/6" type="radio" name="options3" aria-label="安静" value="安静"
+               v-model="Song.tag_mood"/>
+        <input class="join-item btn w-1/6" type="radio" name="options3" aria-label="思念" value="思念"
+               v-model="Song.tag_mood"/>
+        <input class="join-item btn w-1/6" type="radio" name="options3" aria-label="宣泄" value="宣泄"
+               v-model="Song.tag_mood"/>
+        <input class="join-item btn w-1/6" type="radio" name="options3" aria-label="开心" value="开心"
+               v-model="Song.tag_mood"/>
       </div>
       风格
       <div class="join w-full">
-        <input class="join-item btn w-1/6" type="radio" name="options4" aria-label="默认" value="默认" v-model="Song.tag_style"/>
-        <input class="join-item btn w-1/6" type="radio" name="options4" aria-label="摇滚" value="摇滚" v-model="Song.tag_style"/>
-        <input class="join-item btn w-1/6" type="radio" name="options4" aria-label="民谣" value="民谣" v-model="Song.tag_style"/>
+        <input class="join-item btn w-1/6" type="radio" name="options4" aria-label="默认" value="默认"
+               v-model="Song.tag_style"/>
+        <input class="join-item btn w-1/6" type="radio" name="options4" aria-label="摇滚" value="摇滚"
+               v-model="Song.tag_style"/>
+        <input class="join-item btn w-1/6" type="radio" name="options4" aria-label="民谣" value="民谣"
+               v-model="Song.tag_style"/>
         <input class="join-item btn w-1/6" type="radio" name="options4" aria-label="轻音乐" value="轻音乐"
                v-model="Song.tag_style"/>
-        <input class="join-item btn w-1/6" type="radio" name="options4" aria-label="电音" value="电音" v-model="Song.tag_style"/>
-        <input class="join-item btn w-1/6" type="radio" name="options4" aria-label="流行" value="流行" v-model="Song.tag_style"/>
+        <input class="join-item btn w-1/6" type="radio" name="options4" aria-label="电音" value="电音"
+               v-model="Song.tag_style"/>
+        <input class="join-item btn w-1/6" type="radio" name="options4" aria-label="流行" value="流行"
+               v-model="Song.tag_style"/>
       </div>
       语言
       <div class="join w-full">
@@ -520,7 +539,7 @@ onMounted(GetSongData);
 </template>
 
 <style>
-@import url('../css/Login.css');
+@import url('../../css/Login.css');
 
 .vx-enter-active,
 .vx-leave-active {

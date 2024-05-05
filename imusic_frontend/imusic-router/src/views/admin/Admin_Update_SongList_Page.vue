@@ -1,12 +1,12 @@
 <script setup>
 import {defineEmits, defineModel, onMounted, ref} from "vue"
-import buttonchangesize from '../components/buttonchangesize.vue'
+import buttonchangesize from '../../components/buttonchangesize.vue'
 import axios from "axios";
 import Buttonchangesize from "@/components/buttonchangesize.vue";
 
 const SongList = ref([]);
 const token = defineModel('token');
-const emits = defineEmits(['changesize','DeleteSongListId']);
+const emits = defineEmits(['changesize', 'DeleteSongListId']);
 const SongListId = defineModel('SongListId');
 const changesize = () => {
   emits('changesize');
@@ -24,7 +24,7 @@ function gettime(time) {
   return `${minute}:${second}`;
 }
 
-const CoverFile=ref(null);
+const CoverFile = ref(null);
 
 const GetSongListData = () => {
   const instance = axios.create({
@@ -57,7 +57,7 @@ const activeShowEditSonglist = () => {
 }
 
 const SubmitData = () => {
-  SongList.value.cover=CoverUrl.value;
+  SongList.value.cover = CoverUrl.value;
   const instance = axios.create({
     baseURL: 'http://182.92.100.66:5000',
     timeout: 5000, // 设置请求超时时间
@@ -65,22 +65,21 @@ const SubmitData = () => {
       'Authorization': `Bearer ${token.value}`,
     }
   });
-  const formData=new FormData();
-  formData.append("cover",CoverFile.value);
-  formData.append("title",SongList.value.title);
-  formData.append("introduction",SongList.value.introduction);
+  const formData = new FormData();
+  formData.append("cover", CoverFile.value);
+  formData.append("title", SongList.value.title);
+  formData.append("introduction", SongList.value.introduction);
   axios.defaults.withCredentials = true;
-  instance.post('/songlists/update/'+SongListId.value,formData)
-      .then(response=>{
-        if(response.data.success===true){
+  instance.post('/songlists/update/' + SongListId.value, formData)
+      .then(response => {
+        if (response.data.success === true) {
           alert('更新成功');
-          IsEditing.value=false;
-        }
-        else {
+          IsEditing.value = false;
+        } else {
           alert('更新失败');
         }
       })
-      .catch(error=>{
+      .catch(error => {
         console.log(error.response);
       })
 }
@@ -116,11 +115,11 @@ function fileToBase64(file) {
   });
 }
 
-const Cancel=()=>{
-  IsEditing.value=false;
+const Cancel = () => {
+  IsEditing.value = false;
 }
 
-const deleteSonglist=()=>{
+const deleteSonglist = () => {
   const instance = axios.create({
     baseURL: 'http://182.92.100.66:5000',
     timeout: 5000, // 设置请求超时时间
@@ -129,21 +128,21 @@ const deleteSonglist=()=>{
     }
   });
   axios.defaults.withCredentials = true;
-  instance.delete('/songlists/delete/'+SongListId.value)
-      .then(response=>{
+  instance.delete('/songlists/delete/' + SongListId.value)
+      .then(response => {
         console.log(response.data);
-        if(response.data.success===true){
+        if (response.data.success === true) {
           emits('DeleteSongListId');
           changesize();
         }
       })
-      .catch(error=>{
+      .catch(error => {
         console.log(error.response.data);
       })
 }
 
-const DeleteSongFromSongList=(index)=>{
-  const SongId=SongList.value.songs[index].id;
+const DeleteSongFromSongList = (index) => {
+  const SongId = SongList.value.songs[index].id;
   const instance = axios.create({
     baseURL: 'http://182.92.100.66:5000',
     timeout: 5000, // 设置请求超时时间
@@ -152,23 +151,23 @@ const DeleteSongFromSongList=(index)=>{
     }
   });
   axios.defaults.withCredentials = true;
-  const formData=new FormData();
-  formData.append('song_id',SongId);
-  formData.append('songlist_id',SongListId.value);
-  instance.post('/songlists/delsong',formData)
-      .then(response=>{
-        if(response.data.success===true){
-          let length=SongList.value.songs.length;
-          for(let i=0;i<length;++i){
-            if(SongList.value.songs[i].id===SongId){
-              SongList.value.songs.splice(i,1);
+  const formData = new FormData();
+  formData.append('song_id', SongId);
+  formData.append('songlist_id', SongListId.value);
+  instance.post('/songlists/delsong', formData)
+      .then(response => {
+        if (response.data.success === true) {
+          let length = SongList.value.songs.length;
+          for (let i = 0; i < length; ++i) {
+            if (SongList.value.songs[i].id === SongId) {
+              SongList.value.songs.splice(i, 1);
               break;
             }
           }
           alert("删除完成");
         }
       })
-      .catch(error=>{
+      .catch(error => {
         console.log(error.response.data);
       })
 }
@@ -273,8 +272,12 @@ onMounted(GetSongListData);
             </div>
           </div>
         </div>
-        <div class="bg-blue-600 btn w-20 tracking-widest border-none hover:bg-blue-800 mr-8 my-4 text-white" @click="Cancel" v-if="IsEditing">取 消</div>
-        <div class="bg-blue-600 btn w-20 tracking-widest border-none hover:bg-blue-800 text-white" @click="SubmitData" v-if="IsEditing">完成</div>
+        <div class="bg-blue-600 btn w-20 tracking-widest border-none hover:bg-blue-800 mr-8 my-4 text-white"
+             @click="Cancel" v-if="IsEditing">取 消
+        </div>
+        <div class="bg-blue-600 btn w-20 tracking-widest border-none hover:bg-blue-800 text-white" @click="SubmitData"
+             v-if="IsEditing">完成
+        </div>
       </div>
     </div>
   </div>
@@ -317,7 +320,8 @@ onMounted(GetSongListData);
         <td>{{ item.duration }}</td>
         <td>
           <div class="inline pr-4">
-            <svg class="icon fill-red-600 inline hover:fill-red-800"  @click="DeleteSongFromSongList(index)" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg"
+            <svg class="icon fill-red-600 inline hover:fill-red-800" @click="DeleteSongFromSongList(index)"
+                 viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg"
                  width="24" height="24">
               <path
                   d="M607.897867 768.043004c-17.717453 0-31.994625-14.277171-31.994625-31.994625L575.903242 383.935495c0-17.717453 14.277171-31.994625 31.994625-31.994625s31.994625 14.277171 31.994625 31.994625l0 351.94087C639.892491 753.593818 625.61532 768.043004 607.897867 768.043004z"
@@ -390,7 +394,6 @@ onMounted(GetSongListData);
   -ms-filter: blur(19px);
   filter: blur(19px);
 }
-
 
 
 </style>

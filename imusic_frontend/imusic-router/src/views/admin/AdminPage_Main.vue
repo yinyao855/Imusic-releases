@@ -1,12 +1,13 @@
 <script setup>
 import Search from "@/components/Search.vue";
-import Admin_SongList_View from "@/views/Admin_SongList_View.vue";
+import Admin_SongList_View from "@/views/admin/Admin_SongList_View.vue";
 import {computed, onMounted, ref} from "vue";
 import axios from "axios";
-import Admin_Song_View from "@/views/Admin_Song_View.vue";
-import Admin_Search_Song_View from "@/views/Admin_Search_Song_View.vue";
-import Admin_Search_Songlist_View from "@/views/Admin_Search_Songlist_View.vue";
-import Admin_Update_Song_Page from "@/views/Admin_Update_Song_Page.vue";
+import Admin_Song_View from "@/views/admin/Admin_Song_View.vue";
+import Admin_Search_Song_View from "@/views/admin/Admin_Search_Song_View.vue";
+import Admin_Search_Songlist_View from "@/views/admin/Admin_Search_Songlist_View.vue";
+import Admin_Update_Song_Page from "@/views/admin/Admin_Update_Song_Page.vue";
+
 const NaviClass1 = computed(() => ({
   'text-base inline-block mx-5 w-30 rounded-lg antialiased tracking-widest font-medium transition-colors duration-400 hover:bg-gray-600/40': true,
   'text-cyan-700 underline underline-offset-8 decoration-2': NaviMode.value === '1',
@@ -15,15 +16,14 @@ const NaviClass2 = computed(() => ({
   'text-base inline-block mx-5 w-30 rounded-lg antialiased tracking-widest font-medium transition-colors duration-400 hover:bg-gray-600/40': true,
   'text-cyan-700 underline underline-offset-8 decoration-2': NaviMode.value === '2',
 }));
-const Songs=ref([]);
-const NaviMode=ref('1');
-const changeNaviMode=(NewMode)=>{
-  NaviMode.value=NewMode.toString();
-  if(NewMode===1){
+const Songs = ref([]);
+const NaviMode = ref('1');
+const changeNaviMode = (NewMode) => {
+  NaviMode.value = NewMode.toString();
+  if (NewMode === 1) {
     Get_Admin_SongList_Data();
   }
-  if(NewMode===2)
-  {
+  if (NewMode === 2) {
     Get_Admin_Songs_Data();
   }
 }
@@ -38,8 +38,8 @@ function gettime(time) {
   return `${minute}:${second}`;
 }
 
-const SongLists=ref([]);
-const Get_Admin_SongList_Data=()=>{
+const SongLists = ref([]);
+const Get_Admin_SongList_Data = () => {
   console.log("refresh");
   const instance = axios.create({
     baseURL: 'http://182.92.100.66:5000',
@@ -50,17 +50,17 @@ const Get_Admin_SongList_Data=()=>{
   });
   axios.defaults.withCredentials = true;
   instance.get('/songlists/alldata')
-      .then(response=>{
-        SongLists.value=response.data.data;
+      .then(response => {
+        SongLists.value = response.data.data;
       })
-      .then(error=>{
+      .then(error => {
         console.log(error.response.data);
       })
 }
 
-const ShowSearchView=ref(false);
+const ShowSearchView = ref(false);
 
-const Get_Admin_Songs_Data=()=>{
+const Get_Admin_Songs_Data = () => {
   const instance = axios.create({
     baseURL: 'http://182.92.100.66:5000',
     timeout: 5000, // 设置请求超时时间
@@ -70,29 +70,29 @@ const Get_Admin_Songs_Data=()=>{
   });
   axios.defaults.withCredentials = true;
   instance.get('/songs/alldata')
-      .then(response=>{
-        Songs.value=response.data.data;
-        let length=Songs.value.length;
-        for(let i=0;i<length;++i){
-          Songs.value[i].duration=gettime(Songs.value[i].duration);
+      .then(response => {
+        Songs.value = response.data.data;
+        let length = Songs.value.length;
+        for (let i = 0; i < length; ++i) {
+          Songs.value[i].duration = gettime(Songs.value[i].duration);
         }
       })
-      .then(error=>{
+      .then(error => {
         console.log(error.response.data);
       })
 }
 
-const token=defineModel('token');
-const SearchContent=ref('');
+const token = defineModel('token');
+const SearchContent = ref('');
 onMounted(Get_Admin_SongList_Data);
 
-const ChangeShowSearchView=()=>{
-  ShowSearchView.value=false;
+const ChangeShowSearchView = () => {
+  ShowSearchView.value = false;
 }
-const ShowUpdateSongView=ref(false);
+const ShowUpdateSongView = ref(false);
 
-const ChangeShowUpdateView=()=>{
-  ShowUpdateSongView.value=false;
+const ChangeShowUpdateView = () => {
+  ShowUpdateSongView.value = false;
 }
 
 const UpdateSong = (id) => {
@@ -100,26 +100,31 @@ const UpdateSong = (id) => {
   SongId.value = id;
 }
 
-const SongId=ref(0);
+const SongId = ref(0);
 
-const SearchOperation=()=>{
+const SearchOperation = () => {
   console.log(SearchContent.value);
-  ShowSearchView.value=true;
+  ShowSearchView.value = true;
 }
 </script>
 
 <template>
   <transition name="slide" appear>
     <div class="transition-container-2" v-if="ShowSearchView&&!ShowUpdateSongView">
-      <Admin_Search_Song_View v-if="NaviMode==='2'" :SearchContent="SearchContent" @changesize="ChangeShowSearchView" @refresh="Get_Admin_SongList_Data" v-model:token="token" @UpdateSong="UpdateSong"></Admin_Search_Song_View>
-      <Admin_Search_Songlist_View v-if="NaviMode==='1'" :SearchContent="SearchContent" @changesize="ChangeShowSearchView" @refresh="Get_Admin_Songs_Data" v-model:token="token" @UpdateSong="UpdateSong"></Admin_Search_Songlist_View>
+      <Admin_Search_Song_View v-if="NaviMode==='2'" :SearchContent="SearchContent" @changesize="ChangeShowSearchView"
+                              @refresh="Get_Admin_SongList_Data" v-model:token="token"
+                              @UpdateSong="UpdateSong"></Admin_Search_Song_View>
+      <Admin_Search_Songlist_View v-if="NaviMode==='1'" :SearchContent="SearchContent"
+                                  @changesize="ChangeShowSearchView" @refresh="Get_Admin_Songs_Data"
+                                  v-model:token="token" @UpdateSong="UpdateSong"></Admin_Search_Songlist_View>
     </div>
   </transition>
 
 
   <transition name="slide" appear>
     <div class="transition-container-2" v-if="ShowUpdateSongView">
-      <Admin_Update_Song_Page v-model:token="token" v-model:SongId="SongId" @changesize="ChangeShowUpdateView"></Admin_Update_Song_Page>
+      <Admin_Update_Song_Page v-model:token="token" v-model:SongId="SongId"
+                              @changesize="ChangeShowUpdateView"></Admin_Update_Song_Page>
     </div>
   </transition>
 
@@ -131,8 +136,10 @@ const SearchOperation=()=>{
     <Search v-model:SearchContent="SearchContent" @SearchOperation="SearchOperation" v-model:token="token"></Search>
   </div>
   <div class="w-full mt-16" v-if="!ShowSearchView">
-    <Admin_SongList_View v-if="NaviMode==='1'" v-model:token="token" v-model:SongLists="SongLists" @refresh="Get_Admin_SongList_Data" v-model:SearchContent="SearchContent"></Admin_SongList_View>
-    <Admin_Song_View v-if="NaviMode==='2'" v-model:token="token" v-model:Songs="Songs" @refresh="Get_Admin_Songs_Data" v-model:SearchContent="SearchContent"></Admin_Song_View>
+    <Admin_SongList_View v-if="NaviMode==='1'" v-model:token="token" v-model:SongLists="SongLists"
+                         @refresh="Get_Admin_SongList_Data" v-model:SearchContent="SearchContent"></Admin_SongList_View>
+    <Admin_Song_View v-if="NaviMode==='2'" v-model:token="token" v-model:Songs="Songs" @refresh="Get_Admin_Songs_Data"
+                     v-model:SearchContent="SearchContent"></Admin_Song_View>
   </div>
 </template>
 
@@ -140,7 +147,7 @@ const SearchOperation=()=>{
 .transition-container-2 {
   right: 0;
   top: 0;
-  height:100%;
+  height: 100%;
 }
 
 .text-transition {
