@@ -2,6 +2,7 @@
 // 展示用户创建的歌单主界面
 import {defineEmits, defineModel, ref} from "vue";
 import CreatedSonglist from "@/views/CreatedSonglist.vue";
+import axios from "axios";
 
 // global variables
 const token = defineModel('token')
@@ -37,8 +38,24 @@ function closeSonglist() {
 
 // choose: 展示选中的歌单信息页面（进入歌单信息界面）
 function activeSonglist(index) {
-  showCurrentSongList.value = true;
-  currentUserSongList.value = createdSonglists.value[index]; // 保存选中的歌单
+  const instance = axios.create({
+    baseURL: 'http://182.92.100.66:5000',
+    timeout: 5000, // 设置请求超时时间
+    headers: {
+      'Authorization': `Bearer ${token.value}`,
+    }
+  });
+  axios.defaults.withCredentials = true;
+  instance.get("/songlists/info/" + createdSonglists.value[index].id)
+      .then(function (response) {
+        if (response.data.success === true) {
+          showCurrentSongList.value = true;
+          currentUserSongList.value = response.data.data; // 保存选中的歌单
+        }
+      })
+      .catch(function (error) {
+        console.log(error.response.data);
+      })
 }
 </script>
 
