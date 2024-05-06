@@ -507,7 +507,7 @@ onMounted(getPageinit);
                        v-model:songlistlast="songlistlast" v-model:HomePageRecommendLatest="HomePageRecommendLatest"
                        v-model:token="token" v-model:SongListId="SongListId"
                        @changesonglist="changesonglist" @PlaySongList="PlaySongList"></HomePage_Main>
-        <ExplorePage_Main v-if="mode==='2'" v-model:token="token"></ExplorePage_Main>
+        <ExplorePage_Main v-if="mode==='2'" v-model:token="token" @handlePlayNow="handlePlayNow" @handlePlayAfter="handlePlayAfter"></ExplorePage_Main>
         <SettingPage_Main v-if="mode==='3'" v-model:token="token"></SettingPage_Main>
         <CreateCenter v-if="mode==='4'" :userUploadedSongs="userUploadedSongs"
                       v-model:HasLogin="HasLogin" v-model:username="username"

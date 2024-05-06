@@ -5,6 +5,7 @@ import Search from "@/components/Search.vue";
 import List_Show_Area from "@/views/Explore/List_Show_Area.vue";
 
 const token = defineModel('token')
+const emits=defineEmits(['handlePlayAfter','handlePlayNow']);
 const NaviMode = ref('1');
 const NaviClass1 = computed(() => ({
   'text-base inline-block mx-5 w-30 rounded-lg antialiased tracking-widest font-medium transition-colors duration-400 hover:bg-gray-600/40': true,
@@ -18,6 +19,14 @@ const changeNaviMode = (newMode) => {
   NaviMode.value = newMode.toString();
   console.log(NaviMode.value);
 }
+
+const handlePlayAfter=(index)=>{
+  emits('handlePlayAfter',index);
+}
+
+const handlePlayNow=(index)=>{
+  emits('handlePlayNow',index);
+}
 </script>
 
 <template>
@@ -26,7 +35,7 @@ const changeNaviMode = (newMode) => {
     <div :class="[NaviClass2, 'text-transition']" @click="changeNaviMode(2)" style="line-height: 56px">歌单</div>
   </div>
   <div class="w-full mt-16">
-    <Singer_Show_Area v-if="NaviMode==='1'" v-model:token="token"></Singer_Show_Area>
+    <Singer_Show_Area v-if="NaviMode==='1'" v-model:token="token" @handlePlayAfter="handlePlayAfter" @handlePlayNow="handlePlayNow"></Singer_Show_Area>
     <List_Show_Area v-if="NaviMode==='2'" v-model:token="token"></List_Show_Area>
   </div>
 </template>

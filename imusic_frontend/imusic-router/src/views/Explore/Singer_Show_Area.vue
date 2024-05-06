@@ -2,6 +2,7 @@
 import {onMounted, ref, watch} from "vue";
 import axios from "axios";
 
+const emits=defineEmits(['handlePlayNow', 'handlePlayAfter', 'addToSongList'])
 const token=defineModel('token')
 const tag_language=ref('默认');
 const tag_theme=ref('默认')
@@ -18,6 +19,16 @@ const gettime = (time) => {
   }
   return `${minute}:${second}`;
 }
+
+const handlePlayNow=(index)=>{
+  emits('handlePlayNow',Songs.value[index].id);
+}
+
+
+const handlePlayAfter=(index)=>{
+  emits('handlePlayAfter',Songs.value[index].id);
+}
+
 const updateSongs=()=>{
   let web='/songs/query?'
   console.log(web);
