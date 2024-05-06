@@ -1,6 +1,6 @@
 <script setup>
 // 展示歌单信息页面
-import {defineEmits, defineModel, ref} from "vue";
+import {defineEmits, defineModel, onMounted, ref} from "vue";
 import axios from "axios";
 import CurrentUser_SongList from "@/components/CurrentUser_SongList.vue";
 import SongPage from "@/views/SongPage.vue";
@@ -36,6 +36,8 @@ const lyrics = ref([]); // 存储要查看的歌曲的歌词（字符串数组�
 const ShowCurrentUserSongList = ref(false); // 是否展示选择歌单页面（默认：否），点击加入歌单后为true
 const needtoaddSongid = ref(1); // 存储需要加入歌单的歌曲id
 
+const isFavoriteSonglist = ref(false);
+
 // emits
 const PlaySongList = (id) => {
   emits('PlaySongList', id);
@@ -64,6 +66,30 @@ const gettime = (time) => {
 }
 
 /* 对歌单进行管理 */
+function getFavoriteSonglists() {
+  const instance = axios.create({
+    baseURL: 'http://182.92.100.66:5000',
+    timeout: 5000, // 设置请求超时时间
+    headers: {
+      'Authorization': `Bearer ${token.value}`,
+    }
+  });
+  axios.defaults.withCredentials = true;
+  instance.get("/like/songlists?username=" + username.value)
+      .then(function (response) {
+        if (response.data.success === true) {
+          let length = response.data.data.length;
+          for (let i = 0; i < length; ++i) {
+            if (response.data.data[i].id === props.currentUserSongList.id) {
+              isFavoriteSonglist.value = true;
+            }
+          }
+        }
+      })
+      .catch(function (error) {
+        console.log(error.response.data);
+      })
+}
 
 // 收藏此歌单
 function addFavoriteSonglist() {
@@ -80,6 +106,7 @@ function addFavoriteSonglist() {
   instance.post('/like/songlists/add', formData)
       .then(function (response) {
         if (response.data.success === true) {
+          isFavoriteSonglist.value = true;
           window.alert("success");
         }
       })
@@ -88,6 +115,31 @@ function addFavoriteSonglist() {
       });
 }
 
+// 取消收藏此歌单
+function deleteFavoriteSonglist() {
+  const instance = axios.create({
+    baseURL: 'http://182.92.100.66:5000',
+    timeout: 5000, // 设置请求超时时间
+    headers: {
+      'Authorization': `Bearer ${token.value}`,
+    }
+  });
+  axios.defaults.withCredentials = true;
+  const formData = new FormData();
+  formData.append('songlist_id', props.currentUserSongList.id);
+  instance.post('/like/songlists/delete', formData)
+      .then(function (response) {
+        if (response.data.success === true) {
+          isFavoriteSonglist.value = false;
+          window.alert("success");
+        }
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+}
+
+// 删除此歌单
 function deleteSonglist() {
   console.log("delete " + props.currentUserSongList.id)
   const instance = axios.create({
@@ -191,6 +243,8 @@ function show_tag(tag) {
   if (tag === 'null' || tag === null) return false;
   return true;
 }
+
+onMounted(getFavoriteSonglists);
 </script>
 
 <template>
@@ -282,9 +336,8 @@ function show_tag(tag) {
               </svg>
               <p class="inline-block">Play All</p>
             </button>
-            <!--            收藏歌单（未实现）-->
-            <button @click="addFavoriteSonglist"
-                class="mr-3 bg-gray-400 hover:bg-gray-500 text-white font-bold py-2 px-16 rounded-full inline-block">
+            <button @click="addFavoriteSonglist" v-if="!isFavoriteSonglist"
+                    class="mr-3 bg-gray-400 hover:bg-gray-500 text-white font-bold py-2 px-16 rounded-full inline-block">
               <svg class="h-5 w-5 text-white inline-block align-sub" viewBox="0 0 24 24" fill="none"
                    stroke="currentColor"
                    stroke-width="2"
@@ -293,6 +346,18 @@ function show_tag(tag) {
                     points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
               </svg>
               收藏歌单
+              ({{ props.currentUserSongList.like }})
+            </button>
+            <button @click="deleteFavoriteSonglist" v-if="isFavoriteSonglist"
+                    class="mr-3 bg-yellow-400 hover:bg-yellow-600 text-white font-bold py-2 px-16 rounded-full inline-block">
+              <svg class="h-5 w-5 fill-white inline-block align-sub" viewBox="0 0 24 24" fill="none"
+                   stroke="currentColor"
+                   stroke-width="2"
+                   stroke-linecap="round" stroke-linejoin="round">
+                <polygon
+                    points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+              </svg>
+              取消收藏
               ({{ props.currentUserSongList.like }})
             </button>
           </div>
