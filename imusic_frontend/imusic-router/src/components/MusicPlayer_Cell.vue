@@ -34,7 +34,7 @@ function handleModeChange() {
 
 const currentTime=ref('0:00');
 const duration=ref('0:00');
-const isPlaying=ref(false);
+const isPlaying=ref(true);
 const durationInSeconds=ref(0);
 const currentTimeInSeconds=ref(0);
 const audioPlayer=ref(null);
