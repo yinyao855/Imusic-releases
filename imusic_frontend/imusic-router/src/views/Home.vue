@@ -1,7 +1,7 @@
 <script setup>
 import {onMounted, ref} from "vue";
 import HomePage_Main from "@/views/HomePage_Main.vue";
-import ExplorePage_Main from "@/views/ExplorePage_Main.vue";
+import ExplorePage_Main from "@/views/Explore/ExplorePage_Main.vue";
 import CreateCenter from "@/views/CreateCenterPage_Main.vue";
 import SettingPage_Main from "@/views/SettingPage_Main.vue";
 import Login from "../components/Login.vue";
