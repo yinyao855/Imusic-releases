@@ -122,12 +122,11 @@ onMounted(GetUserData);
         <input type="text" class="input bg-zinc-900" placeholder="" v-model="userdata.email" readonly disabled>
       </div>
     </div>
-  </div>
-  <button @click="submitdata" class="mb-5 w-full flex justify-center bg-blue-600 text-white p-4  rounded-full
+    <button @click="submitdata" class="w-2/5 mx-auto mt-10 flex justify-center bg-blue-600 text-white p-4  rounded-full
                                     font-semibold  focus:outline-none focus:shadow-outline hover:bg-blue-800 shadow-lg cursor-pointer transition ease-in duration-300 tracking-widest">
-    保存信息
-  </button>
-
+      保存信息
+    </button>
+  </div>
 </template>
 
 <style scoped>
