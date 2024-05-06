@@ -189,6 +189,7 @@ const submitSong = () => {
     formData.append('audio', mp3File.value);
   }
   if (Song.value.tag_theme) {
+    console.log(Song.value.tag_theme);
     formData.append('tag_theme', Song.value.tag_theme);
   }
   if (Song.value.tag_scene) {
@@ -221,30 +222,6 @@ const submitSong = () => {
       .then(response => {
         alert('上传成功');
         console.log(response.data);
-        // confetti({
-        //   particleCount: 500,
-        //   angle: 90,
-        //   spread: 45,
-        //   startVelocity: 45,
-        //   decay: 0.9,
-        //   gravity: 1,
-        //   drift: 0,
-        //   ticks: 200,
-        //   origin: {x: x / window.innerWidth, y: y / window.innerHeight},
-        //   shapes: ["square", "circle"],
-        //   zIndex: 100,
-        //   colors: [
-        //     "#26ccff",
-        //     "#a25afd",
-        //     "#ff5e7e",
-        //     "#88ff5a",
-        //     "#fcff42",
-        //     "#ffa62d",
-        //     "#ff36ff"
-        //   ],
-        //   disableForReducedMotion: false,
-        //   scalar: 1
-        // });
       })
       .catch(error => {
         alert('上传失败');
@@ -305,7 +282,7 @@ onMounted(GetSongData);
       <div class="grid grid-cols-1 space-y-2">
         <div class="flex items-center justify-center w-full">
           <label class="flex flex-col rounded-lg border-4 border-dashed w-full h-60 p-10 group text-center">
-            <div class="h-full w-full text-center flex flex-col items-center justify-center  ">
+            <div class="h-full w-full text-center flex flex-col items-center justify-center">
               <svg class="icon fill-white transition hover:fill-blue-600" viewBox="0 0 1194 1024"
                    xmlns="http://www.w3.org/2000/svg" width="80" height="80">
                 <path
