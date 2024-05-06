@@ -33,9 +33,14 @@ const containerClass7 = computed(() => ({
   'antialiased text-sm block h-10 my-1 text-white leading-10 transition ease-in duration-400 hover:bg-gray-600/40 pl-4 ml-2 mr-2 rounded-md': mode.value !== '7',
   'antialiased text-sm block h-10 my-1 text-white leading-10 transition ease-in duration-400 px-4 ml-2 mr-2 rounded-md bg-blue-500 hover:bg-blue-500': mode.value === '7',
 }));
+const containerClass8 = computed(() => ({
+  'antialiased text-sm block h-10 my-1 text-white leading-10 transition ease-in duration-400 hover:bg-gray-600/40 pl-4 ml-2 mr-2 rounded-md': mode.value !== '8',
+  'antialiased text-sm block h-10 my-1 text-white leading-10 transition ease-in duration-400 px-4 ml-2 mr-2 rounded-md bg-blue-500 hover:bg-blue-500': mode.value === '8',
+}));
 
 const emits = defineEmits(['checkLogin']);
 const createdSonglists = defineModel('createdSonglists');
+const favoriteSonglists = defineModel('favoriteSonglists');
 const currentUserSongList = defineModel('currentUserSongList');
 const userUploadedSongs = defineModel('userUploadedSongs');
 const mode = defineModel('mode');
@@ -182,6 +187,33 @@ function getUserUploadedSongs() {
       })
 }
 
+// 获取用户收藏的歌单
+const listFavoriteSonglists = () => {
+  changeMode(8)
+  if (props.HasLogin === false) {
+    message.value = '请先登录';
+    WarningShow.value = true;
+    return;
+  }
+  const instance = axios.create({
+    baseURL: 'http://182.92.100.66:5000',
+    timeout: 5000, // 设置请求超时时间
+    headers: {
+      'Authorization': `Bearer ${token.value}`,
+    }
+  });
+  axios.defaults.withCredentials = true;
+  instance.get("/like/songlists?username=" + props.username)
+      .then(function (response) {
+        if (response.data.success === true) {
+          favoriteSonglists.value = response.data.data;
+        }
+      })
+      .catch(function (error) {
+        console.log(error.response.data);
+      })
+};
+
 const token = defineModel('token');
 const userdata = defineModel('userdata');
 const message = ref('错误消息');
@@ -300,20 +332,6 @@ const CloseWarning = () => {
       </svg>
       <span class="px-4 font-medium">创建歌单</span>
     </div>
-    <!--    <div class="collapse rounded-md" @click="listCreatedSonglists" style="background-color:#2E2E30">-->
-    <!--      <input type="checkbox"/>-->
-    <!--      <span class="collapse-title text-white text-sm h-10 px-4">-->
-    <!--          创建的歌单-->
-    <!--        </span>-->
-    <!--      <div class="collapse-content">-->
-    <!--        <div v-for="(createdSonglist, index) in createdSonglists" :key="index"-->
-    <!--             @click="changeMode(6); activeSonglist(index)"-->
-    <!--             class="m-1 h-12 cursor-pointer overflow-hidden py-1 px-1 transition ease-in duration-400 hover:bg-gray-600/40 my-auto rounded-md">-->
-    <!--          <img :src="createdSonglist.cover" class="inline-block h-10 w-10 rounded-md" alt="封面"/>-->
-    <!--          <span class="m-2 text-white text-sm font-medium "> {{ createdSonglist.title }} </span>-->
-    <!--        </div>-->
-    <!--      </div>-->
-    <!--    </div>-->
     <div :class="containerClass6" @click="listCreatedSonglists">
       <svg class="icon inline text-white my-auto" width="16" height="16" viewBox="0 0 24 24" stroke-width="2"
            stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -325,8 +343,12 @@ const CloseWarning = () => {
       </svg>
       <span class="px-4 font-medium">创建的歌单</span>
     </div>
-    <div
-        class="antialiased text-sm block h-10 my-1 text-white leading-10 transition ease-in duration-400 px-4 hover:bg-gray-600/40 ml-2 mr-2 rounded-md">
+    <div :class="containerClass8" @click="listFavoriteSonglists">
+      <svg class="icon inline text-white my-auto" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+           stroke-linecap="round" stroke-linejoin="round">
+        <polygon
+            points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+      </svg>
       <span class="px-4 font-medium">收藏的歌单</span>
     </div>
   </div>

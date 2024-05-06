@@ -9,12 +9,12 @@ import Personal_Center from "@/views/Personal_Center.vue";
 import Sign_up from "./Sign_up.vue";
 import axios from "axios";
 import CreateSonglistPage_Main from "@/views/CreateSonglistPage_Main.vue";
-import CreatedSonglist from "@/views/CreatedSonglist.vue";
 import Warning from "@/components/Warning.vue";
 import SideBar from "@/views/SideBar.vue";
 import MusicPlayer_Cell from "@/components/MusicPlayer_Cell.vue";
 import AdminPage_Main from "@/views/admin/AdminPage_Main.vue";
 import CreatedSonglist_Main from "@/views/CreatedSonglist_Main.vue";
+import FavoriteSonglist_Main from "@/views/FavoriteSonglist_Main.vue";
 
 const token = ref('');
 const needshowsonglistpage = ref(false);
@@ -413,6 +413,7 @@ const updateavatar = () => {
 
 const userUploadedSongs = ref([]);
 const createdSonglists = ref([]);
+const favoriteSonglists = ref([]);
 const currentUserSongList = ref([]);
 const showUserSongList = ref(false);
 
@@ -458,6 +459,7 @@ onMounted(getPageinit);
   <div class="flex w-full h-screen bg-zinc-900">
     <SideBar :HasLogin="HasLogin" :avatar="avatar" @checkLogin="checkLogin" v-model:mode="mode" :username="username"
              v-model:userdata="userdata" v-model:token="token" v-model:createdSonglists="createdSonglists"
+             v-model:favoriteSonglists="favoriteSonglists"
              v-model:currentUserSongList="currentUserSongList" v-model:userUploadedSongs="userUploadedSongs"
              v-model:showUserSongList="showUserSongList"
              v-model:UserRole="UserRole"></SideBar>
@@ -497,6 +499,10 @@ onMounted(getPageinit);
                               @PlaySongList="PlaySongList" @handlePlayAfter="handlePlayAfter"
                               @handlePlayNow="handlePlayNow"
                               v-model:token="token" v-model:username="username"></CreatedSonglist_Main>
+        <FavoriteSonglist_Main v-model:favoriteSonglists="favoriteSonglists" v-if="mode==='8'"
+                               @PlaySongList="PlaySongList" @handlePlayAfter="handlePlayAfter"
+                               @handlePlayNow="handlePlayNow"
+                               v-model:token="token" v-model:username="username"></FavoriteSonglist_Main>
         <AdminPage_Main v-model:token="token" v-if="mode==='7'"></AdminPage_Main>
       </div>
     </div>

@@ -272,7 +272,7 @@ defineExpose({handlePlayNow,handlePlayAfter,initCurrentMusic})
       v-model:curIndex="curIndex"
       v-model:token="token"
       @togglePlay="togglePlay"
-      v-if="!isFull&&(mode==='1'||mode==='6')&&HasLogin"
+      v-if="!isFull&&(mode==='1'||mode==='6'||mode==='8')&&HasLogin"
       :datax="datax"
   >
   </MusicPlayerView>
