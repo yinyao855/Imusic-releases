@@ -249,39 +249,43 @@ onMounted(getFavoriteSonglists);
 
 <template>
   <div v-if="!ShowCurrentUserSongList&!ShowSong">
-    <!--    回到选择歌单界面-->
-    <buttonchangesize class="left-4 top-4" @fullsize="fullsize" v-model:token="token"></buttonchangesize>
     <!--  展示歌单主界面-->
     <div v-if="!showEditSonglist">
       <!--      展示歌单信息-->
-      <div class="h-72 relative">
+      <div class="h-80 relative">
         <div class="bg-center bg-cover bg-blur w-full h-full absolute top-0 left-0"
              :style="{backgroundImage: 'url(' + props.currentUserSongList.cover + ')'}">
         </div>
         <!--        对歌单进行的操作-->
-        <div class="px-10 py-6 absolute top-0 w-full">
+        <div class="px-8 py-3 absolute top-0 w-full">
+          <!--    回到选择歌单界面-->
+          <buttonchangesize class="" @fullsize="fullsize" v-model:token="token"></buttonchangesize>
           <!--          删除歌单-->
-          <svg @click="deleteSonglist"
-               class="inline-block float-right h-8 w-8 cursor-pointer text-red-600 hover:text-red-800" width="24"
-               height="24"
-               viewBox="0 0 24 24" stroke-width="2"
-               stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-            <path stroke="none" d="M0 0h24v24H0z"/>
-            <line x1="4" y1="7" x2="20" y2="7"/>
-            <line x1="10" y1="11" x2="10" y2="17"/>
-            <line x1="14" y1="11" x2="14" y2="17"/>
-            <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12"/>
-            <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3"/>
-          </svg>
+          <div class="inline-block float-right cursor-pointer h-8 w-8 p-1 bg-gray-300 hover:bg-red-500 rounded-lg">
+            <svg @click="deleteSonglist"
+                 class="inline-block h-6 w-6 align-top text-red-600 hover:text-red-800" width="24"
+                 height="24"
+                 viewBox="0 0 24 24" stroke-width="2"
+                 stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+              <path stroke="none" d="M0 0h24v24H0z"/>
+              <line x1="4" y1="7" x2="20" y2="7"/>
+              <line x1="10" y1="11" x2="10" y2="17"/>
+              <line x1="14" y1="11" x2="14" y2="17"/>
+              <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12"/>
+              <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3"/>
+            </svg>
+          </div>
           <!--          修改歌单信息-->
-          <svg @click="activeShowEditSonglist(props.currentUserSongList.cover)"
-               class="m-1 inline-block float-right h-7 w-7 cursor-pointer text-blue-700 hover:text-blue-900" width="24"
-               height="24"
-               viewBox="0 0 24 24"
-               xmlns="http://www.w3.org/2000/svg" fill="none"
-               stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/>
-          </svg>
+          <div class="inline-block float-right cursor-pointer h-8 w-8 p-1 mr-1 bg-gray-300 hover:bg-blue-500 rounded-lg">
+            <svg @click="activeShowEditSonglist(props.currentUserSongList.cover)"
+                 class="inline-block h-6 w-6 align-top text-blue-600 hover:text-blue-800" width="24"
+                 height="24"
+                 viewBox="0 0 24 24"
+                 xmlns="http://www.w3.org/2000/svg" fill="none"
+                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/>
+            </svg>
+          </div>
           <div class="inline-block">
             <img :src="props.currentUserSongList.cover" class="img_songlist shadow-2xl">
           </div>
@@ -364,7 +368,7 @@ onMounted(getFavoriteSonglists);
         </div>
       </div>
       <!--      展示歌单中的所有歌曲-->
-      <div class="mt-3">
+      <div class="mt-6">
         <hr class="mx-5 border-gray-500">
         <div class="mt-3 m-5">
           <table class="w-full mb-32">
