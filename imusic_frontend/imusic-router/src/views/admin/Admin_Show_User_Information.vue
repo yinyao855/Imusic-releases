@@ -105,7 +105,7 @@ onMounted(GetUserData);
               d="M500 128.8c-95.2 5.6-173.6 83.2-180 178.4-7.2 112 80.8 205.6 191.2 205.6 106.4 0 192-86.4 192-192 0.8-110.4-92-198.4-203.2-192zM512 575.2c-128 0-383.2 64-383.2 192v96c0 17.6 14.4 32 32 32h702.4c17.6 0 32-14.4 32-32V766.4c0-127.2-255.2-191.2-383.2-191.2z"
           ></path>
         </svg>
-        <select class="select select-bordered w-full" v-model="role">
+        <select class="select select-bordered w-full bg-zinc-900" v-model="role">
           <option class="h-8">{{userdata.role}}</option>
           <option class="h-8">{{userdata.role==='管理员'?'普通用户':'管理员'}}</option>
         </select>
