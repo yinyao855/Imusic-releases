@@ -22,13 +22,23 @@ const ShowDetail = (index) => {
 const changesize = () => {
   ShowUpdateSongPage.value = false;
 }
+
+const UpdateUserData=(role)=>{
+  console.log(role);
+  let length=Users.value.length;
+  for(let i=0;i<length;++i){
+    if(Users.value[i].username===UserId.value){
+      Users.value[i].role=role;
+    }
+  }
+}
 </script>
 
 <template>
   <transition name="slide" appear>
     <div class="transition-container-2" v-if="ShowUpdateSongPage">
       <Admin_Show_User_Information v-model:UserId="UserId" @changesize="changesize"
-                       v-model:token="token"></Admin_Show_User_Information>
+                       v-model:token="token" @UpdateUserData="UpdateUserData"></Admin_Show_User_Information>
     </div>
   </transition>
   <div class="overflow-x-auto mx-4" v-if="!ShowUpdateSongPage">

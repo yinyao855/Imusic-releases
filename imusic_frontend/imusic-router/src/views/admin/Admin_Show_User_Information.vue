@@ -5,7 +5,7 @@ import buttonchangesize from '@/components/buttonchangesize.vue'
 
 const token = defineModel('token');
 const UserId = defineModel('UserId');
-const emits = defineEmits(['changesize']);
+const emits = defineEmits(['changesize','UpdateUserData']);
 const userdata = ref([]);
 const role=ref('');
 
@@ -32,6 +32,7 @@ const submitdata=()=>{
   instance.post('users/change-role',formData)
       .then(response=>{
         if(response.data.success===true){
+          emits('UpdateUserData',role.value);
           alert('用户权限修改成功');
         }
         else{
