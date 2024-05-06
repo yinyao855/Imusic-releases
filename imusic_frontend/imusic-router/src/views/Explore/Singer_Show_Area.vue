@@ -9,7 +9,7 @@ const tag_scene=ref('默认');
 const tag_mood=ref('默认');
 const tag_style=ref('默认');
 const Songs=ref([]);
-let web='/songs/query?'
+
 const gettime = (time) => {
   const minute = Math.floor(time / 60);
   const second = Math.floor(time - minute * 60);
@@ -19,6 +19,7 @@ const gettime = (time) => {
   return `${minute}:${second}`;
 }
 const updateSongs=()=>{
+  let web='/songs/query?'
   console.log(web);
   let flag=0;
   if(tag_theme.value!=='默认'){
@@ -78,6 +79,7 @@ const updateSongs=()=>{
     }
   });
   axios.defaults.withCredentials = true;
+  console.log(web);
   instance.get(web)
       .then(response=>{
         Songs.value=response.data.data;
