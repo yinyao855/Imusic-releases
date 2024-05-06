@@ -65,7 +65,29 @@ const gettime = (time) => {
 
 /* 对歌单进行管理 */
 
-// 删除此歌单
+// 收藏此歌单
+function addFavoriteSonglist() {
+  const instance = axios.create({
+    baseURL: 'http://182.92.100.66:5000',
+    timeout: 5000, // 设置请求超时时间
+    headers: {
+      'Authorization': `Bearer ${token.value}`,
+    }
+  });
+  axios.defaults.withCredentials = true;
+  const formData = new FormData();
+  formData.append('songlist_id', props.currentUserSongList.id);
+  instance.post('/like/songlists/add', formData)
+      .then(function (response) {
+        if (response.data.success === true) {
+          window.alert("success");
+        }
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+}
+
 function deleteSonglist() {
   console.log("delete " + props.currentUserSongList.id)
   const instance = axios.create({
@@ -261,7 +283,7 @@ function show_tag(tag) {
               <p class="inline-block">Play All</p>
             </button>
             <!--            收藏歌单（未实现）-->
-            <button
+            <button @click="addFavoriteSonglist"
                 class="mr-3 bg-gray-400 hover:bg-gray-500 text-white font-bold py-2 px-16 rounded-full inline-block">
               <svg class="h-5 w-5 text-white inline-block align-sub" viewBox="0 0 24 24" fill="none"
                    stroke="currentColor"
