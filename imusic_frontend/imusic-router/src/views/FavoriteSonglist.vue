@@ -139,36 +139,6 @@ function deleteFavoriteSonglist() {
       });
 }
 
-// 删除此歌单
-function deleteSonglist() {
-  console.log("delete " + props.currentUserSongList.id)
-  const instance = axios.create({
-    baseURL: 'http://182.92.100.66:5000',
-    timeout: 5000, // 设置请求超时时间
-    headers: {
-      'Authorization': `Bearer ${token.value}`,
-    }
-  });
-  axios.defaults.withCredentials = true;
-  instance.delete('/songlists/delete/' + props.currentUserSongList.id)
-      .then(function (response) {
-        if (response.data.success === true) {
-          window.alert("delete success");
-        }
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-}
-
-// 存储歌单图片，进入修改歌单界面（showEditSonglist为true）
-function activeShowEditSonglist(imgUrl) {
-  cover.value = imgUrl;
-  coverImageFileUrl.value = imgUrl;
-  showEditSonglist.value = true;
-}
-
-
 /* 对该歌单中的歌曲进行管理 */
 
 // 存储选择加入歌单的歌曲id，进入选择歌单界面（ShowCurrentUserSongList为true）
@@ -487,7 +457,7 @@ onMounted(getFavoriteSonglists);
   <transition name="slide" appear>
     <div class="transition-container-2" v-if="ShowSong">
       <SongPage v-if="ShowSong" v-model:SongData="SongData"
-                v-model:lyrics="lyrics"
+                v-model:lyrics="lyrics" v-model:username="username"
                 @CloseSong="CloseSong"
                 v-model:token="token"></SongPage>
     </div>
