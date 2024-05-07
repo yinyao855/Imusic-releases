@@ -1,15 +1,42 @@
 <script setup>
 import {onMounted, ref, watch} from "vue";
 import axios from "axios";
+import CurrentUser_SongList from "@/components/CurrentUser_SongList.vue";
 
-const emits=defineEmits(['handlePlayNow', 'handlePlayAfter', 'addToSongList'])
-const token=defineModel('token')
-const tag_language=ref('默认');
-const tag_theme=ref('默认')
-const tag_scene=ref('默认');
-const tag_mood=ref('默认');
-const tag_style=ref('默认');
-const Songs=ref([]);
+const emits = defineEmits(['handlePlayNow', 'handlePlayAfter', 'addToSongList'])
+const token = defineModel('token')
+const tag_language = ref('默认');
+const tag_theme = ref('默认')
+const tag_scene = ref('默认');
+const tag_mood = ref('默认');
+const tag_style = ref('默认');
+const Songs = ref([]);
+const username = defineModel('username');
+const SongLists = ref([]);
+
+const GetMySongList = () => {
+  console.log(username.value);
+  const instance = axios.create({
+    baseURL: 'http://182.92.100.66:5000',
+    timeout: 5000, // 设置请求超时时间
+    headers: {
+      'Authorization': `Bearer ${token.value}`,
+    }
+  });
+  axios.defaults.withCredentials = true;
+  instance.get('/users/songlists', {
+    params: {
+      username: username.value
+    }
+  })
+      .then(response => {
+        SongLists.value = response.data.data;
+        console.log(SongLists.value);
+      })
+      .catch(error => {
+        console.log(error.response.data);
+      })
+}
 
 const gettime = (time) => {
   const minute = Math.floor(time / 60);
@@ -20,65 +47,61 @@ const gettime = (time) => {
   return `${minute}:${second}`;
 }
 
-const handlePlayNow=(index)=>{
-  emits('handlePlayNow',Songs.value[index].id);
+const handlePlayNow = (index) => {
+  emits('handlePlayNow', Songs.value[index].id);
 }
 
 
-const handlePlayAfter=(index)=>{
-  emits('handlePlayAfter',Songs.value[index].id);
+const handlePlayAfter = (index) => {
+  emits('handlePlayAfter', Songs.value[index].id);
 }
+const NeedToAddSongId = ref(0);
 
-const updateSongs=()=>{
-  let web='/songs/query?'
+const updateSongs = () => {
+  let web = '/songs/query?'
   console.log(web);
-  let flag=0;
-  if(tag_theme.value!=='默认'){
-    if(web==='/songs/query?'){
-      web=web+'tag_theme='+tag_theme.value;
+  let flag = 0;
+  if (tag_theme.value !== '默认') {
+    if (web === '/songs/query?') {
+      web = web + 'tag_theme=' + tag_theme.value;
+    } else {
+      web = web + '&tag_theme=' + tag_theme.value;
     }
-    else{
-      web=web+'&tag_theme='+tag_theme.value;
-    }
-    flag=1;
+    flag = 1;
   }
-  if(tag_language.value!=='默认'){
-    if(web==='/songs/query?'){
-      web=web+'tag_language='+tag_language.value;
+  if (tag_language.value !== '默认') {
+    if (web === '/songs/query?') {
+      web = web + 'tag_language=' + tag_language.value;
+    } else {
+      web = web + '&tag_language=' + tag_language.value;
     }
-    else{
-      web=web+'&tag_language='+tag_language.value;
-    }
-    flag=1;
+    flag = 1;
   }
-  if(tag_scene.value!=='默认'){
-    if(web==='/songs/query?'){
-      web=web+'tag_scene='+tag_scene.value;
+  if (tag_scene.value !== '默认') {
+    if (web === '/songs/query?') {
+      web = web + 'tag_scene=' + tag_scene.value;
+    } else {
+      web = web + '&tag_scene=' + tag_scene.value;
     }
-    else{
-      web=web+'&tag_scene='+tag_scene.value;
-    }
-    flag=1;
+    flag = 1;
   }
-  if(tag_mood.value!=='默认'){
-    if(web==='/songs/query?'){
-      web=web+'tag_mood='+tag_mood.value;
+  if (tag_mood.value !== '默认') {
+    if (web === '/songs/query?') {
+      web = web + 'tag_mood=' + tag_mood.value;
+    } else {
+      web = web + '&tag_mood=' + tag_mood.value;
     }
-    else{
-      web=web+'&tag_mood='+tag_mood.value;
-    }
-    flag=1;
+    flag = 1;
   }
-  if(tag_style.value!=='默认'){
-    if(web==='/songs/query?'){
-      web=web+'tag_style='+tag_style.value;
+  if (tag_style.value !== '默认') {
+    if (web === '/songs/query?') {
+      web = web + 'tag_style=' + tag_style.value;
+    } else {
+      web = web + '&tag_style=' + tag_style.value;
     }
-    else{
-      web=web+'&tag_style='+tag_style.value;
-    }
-    flag=1;
+    flag = 1;
   }
-  if(flag===0){
+  if (flag === 0) {
     GetInitSongs();
     return;
   }
@@ -92,14 +115,14 @@ const updateSongs=()=>{
   axios.defaults.withCredentials = true;
   console.log(web);
   instance.get(web)
-      .then(response=>{
-        Songs.value=response.data.data;
-        let length=Songs.value.length;
-        for(let i=0;i<length;++i){
-          Songs.value[i].duration=gettime(Songs.value[i].duration);
+      .then(response => {
+        Songs.value = response.data.data;
+        let length = Songs.value.length;
+        for (let i = 0; i < length; ++i) {
+          Songs.value[i].duration = gettime(Songs.value[i].duration);
         }
       })
-      .catch(error=>{
+      .catch(error => {
         console.log(error.response.data);
       })
 }
@@ -118,7 +141,7 @@ watch(tag_scene, () => {
 watch(tag_mood, () => {
   updateSongs();
 });
-const GetInitSongs=()=>{
+const GetInitSongs = () => {
   const instance = axios.create({
     baseURL: 'http://182.92.100.66:5000',
     timeout: 5000, // 设置请求超时时间
@@ -128,66 +151,86 @@ const GetInitSongs=()=>{
   });
   axios.defaults.withCredentials = true;
   instance.get('/songs/alldata')
-      .then(response=>{
-        Songs.value=response.data.data;
-        let length=Songs.value.length;
-        for(let i=0;i<length;++i){
-          Songs.value[i].duration=gettime(Songs.value[i].duration);
+      .then(response => {
+        Songs.value = response.data.data;
+        let length = Songs.value.length;
+        for (let i = 0; i < length; ++i) {
+          Songs.value[i].duration = gettime(Songs.value[i].duration);
         }
       })
-      .catch(error=>{
+      .catch(error => {
         console.log(error.response.data);
       })
+}
+
+const ShowCurrentUser_SongList = ref(false);
+
+const addToSongList = (index) => {
+  NeedToAddSongId.value = Songs.value[index].id;
+  GetMySongList();
+  ShowCurrentUser_SongList.value = true;
+}
+
+const CloseCurrentUser_SongList = () => {
+  ShowCurrentUser_SongList.value = false;
 }
 onMounted(GetInitSongs);
 </script>
 
 <template>
-<div class="w-full h-full flex">
-  <div class="h-1/6 mx-auto py-4">
-    <select class="select w-40 mx-2" v-model="tag_language">
-      <option>默认</option>
-      <option>英语</option>
-      <option>日语</option>
-      <option>粤语</option>
-      <option>国语</option>
-      <option>韩语</option>
-    </select>
-    <select class="select w-40 mx-2" v-model="tag_theme">
-      <option>默认</option>
-      <option>背景音乐</option>
-      <option>经典老歌</option>
-      <option>KTV金曲</option>
-      <option>游戏配乐</option>
-      <option>电影配乐</option>
-    </select>
-    <select class="select w-40 mx-2" v-model="tag_scene">
-      <option>默认</option>
-      <option>咖啡馆</option>
-      <option>运动</option>
-      <option>睡前</option>
-      <option>旅行</option>
-      <option>派对</option>
-    </select>
-    <select class="select w-40 mx-2" v-model="tag_mood">
-      <option>默认</option>
-      <option>伤感</option>
-      <option>安静</option>
-      <option>思念</option>
-      <option>宣泄</option>
-      <option>开心</option>
-    </select>
-    <select class="select w-40 mx-2" v-model="tag_style">
-      <option>默认</option>
-      <option>摇滚</option>
-      <option>民谣</option>
-      <option>轻音乐</option>
-      <option>电音</option>
-      <option>流行</option>
-    </select>
+  <transition name="slide" appear>
+    <div class="transition-container-2" v-if="ShowCurrentUser_SongList">
+      <CurrentUser_SongList v-model:CurrentUser_SongListdata="SongLists" v-model:needtoaddSongid="NeedToAddSongId"
+                            v-model:token="token"
+                            @CloseCurrentUser_SongList="CloseCurrentUser_SongList"></CurrentUser_SongList>
+    </div>
+  </transition>
+  <div class="w-full h-full flex" v-if="!ShowCurrentUser_SongList">
+    <div class="h-1/6 mx-auto py-4">
+      <select class="select w-40 mx-2 text-white" v-model="tag_language">
+        <option>默认</option>
+        <option>英语</option>
+        <option>日语</option>
+        <option>粤语</option>
+        <option>国语</option>
+        <option>韩语</option>
+      </select>
+      <select class="select w-40 mx-2 text-white" v-model="tag_theme">
+        <option>默认</option>
+        <option>背景音乐</option>
+        <option>经典老歌</option>
+        <option>KTV金曲</option>
+        <option>游戏配乐</option>
+        <option>电影配乐</option>
+      </select>
+      <select class="select w-40 mx-2 text-white" v-model="tag_scene">
+        <option>默认</option>
+        <option>咖啡馆</option>
+        <option>运动</option>
+        <option>睡前</option>
+        <option>旅行</option>
+        <option>派对</option>
+      </select>
+      <select class="select w-40 mx-2 text-white" v-model="tag_mood">
+        <option>默认</option>
+        <option>伤感</option>
+        <option>安静</option>
+        <option>思念</option>
+        <option>宣泄</option>
+        <option>开心</option>
+      </select>
+      <select class="select w-40 mx-2 text-white" v-model="tag_style">
+        <option>默认</option>
+        <option>摇滚</option>
+        <option>民谣</option>
+        <option>轻音乐</option>
+        <option>电音</option>
+        <option>流行</option>
+      </select>
+    </div>
   </div>
-</div>
-  <div class="overflow-x-auto overflow-y-hidden mx-6">
+  <hr class="w-full border border-gray-500 my-2" v-if="!ShowCurrentUser_SongList">
+  <div class="overflow-x-auto overflow-y-hidden mx-6" v-if="!ShowCurrentUser_SongList">
     <table class="table mb-32">
       <thead>
       <tr>
@@ -223,7 +266,7 @@ onMounted(GetInitSongs);
         <td>{{ item.duration }}</td>
         <th>
           <div
-              class="dropdown dropdown-left dropdown-bottom my-auto tooltip transition duration-400 hover:bg-gray-600/40 bg-zinc-900 btn btn-sm border-none"
+              class="dropdown dropdown-left dropdown-top my-auto tooltip transition duration-400 hover:bg-gray-600/40 bg-zinc-900 btn btn-sm border-none"
               data-tip="播放列表">
             <svg class="icon" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg"
                  width="32" height="32" tabindex="0" role="button">
@@ -285,5 +328,39 @@ onMounted(GetInitSongs);
 </template>
 
 <style scoped>
+.text-transition {
+  transition: color 0.5s ease;
+}
 
+
+.slide-leave-active {
+  transition: transform 0.5s ease;
+}
+
+.slide-enter-active {
+  transition: transform 0.5s ease;
+}
+
+.slide-enter-from,
+.slide-leave-to {
+  transform: translateX(100%);
+}
+
+.slide-enter-to,
+.slide-leave-from {
+  transform: translateX(0);
+}
+
+.transition-container {
+  right: 0;
+  top: 0;
+  height: 100%
+}
+
+
+.transition-container-2 {
+  right: 0;
+  top: 0;
+  height:100%;
+}
 </style>

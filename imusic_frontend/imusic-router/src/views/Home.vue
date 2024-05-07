@@ -210,10 +210,10 @@ const extractDate = (dateTimeString) => {
   return date.toISOString().slice(0, 10);
 }
 
-const SongListId=ref(0);
+const SongListId = ref(0);
 
 const changesonglist = () => {
-  const UserLikeSongLists=ref([]);
+  const UserLikeSongLists = ref([]);
   needshowsonglistpage.value = true;
   const instance = axios.create({
     baseURL: 'http://182.92.100.66:5000',
@@ -223,7 +223,7 @@ const changesonglist = () => {
     }
   });
   axios.defaults.withCredentials = true;
-  SongListId.value=index.value;
+  SongListId.value = index.value;
   const web = '/songlists/info/' + index.value;
   instance.get(web)
       .then(response => {
@@ -242,22 +242,22 @@ const changesonglist = () => {
           }
         });
         axios.defaults.withCredentials = true;
-        instance.get('/like/songlists',{
-          params:{
-            username:username.value
+        instance.get('/like/songlists', {
+          params: {
+            username: username.value
           }
         })
-            .then(response=>{
-              UserLikeSongLists.value=response.data.data;
-              let length2=UserLikeSongLists.value.length;
-              for(let i=0;i<length2;++i){
-                if(UserLikeSongLists.value[i].id===songlist.value.id){
-                  songlist.value.user_like=true;
+            .then(response => {
+              UserLikeSongLists.value = response.data.data;
+              let length2 = UserLikeSongLists.value.length;
+              for (let i = 0; i < length2; ++i) {
+                if (UserLikeSongLists.value[i].id === songlist.value.id) {
+                  songlist.value.user_like = true;
                   break;
                 }
               }
             })
-            .catch(error=>{
+            .catch(error => {
               console.log(error.response.data);
             })
         instance.get('/like/songs', {
@@ -507,7 +507,8 @@ onMounted(getPageinit);
                        v-model:songlistlast="songlistlast" v-model:HomePageRecommendLatest="HomePageRecommendLatest"
                        v-model:token="token" v-model:SongListId="SongListId"
                        @changesonglist="changesonglist" @PlaySongList="PlaySongList"></HomePage_Main>
-        <ExplorePage_Main v-if="mode==='2'" v-model:token="token" @handlePlayNow="handlePlayNow" @handlePlayAfter="handlePlayAfter"></ExplorePage_Main>
+        <ExplorePage_Main v-model:username="username" v-if="mode==='2'" v-model:token="token"
+                          @handlePlayNow="handlePlayNow" @handlePlayAfter="handlePlayAfter"></ExplorePage_Main>
         <SettingPage_Main v-if="mode==='3'" v-model:token="token"></SettingPage_Main>
         <CreateCenter v-if="mode==='4'" :userUploadedSongs="userUploadedSongs"
                       v-model:HasLogin="HasLogin" v-model:username="username"
