@@ -513,7 +513,7 @@ onMounted(getFavoriteSonglists);
   <!--  展示歌曲详细信息界面（当ShowSong为true）-->
   <transition name="slide" appear>
     <div class="transition-container-2" v-if="ShowSong">
-      <SongPage v-if="ShowSong" v-model:SongData="SongData"
+      <SongPage v-if="ShowSong" v-model:SongData="SongData" v-model:username="username"
                 v-model:lyrics="lyrics"
                 @CloseSong="CloseSong"
                 v-model:token="token"></SongPage>
