@@ -1,7 +1,7 @@
 <script setup>
 import {onMounted, ref} from "vue";
 import HomePage_Main from "@/views/HomePage_Main.vue";
-import ExplorePage_Main from "@/views/ExplorePage_Main.vue";
+import ExplorePage_Main from "@/views/Explore/ExplorePage_Main.vue";
 import CreateCenter from "@/views/CreateCenterPage_Main.vue";
 import SettingPage_Main from "@/views/SettingPage_Main.vue";
 import Login from "../components/Login.vue";
@@ -21,7 +21,7 @@ const needshowsonglistpage = ref(false);
 const cantransformtofull = ref(false);
 const userlike = ref([]);
 const avatar = ref('');
-const index = ref('1');
+const index = ref(1);
 const datax = ref([]);
 const UserRole = ref('');
 const musicList = ref([
@@ -210,7 +210,10 @@ const extractDate = (dateTimeString) => {
   return date.toISOString().slice(0, 10);
 }
 
+const SongListId=ref(0);
+
 const changesonglist = () => {
+  const UserLikeSongLists=ref([]);
   needshowsonglistpage.value = true;
   const instance = axios.create({
     baseURL: 'http://182.92.100.66:5000',
@@ -220,6 +223,7 @@ const changesonglist = () => {
     }
   });
   axios.defaults.withCredentials = true;
+  SongListId.value=index.value;
   const web = '/songlists/info/' + index.value;
   instance.get(web)
       .then(response => {
@@ -238,6 +242,24 @@ const changesonglist = () => {
           }
         });
         axios.defaults.withCredentials = true;
+        instance.get('/like/songlists',{
+          params:{
+            username:username.value
+          }
+        })
+            .then(response=>{
+              UserLikeSongLists.value=response.data.data;
+              let length2=UserLikeSongLists.value.length;
+              for(let i=0;i<length2;++i){
+                if(UserLikeSongLists.value[i].id===songlist.value.id){
+                  songlist.value.user_like=true;
+                  break;
+                }
+              }
+            })
+            .catch(error=>{
+              console.log(error.response.data);
+            })
         instance.get('/like/songs', {
           params: {
             'username': username.value,
@@ -483,9 +505,9 @@ onMounted(getPageinit);
                        v-model:songlists="songlists" v-model:index="index" v-model:username="username"
                        v-model:userlike="userlike" @refreshNewest_Songs_Page="refreshNewest_Songs_Page"
                        v-model:songlistlast="songlistlast" v-model:HomePageRecommendLatest="HomePageRecommendLatest"
-                       v-model:token="token"
+                       v-model:token="token" v-model:SongListId="SongListId"
                        @changesonglist="changesonglist" @PlaySongList="PlaySongList"></HomePage_Main>
-        <ExplorePage_Main v-if="mode==='2'" v-model:token="token"></ExplorePage_Main>
+        <ExplorePage_Main v-if="mode==='2'" v-model:token="token" @handlePlayNow="handlePlayNow" @handlePlayAfter="handlePlayAfter"></ExplorePage_Main>
         <SettingPage_Main v-if="mode==='3'" v-model:token="token"></SettingPage_Main>
         <CreateCenter v-if="mode==='4'" :userUploadedSongs="userUploadedSongs"
                       v-model:HasLogin="HasLogin" v-model:username="username"
@@ -500,6 +522,7 @@ onMounted(getPageinit);
                               @handlePlayNow="handlePlayNow"
                               v-model:token="token" v-model:username="username"></CreatedSonglist_Main>
         <FavoriteSonglist_Main v-model:favoriteSonglists="favoriteSonglists" v-if="mode==='8'"
+                               v-model:createdSonglists="createdSonglists"
                                @PlaySongList="PlaySongList" @handlePlayAfter="handlePlayAfter"
                                @handlePlayNow="handlePlayNow"
                                v-model:token="token" v-model:username="username"></FavoriteSonglist_Main>

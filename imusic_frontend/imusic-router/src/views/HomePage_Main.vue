@@ -112,7 +112,7 @@ const refresh = () => {
 const PlaySongList = (id) => {
   emits('PlaySongList', id);
 }
-
+const SongListId=defineModel('SongListId');
 </script>
 
 <template>
@@ -141,7 +141,7 @@ const PlaySongList = (id) => {
                      v-model:userlike="userlike"
                      @changesize="changesize" @handlePlayAfter="handlePlayAfter" @handlePlayNow="handlePlayNow"
                      @addToSongList="addToSongList" v-model:index="index"
-                     @ChangeSongList="PlaySongList" v-model:token="token"></SongList_Page>
+                     @ChangeSongList="PlaySongList" v-model:token="token" v-model:SongListId="SongListId"></SongList_Page>
     </div>
   </transition>
   <div class="w-full h-16 pl-6 fixed bg-zinc-900 z-50"

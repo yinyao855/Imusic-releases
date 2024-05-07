@@ -1,7 +1,8 @@
 <script setup>
 // 展示用户创建的歌单主界面
 import {defineEmits, defineModel, ref} from "vue";
-import CreatedSonglist from "@/views/CreatedSonglist.vue";
+import FavoriteSonglist from "@/views/FavoriteSonglist.vue";
+import axios from "axios";
 
 // global variables
 const token = defineModel('token')
@@ -11,7 +12,8 @@ const username = defineModel('username')
 const emits = defineEmits(['PlaySongList', 'handlePlayAfter', 'handlePlayNow'])
 
 // v-model
-const favoriteSonglists = defineModel('favoriteSonglists') // 用户创建的歌单
+const favoriteSonglists = defineModel('favoriteSonglists') // 用户收藏的歌单
+const createdSonglists = defineModel('createdSonglists') // 用户创建的歌单
 
 // 点击歌单后需要的属性
 const showCurrentSongList = ref(false); // 是否展示选中的歌单信息页面（默认：否），选择歌单后为true
@@ -37,8 +39,24 @@ function closeSonglist() {
 
 // choose: 展示选中的歌单信息页面（进入歌单信息界面）
 function activeSonglist(index) {
-  showCurrentSongList.value = true;
-  currentUserSongList.value = favoriteSonglists.value[index]; // 保存选中的歌单
+  const instance = axios.create({
+    baseURL: 'http://182.92.100.66:5000',
+    timeout: 5000, // 设置请求超时时间
+    headers: {
+      'Authorization': `Bearer ${token.value}`,
+    }
+  });
+  axios.defaults.withCredentials = true;
+  instance.get("/songlists/info/" + favoriteSonglists.value[index].id)
+      .then(function (response) {
+        if (response.data.success === true) {
+          showCurrentSongList.value = true;
+          currentUserSongList.value = response.data.data; // 保存选中的歌单
+        }
+      })
+      .catch(function (error) {
+        console.log(error.response.data);
+      })
 }
 </script>
 
@@ -68,10 +86,10 @@ function activeSonglist(index) {
     </div>
   </div>
 <!--    展示选中的歌单信息页面（当showCurrentSongList==true）-->
-  <CreatedSonglist :currentUserSongList="currentUserSongList" v-if="showCurrentSongList"
+  <FavoriteSonglist :currentUserSongList="currentUserSongList" v-if="showCurrentSongList"
                    @PlaySongList="PlaySongList" @handlePlayAfter="handlePlayAfter" @handlePlayNow="handlePlayNow"
-                   @closeSonglist="closeSonglist" v-model:createdSonglists="favoriteSonglists"
-                   v-model:token="token" v-model:username="username"></CreatedSonglist>
+                   @closeSonglist="closeSonglist" v-model:createdSonglists="createdSonglists"
+                   v-model:token="token" v-model:username="username"></FavoriteSonglist>
 </template>
 
 <style scoped>

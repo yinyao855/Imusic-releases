@@ -74,8 +74,8 @@ const deletelike = (index) => {
     <buttonchangesize class="absolute top-5 left-5" @fullsize="changesize" v-model:token="token"></buttonchangesize>
     搜索结果
   </div>
-  <div class="overflow-x-auto mx-6 h-full">
-    <table class="table mb-28">
+  <div class="overflow-x-auto overflow-y-hidden mx-6 h-full">
+    <table class="table mb-32">
       <thead>
       <tr>
         <th class="text-left text-sm font-semibold w-12"></th>
