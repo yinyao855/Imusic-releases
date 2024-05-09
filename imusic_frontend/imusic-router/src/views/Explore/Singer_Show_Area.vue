@@ -385,11 +385,11 @@ onMounted(GetInitSongs);
       <div class="text-sm pb-4">心情</div>
       <div class="flex flex-wrap ml-6">
         <span :class="Class4_1" @click="HandleMood($event,1)">默认</span>
-        <span :class="Class4_2" @click="HandleMood($event,1)">伤感</span>
-        <span :class="Class4_3" @click="HandleMood($event,1)">安静</span>
-        <span :class="Class4_4" @click="HandleMood($event,1)">思念</span>
-        <span :class="Class4_5" @click="HandleMood($event,1)">宣泄</span>
-        <span :class="Class4_6" @click="HandleMood($event,1)">开心</span>
+        <span :class="Class4_2" @click="HandleMood($event,2)">伤感</span>
+        <span :class="Class4_3" @click="HandleMood($event,3)">安静</span>
+        <span :class="Class4_4" @click="HandleMood($event,4)">思念</span>
+        <span :class="Class4_5" @click="HandleMood($event,5)">宣泄</span>
+        <span :class="Class4_6" @click="HandleMood($event,6)">开心</span>
       </div>
     </div>
     <div class="w-1/5 pl-4">
@@ -421,7 +421,7 @@ onMounted(GetInitSongs);
       <!-- row 1 -->
       <tr class="text-white transition duration-400 hover:bg-gray-600/40 rounded-md"
           v-for="(item, index) in Songs" :key="index">
-        <td>
+        <td @click="handlePlayNow(index);">
           <div class="flex items-center gap-3">
             <div class="avatar">
               <div class="mask mask-squircle w-12 h-12">
@@ -435,11 +435,11 @@ onMounted(GetInitSongs);
             </div>
           </div>
         </td>
-        <td>
+        <td @click="handlePlayNow(index);">
           {{ item.singer }}
         </td>
-        <td>{{ item.uploader }}</td>
-        <td>{{ item.duration }}</td>
+        <td @click="handlePlayNow(index);">{{ item.uploader }}</td>
+        <td @click="handlePlayNow(index);">{{ item.duration }}</td>
         <th>
           <div
               class="dropdown dropdown-left dropdown-top my-auto tooltip transition duration-400 hover:bg-gray-600/40 bg-zinc-900 btn btn-sm border-none"

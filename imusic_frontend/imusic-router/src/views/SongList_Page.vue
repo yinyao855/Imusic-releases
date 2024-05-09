@@ -142,7 +142,7 @@ onMounted(GetUserLike)
         <summary class="mb-1 mt-1 btn mr-4 bg-blue-600 rounded-2xl hover:bg-blue-800 border-none text-white w-28">
           歌单简介
         </summary>
-        <ul class="p-2 shadow menu dropdown-content z-[1] bg-base-100 rounded-box w-52">
+        <ul class="p-2 shadow menu dropdown-content z-[1] rounded-box w-52 bg-gray-600 text-white">
           <li><a>{{
               songlistlast.introduction === 'null' || songlistlast.introduction === null ? '无简介' : songlistlast.introduction
             }}</a></li>
@@ -192,7 +192,7 @@ onMounted(GetUserLike)
       <!-- row 1 -->
       <tr class="text-white transition duration-400 hover:bg-gray-600/40 rounded-md"
           v-for="(item, index) in songlistlast.songs" :key="index">
-        <td>
+        <td @click="handlePlayNow(index);">
           <svg @click="addlike(index)" v-if="!item.user_like" class="icon fill-white mr-4 my-auto"
                viewBox="0 0 1024 1024"
                xmlns="http://www.w3.org/2000/svg" width="20" height="20">
@@ -211,7 +211,7 @@ onMounted(GetUserLike)
                 fill="#BF4C4C"></path>
           </svg>
         </td>
-        <td>
+        <td @click="handlePlayNow(index);">
           <div class="flex items-center gap-3">
             <div class="avatar">
               <div class="mask mask-squircle w-12 h-12">
@@ -225,11 +225,11 @@ onMounted(GetUserLike)
             </div>
           </div>
         </td>
-        <td>
+        <td @click="handlePlayNow(index);">
           {{ item.singer }}
         </td>
-        <td>{{ item.uploader }}</td>
-        <td>{{ item.duration }}</td>
+        <td @click="handlePlayNow(index);">{{ item.uploader }}</td>
+        <td @click="handlePlayNow(index);">{{ item.duration }}</td>
         <th>
           <div
               class="dropdown dropdown-left dropdown-end my-auto tooltip transition duration-400 hover:bg-gray-600/40 bg-zinc-900 btn btn-sm border-none"

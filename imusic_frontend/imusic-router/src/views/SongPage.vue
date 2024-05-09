@@ -79,7 +79,6 @@ function addFavoriteSong() {
       .then(function (response) {
         if (response.data.success === true) {
           isFavoriteSong.value = true;
-          window.alert("success");
         }
       })
       .catch(function (error) {
@@ -103,7 +102,6 @@ function deleteFavoriteSong() {
       .then(function (response) {
         if (response.data.success === true) {
           isFavoriteSong.value = false;
-          window.alert("success");
         }
       })
       .catch(function (error) {
