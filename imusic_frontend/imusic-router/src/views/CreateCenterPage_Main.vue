@@ -3,6 +3,7 @@ import {computed, ref, defineModel} from "vue";
 import UploadSong from "@/views/UploadSong.vue";
 import axios from "axios";
 import EditSong from "@/views/EditSong.vue";
+import SongPage from "@/views/SongPage.vue";
 
 const NaviMode = ref('1');
 const upload = ref('0');
@@ -49,6 +50,25 @@ const coverImageFileUrl = ref(''); // 存储当前歌单图片url，若修改了
 const mp3File = ref(null);
 const lrcFile = ref(null);
 
+const ShowSong = ref(false);
+const currentSongId = ref(0);
+const emits = defineEmits(['handlePlayNow']);
+
+function handlePlayNow(id) {
+  emits('handlePlayNow', id);
+}
+
+// 关闭歌曲详细界面
+function CloseSong() {
+  ShowSong.value = false;
+}
+
+// 进入歌曲详细界面
+function activeSongPage(id) {
+  currentSongId.value = id;
+  ShowSong.value = true;
+}
+
 // 删除歌曲
 function deleteSong(songid) {
   const instance = axios.create({
@@ -87,7 +107,7 @@ function closeEditSong() {
 </script>
 
 <template>
-  <div v-if="!showEditSong">
+  <div v-if="!showEditSong&&!ShowSong">
     <div class="w-full h-14 pl-6">
       <div :class="[NaviClass1, 'text-transition']" @click="changeNaviMode(1)" style="line-height: 56px">我的创作</div>
       <div :class="[NaviClass2, 'text-transition']" @click="changeNaviMode(2)" style="line-height: 56px">创意空间</div>
@@ -110,8 +130,8 @@ function closeEditSong() {
             </tr>
             </thead>
             <tbody>
-            <tr v-for="(song, index) in props.userUploadedSongs">
-              <td class="pl-3 p-1 hover:cursor-pointer">
+            <tr v-for="(song, index) in props.userUploadedSongs" class="hover:bg-gray-600">
+              <td @click="activeSongPage(song.id)" class="pl-3 p-1 hover:cursor-pointer">
                 <img :src="song.cover" class="img_song inline-block mr-3">
                 <p class="inline-block">{{ song.title }}</p>
               </td>
@@ -210,6 +230,9 @@ function closeEditSong() {
             v-model:cover="cover" v-model:coverImageFileUrl="coverImageFileUrl"
             v-model:token="token" v-model:username="username"></EditSong>
 
+  <SongPage v-if="ShowSong" v-model:currentSongId="currentSongId"
+            @handlePlayNow="handlePlayNow" @CloseSong="CloseSong"
+            v-model:username="username" v-model:token="token"></SongPage>
 </template>
 
 <style scoped>
