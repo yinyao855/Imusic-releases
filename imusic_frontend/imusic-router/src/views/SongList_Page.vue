@@ -10,7 +10,6 @@ const emits = defineEmits(['handlePlayNow', 'handlePlayAfter', 'changesize', 'Ch
 const SongListId = defineModel('SongListId');
 
 function handlePlayNow(index) {
-  //console.log(songlistlast.value[index].id);
   emits('handlePlayNow', songlistlast.value.songs[index].id)
 }
 
