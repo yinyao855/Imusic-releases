@@ -13,7 +13,6 @@ const emits = defineEmits(['PlaySongList', 'handlePlayAfter', 'handlePlayNow'])
 
 // v-model
 const favoriteSonglists = defineModel('favoriteSonglists') // 用户收藏的歌单
-const createdSonglists = defineModel('createdSonglists') // 用户创建的歌单
 
 // 点击歌单后需要的属性
 const showCurrentSongList = ref(false); // 是否展示选中的歌单信息页面（默认：否），选择歌单后为true

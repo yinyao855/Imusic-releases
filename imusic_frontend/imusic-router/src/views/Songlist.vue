@@ -14,14 +14,9 @@ const username = defineModel('username')
 // defineEmits(播放歌单全部歌曲，加入播放列表，立即播放，关闭当前页面/回到上一个页面展示创建的歌单)
 const emits = defineEmits(['PlaySongList', 'handlePlayAfter', 'handlePlayNow', 'closeSonglist'])
 
-// props
-// const props = defineProps({
-//   currentUserSongList: Object, // 选中的歌单
-// })
-
 // v-model
 const currentSonglistId = defineModel("currentSonglistId")
-// const CurrentUser_SongListdata = defineModel("createdSonglists"); // 用户创建的所有歌单
+const currentSongId = ref(0);
 
 // EditSonglist需要的属性（用于修改歌单）
 const showEditSonglist = ref(false); // 是否展示修改歌单信息页面（默认：否），点击修改的icon后为true
@@ -30,8 +25,6 @@ const coverImageFileUrl = ref(''); // 存储当前歌单图片url，若修改了
 
 // SongPage需要的属性（用于歌曲详细信息）
 const ShowSong = ref(false); // 是否展示歌曲信息页面（默认：否），点击查看歌曲详细信息后为true
-const SongData = ref([]); // 存储要查看的歌曲信息
-const lyrics = ref([]); // 存储要查看的歌曲的歌词（字符串数组）
 
 // CurrentUser_SongList需要的属性（用于选择将歌曲加入哪个歌单）
 const showCurrentSonglist = ref(false);
@@ -47,12 +40,12 @@ const PlaySongList = (id) => {
   emits('PlaySongList', id);
 }
 
-function handlePlayAfter(index) {
-  emits('handlePlayAfter', currentUserSongList.songs[index].id)
+function handlePlayAfter(id) {
+  emits('handlePlayAfter', id)
 }
 
-function handlePlayNow(index) {
-  emits('handlePlayNow', currentUserSongList.songs[index].id)
+function handlePlayNow(id) {
+  emits('handlePlayNow', id)
 }
 
 const fullsize = () => {
@@ -187,36 +180,6 @@ function deleteFavoriteSonglist() {
       });
 }
 
-// 删除此歌单
-function deleteSonglist() {
-  console.log("delete " + currentSonglistId.value)
-  const instance = axios.create({
-    baseURL: 'http://182.92.100.66:5000',
-    timeout: 5000, // 设置请求超时时间
-    headers: {
-      'Authorization': `Bearer ${token.value}`,
-    }
-  });
-  axios.defaults.withCredentials = true;
-  instance.delete('/songlists/delete/' + currentSonglistId.value)
-      .then(function (response) {
-        if (response.data.success === true) {
-          window.alert("delete success");
-        }
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-}
-
-// 存储歌单图片，进入修改歌单界面（showEditSonglist为true）
-function activeShowEditSonglist(imgUrl) {
-  cover.value = imgUrl;
-  coverImageFileUrl.value = imgUrl;
-  showEditSonglist.value = true;
-}
-
-
 /* 对该歌单中的歌曲进行管理 */
 
 // 存储选择加入歌单的歌曲id，进入选择歌单界面（ShowCreatedSongList为true）
@@ -257,7 +220,7 @@ function deleteFromSongList(index) {
 
 // 存储歌曲信息，进入歌曲详细信息界面（ShowSong为true）
 const activeShowSong = (index) => {
-  SongData.value = currentUserSongList.songs[index];
+  currentSongId.value = currentUserSongList.songs[index].id;
   ShowSong.value = true;
 }
 
@@ -265,25 +228,6 @@ const activeShowSong = (index) => {
 const CloseSong = () => {
   ShowSong.value = false;
 }
-
-// 从歌词url解析歌词，存储到字符串数组中lyrics
-const fetchAndFormatLyrics = async (lrcUrl) => {
-  try {
-    const response = await axios.get(lrcUrl);
-    const lines = response.data.split("\n");
-    const timeRegex = /\[(\d{2}):(\d{2})\.(\d{2})](.*)/;
-
-    lines.forEach((line) => {
-      const match = timeRegex.exec(line);
-      if (match) {
-        const text = match[4].trim();
-        lyrics.value.push(text);
-      }
-    });
-  } catch (error) {
-    console.error('Error fetching lyrics:', error);
-  }
-};
 
 // 判断是否需要展示该标签（若值为空表示没有此标签，不用展示false）
 function show_tag(tag) {
@@ -417,7 +361,7 @@ onMounted(getSonglistData);
           <tbody>
           <tr v-for="(song, index) in currentUserSongList.songs"
               class="text-white transition duration-400 hover:bg-gray-600/40">
-            <td class="pl-3 p-1 hover:cursor-pointer" @click="handlePlayNow(index)">
+            <td class="pl-3 p-1 hover:cursor-pointer" @click="handlePlayNow(currentUserSongList.songs[index].id)">
               <img :src="song.cover" class="img_song inline-block mr-3">
               <p class="inline-block">{{ song.title }}</p>
             </td>
@@ -429,7 +373,7 @@ onMounted(getSonglistData);
                 <button class="font-bold text-xl">···</button>
                 <div class="menu_item font-bold right-7 -bottom-1 bg-gray-600 text-white opacity-90">
                   <!--                    查看歌曲信息(SongPage)-->
-                  <div @click="activeShowSong(index); fetchAndFormatLyrics(song.lyric)"
+                  <div @click="activeShowSong(index)"
                        class="hover:bg-white hover:text-blue-500 hover:cursor-pointer rounded-md py-2 w-44 inline-block">
                     <p>
                       <svg class="ml-5 h-5 w-5 text-gray-900 inline-block align-sub" fill="none" viewBox="0 0 24 24"
@@ -441,7 +385,7 @@ onMounted(getSonglistData);
                     </p>
                   </div>
                   <!--                    加入播放列表-->
-                  <div @click="handlePlayAfter(index)"
+                  <div @click="handlePlayAfter(currentUserSongList.songs[index].id)"
                        class="hover:bg-white hover:text-blue-500 hover:cursor-pointer rounded-md py-2 w-44 inline-block">
                     <p>
                       <svg class="ml-5 h-5 w-5 text-gray-900 inline-block align-sub" width="24" height="24"
@@ -546,10 +490,9 @@ onMounted(getSonglistData);
   <!--  展示歌曲详细信息界面（当ShowSong为true）-->
   <transition name="slide" appear>
     <div class="transition-container-2" v-if="ShowSong">
-      <SongPage v-if="ShowSong" v-model:SongData="SongData" v-model:username="username"
-                v-model:lyrics="lyrics"
-                @CloseSong="CloseSong"
-                v-model:token="token"></SongPage>
+      <SongPage v-if="ShowSong" v-model:currentSongId="currentSongId"
+                @handlePlayNow="handlePlayNow" @CloseSong="CloseSong"
+                v-model:username="username" v-model:token="token"></SongPage>
     </div>
   </transition>
   <!--  展示修改歌单信息界面（当showEditSonglist为true）-->
