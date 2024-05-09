@@ -247,7 +247,7 @@ onMounted(getSonglistData);
       <div class="bg-center bg-cover bg-blur w-full h-full absolute top-0 left-0"
            :style="{backgroundImage: 'url(' + currentUserSongList.cover + ')'}">
       </div>
-<!--      对歌单进行的操作-->
+      <!--      对歌单进行的操作-->
       <div class="px-8 py-3 absolute top-0 w-full">
         <!--    回到选择歌单界面-->
         <buttonchangesize class="" @fullsize="fullsize" v-model:token="token"></buttonchangesize>
@@ -410,48 +410,21 @@ onMounted(getSonglistData);
                       加入歌单
                     </p>
                   </div>
-                  <!--                  <div-->
-                  <!--                      class="hover:bg-white hover:text-blue-500 hover:cursor-pointer rounded-md py-2 w-44 inline-block">-->
-                  <!--                    <p>-->
-                  <!--                      <svg class="ml-5 h-5 w-5 text-gray-900 inline-block align-sub" viewBox="0 0 24 24" fill="none"-->
-                  <!--                           stroke="currentColor"-->
-                  <!--                           stroke-width="2" stroke-linecap="round" stroke-linejoin="round">-->
-                  <!--                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>-->
-                  <!--                        <polyline points="7 10 12 15 17 10"/>-->
-                  <!--                        <line x1="12" y1="15" x2="12" y2="3"/>-->
-                  <!--                      </svg>-->
-                  <!--                      下载-->
-                  <!--                    </p>-->
-                  <!--                  </div>-->
-                  <!--                  <div-->
-                  <!--                      class="hover:bg-white hover:text-blue-500 hover:cursor-pointer rounded-md py-2 w-44 inline-block">-->
-                  <!--                    <p>-->
-                  <!--                      <svg class="ml-5 h-5 w-5 text-gray-900 inline-block align-sub" viewBox="0 0 24 24" fill="none"-->
-                  <!--                           stroke="currentColor"-->
-                  <!--                           stroke-width="2" stroke-linecap="round" stroke-linejoin="round">-->
-                  <!--                        <circle cx="18" cy="5" r="3"/>-->
-                  <!--                        <circle cx="6" cy="12" r="3"/>-->
-                  <!--                        <circle cx="18" cy="19" r="3"/>-->
-                  <!--                        <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/>-->
-                  <!--                        <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>-->
-                  <!--                      </svg>-->
-                  <!--                      分享-->
-                  <!--                    </p>-->
-                  <!--                  </div>-->
-                  <!--                  <div-->
-                  <!--                      class="hover:bg-white hover:text-blue-500 hover:cursor-pointer rounded-md py-2 w-44 inline-block">-->
-                  <!--                    <p>-->
-                  <!--                      <svg class="ml-5 h-5 w-5 text-gray-900 inline-block align-sub" viewBox="0 0 24 24" fill="none"-->
-                  <!--                           stroke="currentColor"-->
-                  <!--                           stroke-width="2" stroke-linecap="round" stroke-linejoin="round">-->
-                  <!--                        <path-->
-                  <!--                            d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>-->
-                  <!--                        <line x1="12" y1="9" x2="12" y2="13"/>-->
-                  <!--                        <line x1="12" y1="17" x2="12.01" y2="17"/>-->
-                  <!--                      </svg>-->
-                  <!--                      举报-->
-                  <!--                    </p>-->
-                  <!--                  </div>-->
+                  <div
+                      class="hover:bg-white hover:text-blue-500 hover:cursor-pointer rounded-md py-2 w-44 inline-block">
+                    <p>
+                      <svg class="ml-5 h-5 w-5 text-gray-900 inline-block align-sub" viewBox="0 0 24 24" fill="none"
+                           stroke="currentColor"
+                           stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="18" cy="5" r="3"/>
+                        <circle cx="6" cy="12" r="3"/>
+                        <circle cx="18" cy="19" r="3"/>
+                        <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/>
+                        <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
+                      </svg>
+                      分享
+                    </p>
+                  </div>
                   <!--                    从歌单中移除-->
                   <div @click="deleteFromSongList(index)"
                        class="hover:bg-white hover:text-blue-500 hover:cursor-pointer rounded-md py-2 w-44 inline-block">
@@ -467,6 +440,20 @@ onMounted(getSonglistData);
                         <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3"/>
                       </svg>
                       从歌单中移除
+                    </p>
+                  </div>
+                  <div
+                      class="hover:bg-white hover:text-blue-500 hover:cursor-pointer rounded-md py-2 w-44 inline-block">
+                    <p>
+                      <svg class="ml-5 h-5 w-5 text-gray-900 inline-block align-sub" viewBox="0 0 24 24" fill="none"
+                           stroke="currentColor"
+                           stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path
+                            d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+                        <line x1="12" y1="9" x2="12" y2="13"/>
+                        <line x1="12" y1="17" x2="12.01" y2="17"/>
+                      </svg>
+                      举报
                     </p>
                   </div>
                 </div>

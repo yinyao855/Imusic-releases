@@ -21,8 +21,9 @@ const isFavoriteSong = ref(false);
 
 // emits
 function handlePlayNow(id) {
-  emits('handlePlayNow',id)
+  emits('handlePlayNow', id)
 }
+
 const fullsize = () => {
   emits('CloseSong');
 }
@@ -152,6 +153,12 @@ const fetchAndFormatLyrics = async (lrcUrl) => {
   }
 };
 
+// 判断是否需要展示该标签（若值为空表示没有此标签，不用展示false）
+function show_tag(tag) {
+  if (tag === 'null' || tag === null) return false;
+  return true;
+}
+
 onMounted(getSongData)
 onMounted(getFavoriteSongs);
 </script>
@@ -164,7 +171,7 @@ onMounted(getFavoriteSongs);
     <div>
       <h1 class="text-4xl text-white text-center my-5">{{ songData.title }}</h1>
     </div>
-    <!--    歌曲基本信息（可以考虑把评论加到这部分）-->
+    <!--    歌曲基本信息-->
     <div class="my-10 mb-52 flex flex-col w-full lg:flex-row">
       <div class="grid flex-grow h-full card rounded-box place-items-center">
         <div class="ml-20">
@@ -239,6 +246,31 @@ onMounted(getFavoriteSongs);
               <div>
                 <h1 class="text-gray-200 inline-block">收藏</h1>
                 <p class="inline-block mx-20 text-gray-500"> {{ songData.like }}</p>
+              </div>
+              <!--            标签-->
+              <div>
+                <div class="inline-block my-3">
+                  <div v-if="show_tag(songData.tag_theme)"
+                       class="text-xs inline-flex items-center font-bold leading-sm px-2 py-1 bg-blue-200 text-blue-700 rounded-full">
+                    {{ songData.tag_theme }}
+                  </div>
+                  <div v-if="show_tag(songData.tag_scene)"
+                       class="ml-1 text-xs inline-flex items-center font-bold leading-sm px-2 py-1 bg-green-200 text-green-700 rounded-full">
+                    {{ songData.tag_scene }}
+                  </div>
+                  <div v-if="show_tag(songData.tag_mood)"
+                       class="ml-1 text-xs inline-flex items-center font-bold leading-sm px-2 py-1 bg-red-200 text-red-700 rounded-full">
+                    {{ songData.tag_mood }}
+                  </div>
+                  <div v-if="show_tag(songData.tag_style)"
+                       class="ml-1 text-xs inline-flex items-center font-bold leading-sm px-2 py-1 bg-orange-200 text-orange-700 rounded-full">
+                    {{ songData.tag_style }}
+                  </div>
+                  <div v-if="show_tag(songData.tag_language)"
+                       class="ml-1 text-xs inline-flex items-center font-bold leading-sm px-2 py-1 bg-purple-200 text-purple-700 rounded-full">
+                    {{ songData.tag_language }}
+                  </div>
+                </div>
               </div>
             </div>
             <div>
