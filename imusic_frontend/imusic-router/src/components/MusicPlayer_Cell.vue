@@ -19,6 +19,7 @@ const updateTime = () => {
 
 const initCurrentMusic=(music)=>{
   currentMusic.value=music;
+  console.log(currentMusic.value);
 }
 
 function handleModeChange() {
@@ -259,6 +260,7 @@ defineExpose({handlePlayNow,handlePlayAfter,initCurrentMusic})
       :name="currentMusic.title"
       :singer="currentMusic.singer"
       :cover="currentMusic.cover"
+      :id="currentMusic.id"
       @fullsize="changeSize"
       @back="backSong"
       @next="nextSong"
@@ -291,6 +293,7 @@ defineExpose({handlePlayNow,handlePlayAfter,initCurrentMusic})
           :name="currentMusic.title"
           :singer="currentMusic.singer"
           :cover="currentMusic.cover"
+          :id="currentMusic.id"
           v-model:lyric="lyric"
           @update="updateTime"
           :sty="currentMusic.gradient"

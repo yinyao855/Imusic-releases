@@ -1,6 +1,11 @@
 <template>
+  <transition name="vx">
+    <div class="w-full absolute top-0 left-1/2 transform -translate-x-1/2" v-if="WarningShow">
+      <Warning :message="message" @CloseWarning="CloseWarning" class="mx-auto" v-model:token="token"></Warning>
+    </div>
+  </transition>
   <div class="outcontainer" :style="sty">
-    <div class="col1">
+    <div class="col1  duration-300">
       <div class="button_div">
         <buttonchangesize style="display: block" @fullsize="changesize" v-model:token="token"></buttonchangesize>
       </div>
@@ -58,6 +63,10 @@
               <path d="M11.5 8V0L23 8L11.5 16V8ZM0 0L11.5 8L0 16V0Z" fill="#fff"></path>
             </svg>
           </button>
+          <button class="card__btn" @click="comment">
+            <svg t="1715182117471" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2840" width="30" height="24"><path d="M622.56056 464.834794c0 27.928073 22.73684 50.64854 50.664913 50.64854 27.956725 0 50.693566-22.720468 50.693566-50.64854 0-27.928073-22.73684-50.66389-50.693566-50.66389C645.2974 414.171927 622.56056 436.907745 622.56056 464.834794" fill="#231F20" p-id="2841"></path><path d="M931.254178 211.459063c0-40.637536-33.05893-73.698512-73.728188-73.698512L166.471964 137.76055c-40.637536 0-73.727165 33.059953-73.727165 73.698512l0 506.796488c0 40.637536 33.088606 73.696466 73.727165 73.696466l251.16846 0 94.343715 94.28641 94.315062-94.28641 251.226788 0c40.669258 0 73.728188-33.05893 73.728188-73.696466l0-82.560344-0.089028-1.282203L931.254178 211.459063zM875.96699 695.220928c0 22.88522-18.558681 41.444924-41.443901 41.444924L579.446623 736.665853l-67.462484 67.490114-67.430762-67.490114L189.506587 736.665853c-22.88522 0-41.4746-18.559705-41.4746-41.444924L148.031986 234.493685c0-22.88522 18.58938-41.488927 41.4746-41.488927l645.01548 0c22.88522 0 41.443901 18.603707 41.443901 41.488927l0 396.579247 0 36.161594L875.965967 695.220928z" fill="#231F20" p-id="2842"></path><path d="M461.321272 464.834794c0 27.928073 22.735817 50.64854 50.662867 50.64854 27.929096 0 50.66389-22.720468 50.66389-50.64854 0-27.928073-22.734794-50.66389-50.66389-50.66389C484.057089 414.171927 461.321272 436.907745 461.321272 464.834794" fill="#231F20" p-id="2843"></path><path d="M300.083008 464.834794c0 27.928073 22.735817 50.64854 50.66389 50.64854 27.927049 0 50.662867-22.720468 50.662867-50.64854 0-27.928073-22.735817-50.66389-50.662867-50.66389C322.817802 414.171927 300.083008 436.907745 300.083008 464.834794" fill="#231F20" p-id="2844"></path>
+            </svg>
+          </button>
           <button class="card__btn">
             <svg fill="#fff" height="20" viewBox="0 0 20 20" width="20" xmlns="http://www.w3.org/2000/svg"
             >
@@ -75,9 +84,7 @@
         </div>
       </div>
     </div>
-    <div class="col2">
-
-
+    <div class="col2" v-if="showComment===false">
       <div style="width:100%;  display:flex; align-items: center; justify-content: center; margin: 0;"
            class="lyricclass">
         <ul style="width:100%;">
@@ -89,15 +96,20 @@
         </ul>
       </div>
     </div>
+    <div class="col2 bg-transparent" v-if="showComment===true">
+    <Transition name="slide-fade">
+      <Comment :token="token" :id="songID" v-model:showComment="showComment" v-model:songID="songID" v-model:WarningShow="WarningShow" v-model:message="message"></Comment>
+    </Transition>
+    </div>
   </div>
-
-
 </template>
 
 <script setup>
 import {ref, defineModel, watch} from 'vue';
 import buttonchangesize from '../components/buttonchangesize.vue'
+import Comment from '../components/Comment.vue'
 import {defineEmits} from 'vue';
+import Warning from "@/components/Warning.vue";
 
 const emit = defineEmits(['fullsize', 'togglePlay', 'update', 'back', 'next']);
 const changesize = () => {
@@ -109,6 +121,7 @@ const props = defineProps({
   singer: String,
   name: String,
   sty: String,
+  id: String,
 })
 
 const isPlaying = defineModel("isPlaying");
@@ -143,10 +156,12 @@ const seek = () => {
 
 const back = () => {
   emit('back');
+  showComment.value=false;
 }
 
 const next = () => {
   emit('next');
+  showComment.value=false;
 }
 
 const restart = () => {
@@ -189,10 +204,21 @@ function displayLyrics(lyrics, currentTime) {
     }
   }
 }
-
+const showComment=defineModel('showComment');
+let songID="";
+const comment=()=>{
+  showComment.value=true;
+  songID=props.id;
+  console.log(songID);
+}
 watch(currentduration, () => {
   displayLyrics(lyric.value, currentduration.value);
 });
+const WarningShow = ref(false);
+const CloseWarning = () => {
+  WarningShow.value = false;
+}
+const message = ref('');
 </script>
 
 
@@ -269,4 +295,15 @@ watch(currentduration, () => {
   border-radius: 10px;
   background-color: rgb(255, 255, 255, 0.2);
 }
+.slide-fade-enter-active {
+  transition: all .3s ease;
+}
+.slide-fade-leave-active {
+  transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+}
+.slide-fade-enter, .slide-fade-leave-to {
+transform: translateX(10px);
+opacity: 0;
+}
+
 </style>

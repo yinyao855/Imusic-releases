@@ -3,6 +3,8 @@ import {computed, ref, defineModel} from "vue";
 import UploadSong from "@/views/UploadSong.vue";
 import axios from "axios";
 import EditSong from "@/views/EditSong.vue";
+import Song from "@/components/LikeSong.vue";
+import SongList from "@/components/LikeSongList.vue";
 
 const NaviMode = ref('1');
 const upload = ref('0');
@@ -90,7 +92,7 @@ function closeEditSong() {
   <div v-if="!showEditSong">
     <div class="w-full h-14 pl-6">
       <div :class="[NaviClass1, 'text-transition']" @click="changeNaviMode(1)" style="line-height: 56px">我的创作</div>
-      <div :class="[NaviClass2, 'text-transition']" @click="changeNaviMode(2)" style="line-height: 56px">创意空间</div>
+      <div :class="[NaviClass2, 'text-transition']" @click="changeNaviMode(2)" style="line-height: 56px">我的喜欢</div>
       <Search v-model:token="token"></Search>
     </div>
     <div v-if="NaviMode==='1'">
@@ -202,6 +204,16 @@ function closeEditSong() {
         <UploadSong @uploadSongSuccess="uploadSongSuccess" v-model:HasLogin="HasLogin"
                     v-model:username="username" v-model:token="token"></UploadSong>
       </div>
+    </div>
+  </div>
+  <div v-if="NaviMode==='2'">
+    <div class="">
+      <div class="text-2xl mx-4 text-white font-serif font-bold my-4">我喜欢的歌曲</div>
+      <Song v-model:token="token" v-model:username="username" v-model:HasLogin="HasLogin"></Song>
+    </div>
+    <div class="">
+      <div class="text-2xl mx-4 text-white font-serif font-bold my-4">我喜欢的歌单</div>
+      <SongList v-model:token="token" v-model:username="username" v-model:HasLogin="HasLogin"></SongList>
     </div>
   </div>
 
