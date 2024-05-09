@@ -1,8 +1,8 @@
 <script setup>
 import { ref, watch} from "vue";
 import axios from "axios";
-import MusicPlayerFullView from "@/views/MusicPlayerFullView.vue";
-import MusicPlayerView from "@/views/MusicPlayerView.vue";
+import MusicPlayerFullView from "@/views/MusicPlayer/MusicPlayerFullView.vue";
+import MusicPlayerView from "@/views/MusicPlayer/MusicPlayerView.vue";
 
 const props=defineProps(['HasLogin']);
 const updateTime = () => {

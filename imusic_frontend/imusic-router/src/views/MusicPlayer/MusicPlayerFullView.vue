@@ -87,7 +87,7 @@
     <div class="col2" v-if="showComment===false">
       <div style="width:100%;  display:flex; align-items: center; justify-content: center; margin: 0;"
            class="lyricclass">
-        <ul style="width:100%;">
+        <ul class="w-full overflow-hidden h-full">
     <span class="box" v-for="(item, index) in lyricsshow" :key="index"
           :class="{ 'highlighted': item.special ,'nothighlighted' : !item.special}">
       {{ item.text }}
@@ -96,7 +96,7 @@
         </ul>
       </div>
     </div>
-    <div class="col2 bg-transparent" v-if="showComment===true">
+    <div class="col2 bg-transparent overflow-hidden h-full" v-if="showComment===true">
     <Transition name="slide-fade">
       <Comment :token="token" :id="songID" v-model:showComment="showComment" v-model:songID="songID" v-model:WarningShow="WarningShow" v-model:message="message"></Comment>
     </Transition>
@@ -106,8 +106,8 @@
 
 <script setup>
 import {ref, defineModel, watch} from 'vue';
-import buttonchangesize from '../components/buttonchangesize.vue'
-import Comment from '../components/Comment.vue'
+import buttonchangesize from '../../components/buttonchangesize.vue'
+import Comment from '../../components/Comment.vue'
 import {defineEmits} from 'vue';
 import Warning from "@/components/Warning.vue";
 
@@ -223,7 +223,7 @@ const message = ref('');
 
 
 <style scoped>
-@import url('../css/Music_Play.css');
+@import url('../../css/Music_Play.css');
 
 .outcontainer {
   display: grid;
