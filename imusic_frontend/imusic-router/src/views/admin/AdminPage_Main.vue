@@ -61,10 +61,11 @@ const Get_Admin_SongList_Data = () => {
   axios.defaults.withCredentials = true;
   instance.get('/songlists/alldata')
       .then(response => {
+        console.log(response.data.data);
         SongLists.value = response.data.data;
       })
       .then(error => {
-        console.log(error.response.data);
+        console.log('songlists/alldata/error');
       })
 }
 

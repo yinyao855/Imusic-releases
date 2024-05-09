@@ -109,7 +109,7 @@ const deletelike = (index) => {
                 fill="#BF4C4C"></path>
           </svg>
         </td>
-        <td>
+        <td @click="handlePlayNow(index);">
           <div class="flex items-center gap-3">
             <div class="avatar">
               <div class="mask mask-squircle w-12 h-12">
@@ -123,11 +123,11 @@ const deletelike = (index) => {
             </div>
           </div>
         </td>
-        <td>
+        <td @click="handlePlayNow(index);">
           {{ item.singer }}
         </td>
-        <td>{{ item.uploader }}</td>
-        <td>{{ item.duration }}</td>
+        <td @click="handlePlayNow(index);">{{ item.uploader }}</td>
+        <td @click="handlePlayNow(index);">{{ item.duration }}</td>
         <th>
           <div
               class="dropdown dropdown-left dropdown-bottom my-auto tooltip transition duration-400 hover:bg-gray-600/40 bg-zinc-900 btn btn-sm border-none z-50"

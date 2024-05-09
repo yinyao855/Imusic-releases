@@ -1,8 +1,8 @@
 <script setup>
 // 展示用户创建的歌单主界面
 import {defineEmits, defineModel, ref} from "vue";
-import FavoriteSonglist from "@/views/FavoriteSonglist.vue";
 import axios from "axios";
+import Songlist from "@/views/Songlist.vue";
 
 // global variables
 const token = defineModel('token')
@@ -13,11 +13,11 @@ const emits = defineEmits(['PlaySongList', 'handlePlayAfter', 'handlePlayNow'])
 
 // v-model
 const favoriteSonglists = defineModel('favoriteSonglists') // 用户收藏的歌单
-const createdSonglists = defineModel('createdSonglists') // 用户创建的歌单
 
 // 点击歌单后需要的属性
 const showCurrentSongList = ref(false); // 是否展示选中的歌单信息页面（默认：否），选择歌单后为true
 const currentUserSongList = ref([]); // 选中的歌单
+const currentSonglistId = ref(0);
 
 // emits
 const PlaySongList = (id) => {
@@ -52,6 +52,7 @@ function activeSonglist(index) {
         if (response.data.success === true) {
           showCurrentSongList.value = true;
           currentUserSongList.value = response.data.data; // 保存选中的歌单
+          currentSonglistId.value = currentUserSongList.value.id;
         }
       })
       .catch(function (error) {
@@ -85,11 +86,11 @@ function activeSonglist(index) {
       </div>
     </div>
   </div>
-<!--    展示选中的歌单信息页面（当showCurrentSongList==true）-->
-  <FavoriteSonglist :currentUserSongList="currentUserSongList" v-if="showCurrentSongList"
-                   @PlaySongList="PlaySongList" @handlePlayAfter="handlePlayAfter" @handlePlayNow="handlePlayNow"
-                   @closeSonglist="closeSonglist" v-model:createdSonglists="createdSonglists"
-                   v-model:token="token" v-model:username="username"></FavoriteSonglist>
+  <!--    展示选中的歌单信息页面（当showCurrentSongList==true）-->
+  <Songlist v-model:currentSonglistId="currentSonglistId" v-if="showCurrentSongList"
+            @PlaySongList="PlaySongList" @handlePlayAfter="handlePlayAfter"
+            @handlePlayNow="handlePlayNow" @closeSonglist="closeSonglist"
+            v-model:token="token" v-model:username="username"></Songlist>
 </template>
 
 <style scoped>

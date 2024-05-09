@@ -1,5 +1,5 @@
 <script setup>
-import {onMounted, ref, watch} from "vue";
+import {computed, onMounted, ref, watch} from "vue";
 import axios from "axios";
 import CurrentUser_SongList from "@/components/CurrentUser_SongList.vue";
 
@@ -13,7 +13,169 @@ const tag_style = ref('默认');
 const Songs = ref([]);
 const username = defineModel('username');
 const SongLists = ref([]);
+const mode1=ref(1);
+const mode2=ref(1);
+const mode3=ref(1);
+const mode4=ref(1);
+const mode5=ref(1);
 
+const Class1_1 = computed(() => ({
+  'w-1/3 text-white hover:text-blue-400 text-xs block mb-2': mode1.value !== 1,
+  'w-1/3 text-xs block mb-2 text-blue-400': mode1.value === 1,
+}));
+const Class1_2 = computed(() => ({
+  'w-1/3 text-white hover:text-blue-400 text-xs block mb-2': mode1.value !== 2,
+  'w-1/3 text-xs block mb-2 text-blue-400': mode1.value === 2,
+}));
+const Class1_3 = computed(() => ({
+  'w-1/3 text-white hover:text-blue-400 text-xs block mb-2': mode1.value !== 3,
+  'w-1/3 text-xs block mb-2 text-blue-400': mode1.value === 3,
+}));
+const Class1_4 = computed(() => ({
+  'w-1/3 text-white hover:text-blue-400 text-xs block mb-2': mode1.value !== 4,
+  'w-1/3 text-xs block mb-2 text-blue-400': mode1.value === 4,
+}));
+const Class1_5 = computed(() => ({
+  'w-1/3 text-white hover:text-blue-400 text-xs block mb-2': mode1.value !== 5,
+  'w-1/3 text-xs block mb-2 text-blue-400': mode1.value === 5,
+}));
+const Class1_6 = computed(() => ({
+  'w-1/3 text-white hover:text-blue-400 text-xs block mb-2': mode1.value !== 6,
+  'w-1/3 text-xs block mb-2 text-blue-400': mode1.value === 6,
+}));
+
+
+
+const Class2_1 = computed(() => ({
+  'w-1/3 text-white hover:text-blue-400 text-xs block mb-2': mode2.value !== 1,
+  'w-1/3 text-xs block mb-2 text-blue-400': mode2.value === 1,
+}));
+const Class2_2 = computed(() => ({
+  'w-1/3 text-white hover:text-blue-400 text-xs block mb-2': mode2.value !== 2,
+  'w-1/3 text-xs block mb-2 text-blue-400': mode2.value === 2,
+}));
+const Class2_3 = computed(() => ({
+  'w-1/3 text-white hover:text-blue-400 text-xs block mb-2': mode2.value !== 3,
+  'w-1/3 text-xs block mb-2 text-blue-400': mode2.value === 3,
+}));
+const Class2_4 = computed(() => ({
+  'w-1/3 text-white hover:text-blue-400 text-xs block mb-2': mode2.value !== 4,
+  'w-1/3 text-xs block mb-2 text-blue-400': mode2.value === 4,
+}));
+const Class2_5 = computed(() => ({
+  'w-1/3 text-white hover:text-blue-400 text-xs block mb-2': mode2.value !== 5,
+  'w-1/3 text-xs block mb-2 text-blue-400': mode2.value === 5,
+}));
+const Class2_6 = computed(() => ({
+  'w-1/3 text-white hover:text-blue-400 text-xs block mb-2': mode2.value !== 6,
+  'w-1/3 text-xs block mb-2 text-blue-400': mode2.value === 6,
+}));
+
+
+const Class3_1 = computed(() => ({
+  'w-1/3 text-white hover:text-blue-400 text-xs block mb-2': mode3.value !== 1,
+  'w-1/3 text-xs block mb-2 text-blue-400': mode3.value === 1,
+}));
+const Class3_2 = computed(() => ({
+  'w-1/3 text-white hover:text-blue-400 text-xs block mb-2': mode3.value !== 2,
+  'w-1/3 text-xs block mb-2 text-blue-400': mode3.value === 2,
+}));
+const Class3_3 = computed(() => ({
+  'w-1/3 text-white hover:text-blue-400 text-xs block mb-2': mode3.value !== 3,
+  'w-1/3 text-xs block mb-2 text-blue-400': mode3.value === 3,
+}));
+const Class3_4 = computed(() => ({
+  'w-1/3 text-white hover:text-blue-400 text-xs block mb-2': mode3.value !== 4,
+  'w-1/3 text-xs block mb-2 text-blue-400': mode3.value === 4,
+}));
+const Class3_5 = computed(() => ({
+  'w-1/3 text-white hover:text-blue-400 text-xs block mb-2': mode3.value !== 5,
+  'w-1/3 text-xs block mb-2 text-blue-400': mode3.value === 5,
+}));
+const Class3_6 = computed(() => ({
+  'w-1/3 text-white hover:text-blue-400 text-xs block mb-2': mode3.value !== 6,
+  'w-1/3 text-xs block mb-2 text-blue-400': mode3.value === 6,
+}));
+
+
+const Class4_1 = computed(() => ({
+  'w-1/3 text-white hover:text-blue-400 text-xs block mb-2': mode4.value !== 1,
+  'w-1/3 text-xs block mb-2 text-blue-400': mode4.value === 1,
+}));
+const Class4_2 = computed(() => ({
+  'w-1/3 text-white hover:text-blue-400 text-xs block mb-2': mode4.value !== 2,
+  'w-1/3 text-xs block mb-2 text-blue-400': mode4.value === 2,
+}));
+const Class4_3 = computed(() => ({
+  'w-1/3 text-white hover:text-blue-400 text-xs block mb-2': mode4.value !== 3,
+  'w-1/3 text-xs block mb-2 text-blue-400': mode4.value === 3,
+}));
+const Class4_4 = computed(() => ({
+  'w-1/3 text-white hover:text-blue-400 text-xs block mb-2': mode4.value !== 4,
+  'w-1/3 text-xs block mb-2 text-blue-400': mode4.value === 4,
+}));
+const Class4_5 = computed(() => ({
+  'w-1/3 text-white hover:text-blue-400 text-xs block mb-2': mode4.value !== 5,
+  'w-1/3 text-xs block mb-2 text-blue-400': mode4.value === 5,
+}));
+const Class4_6 = computed(() => ({
+  'w-1/3 text-white hover:text-blue-400 text-xs block mb-2': mode4.value !== 6,
+  'w-1/3 text-xs block mb-2 text-blue-400': mode4.value === 6,
+}));
+
+
+const Class5_1 = computed(() => ({
+  'w-1/3 text-white hover:text-blue-400 text-xs block mb-2': mode5.value !== 1,
+  'w-1/3 text-xs block mb-2 text-blue-400': mode5.value === 1,
+}));
+const Class5_2 = computed(() => ({
+  'w-1/3 text-white hover:text-blue-400 text-xs block mb-2': mode5.value !== 2,
+  'w-1/3 text-xs block mb-2 text-blue-400': mode5.value === 2,
+}));
+const Class5_3 = computed(() => ({
+  'w-1/3 text-white hover:text-blue-400 text-xs block mb-2': mode5.value !== 3,
+  'w-1/3 text-xs block mb-2 text-blue-400': mode5.value === 3,
+}));
+const Class5_4 = computed(() => ({
+  'w-1/3 text-white hover:text-blue-400 text-xs block mb-2': mode5.value !== 4,
+  'w-1/3 text-xs block mb-2 text-blue-400': mode5.value === 4,
+}));
+const Class5_5 = computed(() => ({
+  'w-1/3 text-white hover:text-blue-400 text-xs block mb-2': mode5.value !== 5,
+  'w-1/3 text-xs block mb-2 text-blue-400': mode5.value === 5,
+}));
+const Class5_6 = computed(() => ({
+  'w-1/3 text-white hover:text-blue-400 text-xs block mb-2': mode5.value !== 6,
+  'w-1/3 text-xs block mb-2 text-blue-400': mode5.value === 6,
+}));
+
+
+
+const HandleStyle=(event,value)=>{
+  mode5.value=value;
+  tag_style.value=event.target.textContent.trim();
+}
+
+const HandleMood=(event,value)=>{
+  mode4.value=value;
+  tag_mood.value=event.target.textContent.trim();
+}
+
+const HandleLanguage=(event,value)=>{
+  mode1.value=value;
+  tag_language.value=event.target.textContent.trim();
+}
+
+const HandleTheme=(event,value)=>{
+  mode2.value=value;
+  console.log(mode2.value);
+  tag_theme.value=event.target.textContent.trim();
+}
+
+const HandleScene=(event,value)=>{
+  mode3.value=value;
+  tag_scene.value=event.target.textContent.trim();
+}
 const GetMySongList = () => {
   console.log(username.value);
   const instance = axios.create({
@@ -185,52 +347,66 @@ onMounted(GetInitSongs);
                             @CloseCurrentUser_SongList="CloseCurrentUser_SongList"></CurrentUser_SongList>
     </div>
   </transition>
-  <div class="w-full h-full flex" v-if="!ShowCurrentUser_SongList">
-    <div class="h-1/6 mx-auto py-4">
-      <select class="select w-40 mx-2 text-white" v-model="tag_language">
-        <option>默认</option>
-        <option>英语</option>
-        <option>日语</option>
-        <option>粤语</option>
-        <option>国语</option>
-        <option>韩语</option>
-      </select>
-      <select class="select w-40 mx-2 text-white" v-model="tag_theme">
-        <option>默认</option>
-        <option>背景音乐</option>
-        <option>经典老歌</option>
-        <option>KTV金曲</option>
-        <option>游戏配乐</option>
-        <option>电影配乐</option>
-      </select>
-      <select class="select w-40 mx-2 text-white" v-model="tag_scene">
-        <option>默认</option>
-        <option>咖啡馆</option>
-        <option>运动</option>
-        <option>睡前</option>
-        <option>旅行</option>
-        <option>派对</option>
-      </select>
-      <select class="select w-40 mx-2 text-white" v-model="tag_mood">
-        <option>默认</option>
-        <option>伤感</option>
-        <option>安静</option>
-        <option>思念</option>
-        <option>宣泄</option>
-        <option>开心</option>
-      </select>
-      <select class="select w-40 mx-2 text-white" v-model="tag_style">
-        <option>默认</option>
-        <option>摇滚</option>
-        <option>民谣</option>
-        <option>轻音乐</option>
-        <option>电音</option>
-        <option>流行</option>
-      </select>
+  <div class="flex w-full h-full px-10" v-if="!ShowCurrentUser_SongList">
+    <div class="w-1/5 border-r border-gray-400 px-4 pb-6">
+      <div class="text-sm pb-4">语言</div>
+      <div class="flex flex-wrap ml-6">
+        <span :class="Class1_1" @click="HandleLanguage($event,1)">默认</span>
+        <span :class="Class1_2" @click="HandleLanguage($event,2)">英语</span>
+        <span :class="Class1_3" @click="HandleLanguage($event,3)">日语</span>
+        <span :class="Class1_4" @click="HandleLanguage($event,4)">粤语</span>
+        <span :class="Class1_5" @click="HandleLanguage($event,5)">国语</span>
+        <span :class="Class1_6" @click="HandleLanguage($event,6)">韩语</span>
+      </div>
+    </div>
+    <div class="w-1/5 border-r border-gray-400 pl-4">
+      <div class="text-sm pb-4">主题</div>
+      <div class="flex flex-wrap ml-6">
+        <span :class="Class2_1" @click="HandleTheme($event,1)">默认</span>
+        <span :class="Class2_2" @click="HandleTheme($event,2)">背景音乐</span>
+        <span :class="Class2_3" @click="HandleTheme($event,3)">经典老歌</span>
+        <span :class="Class2_4" @click="HandleTheme($event,4)">KTV金曲</span>
+        <span :class="Class2_5" @click="HandleTheme($event,5)">游戏配乐</span>
+        <span :class="Class2_6" @click="HandleTheme($event,6)">电影配乐</span>
+      </div>
+    </div>
+    <div class="w-1/5 border-r border-gray-400 pl-4">
+      <div class="text-sm pb-4">场景</div>
+      <div class="flex flex-wrap ml-6">
+        <span :class="Class3_1" @click="HandleScene($event,1)">默认</span>
+        <span :class="Class3_2" @click="HandleScene($event,2)">咖啡馆</span>
+        <span :class="Class3_3" @click="HandleScene($event,3)">运动</span>
+        <span :class="Class3_4" @click="HandleScene($event,4)">睡前</span>
+        <span :class="Class3_5" @click="HandleScene($event,5)">旅行</span>
+        <span :class="Class3_6" @click="HandleScene($event,6)">派对</span>
+      </div>
+    </div>
+    <div class="w-1/5 border-r border-gray-400 pl-4">
+      <div class="text-sm pb-4">心情</div>
+      <div class="flex flex-wrap ml-6">
+        <span :class="Class4_1" @click="HandleMood($event,1)">默认</span>
+        <span :class="Class4_2" @click="HandleMood($event,2)">伤感</span>
+        <span :class="Class4_3" @click="HandleMood($event,3)">安静</span>
+        <span :class="Class4_4" @click="HandleMood($event,4)">思念</span>
+        <span :class="Class4_5" @click="HandleMood($event,5)">宣泄</span>
+        <span :class="Class4_6" @click="HandleMood($event,6)">开心</span>
+      </div>
+    </div>
+    <div class="w-1/5 pl-4">
+      <div class="text-sm pb-4">风格</div>
+      <div class="flex flex-wrap ml-6">
+        <span :class="Class5_1" @click="HandleStyle($event,1)">默认</span>
+        <span :class="Class5_2" @click="HandleStyle($event,2)">摇滚</span>
+        <span :class="Class5_3" @click="HandleStyle($event,3)">民谣</span>
+        <span :class="Class5_4" @click="HandleStyle($event,4)">轻音乐</span>
+        <span :class="Class5_5" @click="HandleStyle($event,5)">电音</span>
+        <span :class="Class5_6" @click="HandleStyle($event,6)">流行</span>
+      </div>
     </div>
   </div>
-  <hr class="w-full border border-gray-500 my-2" v-if="!ShowCurrentUser_SongList">
+<!--  <hr class="w-full border border-gray-500 my-2" v-if="!ShowCurrentUser_SongList">-->
   <div class="overflow-x-auto overflow-y-hidden mx-6" v-if="!ShowCurrentUser_SongList">
+    <div class="text-2xl text-white my-5">推荐歌曲</div>
     <table class="table mb-32">
       <thead>
       <tr>
@@ -245,7 +421,7 @@ onMounted(GetInitSongs);
       <!-- row 1 -->
       <tr class="text-white transition duration-400 hover:bg-gray-600/40 rounded-md"
           v-for="(item, index) in Songs" :key="index">
-        <td>
+        <td @click="handlePlayNow(index);">
           <div class="flex items-center gap-3">
             <div class="avatar">
               <div class="mask mask-squircle w-12 h-12">
@@ -259,11 +435,11 @@ onMounted(GetInitSongs);
             </div>
           </div>
         </td>
-        <td>
+        <td @click="handlePlayNow(index);">
           {{ item.singer }}
         </td>
-        <td>{{ item.uploader }}</td>
-        <td>{{ item.duration }}</td>
+        <td @click="handlePlayNow(index);">{{ item.uploader }}</td>
+        <td @click="handlePlayNow(index);">{{ item.duration }}</td>
         <th>
           <div
               class="dropdown dropdown-left dropdown-top my-auto tooltip transition duration-400 hover:bg-gray-600/40 bg-zinc-900 btn btn-sm border-none"

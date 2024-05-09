@@ -17,6 +17,7 @@ const createdSonglists = defineModel('createdSonglists') // 用户创建的歌�
 // 点击歌单后需要的属性
 const showCurrentSongList = ref(false); // 是否展示选中的歌单信息页面（默认：否），选择歌单后为true
 const currentUserSongList = ref([]); // 选中的歌单
+const currentSonglistId = ref(0);
 
 // emits
 const PlaySongList = (id) => {
@@ -51,6 +52,7 @@ function activeSonglist(index) {
         if (response.data.success === true) {
           showCurrentSongList.value = true;
           currentUserSongList.value = response.data.data; // 保存选中的歌单
+          currentSonglistId.value = currentUserSongList.value.id;
         }
       })
       .catch(function (error) {
@@ -85,9 +87,9 @@ function activeSonglist(index) {
     </div>
   </div>
   <!--  展示选中的歌单信息页面（当showCurrentSongList==true）-->
-  <CreatedSonglist :currentUserSongList="currentUserSongList" v-if="showCurrentSongList"
-                   @PlaySongList="PlaySongList" @handlePlayAfter="handlePlayAfter" @handlePlayNow="handlePlayNow"
-                   @closeSonglist="closeSonglist" v-model:createdSonglists="createdSonglists"
+  <CreatedSonglist v-model:currentSonglistId="currentSonglistId" v-if="showCurrentSongList"
+                   @PlaySongList="PlaySongList" @handlePlayAfter="handlePlayAfter"
+                   @handlePlayNow="handlePlayNow" @closeSonglist="closeSonglist"
                    v-model:token="token" v-model:username="username"></CreatedSonglist>
 </template>
 

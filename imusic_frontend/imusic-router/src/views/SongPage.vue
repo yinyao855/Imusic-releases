@@ -1,6 +1,6 @@
 <script setup>
 // 展示歌曲详细信息界面
-import {defineModel, onMounted, ref} from "vue";
+import {defineModel, defineEmits, onMounted, ref} from "vue";
 import buttonchangesize from "@/components/buttonchangesize.vue";
 import axios from "axios";
 
@@ -9,15 +9,21 @@ const token = defineModel('token')
 const username = defineModel('username')
 
 // defineEmits(关闭当前页面/回到上一个页面展示歌单)
-const emits = defineEmits(['CloseSong'])
+const emits = defineEmits(['handlePlayNow', 'CloseSong'])
 
 // v-model
-const songData = defineModel('SongData') // 存储歌曲的详细信息
-const lyrics = defineModel('lyrics') // 存储歌词（字符串数组）
+let songData;
+const currentSongId = defineModel("currentSongId")
+const lyrics = ref([]) // 存储歌词（字符串数组）
+const showCurrentSong = ref(false);
 
 const isFavoriteSong = ref(false);
 
 // emits
+function handlePlayNow(id) {
+  emits('handlePlayNow', id)
+}
+
 const fullsize = () => {
   emits('CloseSong');
 }
@@ -46,7 +52,7 @@ function getFavoriteSongs() {
         if (response.data.success === true) {
           let length = response.data.data.length;
           for (let i = 0; i < length; ++i) {
-            if (response.data.data[i].id === songData.value.id) {
+            if (response.data.data[i].id === currentSongId.value) {
               isFavoriteSong.value = true;
             }
           }
@@ -68,12 +74,11 @@ function addFavoriteSong() {
   });
   axios.defaults.withCredentials = true;
   const formData = new FormData();
-  formData.append('song_id', songData.value.id);
+  formData.append('song_id', currentSongId.value);
   instance.post('/like/songs/add', formData)
       .then(function (response) {
         if (response.data.success === true) {
           isFavoriteSong.value = true;
-          window.alert("success");
         }
       })
       .catch(function (error) {
@@ -92,12 +97,11 @@ function deleteFavoriteSong() {
   });
   axios.defaults.withCredentials = true;
   const formData = new FormData();
-  formData.append('song_id', songData.value.id);
+  formData.append('song_id', currentSongId.value);
   instance.post('/like/songs/delete', formData)
       .then(function (response) {
         if (response.data.success === true) {
           isFavoriteSong.value = false;
-          window.alert("success");
         }
       })
       .catch(function (error) {
@@ -105,6 +109,55 @@ function deleteFavoriteSong() {
       });
 }
 
+// 获取歌曲详细信息
+function getSongData() {
+  const instance = axios.create({
+    baseURL: 'http://182.92.100.66:5000',
+    timeout: 5000, // 设置请求超时时间
+    headers: {
+      'Authorization': `Bearer ${token.value}`,
+    }
+  });
+  axios.defaults.withCredentials = true;
+  instance.get("/songs/info/" + currentSongId.value)
+      .then(function (response) {
+        if (response.data.success === true) {
+          songData = response.data.data;
+          fetchAndFormatLyrics(songData.lyric)
+          showCurrentSong.value = true;
+        }
+      })
+      .catch(function (error) {
+        console.log(error.response.data);
+      })
+}
+
+// 从歌词url解析歌词，存储到字符串数组中lyrics
+const fetchAndFormatLyrics = async (lrcUrl) => {
+  try {
+    const response = await axios.get(lrcUrl);
+    const lines = response.data.split("\n");
+    const timeRegex = /\[(\d{2}):(\d{2})\.(\d{2})](.*)/;
+
+    lines.forEach((line) => {
+      const match = timeRegex.exec(line);
+      if (match) {
+        const text = match[4].trim();
+        lyrics.value.push(text);
+      }
+    });
+  } catch (error) {
+    console.error('Error fetching lyrics:', error);
+  }
+};
+
+// 判断是否需要展示该标签（若值为空表示没有此标签，不用展示false）
+function show_tag(tag) {
+  if (tag === 'null' || tag === null) return false;
+  return true;
+}
+
+onMounted(getSongData)
 onMounted(getFavoriteSongs);
 </script>
 
@@ -112,20 +165,45 @@ onMounted(getFavoriteSongs);
   <!--  回到歌单界面-->
   <buttonchangesize class="left-4 top-4" @fullsize="fullsize" v-model:token="token"></buttonchangesize>
   <!--  歌曲详细信息新界面-->
-  <div>
+  <div v-if="showCurrentSong">
     <div>
       <h1 class="text-4xl text-white text-center my-5">{{ songData.title }}</h1>
     </div>
-    <!--    歌曲基本信息（可以考虑把评论加到这部分）-->
+    <!--    歌曲基本信息-->
     <div class="my-10 mb-52 flex flex-col w-full lg:flex-row">
       <div class="grid flex-grow h-full card rounded-box place-items-center">
-        <div class="">
+        <div class="ml-20">
           <div class="">
             <img :src="songData.cover" alt="歌曲封面"
                  class="h-56 w-56 aspect-square rounded-xl border-gray-300 border-e-2 border-b-2">
+            <div class="mt-3">
+              <!--            播放歌单中所有歌曲-->
+              <button @click="handlePlayNow(songData.id)"
+                      class="mr-3 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-10 rounded-full">
+                <svg class="h-5 w-5 inline-block align-sub text-white" viewBox="0 0 24 24" fill="none"
+                     stroke="currentColor"
+                     stroke-width="2"
+                     stroke-linecap="round" stroke-linejoin="round">
+                  <polygon points="5 3 19 12 5 21 5 3"/>
+                </svg>
+                <p class="inline-block">Play</p>
+              </button>
+              <!--          评论-->
+              <button
+                  class="mr-3 bg-gray-400 hover:bg-gray-500 text-white font-bold py-2 px-10 rounded-full">
+                <svg class="h-5 w-5 text-white inline-block align-sub" viewBox="0 0 24 24" stroke-width="2"
+                     stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                  <path stroke="none" d="M0 0h24v24H0z"/>
+                  <path d="M4 21v-13a3 3 0 0 1 3 -3h10a3 3 0 0 1 3 3v6a3 3 0 0 1 -3 3h-9l-4 4"/>
+                  <line x1="8" y1="9" x2="16" y2="9"/>
+                  <line x1="8" y1="13" x2="14" y2="13"/>
+                </svg>
+                <p class="inline-block">评论</p>
+              </button>
+            </div>
             <div class="mt-5 text-white">
               <div @click="addFavoriteSong" v-if="!isFavoriteSong" class="inline-block">
-                <svg class="icon fill-white my-auto inline-block align-sub mr-8 ml-2"
+                <svg class="fill-white my-auto inline-block align-sub mr-8 ml-2"
                      viewBox="0 0 1024 1024"
                      xmlns="http://www.w3.org/2000/svg" width="20" height="20">
                   <path
@@ -134,7 +212,7 @@ onMounted(getFavoriteSongs);
                 </svg>
               </div>
               <div @click="deleteFavoriteSong" v-if="isFavoriteSong" class="inline-block">
-                <svg class="icon my-auto inline-block align-sub mr-8 ml-2" viewBox="0 0 1093 1024"
+                <svg class="my-auto inline-block align-sub mr-8 ml-2" viewBox="0 0 1093 1024"
                      xmlns="http://www.w3.org/2000/svg"
                      width="20" height="20">
                   <path
@@ -167,6 +245,31 @@ onMounted(getFavoriteSongs);
                 <h1 class="text-gray-200 inline-block">收藏</h1>
                 <p class="inline-block mx-20 text-gray-500"> {{ songData.like }}</p>
               </div>
+              <!--            标签-->
+              <div>
+                <div class="inline-block my-3">
+                  <div v-if="show_tag(songData.tag_theme)"
+                       class="text-xs inline-flex items-center font-bold leading-sm px-2 py-1 bg-blue-200 text-blue-700 rounded-full">
+                    {{ songData.tag_theme }}
+                  </div>
+                  <div v-if="show_tag(songData.tag_scene)"
+                       class="ml-1 text-xs inline-flex items-center font-bold leading-sm px-2 py-1 bg-green-200 text-green-700 rounded-full">
+                    {{ songData.tag_scene }}
+                  </div>
+                  <div v-if="show_tag(songData.tag_mood)"
+                       class="ml-1 text-xs inline-flex items-center font-bold leading-sm px-2 py-1 bg-red-200 text-red-700 rounded-full">
+                    {{ songData.tag_mood }}
+                  </div>
+                  <div v-if="show_tag(songData.tag_style)"
+                       class="ml-1 text-xs inline-flex items-center font-bold leading-sm px-2 py-1 bg-orange-200 text-orange-700 rounded-full">
+                    {{ songData.tag_style }}
+                  </div>
+                  <div v-if="show_tag(songData.tag_language)"
+                       class="ml-1 text-xs inline-flex items-center font-bold leading-sm px-2 py-1 bg-purple-200 text-purple-700 rounded-full">
+                    {{ songData.tag_language }}
+                  </div>
+                </div>
+              </div>
             </div>
             <div>
               <details class="dropdown m-2 cursor-pointer">
@@ -193,5 +296,4 @@ onMounted(getFavoriteSongs);
 </template>
 
 <style scoped>
-
 </style>
