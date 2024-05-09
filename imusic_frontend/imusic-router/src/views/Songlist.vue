@@ -247,7 +247,7 @@ onMounted(getSonglistData);
       <div class="bg-center bg-cover bg-blur w-full h-full absolute top-0 left-0"
            :style="{backgroundImage: 'url(' + currentUserSongList.cover + ')'}">
       </div>
-      对歌单进行的操作
+<!--      对歌单进行的操作-->
       <div class="px-8 py-3 absolute top-0 w-full">
         <!--    回到选择歌单界面-->
         <buttonchangesize class="" @fullsize="fullsize" v-model:token="token"></buttonchangesize>

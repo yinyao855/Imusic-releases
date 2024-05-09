@@ -1,9 +1,9 @@
 <script setup>
 import {computed, onMounted, ref, watch} from "vue";
 import axios from "axios";
-import SongList_Page from "@/views/SongList_Page.vue";
+import Songlist from "@/views/Songlist.vue";
 
-const emits = defineEmits(['handlePlayNow', 'handlePlayAfter', 'addToSongList','PlaySongList'])
+const emits = defineEmits(['handlePlayNow', 'handlePlayAfter', 'addToSongList', 'PlaySongList'])
 const token = defineModel('token')
 const tag_language = ref('默认');
 const tag_theme = ref('默认')
@@ -274,7 +274,7 @@ const GetInitSongLists = () => {
 
 const ShowCurrentUser_SongList = ref(false);
 
-const GetSongList=()=>{
+const GetSongList = () => {
   const instance = axios.create({
     baseURL: 'http://182.92.100.66:5000',
     timeout: 5000, // 设置请求超时时间
@@ -283,43 +283,39 @@ const GetSongList=()=>{
     }
   });
   axios.defaults.withCredentials = true;
-  instance.get('/songlists/info/'+SongListId.value)
-      .then(response=>{
-        SongList.value=response.data.data;
+  instance.get('/songlists/info/' + SongListId.value)
+      .then(response => {
+        SongList.value = response.data.data;
       })
-      .catch(error=>{
+      .catch(error => {
         console.log(error.response.data);
       })
 }
-const SongListId=ref(0);
+const SongListId = ref(0);
 
-const ShowSongList=(index)=>{
-  SongListId.value=SongLists.value[index].id;
-  NeedShowSongList.value=true;
-  console.log(SongListId.value);
-  GetSongList();
+const ShowSongList = (index) => {
+  SongListId.value = SongLists.value[index].id;
+  NeedShowSongList.value = true;
 }
 
-const handlePlayAfter=()=>{
-  emits('handlePlayAfter')
+const handlePlayAfter = (id) => {
+  emits('handlePlayAfter', id)
 }
 
-const handlePlayNow=()=>{
-
+const handlePlayNow = (id) => {
+  emits('handlePlayNow', id)
 }
-const SongList=ref([]);
-const NeedShowSongList=ref(false);
-const index=defineModel('index');
-const PlaySongList=()=>{
-  emits('PlaySongList')
-}
+const SongList = ref([]);
+const NeedShowSongList = ref(false);
+const index = defineModel('index');
 
-const addToSongList=()=>{
-  emits('addToSongList');
+
+const PlaySongList = (id) => {
+  emits('PlaySongList', id);
 }
 
-const changesize=()=>{
-  NeedShowSongList.value=false;
+const closeSonglist = () => {
+  NeedShowSongList.value = false;
 }
 onMounted(GetInitSongLists);
 </script>
@@ -327,10 +323,10 @@ onMounted(GetInitSongLists);
 <template>
   <transition name="slide" appear>
     <div class="transition-container-2" v-if="NeedShowSongList">
-      <SongList_Page class="w-screen mb-32" v-model:songlist="SongList" v-model:username="username"
-                     @changesize="changesize" @handlePlayAfter="handlePlayAfter" @handlePlayNow="handlePlayNow"
-                     @addToSongList="addToSongList" v-model:index="index"
-                     @ChangeSongList="PlaySongList" v-model:token="token" v-model:SongListId="SongListId"></SongList_Page>
+      <Songlist v-model:currentSonglistId="SongListId"
+                @PlaySongList="PlaySongList" @handlePlayAfter="handlePlayAfter"
+                @handlePlayNow="handlePlayNow" @closeSonglist="closeSonglist"
+                v-model:token="token" v-model:username="username"></Songlist>
     </div>
   </transition>
   <div class="flex w-full h-full px-10" v-if="!ShowCurrentUser_SongList&&!NeedShowSongList">
