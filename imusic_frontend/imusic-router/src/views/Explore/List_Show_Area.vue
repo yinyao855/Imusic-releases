@@ -175,11 +175,11 @@ const HandleScene = (event, value) => {
 }
 
 const updateSongs = () => {
-  let web = '/songlists/query?'
+  let web = '/search/songlists?'
   console.log(web);
   let flag = 0;
   if (tag_theme.value !== '默认') {
-    if (web === '/songlists/query?') {
+    if (web === '/search/songlists?') {
       web = web + 'tag_theme=' + tag_theme.value;
     } else {
       web = web + '&tag_theme=' + tag_theme.value;
@@ -187,7 +187,7 @@ const updateSongs = () => {
     flag = 1;
   }
   if (tag_language.value !== '默认') {
-    if (web === '/songlists/query?') {
+    if (web === '/search/songlists?') {
       web = web + 'tag_language=' + tag_language.value;
     } else {
       web = web + '&tag_language=' + tag_language.value;
@@ -195,7 +195,7 @@ const updateSongs = () => {
     flag = 1;
   }
   if (tag_scene.value !== '默认') {
-    if (web === '/songlists/query?') {
+    if (web === '/search/songlists?') {
       web = web + 'tag_scene=' + tag_scene.value;
     } else {
       web = web + '&tag_scene=' + tag_scene.value;
@@ -203,7 +203,7 @@ const updateSongs = () => {
     flag = 1;
   }
   if (tag_mood.value !== '默认') {
-    if (web === '/songlists/query?') {
+    if (web === '/search/songlists?') {
       web = web + 'tag_mood=' + tag_mood.value;
     } else {
       web = web + '&tag_mood=' + tag_mood.value;
@@ -211,7 +211,7 @@ const updateSongs = () => {
     flag = 1;
   }
   if (tag_style.value !== '默认') {
-    if (web === '/songlists/query?') {
+    if (web === '/search/songlists?') {
       web = web + 'tag_style=' + tag_style.value;
     } else {
       web = web + '&tag_style=' + tag_style.value;
@@ -222,6 +222,7 @@ const updateSongs = () => {
     GetInitSongLists();
     return;
   }
+  console.log(web);
   const instance = axios.create({
     baseURL: 'http://182.92.100.66:5000',
     timeout: 5000, // 设置请求超时时间
