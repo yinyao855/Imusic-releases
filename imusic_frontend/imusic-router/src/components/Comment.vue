@@ -116,8 +116,12 @@ onMounted(() => {
             v-for="(item, index) in Comment" :key="index">
             <img class="icon fill-white mr-4 my-auto col-span-1 justify-center rounded-full"
                  :src="userImage[index]" alt="">
-          <div class="col-span-2 justify-center">{{item.user}}</div>
-          <div class="col-span-7 justify-center">{{item.content}}</div>
+          <div class="col-span-2 my-auto">
+            <div class=" text-l">{{item.user}}</div>
+            </div>
+          <div class="col-span-7 my-auto">
+            <div class="m-auto text-l">{{item.content}}</div>
+            </div>
           <hr class="m-0.5 border-gray-500 col-span-10" />
         </div>
       </div>
