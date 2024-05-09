@@ -14,8 +14,14 @@ const username = defineModel('username')
 // defineEmits(播放歌单全部歌曲，加入播放列表，立即播放，关闭当前页面/回到上一个页面展示创建的歌单)
 const emits = defineEmits(['PlaySongList', 'handlePlayAfter', 'handlePlayNow', 'closeSonglist'])
 
+// props
+// const props = defineProps({
+//   currentUserSongList: Object, // 选中的歌单
+// })
+
 // v-model
 const currentSonglistId = defineModel("currentSonglistId")
+// const CurrentUser_SongListdata = defineModel("createdSonglists"); // 用户创建的所有歌单
 
 // EditSonglist需要的属性（用于修改歌单）
 const showEditSonglist = ref(false); // 是否展示修改歌单信息页面（默认：否），点击修改的icon后为true
@@ -291,42 +297,16 @@ onMounted(getSonglistData);
 </script>
 
 <template>
-  <div v-if="showCurrentSonglist&&!ShowCreatedSongList&&!ShowSong&&!showEditSonglist">
+  <div v-if="showCurrentSonglist&&!ShowCreatedSongList&&!ShowSong">
     <!--      展示歌单信息-->
     <div class="h-80 relative">
       <div class="bg-center bg-cover bg-blur w-full h-full absolute top-0 left-0"
            :style="{backgroundImage: 'url(' + currentUserSongList.cover + ')'}">
       </div>
-      <!--        对歌单进行的操作-->
+      对歌单进行的操作
       <div class="px-8 py-3 absolute top-0 w-full">
         <!--    回到选择歌单界面-->
         <buttonchangesize class="" @fullsize="fullsize" v-model:token="token"></buttonchangesize>
-        <!--          删除歌单-->
-        <div class="inline-block float-right cursor-pointer h-8 w-8 p-1 bg-gray-300 hover:bg-red-500 rounded-lg">
-          <svg @click="deleteSonglist"
-               class="inline-block h-6 w-6 align-top text-red-600 hover:text-red-800" width="24"
-               height="24"
-               viewBox="0 0 24 24" stroke-width="2"
-               stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-            <path stroke="none" d="M0 0h24v24H0z"/>
-            <line x1="4" y1="7" x2="20" y2="7"/>
-            <line x1="10" y1="11" x2="10" y2="17"/>
-            <line x1="14" y1="11" x2="14" y2="17"/>
-            <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12"/>
-            <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3"/>
-          </svg>
-        </div>
-        <!--          修改歌单信息-->
-        <div class="inline-block float-right cursor-pointer h-8 w-8 p-1 mr-1 bg-gray-300 hover:bg-blue-500 rounded-lg">
-          <svg @click="activeShowEditSonglist(currentUserSongList.cover)"
-               class="inline-block h-6 w-6 align-top text-blue-600 hover:text-blue-800" width="24"
-               height="24"
-               viewBox="0 0 24 24"
-               xmlns="http://www.w3.org/2000/svg" fill="none"
-               stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/>
-          </svg>
-        </div>
         <div class="inline-block">
           <img :src="currentUserSongList.cover" class="img_songlist shadow-2xl">
         </div>
@@ -381,6 +361,7 @@ onMounted(getSonglistData);
             </svg>
             <p class="inline-block">Play All</p>
           </button>
+          <!--          收藏歌单-->
           <button @click="addFavoriteSonglist" v-if="!isFavoriteSonglist"
                   class="mr-3 bg-gray-400 hover:bg-gray-500 text-white font-bold py-2 px-12 rounded-full inline-block">
             <svg class="h-5 w-5 text-white inline-block align-sub" viewBox="0 0 24 24" fill="none"
