@@ -372,7 +372,7 @@ onMounted(getSonglistData);
         <div class="mt-3">
           <!--            播放歌单中所有歌曲-->
           <button @click="PlaySongList(currentUserSongList.id)"
-                  class="mr-3 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-20 rounded-full">
+                  class="mr-3 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-16 rounded-full">
             <svg class="h-5 w-5 inline-block align-sub text-white" viewBox="0 0 24 24" fill="none"
                  stroke="currentColor"
                  stroke-width="2"
@@ -382,7 +382,7 @@ onMounted(getSonglistData);
             <p class="inline-block">Play All</p>
           </button>
           <button @click="addFavoriteSonglist" v-if="!isFavoriteSonglist"
-                  class="mr-3 bg-gray-400 hover:bg-gray-500 text-white font-bold py-2 px-16 rounded-full inline-block">
+                  class="mr-3 bg-gray-400 hover:bg-gray-500 text-white font-bold py-2 px-12 rounded-full inline-block">
             <svg class="h-5 w-5 text-white inline-block align-sub" viewBox="0 0 24 24" fill="none"
                  stroke="currentColor"
                  stroke-width="2"
@@ -394,7 +394,7 @@ onMounted(getSonglistData);
             ({{ currentUserSongList.like }})
           </button>
           <button @click="deleteFavoriteSonglist" v-if="isFavoriteSonglist"
-                  class="mr-3 bg-yellow-400 hover:bg-yellow-600 text-white font-bold py-2 px-16 rounded-full inline-block">
+                  class="mr-3 bg-yellow-400 hover:bg-yellow-600 text-white font-bold py-2 px-12 rounded-full inline-block">
             <svg class="h-5 w-5 fill-white inline-block align-sub" viewBox="0 0 24 24" fill="none"
                  stroke="currentColor"
                  stroke-width="2"
@@ -404,6 +404,18 @@ onMounted(getSonglistData);
             </svg>
             取消收藏
             ({{ currentUserSongList.like }})
+          </button>
+          <!--          评论-->
+          <button
+              class="mr-3 bg-gray-400 hover:bg-gray-500 text-white font-bold py-2 px-20 rounded-full">
+            <svg class="h-5 w-5 text-white inline-block align-sub" viewBox="0 0 24 24" stroke-width="2"
+                 stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+              <path stroke="none" d="M0 0h24v24H0z"/>
+              <path d="M4 21v-13a3 3 0 0 1 3 -3h10a3 3 0 0 1 3 3v6a3 3 0 0 1 -3 3h-9l-4 4"/>
+              <line x1="8" y1="9" x2="16" y2="9"/>
+              <line x1="8" y1="13" x2="14" y2="13"/>
+            </svg>
+            <p class="inline-block">评论</p>
           </button>
         </div>
       </div>
