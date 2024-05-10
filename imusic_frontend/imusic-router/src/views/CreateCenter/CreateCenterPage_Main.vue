@@ -296,7 +296,7 @@ const CloseSongPage=()=>{
       </div>
     </div>
   </div>
-  <div class="w-full h-full" v-if="NaviMode==='2'&&!NeedShowSongDetail">
+  <div class="w-full h-5/6 overflow-auto" v-if="NaviMode==='2'&&!NeedShowSongDetail">
     <UploadSong @uploadSongSuccess="uploadSongSuccess" v-model:HasLogin="HasLogin"
                 v-model:username="username" v-model:token="token"></UploadSong>
   </div>
