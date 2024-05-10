@@ -2,7 +2,8 @@
 import {defineEmits, defineModel, onMounted, ref} from "vue"
 import buttonchangesize from '../../components/buttonchangesize.vue'
 import axios from "axios";
-import P from "particles.vue3";
+import SongPage from "@/views/SongPage.vue";
+import Search_View from "@/views/HomePage/Search_View.vue";
 
 const songlistlast = defineModel('songlist');
 const token = defineModel('token')
@@ -124,11 +125,31 @@ const SongListLike = ref(false);
 const GetUserLike = () => {
   SongListLike.value = songlistlast.value.user_like === true;
 }
+
+const SongId=ref(0);
+const NeedShowSongDetail=ref(false);
+
+const ShowSongDetail=(index)=>{
+  SongId.value=songlistlast.value.songs[index].id;
+  NeedShowSongDetail.value=true;
+}
+
+const CloseSongPage=()=>{
+  NeedShowSongDetail.value=false;
+}
 onMounted(GetUserLike)
 </script>
 
 <template>
-  <div class="bgx bg-cover bg-center h-2/5 relative">
+  <transition name="slide" appear>
+    <div class="transition-container-2" v-if="NeedShowSongDetail">
+      <SongPage  v-model:currentSongId="SongId"
+                @handlePlayNow="handlePlayNow" @CloseSong="CloseSongPage"
+                v-model:username="username" v-model:token="token"></SongPage>
+    </div>
+  </transition>
+
+  <div class="bgx bg-cover bg-center h-2/5 relative" v-if="!NeedShowSongDetail">
     <div class="bg-blur w-full h-full absolute top-0 left-0"
          :style="{backgroundImage: `url(${songlistlast.cover})`}"></div>
     <buttonchangesize class="absolute top-5 left-5" @fullsize="changesize" v-model:token="token"></buttonchangesize>
@@ -164,9 +185,10 @@ onMounted(GetUserLike)
            width="30" height="30">
         <path
             d="M323.106133 878.216533a59.733333 59.733333 0 0 1-86.698666-62.976l35.874133-208.9984-151.8592-148.002133a59.733333 59.733333 0 0 1 33.109333-101.888l209.851734-30.481067 93.866666-190.1568a59.733333 59.733333 0 0 1 107.1104 0l93.866667 190.122667 209.8176 30.5152a59.733333 59.733333 0 0 1 33.109333 101.888l-151.825066 148.002133 35.84 208.9984a59.733333 59.733333 0 0 1-86.698667 62.976l-187.665067-98.645333-187.6992 98.645333z m199.611734-150.254933l199.611733 104.925867a8.533333 8.533333 0 0 0 12.356267-8.977067l-38.126934-222.276267a25.6 25.6 0 0 1 7.3728-22.664533l161.4848-157.3888a8.533333 8.533333 0 0 0-4.744533-14.574933l-223.1296-32.426667a25.6 25.6 0 0 1-19.285333-13.994667L518.4512 158.378667a8.533333 8.533333 0 0 0-15.291733 0l-99.805867 202.205866a25.6 25.6 0 0 1-19.285333 13.994667l-223.163734 32.426667a8.533333 8.533333 0 0 0-4.744533 14.574933l161.4848 157.3888a25.6 25.6 0 0 1 7.3728 22.664533l-38.126933 222.276267a8.533333 8.533333 0 0 0 12.3904 8.977067l199.611733-104.925867a25.6 25.6 0 0 1 23.825067 0z"
-            ></path>
+        ></path>
       </svg>
-      <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" @click="deleteSongListlike" v-if="SongListLike" class="icon mr-4 my-auto"
+      <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" @click="deleteSongListlike" v-if="SongListLike"
+           class="icon mr-4 my-auto"
            width="30" height="30">
         <path
             d="M774.9 603c-17.6 17.5-25.7 42.4-21.7 66.9L788.6 881c5.6 33.1-29.4 58.2-59 42.2l-159.5-85.8a122.08 122.08 0 0 0-115.6 0L295 923.3c-29.6 15.9-64.5-9.1-59-42.2L271.4 670c4.1-24.5-4-49.4-21.7-66.9L95.4 448.9c-23.5-23.4-10.2-63.6 22.6-68.5l208.7-31.1c26.1-3.7 48.7-20.2 60.3-43.9L475.9 121c14.7-30.5 58.1-30.5 72.8 0l88.9 184.5c11.6 23.7 34.2 40.1 60.3 43.9l208.8 31.1c32.8 4.9 46.1 45.1 22.6 68.5L774.9 603z"
@@ -175,7 +197,7 @@ onMounted(GetUserLike)
     </div>
   </div>
 
-  <div class="mt-6">
+  <div class="mt-6" v-if="!NeedShowSongDetail">
     <table class="table">
       <!-- head -->
       <thead>
@@ -284,6 +306,20 @@ onMounted(GetUserLike)
                   添加到歌单
                 </div>
               </li>
+              <li>
+                <div class="text-sm font-semibold" @click="ShowSongDetail(index)">
+                  <svg class="icon fill-white" viewBox="0 0 1024 1024"
+                       xmlns="http://www.w3.org/2000/svg" width="22" height="22">
+                    <path
+                        d="M501.5 109.38a403.52 403.52 0 0 1 285.32 688.84 403.52 403.52 0 0 1-570.66-570.66 400.94 400.94 0 0 1 285.34-118.18m0-64C243.3 45.38 34 254.7 34 512.88S243.3 980.4 501.5 980.4 969 771.08 969 512.88 759.68 45.38 501.5 45.38z"
+                    ></path>
+                    <path
+                        d="M501.5 291.16a7.64 7.64 0 1 1-7.64 7.64 7.64 7.64 0 0 1 7.64-7.64m0-64a71.64 71.64 0 1 0 71.62 71.64 71.64 71.64 0 0 0-71.62-71.64zM501.5 418.18a59.38 59.38 0 0 0-59.38 59.38V768a59.36 59.36 0 0 0 59.38 59.36A59.36 59.36 0 0 0 560.86 768V477.56a59.36 59.36 0 0 0-59.36-59.38z"
+                    ></path>
+                  </svg>
+                  详细信息
+                </div>
+              </li>
             </ul>
           </div>
         </th>
@@ -291,7 +327,7 @@ onMounted(GetUserLike)
       </tbody>
     </table>
   </div>
-  <div class="h-32"></div>
+  <div class="h-32" v-if="!NeedShowSongDetail"></div>
 
 </template>
 
@@ -304,5 +340,37 @@ onMounted(GetUserLike)
   -webkit-filter: blur(19px);
   -ms-filter: blur(19px);
   filter: blur(19px);
+}
+
+
+.slide-leave-active {
+  transition: transform 0.5s ease;
+}
+
+.slide-enter-active {
+  transition: transform 0.5s ease;
+}
+
+.slide-enter-from,
+.slide-leave-to {
+  transform: translateX(100%);
+}
+
+.slide-enter-to,
+.slide-leave-from {
+  transform: translateX(0);
+}
+
+.transition-container {
+  right: 0;
+  top: 0;
+  height: 100%
+}
+
+
+.transition-container-2 {
+  right: 0;
+  top: 0;
+  height:100%;
 }
 </style>

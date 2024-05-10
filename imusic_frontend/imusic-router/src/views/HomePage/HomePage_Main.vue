@@ -8,6 +8,7 @@ import SongList_Page from "@/views/HomePage/SongList_Page.vue";
 import axios from "axios";
 import Search_View from "@/views/HomePage/Search_View.vue";
 import CurrentUser_SongList from "@/components/CurrentUser_SongList.vue";
+import SongPage from "@/views/SongPage.vue";
 
 const emits = defineEmits(['changesonglist', 'handlePlayNow', 'handlePlayAfter', 'PlaySongList', 'refreshNewest_Songs_Page', 'SearchOperation']);
 const songlistlast = defineModel('songlistlast')
@@ -116,11 +117,32 @@ const PlaySongList = (id) => {
 
 const HotSongs=defineModel('HotSongs');
 const SongListId=defineModel('SongListId');
+
+const SongId=ref(0);
+const NeedShowSongDetail=ref(false);
+
+const ShowSongDetail=(index)=>{
+  SongId.value=index;
+  NeedShowSongDetail.value=true;
+}
+
+const CloseSongPage=()=>{
+  NeedShowSongDetail.value=false;
+}
 </script>
 
 <template>
   <transition name="slide" appear>
-    <div class="transition-container-2" v-if="ShowSearchView&&!ShowCurrentUser_SongList">
+    <div class="transition-container-2" v-if="NeedShowSongDetail">
+      <SongPage  v-model:currentSongId="SongId"
+                 @handlePlayNow="handlePlayNow" @CloseSong="CloseSongPage"
+                 v-model:username="username" v-model:token="token"></SongPage>
+    </div>
+  </transition>
+
+
+  <transition name="slide" appear>
+    <div class="transition-container-2" v-if="ShowSearchView&&!ShowCurrentUser_SongList&&!NeedShowSongDetail">
       <Search_View v-if="ShowSearchView&&!ShowCurrentUser_SongList" v-model:songlistlast="songlistsearch"
                    v-model:username="username"
                    @handlePlayNow="handlePlayNow" v-model:userlike="userlike"
@@ -131,7 +153,7 @@ const SongListId=defineModel('SongListId');
 
 
   <transition name="slide" appear>
-    <div class="transition-container-2" v-if="ShowCurrentUser_SongList">
+    <div class="transition-container-2" v-if="ShowCurrentUser_SongList&&!NeedShowSongDetail">
       <CurrentUser_SongList v-if="ShowCurrentUser_SongList" v-model:CurrentUser_SongListdata="CurrentUser_SongListdata"
                             v-model:needtoaddSongid="needtoaddSongid"
                             @CloseCurrentUser_SongList="CloseCurrentUser_SongList" v-model:token="token"></CurrentUser_SongList>
@@ -139,7 +161,7 @@ const SongListId=defineModel('SongListId');
   </transition>
 
   <transition name="slide" appear>
-    <div class="transition-container z-50 ml-8" v-if="needshowsonglistpage&&!ShowSearchView&&!ShowCurrentUser_SongList">
+    <div class="transition-container z-50 ml-8" v-if="needshowsonglistpage&&!NeedShowSongDetail&&!ShowSearchView&&!ShowCurrentUser_SongList">
       <SongList_Page class="w-screen mb-32" v-model:songlist="songlist" v-model:username="username"
                      v-model:userlike="userlike"
                      @changesize="changesize" @handlePlayAfter="handlePlayAfter" @handlePlayNow="handlePlayNow"
@@ -148,7 +170,7 @@ const SongListId=defineModel('SongListId');
     </div>
   </transition>
   <div class="w-full h-16 pl-6 fixed bg-zinc-900 z-50"
-       v-if="!needshowsonglistpage&&!ShowSearchView&&!ShowCurrentUser_SongList">
+       v-if="!needshowsonglistpage&&!ShowSearchView&&!ShowCurrentUser_SongList&&!NeedShowSongDetail">
     <div :class="[NaviClass1, 'text-transition']" @click="changeNaviMode(1);" style="line-height: 56px">推 荐</div>
     <div :class="[NaviClass2, 'text-transition']" @click="changeNaviMode(2);refresh()" style="line-height: 56px">
       最新上传
@@ -158,25 +180,25 @@ const SongListId=defineModel('SongListId');
   <Newest_Songs_Page @handlePlayNow="handlePlayNow" @handlePlayAfter="handlePlayAfter"
                      v-model:songlistlast="songlistlast"
                      v-model:username="username" v-model:userlike="userlike"
-                     v-if="NaviMode!=='1'&&!needshowsonglistpage&&!ShowSearchView&&!ShowCurrentUser_SongList" @addToSongList="addToSongList"
+                     v-if="NaviMode!=='1'&&!needshowsonglistpage&&!NeedShowSongDetail&&!ShowSearchView&&!ShowCurrentUser_SongList" @addToSongList="addToSongList"
                      class="text-2xl mb-32 mx-4 text-white font-serif font-bold mt-16 ml-8 z-50" v-model:token="token"></Newest_Songs_Page>
   <div class="text-2xl mx-4 text-white font-serif font-bold mt-16 ml-8"
-       v-if="NaviMode==='1'&&!needshowsonglistpage&&!ShowSearchView&&!ShowCurrentUser_SongList">
+       v-if="NaviMode==='1'&&!needshowsonglistpage&&!ShowSearchView&&!ShowCurrentUser_SongList&&!NeedShowSongDetail">
     歌单
   </div>
   <Image_Scrool v-model:songlists="songlists" v-model:index="index" @changesonglist="changesonglist"
-                v-if="NaviMode==='1'&&!needshowsonglistpage&&!ShowSearchView&&!ShowCurrentUser_SongList" v-model:token="token"></Image_Scrool>
+                v-if="NaviMode==='1'&&!NeedShowSongDetail&&!needshowsonglistpage&&!ShowSearchView&&!ShowCurrentUser_SongList" v-model:token="token"></Image_Scrool>
   <hr class="m-5 border-gray-500"
-      v-if="NaviMode==='1'&&!needshowsonglistpage&&!ShowSearchView&&!ShowCurrentUser_SongList">
+      v-if="NaviMode==='1'&&!NeedShowSongDetail&&!needshowsonglistpage&&!ShowSearchView&&!ShowCurrentUser_SongList">
   <div class="text-2xl mx-4 text-white font-serif font-bold ml-8"
-       v-if="NaviMode==='1'&&!needshowsonglistpage&&!ShowSearchView&&!ShowCurrentUser_SongList">
+       v-if="NaviMode==='1'&&!needshowsonglistpage&&!NeedShowSongDetail&&!ShowSearchView&&!ShowCurrentUser_SongList">
     推荐艺人
   </div>
   <SingerList_Scrool v-model:songlists="songlists"
-                     v-if="NaviMode==='1'&&!needshowsonglistpage&&!ShowSearchView&&!ShowCurrentUser_SongList" v-model:token="token"></SingerList_Scrool>
+                     v-if="NaviMode==='1'&&!NeedShowSongDetail&&!needshowsonglistpage&&!ShowSearchView&&!ShowCurrentUser_SongList" v-model:token="token"></SingerList_Scrool>
   <hr class="m-5 border-gray-500"
-      v-if="NaviMode==='1'&&!needshowsonglistpage&&!ShowSearchView&&!ShowCurrentUser_SongList">
-  <div class="mx-4 mb-32" v-if="NaviMode==='1'&&!needshowsonglistpage&&!ShowSearchView&&!ShowCurrentUser_SongList">
+      v-if="NaviMode==='1'&&!NeedShowSongDetail&&!needshowsonglistpage&&!ShowSearchView&&!ShowCurrentUser_SongList">
+  <div class="mx-4 mb-32" v-if="NaviMode==='1'&&!NeedShowSongDetail&&!needshowsonglistpage&&!ShowSearchView&&!ShowCurrentUser_SongList">
     <div class="grid grid-cols-2 gap-4">
       <div class="grid-col-2">
         <div class="text-2xl mx-8 text-white font-serif font-bold my-4">热门单曲</div>
@@ -267,6 +289,20 @@ const SongListId=defineModel('SongListId');
                           ></path>
                         </svg>
                         添加到歌单
+                      </div>
+                    </li>
+                    <li>
+                      <div class="text-sm font-semibold" @click="ShowSongDetail(HotSongs[index].id)">
+                        <svg class="icon fill-white" viewBox="0 0 1024 1024"
+                             xmlns="http://www.w3.org/2000/svg" width="22" height="22">
+                          <path
+                              d="M501.5 109.38a403.52 403.52 0 0 1 285.32 688.84 403.52 403.52 0 0 1-570.66-570.66 400.94 400.94 0 0 1 285.34-118.18m0-64C243.3 45.38 34 254.7 34 512.88S243.3 980.4 501.5 980.4 969 771.08 969 512.88 759.68 45.38 501.5 45.38z"
+                          ></path>
+                          <path
+                              d="M501.5 291.16a7.64 7.64 0 1 1-7.64 7.64 7.64 7.64 0 0 1 7.64-7.64m0-64a71.64 71.64 0 1 0 71.62 71.64 71.64 71.64 0 0 0-71.62-71.64zM501.5 418.18a59.38 59.38 0 0 0-59.38 59.38V768a59.36 59.36 0 0 0 59.38 59.36A59.36 59.36 0 0 0 560.86 768V477.56a59.36 59.36 0 0 0-59.36-59.38z"
+                          ></path>
+                        </svg>
+                        详细信息
                       </div>
                     </li>
                   </ul>
@@ -366,6 +402,20 @@ const SongListId=defineModel('SongListId');
                           ></path>
                         </svg>
                         添加到歌单
+                      </div>
+                    </li>
+                    <li>
+                      <div class="text-sm font-semibold" @click="ShowSongDetail(HomePageRecommendLatest[index].id)">
+                        <svg class="icon fill-white" viewBox="0 0 1024 1024"
+                             xmlns="http://www.w3.org/2000/svg" width="22" height="22">
+                          <path
+                              d="M501.5 109.38a403.52 403.52 0 0 1 285.32 688.84 403.52 403.52 0 0 1-570.66-570.66 400.94 400.94 0 0 1 285.34-118.18m0-64C243.3 45.38 34 254.7 34 512.88S243.3 980.4 501.5 980.4 969 771.08 969 512.88 759.68 45.38 501.5 45.38z"
+                          ></path>
+                          <path
+                              d="M501.5 291.16a7.64 7.64 0 1 1-7.64 7.64 7.64 7.64 0 0 1 7.64-7.64m0-64a71.64 71.64 0 1 0 71.62 71.64 71.64 71.64 0 0 0-71.62-71.64zM501.5 418.18a59.38 59.38 0 0 0-59.38 59.38V768a59.36 59.36 0 0 0 59.38 59.36A59.36 59.36 0 0 0 560.86 768V477.56a59.36 59.36 0 0 0-59.36-59.38z"
+                          ></path>
+                        </svg>
+                        详细信息
                       </div>
                     </li>
                   </ul>

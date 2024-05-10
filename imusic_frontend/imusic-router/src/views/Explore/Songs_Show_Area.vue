@@ -2,6 +2,7 @@
 import {computed, onMounted, ref, watch} from "vue";
 import axios from "axios";
 import CurrentUser_SongList from "@/components/CurrentUser_SongList.vue";
+import SongPage from "@/views/SongPage.vue";
 
 const emits = defineEmits(['handlePlayNow', 'handlePlayAfter', 'addToSongList'])
 const token = defineModel('token')
@@ -336,18 +337,40 @@ const addToSongList = (index) => {
 const CloseCurrentUser_SongList = () => {
   ShowCurrentUser_SongList.value = false;
 }
+
+const SongId=ref(0);
+const NeedShowSongDetail=ref(false);
+
+const ShowSongDetail=(index)=>{
+  SongId.value=Songs.value[index].id;
+  NeedShowSongDetail.value=true;
+}
+
+const CloseSongPage=()=>{
+  NeedShowSongDetail.value=false;
+}
+
 onMounted(GetInitSongs);
 </script>
 
 <template>
   <transition name="slide" appear>
-    <div class="transition-container-2" v-if="ShowCurrentUser_SongList">
+    <div class="transition-container-2" v-if="NeedShowSongDetail">
+      <SongPage  v-model:currentSongId="SongId"
+                 @handlePlayNow="handlePlayNow" @CloseSong="CloseSongPage"
+                 v-model:username="username" v-model:token="token"></SongPage>
+    </div>
+  </transition>
+
+
+  <transition name="slide" appear>
+    <div class="transition-container-2" v-if="ShowCurrentUser_SongList&&!NeedShowSongDetail">
       <CurrentUser_SongList v-model:CurrentUser_SongListdata="SongLists" v-model:needtoaddSongid="NeedToAddSongId"
                             v-model:token="token"
                             @CloseCurrentUser_SongList="CloseCurrentUser_SongList"></CurrentUser_SongList>
     </div>
   </transition>
-  <div class="flex w-full h-full px-10" v-if="!ShowCurrentUser_SongList">
+  <div class="flex w-full h-full px-10" v-if="!ShowCurrentUser_SongList&&!NeedShowSongDetail">
     <div class="w-1/5 border-r border-gray-400 px-4 pb-6">
       <div class="text-sm pb-4">语言</div>
       <div class="flex flex-wrap ml-6">
@@ -405,7 +428,7 @@ onMounted(GetInitSongs);
     </div>
   </div>
 <!--  <hr class="w-full border border-gray-500 my-2" v-if="!ShowCurrentUser_SongList">-->
-  <div class="overflow-x-auto overflow-y-hidden mx-6" v-if="!ShowCurrentUser_SongList">
+  <div class="overflow-x-auto overflow-y-hidden mx-6" v-if="!ShowCurrentUser_SongList&&!NeedShowSongDetail">
     <div class="text-2xl text-white my-5">推荐歌曲</div>
     <table class="table mb-32">
       <thead>
@@ -492,6 +515,20 @@ onMounted(GetInitSongs);
                     ></path>
                   </svg>
                   添加到歌单
+                </div>
+              </li>
+              <li>
+                <div class="text-sm font-semibold" @click="ShowSongDetail(index)">
+                  <svg class="icon fill-white" viewBox="0 0 1024 1024"
+                       xmlns="http://www.w3.org/2000/svg" width="22" height="22">
+                    <path
+                        d="M501.5 109.38a403.52 403.52 0 0 1 285.32 688.84 403.52 403.52 0 0 1-570.66-570.66 400.94 400.94 0 0 1 285.34-118.18m0-64C243.3 45.38 34 254.7 34 512.88S243.3 980.4 501.5 980.4 969 771.08 969 512.88 759.68 45.38 501.5 45.38z"
+                    ></path>
+                    <path
+                        d="M501.5 291.16a7.64 7.64 0 1 1-7.64 7.64 7.64 7.64 0 0 1 7.64-7.64m0-64a71.64 71.64 0 1 0 71.62 71.64 71.64 71.64 0 0 0-71.62-71.64zM501.5 418.18a59.38 59.38 0 0 0-59.38 59.38V768a59.36 59.36 0 0 0 59.38 59.36A59.36 59.36 0 0 0 560.86 768V477.56a59.36 59.36 0 0 0-59.36-59.38z"
+                    ></path>
+                  </svg>
+                  详细信息
                 </div>
               </li>
             </ul>

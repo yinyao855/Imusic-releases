@@ -124,18 +124,40 @@ const formatdate = (str) => {
   const index = str.indexOf(' ');
   return index !== -1 ? str.substring(0, index) : str;
 }
+
+
+const SongId=ref(0);
+const NeedShowSongDetail=ref(false);
+
+const ShowSongDetail=(index)=>{
+  SongId.value=props.userUploadedSongs[index].id;
+  NeedShowSongDetail.value=true;
+}
+
+const CloseSongPage=()=>{
+  NeedShowSongDetail.value=false;
+}
 </script>
 
 <template>
   <transition name="slide" appear>
-    <div class="transition-container-2 z-50" v-if="showEditSong">
+    <div class="transition-container-2" v-if="NeedShowSongDetail">
+      <SongPage  v-model:currentSongId="SongId"
+                 @handlePlayNow="handlePlayNow" @CloseSong="CloseSongPage"
+                 v-model:username="username" v-model:token="token"></SongPage>
+    </div>
+  </transition>
+
+
+  <transition name="slide" appear>
+    <div class="transition-container-2 z-50" v-if="showEditSong&&!NeedShowSongDetail">
       <EditSong v-model:songId="songId" @closeEditSong="closeEditSong"
                 v-model:cover="cover" v-model:coverImageFileUrl="coverImageFileUrl"
                 v-model:token="token" v-model:username="username"></EditSong>
     </div>
   </transition>
 
-  <div v-if="!showEditSong&&!ShowSong">
+  <div v-if="!showEditSong&&!ShowSong&&!NeedShowSongDetail">
     <div class="w-full h-14 pl-6">
       <div :class="[NaviClass1, 'text-transition']" @click="changeNaviMode(1)" style="line-height: 56px">我的创作</div>
       <div :class="[NaviClass2, 'text-transition']" @click="changeNaviMode(2)" style="line-height: 56px">创作歌曲</div>
@@ -250,6 +272,20 @@ const formatdate = (str) => {
                         编辑歌曲
                       </div>
                     </li>
+                    <li>
+                      <div class="text-sm font-semibold" @click="ShowSongDetail(index)">
+                        <svg class="icon fill-white" viewBox="0 0 1024 1024"
+                             xmlns="http://www.w3.org/2000/svg" width="22" height="22">
+                          <path
+                              d="M501.5 109.38a403.52 403.52 0 0 1 285.32 688.84 403.52 403.52 0 0 1-570.66-570.66 400.94 400.94 0 0 1 285.34-118.18m0-64C243.3 45.38 34 254.7 34 512.88S243.3 980.4 501.5 980.4 969 771.08 969 512.88 759.68 45.38 501.5 45.38z"
+                          ></path>
+                          <path
+                              d="M501.5 291.16a7.64 7.64 0 1 1-7.64 7.64 7.64 7.64 0 0 1 7.64-7.64m0-64a71.64 71.64 0 1 0 71.62 71.64 71.64 71.64 0 0 0-71.62-71.64zM501.5 418.18a59.38 59.38 0 0 0-59.38 59.38V768a59.36 59.36 0 0 0 59.38 59.36A59.36 59.36 0 0 0 560.86 768V477.56a59.36 59.36 0 0 0-59.36-59.38z"
+                          ></path>
+                        </svg>
+                        详细信息
+                      </div>
+                    </li>
                   </ul>
                 </div>
               </th>
@@ -260,15 +296,11 @@ const formatdate = (str) => {
       </div>
     </div>
   </div>
-  <div class="w-full h-full" v-if="NaviMode==='2'">
+  <div class="w-full h-full" v-if="NaviMode==='2'&&!NeedShowSongDetail">
     <UploadSong @uploadSongSuccess="uploadSongSuccess" v-model:HasLogin="HasLogin"
                 v-model:username="username" v-model:token="token"></UploadSong>
   </div>
-
-  <SongPage v-if="ShowSong" v-model:currentSongId="currentSongId"
-            @handlePlayNow="handlePlayNow" @CloseSong="CloseSong"
-            v-model:username="username" v-model:token="token"></SongPage>
-  <div class="h-32"></div>
+  <div class="h-32" v-if="!NeedShowSongDetail"></div>
 </template>
 
 <style scoped>

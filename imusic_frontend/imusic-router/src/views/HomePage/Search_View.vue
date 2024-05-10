@@ -2,6 +2,7 @@
 import {defineModel, defineEmits, ref} from "vue"
 import buttonchangesize from '../../components/buttonchangesize.vue'
 import axios from "axios";
+import SongPage from "@/views/SongPage.vue";
 
 const songlistlast = defineModel('songlistlast');
 const emits = defineEmits(['handlePlayNow', 'handlePlayAfter', 'changesize', 'addToSongList']);
@@ -67,14 +68,33 @@ const deletelike = (index) => {
       })
 }
 
+const SongId=ref(0);
+const NeedShowSongDetail=ref(false);
+
+const ShowSongDetail=(index)=>{
+  SongId.value=songlistlast.value[index].id;
+  NeedShowSongDetail.value=true;
+}
+
+const CloseSongPage=()=>{
+  NeedShowSongDetail.value=false;
+}
+
 </script>
 
 <template>
-  <div class="text-2xl mx-auto my-6 w-full text-center text-white font-semibold">
+  <transition name="slide" appear>
+    <div class="transition-container-2" v-if="NeedShowSongDetail">
+      <SongPage  v-model:currentSongId="SongId"
+                 @handlePlayNow="handlePlayNow" @CloseSong="CloseSongPage"
+                 v-model:username="username" v-model:token="token"></SongPage>
+    </div>
+  </transition>
+  <div class="text-2xl mx-auto my-6 w-full text-center text-white font-semibold" v-if="!NeedShowSongDetail">
     <buttonchangesize class="absolute top-5 left-5" @fullsize="changesize" v-model:token="token"></buttonchangesize>
     搜索结果
   </div>
-  <div class="overflow-x-auto overflow-y-hidden mx-6 h-full">
+  <div class="overflow-x-auto overflow-y-hidden mx-6 h-full" v-if="!NeedShowSongDetail">
     <table class="table mb-32">
       <thead>
       <tr>
@@ -182,6 +202,20 @@ const deletelike = (index) => {
                   添加到歌单
                 </div>
               </li>
+              <li>
+                <div class="text-sm font-semibold" @click="ShowSongDetail(index)">
+                  <svg class="icon fill-white" viewBox="0 0 1024 1024"
+                       xmlns="http://www.w3.org/2000/svg" width="22" height="22">
+                    <path
+                        d="M501.5 109.38a403.52 403.52 0 0 1 285.32 688.84 403.52 403.52 0 0 1-570.66-570.66 400.94 400.94 0 0 1 285.34-118.18m0-64C243.3 45.38 34 254.7 34 512.88S243.3 980.4 501.5 980.4 969 771.08 969 512.88 759.68 45.38 501.5 45.38z"
+                    ></path>
+                    <path
+                        d="M501.5 291.16a7.64 7.64 0 1 1-7.64 7.64 7.64 7.64 0 0 1 7.64-7.64m0-64a71.64 71.64 0 1 0 71.62 71.64 71.64 71.64 0 0 0-71.62-71.64zM501.5 418.18a59.38 59.38 0 0 0-59.38 59.38V768a59.36 59.36 0 0 0 59.38 59.36A59.36 59.36 0 0 0 560.86 768V477.56a59.36 59.36 0 0 0-59.36-59.38z"
+                    ></path>
+                  </svg>
+                  详细信息
+                </div>
+              </li>
             </ul>
           </div>
         </th>
@@ -189,9 +223,38 @@ const deletelike = (index) => {
       </tbody>
     </table>
   </div>
-  <div class="h-32"></div>
+  <div class="h-32" v-if="!NeedShowSongDetail"></div>
 </template>
 
 <style scoped>
+.slide-leave-active {
+  transition: transform 0.5s ease;
+}
 
+.slide-enter-active {
+  transition: transform 0.5s ease;
+}
+
+.slide-enter-from,
+.slide-leave-to {
+  transform: translateX(100%);
+}
+
+.slide-enter-to,
+.slide-leave-from {
+  transform: translateX(0);
+}
+
+.transition-container {
+  right: 0;
+  top: 0;
+  height: 100%
+}
+
+
+.transition-container-2 {
+  right: 0;
+  top: 0;
+  height:100%;
+}
 </style>
