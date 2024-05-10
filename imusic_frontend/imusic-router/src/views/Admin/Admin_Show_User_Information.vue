@@ -1,7 +1,7 @@
 <script setup>
 import {onMounted, ref} from "vue";
 import axios from "axios";
-import buttonchangesize from '@/components/buttonchangesize.vue'
+import buttonchangesize from '@/components/ButtonChangeSizeRight.vue'
 
 const token = defineModel('token');
 const UserId = defineModel('UserId');

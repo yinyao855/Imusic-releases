@@ -1,7 +1,7 @@
 <script setup>
 import {defineModel} from "vue"
 import axios from "axios";
-import buttonchangesize from './buttonchangesize.vue'
+import buttonchangesize from './ButtonChangeSizeRight.vue'
 
 const needtoaddSongid = defineModel('needtoaddSongid')
 const CurrentUser_SongListdata = defineModel('CurrentUser_SongListdata')

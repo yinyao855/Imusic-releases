@@ -117,7 +117,7 @@
 
 <script setup>
 import {ref, defineModel, watch} from 'vue';
-import buttonchangesize from '../../components/buttonchangesize.vue'
+import buttonchangesize from '../../components/ButtonChangeSizeLeft.vue'
 import Comment from '../../components/Comment.vue'
 import {defineEmits} from 'vue';
 import Warning from "@/components/Warning.vue";

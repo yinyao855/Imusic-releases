@@ -1,7 +1,7 @@
 <script setup>
 // 展示歌曲详细信息界面
 import {defineModel, defineEmits, onMounted, ref} from "vue";
-import buttonchangesize from "@/components/buttonchangesize.vue";
+import buttonchangesize from "@/components/ButtonChangeSizeRight.vue";
 import axios from "axios";
 
 // global variables

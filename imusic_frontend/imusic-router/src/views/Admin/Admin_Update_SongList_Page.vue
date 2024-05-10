@@ -1,8 +1,7 @@
 <script setup>
 import {defineEmits, defineModel, onMounted, ref} from "vue"
-import buttonchangesize from '../../components/buttonchangesize.vue'
 import axios from "axios";
-import Buttonchangesize from "@/components/buttonchangesize.vue";
+import Buttonchangesize from "@/components/ButtonChangeSizeRight.vue";
 
 const SongList = ref([]);
 const token = defineModel('token');

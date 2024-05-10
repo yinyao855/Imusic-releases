@@ -1,6 +1,6 @@
 <script setup>
 import {defineModel, defineEmits, ref} from "vue"
-import buttonchangesize from '../../components/buttonchangesize.vue'
+import buttonchangesize from '../../components/ButtonChangeSizeRight.vue'
 import axios from "axios";
 import SongPage from "@/views/SongPage.vue";
 

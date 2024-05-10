@@ -8,7 +8,7 @@ import axios from "axios";
 const SongId = defineModel('SongId');
 const token = defineModel('token');
 const Song = ref([]);
-import buttonchangesize from '@/components/buttonchangesize.vue'
+import buttonchangesize from '@/components/ButtonChangeSizeRight.vue'
 
 const GetSongData = () => {
   console.log(SongId);
