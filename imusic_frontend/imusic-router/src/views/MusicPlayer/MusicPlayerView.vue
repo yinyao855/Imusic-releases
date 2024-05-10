@@ -255,7 +255,6 @@ watch(volume,()=>{
   if(volume.value>0){
     IsMuted.value=false;
   }
-  console.log(volume.value);
 })
 
 const HandleIndex = (indexx) => {

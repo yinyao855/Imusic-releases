@@ -5,7 +5,7 @@
     </div>
   </transition>
   <div class="h-full w-full flex items-center" @keypress.enter="submitSong">
-    <div class="formx2 my-auto mx-auto width:800px flexible bg-zinc-900">
+    <div class="formx2 my-auto mx-auto width:800px flexible bg-zinc-900 w-full">
       <div class="flex-column text-2xl">
         <div class="text-white">*歌曲名</div>
       </div>
@@ -260,7 +260,7 @@
 </template>
 
 <style>
-@import url('../css/Login.css');
+@import url('../../css/Login.css');
 
 .vx-enter-active,
 .vx-leave-active {

@@ -2,7 +2,7 @@
 import {onMounted, ref} from "vue";
 import HomePage_Main from "@/views/HomePage/HomePage_Main.vue";
 import ExplorePage_Main from "@/views/Explore/ExplorePage_Main.vue";
-import CreateCenter from "@/views/CreateCenterPage_Main.vue";
+import CreateCenter from "@/views/CreateCenter/CreateCenterPage_Main.vue";
 import SettingPage_Main from "@/views/Settings/SettingPage_Main.vue";
 import Login from "./Account/Login.vue";
 import Personal_Center from "@/views/Account/Personal_Center.vue";
@@ -529,7 +529,7 @@ onMounted(getPageinit);
                           @handlePlayNow="handlePlayNow" @handlePlayAfter="handlePlayAfter"></ExplorePage_Main>
         <SettingPage_Main v-if="mode==='3'" v-model:token="token"></SettingPage_Main>
         <CreateCenter v-if="mode==='4'" :userUploadedSongs="userUploadedSongs" @handlePlayNow="handlePlayNow"
-                      v-model:HasLogin="HasLogin" v-model:username="username"
+                      v-model:HasLogin="HasLogin" v-model:username="username" @handlePlayAfter="handlePlayAfter"
                       v-model:token="token"></CreateCenter>
         <CreateSonglistPage_Main v-if="mode==='5'" v-model:HasLogin="HasLogin"
                                  v-model:username="username" v-model:token="token"></CreateSonglistPage_Main>
