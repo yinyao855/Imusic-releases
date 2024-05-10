@@ -86,7 +86,7 @@ const Get_Admin_Users_Data = () => {
         console.log(Users.value);
         let length=Users.value.length;
         for(let i=0;i<length;++i){
-          Users.value[i].role=Users.value[i].role==='Admin'?'管理员':'普通用户';
+          Users.value[i].role=Users.value[i].role==='admin'?'管理员':'普通用户';
         }
       })
       .then(error => {

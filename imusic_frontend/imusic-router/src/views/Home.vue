@@ -362,7 +362,7 @@ const getPageinit = () => {
     }
   });
   axios.defaults.withCredentials = true;
-  instance.get('/songlists/initdata')
+  instance.get('/feature/hotsonglists')
       .then(response => {
         songlists.value = response.data.data;
         let length = songlists.value.length;
@@ -387,6 +387,8 @@ const getPageinit = () => {
   GetHomePageRecommendLatest();
 }
 
+const HotSongs=ref([]);
+
 const GetHomePageRecommendLatest = () => {
   const instance = axios.create({
     baseURL: 'http://182.92.100.66:5000',
@@ -407,6 +409,22 @@ const GetHomePageRecommendLatest = () => {
         let length = HomePageRecommendLatest.value.length;
         for (let i = 0; i < length; ++i) {
           HomePageRecommendLatest.value[i].duration = gettime(HomePageRecommendLatest.value[i].duration);
+        }
+      })
+      .catch(error => {
+        console.log(error.response.data);
+      })
+  instance.get('/feature/hotsongs', {
+    params: {
+      'num': 10,
+    }
+  })
+      .then(response => {
+        console.log(response.data.data);
+        HotSongs.value = response.data.data;
+        let length = HotSongs.value.length;
+        for (let i = 0; i < length; ++i) {
+          HotSongs.value[i].duration = gettime(HotSongs.value[i].duration);
         }
       })
       .catch(error => {
@@ -506,7 +524,7 @@ onMounted(getPageinit);
                        v-model:userlike="userlike" @refreshNewest_Songs_Page="refreshNewest_Songs_Page"
                        v-model:songlistlast="songlistlast" v-model:HomePageRecommendLatest="HomePageRecommendLatest"
                        v-model:token="token" v-model:SongListId="SongListId"
-                       @changesonglist="changesonglist" @PlaySongList="PlaySongList"></HomePage_Main>
+                       @changesonglist="changesonglist" @PlaySongList="PlaySongList" v-model:HotSongs="HotSongs"></HomePage_Main>
         <ExplorePage_Main v-model:username="username" v-if="mode==='2'" v-model:token="token"
                           @handlePlayNow="handlePlayNow" @handlePlayAfter="handlePlayAfter"></ExplorePage_Main>
         <SettingPage_Main v-if="mode==='3'" v-model:token="token"></SettingPage_Main>

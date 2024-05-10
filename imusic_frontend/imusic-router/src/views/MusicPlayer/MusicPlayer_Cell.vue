@@ -250,7 +250,6 @@ defineExpose({handlePlayNow,handlePlayAfter,initCurrentMusic})
       class="hidden"
       @timeupdate="updateTime"
       @ended="handleModeChange"
-      @loadeddata="initializeVisualizer"
       controls
       autoplay
       v-if="HasLogin"

@@ -27,19 +27,6 @@
           </div>
         </label>
         <div class="card__wrapper">
-<!--          <button class="card__btn" @click="restart">-->
-<!--            <svg fill="none" height="12" viewBox="0 0 20 12" width="20" xmlns="http://www.w3.org/2000/svg"-->
-<!--            >-->
-<!--              <clipPath id="a">-->
-<!--                <path d="m0 0h20v12h-20z"></path>-->
-<!--              </clipPath>-->
-<!--              <g>-->
-<!--                <path-->
-<!--                    d="m17 1c0-.265216-.1054-.51957-.2929-.707107-.1875-.187536-.4419-.292893-.7071-.292893h-8v2h7v5h-3l3.969 5 4.031-5h-3zm-14 10c0 .2652.10536.5196.29289.7071.18754.1875.44189.2929.70711.2929h8v-2h-7v-5h3l-4-5-4 5h3z"-->
-<!--                    fill="#fff"></path>-->
-<!--              </g>-->
-<!--            </svg>-->
-<!--          </button>-->
           <div class="tooltip my-auto" :data-tip="playerModeText">
             <button class=" card__btn"
                     @click="changeMode">
@@ -71,12 +58,12 @@
               </svg>
             </button>
           </div>
-          <button class="card__btn" @click="back">
+          <button class="card__btn tooltip" @click="back" data-tip="上一首">
             <svg width="23" height="16" viewBox="0 0 23 16" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M11.5 8V0L0 8L11.5 16V8ZM23 0L11.5 8L23 16V0Z" fill="#fff"></path>
             </svg>
           </button>
-          <button class="card__btn card__btn-play" @click="togglePlay">
+          <button class="card__btn card__btn-play tooltip" @click="togglePlay" data-tip="播放/暂停">
             <svg fill="#000" height="22" viewBox="0 0 18 22" width="18" xmlns="http://www.w3.org/2000/svg"
                  v-if="!isPlaying">
               <path d="m0 0v22l18-11z" fill="#000"></path>
@@ -89,12 +76,12 @@
                   fill="black"></path>
             </svg>
           </button>
-          <button class="card__btn" @click="next">
+          <button class="card__btn tooltip" @click="next" data-tip="下一首">
             <svg width="23" height="16" viewBox="0 0 23 16" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M11.5 8V0L23 8L11.5 16V8ZM0 0L11.5 8L0 16V0Z" fill="#fff"></path>
             </svg>
           </button>
-          <button class="card__btn" @click="comment">
+          <button class="card__btn tooltip" @click="comment" data-tip="显示/关闭评论">
             <svg class="icon" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg"
                  width="30" height="24">
               <path
@@ -201,7 +188,7 @@ const restart = () => {
 const showComment = defineModel('showComment');
 let songID = "";
 const comment = () => {
-  showComment.value = true;
+  showComment.value = !showComment.value;
   songID = props.id;
   console.log(songID);
 }

@@ -154,6 +154,7 @@ onMounted(GetSearchResult);
       </tbody>
     </table>
   </div>
+  <div class="h-32"></div>
 </template>
 
 <style scoped>

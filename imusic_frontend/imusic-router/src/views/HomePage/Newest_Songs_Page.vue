@@ -112,7 +112,7 @@ const addToSongList = (id) => {
             </div>
             <div>
               <div class="font-bold">{{ item.title }}</div>
-              <div class="text-sm opacity-50">United States</div>
+<!--              <div class="text-sm opacity-50">United States</div>-->
             </div>
           </div>
         </td>

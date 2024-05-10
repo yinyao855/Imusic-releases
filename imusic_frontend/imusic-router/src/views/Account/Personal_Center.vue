@@ -132,6 +132,7 @@ const Savemessage = () => {
         @click="changeHasLogin">
       <p>注销</p>
     </div>
+    <div class="h-32"></div>
   </div>
 
 </template>

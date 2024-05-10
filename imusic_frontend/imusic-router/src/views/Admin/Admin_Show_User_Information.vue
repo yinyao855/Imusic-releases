@@ -56,7 +56,7 @@ const GetUserData = () => {
   instance.get('/users/info/' + UserId.value)
       .then(response => {
         userdata.value = response.data.data;
-        if (userdata.value.role === 'Admin') {
+        if (userdata.value.role === 'admin') {
           userdata.value.role = '管理员';
         } else {
           userdata.value.role = '普通用户';
