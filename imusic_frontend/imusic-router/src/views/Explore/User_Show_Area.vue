@@ -9,7 +9,6 @@ const SearchContent = defineModel('SearchContent');
 const username=defineModel('username');
 
 const GetSearchResult = () => {
-  console.log('hello');
   const instance = axios.create({
     baseURL: 'http://182.92.100.66:5000',
     timeout: 5000, // 设置请求超时时间
@@ -39,7 +38,9 @@ const GetSearchResult = () => {
         });
         axios.defaults.withCredentials = true;
         instance.get('/users/followings',{
-          params:username.value
+          params: {
+            'username': username.value
+          }
         })
             .then(response=>{
               userlike.value=response.data.data;
@@ -56,7 +57,6 @@ const GetSearchResult = () => {
             .catch(error=>{
               console.log(error.response.data);
             })
-        console.log(Users.value);
       })
       .catch(error => {
         console.log(error.response.data);
@@ -65,7 +65,7 @@ const GetSearchResult = () => {
 
 
 
-const addlike=(index)=>{
+const HandleLike=(index)=>{
   const UserId=Users.value[index].username;
   console.log(UserId);
   const instance = axios.create({
@@ -78,7 +78,7 @@ const addlike=(index)=>{
   axios.defaults.withCredentials = true;
   const formData=new FormData();
   formData.append('username',UserId)
-  instance.post('/follow',formData)
+  instance.post('/users/follow',formData)
       .then(response=>{
         console.log(response.data);
       })
@@ -122,14 +122,14 @@ onMounted(GetSearchResult);
         </td>
         <td>{{ item.registration_date }}</td>
         <td>
-          <svg @click="addlike(index)" v-if="!item.islike" class="icon fill-white mr-4 my-auto"
+          <svg @click="HandleLike(index)" v-if="!item.islike" class="icon fill-white mr-4 my-auto"
                viewBox="0 0 1024 1024"
                xmlns="http://www.w3.org/2000/svg" width="20" height="20">
             <path
                 d="M744.0384 131.6864a209.5104 209.5104 0 0 1 190.976 124.8256c0.4096 0.9216 0.8192 1.9968 1.28 3.1232a241.0496 241.0496 0 0 1 15.0016 59.1872v0.9728a230.4 230.4 0 0 1 1.9456 30.72A247.04 247.04 0 0 1 880.64 526.0288l-363.52 363.52a9.0624 9.0624 0 0 1-6.5536 2.7136 8.9088 8.9088 0 0 1-6.3488-2.56l-359.0656-358.912a252.16 252.16 0 0 1-74.496-184.32v-0.3584A250.4704 250.4704 0 0 1 87.04 259.9424a208.896 208.896 0 0 1 259.6864-116.1216 217.856 217.856 0 0 1 111.36 93.1328A59.8528 59.8528 0 0 0 510.0032 266.24H517.12l6.8608-1.6896a61.696 61.696 0 0 0 34.0992-22.4256l1.792-2.4064 1.536-2.6112a198.912 198.912 0 0 1 21.76-30.1568l0.512-0.5632 0.512-0.5632c2.4064-2.8672 4.7616-5.5296 7.2192-8.0896 1.4336-1.536 3.072-3.2768 3.8912-3.9936l0.8192-0.8192 0.8192-0.768c2.9696-2.9696 5.12-5.12 7.68-7.2192 4.0448-3.5328 7.424-6.2976 10.24-8.4992l0.6144-0.4608 0.5632-0.4608c2.8672-2.2528 6.3488-4.6592 10.24-7.3728s8.2944-5.4272 11.776-7.424c3.5328-2.048 7.0656-3.9424 10.5984-5.7344a210.944 210.944 0 0 1 93.952-22.2208m0-57.4464A268.1856 268.1856 0 0 0 624.2816 102.4c-4.5568 2.304-9.1648 4.8128-13.7728 7.4752s-9.9328 6.144-14.8992 9.3696-9.5744 6.5536-14.1824 10.24-9.216 7.2704-13.6192 11.1104-7.424 6.656-11.0592 10.24c-2.5088 2.304-4.8128 4.8128-7.1168 7.2704-3.2256 3.4816-6.2976 6.912-9.3696 10.5472a258.048 258.048 0 0 0-28.16 38.8608 3.3792 3.3792 0 0 1-2.0992 1.3312 2.6624 2.6624 0 0 1-2.4576-1.3312 275.2512 275.2512 0 0 0-141.5168-117.76A266.24 266.24 0 0 0 34.0992 237.3632v0.3584a314.2144 314.2144 0 0 0 70.656 333.7216l358.9632 358.912a66.56 66.56 0 0 0 93.952 0l363.776-363.52a305.152 305.152 0 0 0 89.6-216.32 280.832 280.832 0 0 0-2.5088-38.2976 299.1616 299.1616 0 0 0-19.1488-74.8544c-0.3584-0.768-0.5632-1.3312-0.768-1.8944a266.9568 266.9568 0 0 0-244.6336-161.2288z"
             ></path>
           </svg>
-          <svg @click="addlike(index)" v-if="item.islike" class="icon" viewBox="0 0 1093 1024"
+          <svg @click="HandleLike(index)" v-if="item.islike" class="icon" viewBox="0 0 1093 1024"
                xmlns="http://www.w3.org/2000/svg"
                width="20" height="20">
             <path
