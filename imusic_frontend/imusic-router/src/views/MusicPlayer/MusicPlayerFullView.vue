@@ -4,8 +4,8 @@
       <Warning :message="message" @CloseWarning="CloseWarning" class="mx-auto" v-model:token="token"></Warning>
     </div>
   </transition>
-  <div class="outcontainer" :style="sty">
-    <div class="col1  duration-300">
+  <div class="flex h-screen w-screen" :style="sty">
+    <div class="col1 w-1/2">
       <div class="button_div">
         <buttonchangesize style="display: block" @fullsize="changesize" v-model:token="token"></buttonchangesize>
       </div>
@@ -97,17 +97,9 @@
         </div>
       </div>
     </div>
-    <div class="col2" v-if="showComment===false">
-      <div style="width:100%;  display:flex; align-items: center; justify-content: center; margin: 0;"
-           class="lyricclass h-screen overflow-hidden">
-        <!--        <ul class="w-full overflow-hidden h-full">-->
-        <!--    <span class="box" v-for="(item, index) in lyricsshow" :key="index"-->
-        <!--          :class="{ 'highlighted': item.special ,'nothighlighted' : !item.special}">-->
-        <!--      {{ item.text }}-->
-        <!--      <br>-->
-        <!--    </span>-->
-        <!--        </ul>-->
-        <Lyrics_Show_View></Lyrics_Show_View>
+    <div class="col2 w-1/2 flex" v-if="showComment===false">
+      <div class="h-4/5 w-full overflow-hidden mx-auto my-auto">
+        <Lyrics_Show_View v-model:currentduration="currentduration" v-model:lrcArr="lyric"></Lyrics_Show_View>
       </div>
     </div>
     <div class="col2 bg-transparent overflow-hidden h-full" v-if="showComment===true">
@@ -148,16 +140,9 @@ const durationInSeconds = defineModel("durationInSeconds");
 const lyric = defineModel("lyric")
 const audioPlayer = defineModel("audioPlayer");
 const token = defineModel('token')
-const lyricsshow = ref([{text: '', special: false}, {text: '', special: false}, {text: '', special: false}, {
-  text: '',
-  special: false
-}, {text: '', special: false}, {text: '', special: false}, {text: '', special: false}, {
-  text: '',
-  special: false
-}, {text: '', special: false}, {text: '', special: false}]);
+const lyricsshow = ref([]);
 const text = ref('未播放');
 const nowline = ref(0);
-
 
 const togglePlay = () => {
   emit('togglePlay');
@@ -244,7 +229,6 @@ const message = ref('');
 
 .outcontainer {
   display: grid;
-  height: 100%;
   grid-template-columns: 1fr 1fr;
 }
 
