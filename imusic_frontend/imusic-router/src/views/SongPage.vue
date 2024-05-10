@@ -170,7 +170,7 @@ onMounted(getFavoriteSongs);
       <h1 class="text-4xl text-white text-center my-5">{{ songData.title }}</h1>
     </div>
     <!--    歌曲基本信息-->
-    <div class="my-10 mb-52 flex flex-col w-full lg:flex-row">
+    <div class="my-10 mb-40 flex flex-col w-full lg:flex-row">
       <div class="grid flex-grow h-full card rounded-box place-items-center">
         <div class="ml-20">
           <div class="">
@@ -292,6 +292,7 @@ onMounted(getFavoriteSongs);
         </div>
       </div>
     </div>
+    '
   </div>
 </template>
 

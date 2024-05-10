@@ -105,10 +105,10 @@ onMounted(() => {
   <div class="col2  duration-300 h-1">
     <div class="formx2 w-1 grid-cols-10 flexible">
     <div class="col-span-1">
-    <button class="btn transition bg-transparent hover:-translate-y-1 hover:scale-110 hover:bg-transparent" @click="backComment">
-      <svg t="1715236058449" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2905"
-           width="48" height="48"><path d="M597.12 512L768 682.88 682.88 768 512 597.12 341.12 768 256 682.88 426.88 512 256 341.12 341.12 256 512 426.88 682.88 256 768 341.12z" p-id="2906"></path></svg>
-    </button>
+<!--    <button class="btn transition bg-transparent hover:-translate-y-1 hover:scale-110 hover:bg-transparent" @click="backComment">-->
+<!--      <svg class="icon" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg"-->
+<!--           width="48" height="48"><path d="M597.12 512L768 682.88 682.88 768 512 597.12 341.12 768 256 682.88 426.88 512 256 341.12 341.12 256 512 426.88 682.88 256 768 341.12z" p-id="2906"></path></svg>-->
+<!--    </button>-->
     </div>
     <div class="text-center text-3xl font-semibold text-white p-3 w-full ">评论</div>
       <div class="h-1/2 overflow-auto w-full">
