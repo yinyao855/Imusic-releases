@@ -74,7 +74,7 @@ watch(currentduration,setOffset);
 .container ul li {
   width: 100%;
   font-weight:550;
-  height: 80px; /* 每行歌词的高度 */
+  height: 60px; /* 每行歌词的高度 */
   color: rgb(255,255,255,0.6);
   line-height: 60px; /* 每行歌词的行高 */
   transition: all 0.5s;
