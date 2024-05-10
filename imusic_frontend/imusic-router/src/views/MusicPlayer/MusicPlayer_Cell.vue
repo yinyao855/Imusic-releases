@@ -1,5 +1,5 @@
 <script setup>
-import { ref, watch} from "vue";
+import {onMounted, ref, watch} from "vue";
 import axios from "axios";
 import MusicPlayerFullView from "@/views/MusicPlayer/MusicPlayerFullView.vue";
 import MusicPlayerView from "@/views/MusicPlayer/MusicPlayerView.vue";
@@ -240,6 +240,7 @@ function backSong() {
 }
 
 defineExpose({handlePlayNow,handlePlayAfter,initCurrentMusic})
+
 </script>
 
 <template>
@@ -249,6 +250,7 @@ defineExpose({handlePlayNow,handlePlayAfter,initCurrentMusic})
       class="hidden"
       @timeupdate="updateTime"
       @ended="handleModeChange"
+      @loadeddata="initializeVisualizer"
       controls
       autoplay
       v-if="HasLogin"
@@ -280,6 +282,7 @@ defineExpose({handlePlayNow,handlePlayAfter,initCurrentMusic})
     <div v-if="isFull" key="musicPlay" class="transition-container z-50">
       <MusicPlayerFullView
           class="fixed top-0 left-0 w-full z-50"
+          v-model:playerMode="playerMode"
           v-model:audioPlayer="audioPlayer"
           v-model:durationInSeconds="durationInSeconds"
           v-model:currentTime="currentTime"
@@ -329,4 +332,5 @@ defineExpose({handlePlayNow,handlePlayAfter,initCurrentMusic})
   width: 100%;
   height: 100%;
 }
+
 </style>

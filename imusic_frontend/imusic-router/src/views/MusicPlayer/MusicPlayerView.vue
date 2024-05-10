@@ -81,35 +81,31 @@
           <div class="tooltip my-auto" :data-tip="playerModeText">
             <button class="btn btn-sm transition duration-400 hover:bg-gray-600/40 bg-zinc-900 rounded-md border-none"
                     @click="changeMode">
-              <svg v-if="playerMode === 0" width="24" height="24" viewBox="0 0 48 48" fill="none"
-                   xmlns="http://www.w3.org/2000/svg">
+              <svg v-if="playerMode === 0" class="icon fill-white" viewBox="0 0 1024 1024"
+                   xmlns="http://www.w3.org/2000/svg" width="24" height="24">
                 <path
-                    d="M43.8233 25.2305C43.7019 25.9889 43.5195 26.727 43.2814 27.4395C42.763 28.9914 41.9801 30.4222 40.9863 31.6785C38.4222 34.9201 34.454 37 30 37H16C9.39697 37 4 31.6785 4 25C4 18.3502 9.39624 13 16 13H44"
-                    stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
-                <path d="M38 7L44 13L38 19" stroke="white" stroke-width="4" stroke-linecap="round"
-                      stroke-linejoin="round"/>
+                    d="M361.5 727.8c-119.1 0-215.9-96.9-215.9-215.9 0-119.1 96.9-215.9 215.9-215.9 2.3 0 4.6-0.2 6.8-0.6v58.3c0 12.3 14 19.4 23.9 12.1l132.6-97.6c8.1-6 8.1-18.2 0-24.2l-132.6-97.6c-9.9-7.3-23.9-0.2-23.9 12.1v58.1c-2.2-0.4-4.5-0.6-6.8-0.6-39.8 0-78.5 7.9-115 23.4-35.2 15-66.8 36.3-94 63.5s-48.6 58.8-63.5 94c-15.5 36.5-23.4 75.2-23.4 115s7.9 78.5 23.4 115c15 35.2 36.3 66.8 63.5 94s58.8 48.6 94 63.5c36.5 15.5 75.2 23.4 115 23.4 22.1 0 40-17.9 40-40s-17.9-40-40-40z m576.7-330.9c-15-35.2-36.3-66.8-63.5-94s-58.8-48.6-94-63.5c-36.5-15.5-75.2-23.4-115-23.4-22.1 0-40 17.9-40 40s17.9 40 40 40c119.1 0 215.9 96.9 215.9 215.9 0 119.1-96.9 215.9-215.9 215.9-4.1 0-8.1 0.6-11.8 1.8v-60.8c0-12.3-14-19.4-23.9-12.1l-132.6 97.6c-8.1 6-8.1 18.2 0 24.2L629.9 876c9.9 7.3 23.9 0.2 23.9-12.1V806c3.7 1.2 7.7 1.8 11.8 1.8 39.8 0 78.5-7.9 115-23.4 35.2-15 66.8-36.3 94-63.5s48.6-58.8 63.5-94c15.5-36.5 23.4-75.2 23.4-115s-7.8-78.5-23.3-115z"
+                ></path>
               </svg>
-              <svg v-if="playerMode === 1" width="24" height="24" viewBox="0 0 48 48" fill="none"
-                   xmlns="http://www.w3.org/2000/svg">
+              <svg v-if="playerMode === 1" class="icon fill-white" viewBox="0 0 1024 1024"
+                   xmlns="http://www.w3.org/2000/svg" width="24" height="24">
                 <path
-                    d="M43.8233 25.2305C43.7019 25.9889 43.5195 26.727 43.2814 27.4395C42.763 28.9914 41.9801 30.4222 40.9863 31.6785C38.4222 34.9201 34.454 37 30 37H16C9.39697 37 4 31.6785 4 25C4 18.3502 9.39624 13 16 13H44"
-                    stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
-                <path d="M38 7L44 13L38 19" stroke="white" stroke-width="4" stroke-linecap="round"
-                      stroke-linejoin="round"/>
-                <path d="M24 19V31" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
-                <path d="M24 19L21 22L19.5 23.5" stroke="white" stroke-width="4" stroke-linecap="round"
-                      stroke-linejoin="round"/>
+                    d="M928 476.8c-19.2 0-32 12.8-32 32v86.4c0 108.8-86.4 198.4-198.4 198.4H201.6l41.6-38.4c6.4-6.4 12.8-16 12.8-25.6 0-19.2-16-35.2-35.2-35.2-9.6 0-22.4 3.2-28.8 9.6l-108.8 99.2c-16 12.8-12.8 35.2 0 48l108.8 96c6.4 6.4 19.2 12.8 28.8 12.8 19.2 0 35.2-12.8 38.4-32 0-12.8-6.4-22.4-16-28.8l-48-44.8h499.2c147.2 0 265.6-118.4 265.6-259.2v-86.4c0-19.2-12.8-32-32-32zM96 556.8c19.2 0 32-12.8 32-32v-89.6c0-112 89.6-201.6 198.4-204.8h496l-41.6 38.4c-6.4 6.4-12.8 16-12.8 25.6 0 19.2 16 35.2 35.2 35.2 9.6 0 22.4-3.2 28.8-9.6l105.6-99.2c16-12.8 12.8-35.2 0-48l-108.8-96c-6.4-6.4-19.2-12.8-28.8-12.8-19.2 0-35.2 12.8-38.4 32 0 12.8 6.4 22.4 16 28.8l48 44.8H329.6C182.4 169.6 64 288 64 438.4v86.4c0 19.2 12.8 32 32 32z"
+                ></path>
+                <path d="M544 672V352h-48L416 409.6l16 41.6 60.8-41.6V672z"></path>
               </svg>
-              <svg v-if="playerMode === 2" width="24" height="24" viewBox="0 0 48 48" fill="none"
-                   xmlns="http://www.w3.org/2000/svg">
-                <path d="M4 25C4 18.3502 9.39624 13 16 13H44" stroke="white" stroke-width="4" stroke-linecap="round"
-                      stroke-linejoin="round"/>
-                <path d="M38 7L44 13L38 19" stroke="white" stroke-width="4" stroke-linecap="round"
-                      stroke-linejoin="round"/>
-                <path d="M44 23C44 29.6498 38.6038 35 32 35H4" stroke="white" stroke-width="4" stroke-linecap="round"
-                      stroke-linejoin="round"/>
-                <path d="M10 41L4 35L10 29" stroke="white" stroke-width="4" stroke-linecap="round"
-                      stroke-linejoin="round"/>
+              <svg v-if="playerMode === 2" fill="#fff" height="24" viewBox="0 0 20 20" width="24"
+                   xmlns="http://www.w3.org/2000/svg"
+              >
+                <clipPath id="a">
+                  <path d="m0 .5h20v19h-20z"></path>
+                </clipPath>
+                <g fill="#fff">
+                  <path
+                      d="m15 14.5h-1.559l-9.7-10.673c-.09376-.10305-.20802-.18536-.33545-.24168-.12744-.05631-.26523-.08537-.40455-.08532h-3.001v2h2.559l4.09 4.5-4.09 4.501h-2.559v2h3.001c.13932 0 .27711-.029.40455-.0853.12743-.0563.24169-.1387.33545-.2417l4.259-4.687 4.259 4.686c.0938.103.208.1854.3355.2417.1274.0563.2652.0853.4045.0853h2.001v3l5-4-5-4z"></path>
+                  <path
+                      d="m13.4406 5.5h1.559v3l5-3.938-5-4.062v3h-2.001c-.1393-.00005-.2771.02901-.4045.08532-.1275.05632-.2417.13863-.3355.24168l-3.36798 3.707 1.47998 1.346z"></path>
+                </g>
               </svg>
             </button>
           </div>

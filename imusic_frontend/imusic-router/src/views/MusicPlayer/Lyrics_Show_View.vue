@@ -24,7 +24,7 @@ const currentduration=defineModel('currentduration');
 
 const setOffset = () => {
   const index = findIndex();
-  const liHeight = 80; // 每行歌词的高度
+  const liHeight = 60; // 每行歌词的高度
   const containerHeight = containerRef.value.clientHeight; // 容器的高度
   let offset = liHeight * index + liHeight / 2 - containerHeight / 2;
   const maxOffset = ulRef.value.clientHeight - containerHeight;
@@ -75,17 +75,17 @@ watch(currentduration,setOffset);
   width: 100%;
   font-weight:550;
   height: 80px; /* 每行歌词的高度 */
-  color: #9baabf;
-  line-height: 80px; /* 每行歌词的行高 */
+  color: rgb(255,255,255,0.6);
+  line-height: 60px; /* 每行歌词的行高 */
   transition: all 0.5s;
-  font-size: 36px; /* 歌词字体大小 */
+  font-size: 27px; /* 歌词字体大小 */
 }
 
 .container ul li.active {
   color: white;
   font-weight:700;
   transform: scale(1.2); /* 高亮行的缩放效果 */
-  font-size: 48px; /* 高亮行的字体大小 */
-  line-height: 96px; /* 高亮行的行高 */
+  font-size: 36px; /* 高亮行的字体大小 */
+  line-height: 72px; /* 高亮行的行高 */
 }
 </style>
