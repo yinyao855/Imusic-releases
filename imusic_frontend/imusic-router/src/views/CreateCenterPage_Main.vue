@@ -121,11 +121,11 @@ function closeEditSong() {
             <!-- head -->
             <thead>
             <tr>
-              <th class="text-left p-3 text-sm font-semibold text-white">音乐标题</th>
-              <th class="text-center text-sm font-semibold text-white">歌手</th>
-              <th class="text-center text-sm font-semibold text-white">上传时间</th>
+              <th class="text-left p-3 text-sm font-semibold ">音乐标题</th>
+              <th class="text-center text-sm font-semibold ">歌手</th>
+              <th class="text-center text-sm font-semibold ">上传时间</th>
               <!--            <th class="text-center text-sm font-semibold text-white">标签</th>-->
-              <th class="text-center text-sm font-semibold text-white">喜欢人数</th>
+              <th class="text-center text-sm font-semibold ">喜欢人数</th>
               <th></th>
             </tr>
             </thead>
