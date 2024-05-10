@@ -1,7 +1,7 @@
 <script setup>
 import axios from "axios";
 import {defineEmits, ref} from "vue";
-import Admin_Show_User_Information from "@/views/admin/Admin_Show_User_Information.vue";
+import Admin_Show_User_Information from "@/views/Admin/Admin_Show_User_Information.vue";
 const Users = defineModel('Users');
 const token = defineModel('token');
 const emits = defineEmits(['refresh']);

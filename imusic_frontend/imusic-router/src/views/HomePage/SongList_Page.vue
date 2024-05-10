@@ -1,6 +1,6 @@
 <script setup>
 import {defineEmits, defineModel, onMounted, ref} from "vue"
-import buttonchangesize from '../components/buttonchangesize.vue'
+import buttonchangesize from '../../components/buttonchangesize.vue'
 import axios from "axios";
 import P from "particles.vue3";
 

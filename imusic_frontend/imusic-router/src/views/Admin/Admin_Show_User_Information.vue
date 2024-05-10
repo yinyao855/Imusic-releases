@@ -12,7 +12,7 @@ const role=ref('');
 const submitdata=()=>{
   const submitrole=ref('');
   if(role.value==='管理员'){
-    submitrole.value='admin';
+    submitrole.value='Admin';
   }
   else{
     submitrole.value='user';
@@ -56,7 +56,7 @@ const GetUserData = () => {
   instance.get('/users/info/' + UserId.value)
       .then(response => {
         userdata.value = response.data.data;
-        if (userdata.value.role === 'admin') {
+        if (userdata.value.role === 'Admin') {
           userdata.value.role = '管理员';
         } else {
           userdata.value.role = '普通用户';

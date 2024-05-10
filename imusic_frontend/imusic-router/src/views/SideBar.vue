@@ -256,7 +256,7 @@ const CloseWarning = () => {
       </svg>
     </div>
     <div
-        :class="containerClass7" @click="changeMode(7)" v-if="UserRole==='admin'">
+        :class="containerClass7" @click="changeMode(7)" v-if="UserRole==='Admin'">
       <svg class="icon inline fill-white my-auto" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg"
            width="16" height="16">
         <path

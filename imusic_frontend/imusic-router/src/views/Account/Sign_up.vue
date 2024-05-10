@@ -104,7 +104,7 @@
 </template>
 
 <style>
-@import url('../css/Login.css');
+@import url('../../css/Login.css');
 
 
 .v-enter-active,

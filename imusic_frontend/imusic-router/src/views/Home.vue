@@ -1,18 +1,18 @@
 <script setup>
 import {onMounted, ref} from "vue";
-import HomePage_Main from "@/views/HomePage_Main.vue";
+import HomePage_Main from "@/views/HomePage/HomePage_Main.vue";
 import ExplorePage_Main from "@/views/Explore/ExplorePage_Main.vue";
 import CreateCenter from "@/views/CreateCenterPage_Main.vue";
-import SettingPage_Main from "@/views/SettingPage_Main.vue";
-import Login from "../components/Login.vue";
-import Personal_Center from "@/views/Personal_Center.vue";
-import Sign_up from "./Sign_up.vue";
+import SettingPage_Main from "@/views/Settings/SettingPage_Main.vue";
+import Login from "./Account/Login.vue";
+import Personal_Center from "@/views/Account/Personal_Center.vue";
+import Sign_up from "./Account/Sign_up.vue";
 import axios from "axios";
 import CreateSonglistPage_Main from "@/views/CreateSonglistPage_Main.vue";
 import Warning from "@/components/Warning.vue";
 import SideBar from "@/views/SideBar.vue";
 import MusicPlayer_Cell from "@/views/MusicPlayer/MusicPlayer_Cell.vue";
-import AdminPage_Main from "@/views/admin/AdminPage_Main.vue";
+import AdminPage_Main from "@/views/Admin/AdminPage_Main.vue";
 import CreatedSonglist_Main from "@/views/CreatedSonglist_Main.vue";
 import FavoriteSonglist_Main from "@/views/FavoriteSonglist_Main.vue";
 

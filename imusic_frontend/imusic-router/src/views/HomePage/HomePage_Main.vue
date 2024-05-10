@@ -3,10 +3,10 @@ import {computed, ref, defineModel, defineEmits} from "vue";
 import Search from "@/components/Search.vue";
 import Image_Scrool from "@/components/SongList_Scrool.vue";
 import SingerList_Scrool from "@/components/SingerList_Scrool.vue";
-import Newest_Songs_Page from "@/views/Newest_Songs_Page.vue";
-import SongList_Page from "@/views/SongList_Page.vue";
+import Newest_Songs_Page from "@/views/HomePage/Newest_Songs_Page.vue";
+import SongList_Page from "@/views/HomePage/SongList_Page.vue";
 import axios from "axios";
-import Search_View from "@/views/Search_View.vue";
+import Search_View from "@/views/HomePage/Search_View.vue";
 import CurrentUser_SongList from "@/components/CurrentUser_SongList.vue";
 
 const emits = defineEmits(['changesonglist', 'handlePlayNow', 'handlePlayAfter', 'PlaySongList', 'refreshNewest_Songs_Page', 'SearchOperation']);

@@ -1,6 +1,6 @@
 <script setup>
 import {defineModel, defineEmits, ref} from "vue"
-import buttonchangesize from '../components/buttonchangesize.vue'
+import buttonchangesize from '../../components/buttonchangesize.vue'
 import axios from "axios";
 
 const songlistlast = defineModel('songlistlast');

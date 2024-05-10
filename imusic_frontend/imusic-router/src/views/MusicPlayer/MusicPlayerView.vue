@@ -112,13 +112,37 @@
           <!--控制音量-->
           <div class="my-auto flex">
             <button
-                class="btn my-auto btn-sm transition duration-400 hover:bg-gray-600/40 bg-zinc-900 rounded-md border-none">
-              <svg width="24" height="24" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M24 3.99976V43.9998" stroke="white" stroke-width="4" stroke-linecap="round"/>
-                <path d="M34 11.9998V35.9998" stroke="white" stroke-width="4" stroke-linecap="round"/>
-                <path d="M4 17.9998V29.9998" stroke="white" stroke-width="4" stroke-linecap="round"/>
-                <path d="M44 17.9998V29.9998" stroke="white" stroke-width="4" stroke-linecap="round"/>
-                <path d="M14 11.9998V35.9998" stroke="white" stroke-width="4" stroke-linecap="round"/>
+                class="border-none my-auto tooltip transition duration-400 hover:bg-gray-600/40 bg-zinc-900 btn btn-sm z-50"
+                data-tip="音量调节" @click="Mute">
+              <svg class="icon fill-white" viewBox="0 0 1024 1024" v-if="IsMuted"
+                   xmlns="http://www.w3.org/2000/svg" width="24" height="24">
+                <path
+                    d="M0.002433 672V352a53.393333 53.393333 0 0 1 53.333334-53.333333h172.5l207.08-207.086667A21.333333 21.333333 0 0 1 469.335767 106.666667v189.413333L41.435767 724A53.42 53.42 0 0 1 0.002433 672z m633.753334-452.42a21.333333 21.333333 0 0 0-30.173334 0l-597.333333 597.333333a21.333333 21.333333 0 0 0 30.173333 30.173334L158.1691 725.333333h67.666667l207.08 207.086667A21.333333 21.333333 0 0 0 469.335767 917.333333V414.166667l164.42-164.413334a21.333333 21.333333 0 0 0 0-30.173333z"
+                    ></path>
+              </svg>
+              <svg class="icon fill-white" viewBox="0 0 1024 1024"
+                   xmlns="http://www.w3.org/2000/svg" width="24" height="24" v-if="!IsMuted&&volume<=0">
+                <path
+                    d="M456.166667 86.96a21.333333 21.333333 0 0 0-23.253334 4.62L225.833333 298.666667H53.333333a53.393333 53.393333 0 0 0-53.333333 53.333333v320a53.393333 53.393333 0 0 0 53.333333 53.333333h172.5l207.08 207.086667A21.333333 21.333333 0 0 0 469.333333 917.333333V106.666667a21.333333 21.333333 0 0 0-13.166666-19.706667z"
+                ></path>
+              </svg>
+              <svg class="icon fill-white" viewBox="0 0 1024 1024"
+                   xmlns="http://www.w3.org/2000/svg" width="24" height="24" v-if="!IsMuted&&volume>0&&volume<=33">
+                <path
+                    d="M469.333333 106.666667v810.666666a21.333333 21.333333 0 0 1-36.42 15.086667L225.833333 725.333333H53.333333a53.393333 53.393333 0 0 1-53.333333-53.333333V352a53.393333 53.393333 0 0 1 53.333333-53.333333h172.5l207.08-207.086667A21.333333 21.333333 0 0 1 469.333333 106.666667z m176.753334 299.726666a21.333333 21.333333 0 0 0-33.486667 26.433334 127.366667 127.366667 0 0 1 0 158.346666 21.333333 21.333333 0 0 0 33.493333 26.433334 170.733333 170.733333 0 0 0 0-211.213334z"
+                ></path>
+              </svg>
+              <svg class="icon fill-white" viewBox="0 0 1024 1024"
+                   xmlns="http://www.w3.org/2000/svg" width="24" height="24" v-if="!IsMuted&&volume>=34&&volume<=66">
+                <path
+                    d="M469.333333 106.666667v810.666666a21.333333 21.333333 0 0 1-36.42 15.086667L225.833333 725.333333H53.333333a53.393333 53.393333 0 0 1-53.333333-53.333333V352a53.393333 53.393333 0 0 1 53.333333-53.333333h172.5l207.08-207.086667A21.333333 21.333333 0 0 1 469.333333 106.666667z m146.793334 296.2a21.333333 21.333333 0 0 0-3.526667 29.96 127.366667 127.366667 0 0 1 0 158.346666 21.333333 21.333333 0 0 0 33.493333 26.433334 170.733333 170.733333 0 0 0 0-211.213334 21.333333 21.333333 0 0 0-29.966666-3.526666z m212.213333-19.3A339.393333 339.393333 0 0 0 753.333333 270.666667a346.585333 346.585333 0 0 0-22.046666-20.213334 21.333333 21.333333 0 1 0-27.446667 32.666667c6.666667 5.586667 13.146667 11.553333 19.333333 17.726667C779.6 357.22 810.666667 432.22 810.666667 512s-31.066667 154.78-87.48 211.186667c-6.173333 6.173333-12.666667 12.14-19.333334 17.726666a21.333333 21.333333 0 1 0 27.446667 32.666667 346.585333 346.585333 0 0 0 22.046667-20.213333 341.706667 341.706667 0 0 0 74.98-369.793334z"
+                ></path>
+              </svg>
+              <svg class="icon fill-white" viewBox="0 0 1024 1024"
+                   xmlns="http://www.w3.org/2000/svg" width="24" height="24" v-if="!IsMuted&&volume>=67&&volume<=100">
+                <path
+                    d="M469.333333 106.666667v810.666666a21.333333 21.333333 0 0 1-36.42 15.086667L225.833333 725.333333H53.333333a53.393333 53.393333 0 0 1-53.333333-53.333333V352a53.393333 53.393333 0 0 1 53.333333-53.333333h172.5l207.08-207.086667A21.333333 21.333333 0 0 1 469.333333 106.666667z m146.793334 296.2a21.333333 21.333333 0 0 0-3.526667 29.96 127.366667 127.366667 0 0 1 0 158.346666 21.333333 21.333333 0 0 0 33.493333 26.433334 170.733333 170.733333 0 0 0 0-211.213334 21.333333 21.333333 0 0 0-29.966666-3.526666zM853.333333 512a340.32 340.32 0 0 0-100-241.333333 346.585333 346.585333 0 0 0-22.046666-20.213334 21.333333 21.333333 0 1 0-27.446667 32.666667c6.666667 5.586667 13.146667 11.553333 19.333333 17.726667C779.6 357.22 810.666667 432.22 810.666667 512s-31.066667 154.78-87.48 211.186667c-6.173333 6.173333-12.666667 12.14-19.333334 17.726666a21.333333 21.333333 0 1 0 27.446667 32.666667 346.585333 346.585333 0 0 0 22.046667-20.213333 340.32 340.32 0 0 0 100-241.333334z m133.173334-192.666667a508.806667 508.806667 0 0 0-112.466667-169.386666 518.346667 518.346667 0 0 0-57.533333-49.653334 21.333333 21.333333 0 0 0-25.42 34.273334 474.246667 474.246667 0 0 1 52.78 45.553333c182.993333 182.993333 182.993333 480.74 0 663.733333a474.853333 474.853333 0 0 1-52.78 45.553334 21.333333 21.333333 0 0 0 25.413333 34.273333 519.026667 519.026667 0 0 0 57.54-49.653333 512.546667 512.546667 0 0 0 112.466667-554.666667z"
+                ></path>
               </svg>
             </button>
             <input type="range" min="0" max="100" value="40" class="range range-xs my-auto" v-model="volume"
@@ -136,7 +160,8 @@
             </svg>
           </button>
           <transition name="slide">
-            <PlayMusic_List :songlistlast="datax" v-if="ShowPlayMusicList" @HandleIndex="HandleIndex" v-model:token="token"></PlayMusic_List>
+            <PlayMusic_List :songlistlast="datax" v-if="ShowPlayMusicList" @HandleIndex="HandleIndex"
+                            v-model:token="token"></PlayMusic_List>
           </transition>
 
 
@@ -171,10 +196,11 @@
 </template>
 
 <script setup>
-import {ref} from 'vue';
+import {ref, watch} from 'vue';
 import {defineProps, defineModel} from 'vue';
-import PlayMusic_List from "@/views/PlayMusic_List.vue";
-const token=defineModel('token')
+import PlayMusic_List from "@/components/PlayMusic_List.vue";
+
+const token = defineModel('token')
 const ShowPlayMusicList = ref(false);
 const index = defineModel('curIndex');
 
@@ -184,6 +210,20 @@ const props = defineProps({
   singer: String,
   datax: Array,
 });
+
+const store = ref(0);
+const IsMuted = ref(false);
+
+const Mute = () => {
+  if (!IsMuted.value) {
+    store.value = volume.value;
+    volume.value=0;
+    IsMuted.value = true;
+  } else {
+    volume.value = store.value;
+    IsMuted.value = false;
+  }
+}
 
 const emit = defineEmits([
   'fullsize',
@@ -211,12 +251,19 @@ const isMinimized = ref(false);
 //音量
 const volume = ref(40);
 
+watch(volume,()=>{
+  if(volume.value>0){
+    IsMuted.value=false;
+  }
+  console.log(volume.value);
+})
+
 const HandleIndex = (indexx) => {
   index.value = indexx;
 }
 
-const ShowPlayMusicListFalse=()=>{
-  ShowPlayMusicList.value=false;
+const ShowPlayMusicListFalse = () => {
+  ShowPlayMusicList.value = false;
 }
 
 const ShowPlayMusicListChange = () => {
