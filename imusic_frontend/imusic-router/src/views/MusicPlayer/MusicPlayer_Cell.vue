@@ -19,6 +19,7 @@ const updateTime = () => {
 
 const initCurrentMusic=(music)=>{
   currentMusic.value=music;
+  fetchAndFormatLyrics(currentMusic.value.lyric);
   console.log(currentMusic.value);
 }
 
@@ -141,11 +142,11 @@ const fetchAndFormatLyrics = async (lrcUrl) => {
       return `[${time}${truncatedMs}]`;
     });
     lyric.value = parseLRC(formattedLyrics);
+    console.log(lyric.value);
   } catch (error) {
     console.error('Error fetching lyrics:', error);
   }
 };
-
 
 function parseLRC(lrc) {
   const lines = lrc.split("\n");
@@ -188,7 +189,6 @@ function randomSong() {
   curIndex.value = Math.floor(Math.random() * length);
 }
 
-
 function changeSize() {
   if (currentMusic.value.lyric !== null) {
     fetchAndFormatLyrics(currentMusic.value.lyric);
@@ -198,7 +198,6 @@ function changeSize() {
     isFull.value = !isFull.value;
   }
 }
-
 
 const mode=defineModel('mode');
 
@@ -212,7 +211,6 @@ watch(curIndex, () => {
   const id = currentMusic.value.id;
   updateusersonglist(id);
 })
-
 
 const updateusersonglist = (songid) => {
   const formData = new FormData();

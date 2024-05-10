@@ -11,7 +11,7 @@ import axios from "axios";
 import CreateSonglistPage_Main from "@/views/CreateSonglistPage_Main.vue";
 import Warning from "@/components/Warning.vue";
 import SideBar from "@/views/SideBar.vue";
-import MusicPlayer_Cell from "@/components/MusicPlayer_Cell.vue";
+import MusicPlayer_Cell from "@/views/MusicPlayer/MusicPlayer_Cell.vue";
 import AdminPage_Main from "@/views/admin/AdminPage_Main.vue";
 import CreatedSonglist_Main from "@/views/CreatedSonglist_Main.vue";
 import FavoriteSonglist_Main from "@/views/FavoriteSonglist_Main.vue";

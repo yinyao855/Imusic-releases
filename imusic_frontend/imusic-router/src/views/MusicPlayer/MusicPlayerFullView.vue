@@ -97,12 +97,12 @@
         </div>
       </div>
     </div>
-    <div class="col2 w-1/2 flex" v-if="showComment===false">
-      <div class="h-4/5 w-full overflow-hidden mx-auto my-auto">
+    <div class="col2 w-1/2 flex" v-if="!showComment">
+      <div class="w-full overflow-hidden mx-auto my-auto pr-20" style="height:90%">
         <Lyrics_Show_View v-model:currentduration="currentduration" v-model:lrcArr="lyric"></Lyrics_Show_View>
       </div>
     </div>
-    <div class="col2 bg-transparent overflow-hidden h-full" v-if="showComment===true">
+    <div class="col2 bg-transparent overflow-hidden h-full" v-if="showComment">
       <Transition name="slide-fade">
         <Comment :token="token" :id="songID" v-model:showComment="showComment" v-model:songID="songID"
                  v-model:WarningShow="WarningShow" v-model:message="message"></Comment>
@@ -140,9 +140,7 @@ const durationInSeconds = defineModel("durationInSeconds");
 const lyric = defineModel("lyric")
 const audioPlayer = defineModel("audioPlayer");
 const token = defineModel('token')
-const lyricsshow = ref([]);
 const text = ref('未播放');
-const nowline = ref(0);
 
 const togglePlay = () => {
   emit('togglePlay');
@@ -171,41 +169,6 @@ const restart = () => {
   currentTime.value = '0:00';
 };
 
-
-function displayLyrics(lyrics, currentTime) {
-  for (let i = 0; i < lyrics.length; i++) {
-    if (currentTime >= lyrics[i].timestamp && (!lyrics[i + 1] || currentTime < lyrics[i + 1].timestamp)) {
-      text.value = lyrics[i].text;
-      if (i <= 5) {
-        let j = 0;
-        for (j = 0; j < 10; ++j) {
-          lyricsshow.value[j].text = lyrics[j].text;
-          lyricsshow.value[j].special = false;
-        }
-        nowline.value = i;
-        lyricsshow.value[nowline.value].special = true;
-      } else if (i + 5 >= lyrics.length) {
-        let j = 0;
-        for (j = lyrics.length - 10; j < lyrics.length; ++j) {
-          lyricsshow.value[j - lyrics.length + 10].text = lyrics[j].text;
-          lyricsshow.value[j - lyrics.length + 10].special = false;
-        }
-        nowline.value = i - lyrics.length + 10;
-        lyricsshow.value[nowline.value].special = true;
-      } else {
-        let j = 0;
-        for (j = 0; j < 10; ++j) {
-          lyricsshow.value[j].text = lyrics[j + i - 5].text;
-          lyricsshow.value[j].special = false
-        }
-        nowline.value = 5;
-        lyricsshow.value[nowline.value].special = true;
-      }
-      break;
-    }
-  }
-}
-
 const showComment = defineModel('showComment');
 let songID = "";
 const comment = () => {
@@ -213,9 +176,6 @@ const comment = () => {
   songID = props.id;
   console.log(songID);
 }
-watch(currentduration, () => {
-  displayLyrics(lyric.value, currentduration.value);
-});
 const WarningShow = ref(false);
 const CloseWarning = () => {
   WarningShow.value = false;
@@ -226,11 +186,6 @@ const message = ref('');
 
 <style scoped>
 @import url('../../css/Music_Play.css');
-
-.outcontainer {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-}
 
 .content {
   transform-origin: center center;
