@@ -180,7 +180,7 @@ onMounted(GetSongListData);
          :style="{backgroundImage: 'url(' + SongList.cover + ')'}">
     </div>
     <div class="absolute top-0 w-full">
-      <buttonchangesize class="top-0 absolute left-2" @fullsize="changesize" v-model:token="token"></buttonchangesize>
+      <buttonchangesize class="top-0 absolute left-6" @fullsize="changesize" v-model:token="token"></buttonchangesize>
       <svg @click="deleteSonglist" v-if="!IsEditing"
            class="inline-block float-right h-8 w-8 cursor-pointer text-red-600 hover:text-red-800" width="24"
            height="24"
