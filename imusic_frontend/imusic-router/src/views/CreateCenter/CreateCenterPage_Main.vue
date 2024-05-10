@@ -5,6 +5,7 @@ import axios from "axios";
 import EditSong from "@/views/EditSong.vue";
 import SongPage from "@/views/SongPage.vue";
 import Search_View from "@/views/HomePage/Search_View.vue";
+import CreateSonglist_Area from "@/views/CreateCenter/CreateSonglist_Area.vue";
 
 const NaviMode = ref('1');
 const upload = ref('0');
@@ -16,6 +17,10 @@ const NaviClass1 = computed(() => ({
 const NaviClass2 = computed(() => ({
   'text-base inline-block mx-3 w-20 text-center rounded-lg antialiased tracking-widest font-medium transition-colors duration-400 hover:bg-gray-600/40': true,
   'text-cyan-700 underline underline-offset-8 decoration-2': NaviMode.value === '2',
+}));
+const NaviClass3 = computed(() => ({
+  'text-base inline-block mx-3 w-20 text-center rounded-lg antialiased tracking-widest font-medium transition-colors duration-400 hover:bg-gray-600/40': true,
+  'text-cyan-700 underline underline-offset-8 decoration-2': NaviMode.value === '3',
 }));
 const containerClass_Upload = computed(() => ({
   'antialiased text-sm box h-10 my-1 text-white leading-10 transition duration-400 hover:bg-gray-600/40 bg-zinc-800 px-4 ml-2 mr-2 rounded-md': upload.value !== '1',
@@ -161,6 +166,7 @@ const CloseSongPage=()=>{
     <div class="w-full h-14 pl-6">
       <div :class="[NaviClass1, 'text-transition']" @click="changeNaviMode(1)" style="line-height: 56px">我的创作</div>
       <div :class="[NaviClass2, 'text-transition']" @click="changeNaviMode(2)" style="line-height: 56px">创作歌曲</div>
+      <div :class="[NaviClass3, 'text-transition']" @click="changeNaviMode(3)" style="line-height: 56px">创建歌单</div>
       <Search v-model:token="token"></Search>
     </div>
     <div v-if="NaviMode==='1'">
@@ -299,6 +305,10 @@ const CloseSongPage=()=>{
   <div class="w-full h-5/6 overflow-auto" v-if="NaviMode==='2'&&!NeedShowSongDetail">
     <UploadSong @uploadSongSuccess="uploadSongSuccess" v-model:HasLogin="HasLogin"
                 v-model:username="username" v-model:token="token"></UploadSong>
+  </div>
+  <div class="w-full h-5/6 overflow-auto" v-if="NaviMode==='3'&&!NeedShowSongDetail">
+    <CreateSonglist_Area @uploadSongSuccess="uploadSongSuccess" v-model:HasLogin="HasLogin"
+                v-model:username="username" v-model:token="token"></CreateSonglist_Area>
   </div>
   <div class="h-32" v-if="!NeedShowSongDetail"></div>
 </template>
