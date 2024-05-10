@@ -20,133 +20,133 @@ const mode4=ref(1);
 const mode5=ref(1);
 
 const Class1_1 = computed(() => ({
-  'w-1/3 text-white hover:text-blue-400 text-xs block mb-2': mode1.value !== 1,
-  'w-1/3 text-xs block mb-2 text-blue-400': mode1.value === 1,
+  'w-1/3 text-white hover:text-blue-400 text-xs block mb-2 transition ease-in duration-300 cursor-pointer': mode1.value !== 1,
+  'w-1/3 text-xs block mb-2 text-blue-400 cursor-pointer': mode1.value === 1,
 }));
 const Class1_2 = computed(() => ({
-  'w-1/3 text-white hover:text-blue-400 text-xs block mb-2': mode1.value !== 2,
-  'w-1/3 text-xs block mb-2 text-blue-400': mode1.value === 2,
+  'w-1/3 text-white hover:text-blue-400 text-xs block mb-2 transition ease-in duration-300 cursor-pointer': mode1.value !== 2,
+  'w-1/3 text-xs block mb-2 text-blue-400 cursor-pointer': mode1.value === 2,
 }));
 const Class1_3 = computed(() => ({
-  'w-1/3 text-white hover:text-blue-400 text-xs block mb-2': mode1.value !== 3,
-  'w-1/3 text-xs block mb-2 text-blue-400': mode1.value === 3,
+  'w-1/3 text-white hover:text-blue-400 text-xs block mb-2 transition ease-in duration-300 cursor-pointer': mode1.value !== 3,
+  'w-1/3 text-xs block mb-2 text-blue-400 cursor-pointer': mode1.value === 3,
 }));
 const Class1_4 = computed(() => ({
-  'w-1/3 text-white hover:text-blue-400 text-xs block mb-2': mode1.value !== 4,
-  'w-1/3 text-xs block mb-2 text-blue-400': mode1.value === 4,
+  'w-1/3 text-white hover:text-blue-400 text-xs block mb-2 transition ease-in duration-300 cursor-pointer': mode1.value !== 4,
+  'w-1/3 text-xs block mb-2 text-blue-400 cursor-pointer': mode1.value === 4,
 }));
 const Class1_5 = computed(() => ({
-  'w-1/3 text-white hover:text-blue-400 text-xs block mb-2': mode1.value !== 5,
-  'w-1/3 text-xs block mb-2 text-blue-400': mode1.value === 5,
+  'w-1/3 text-white hover:text-blue-400 text-xs block mb-2 transition ease-in duration-300 cursor-pointer': mode1.value !== 5,
+  'w-1/3 text-xs block mb-2 text-blue-400 cursor-pointer': mode1.value === 5,
 }));
 const Class1_6 = computed(() => ({
-  'w-1/3 text-white hover:text-blue-400 text-xs block mb-2': mode1.value !== 6,
-  'w-1/3 text-xs block mb-2 text-blue-400': mode1.value === 6,
+  'w-1/3 text-white hover:text-blue-400 text-xs block mb-2 transition ease-in duration-300': mode1.value !== 6,
+  'w-1/3 text-xs block mb-2 text-blue-400 cursor-pointer': mode1.value === 6,
 }));
 
 
 
 const Class2_1 = computed(() => ({
-  'w-1/3 text-white hover:text-blue-400 text-xs block mb-2': mode2.value !== 1,
-  'w-1/3 text-xs block mb-2 text-blue-400': mode2.value === 1,
+  'w-1/3 text-white hover:text-blue-400 text-xs block mb-2 transition ease-in duration-300 cursor-pointer': mode2.value !== 1,
+  'w-1/3 text-xs block mb-2 text-blue-400 cursor-pointer': mode2.value === 1,
 }));
 const Class2_2 = computed(() => ({
-  'w-1/3 text-white hover:text-blue-400 text-xs block mb-2': mode2.value !== 2,
-  'w-1/3 text-xs block mb-2 text-blue-400': mode2.value === 2,
+  'w-1/3 text-white hover:text-blue-400 text-xs block mb-2 transition ease-in duration-300 cursor-pointer': mode2.value !== 2,
+  'w-1/3 text-xs block mb-2 text-blue-400 cursor-pointer': mode2.value === 2,
 }));
 const Class2_3 = computed(() => ({
-  'w-1/3 text-white hover:text-blue-400 text-xs block mb-2': mode2.value !== 3,
-  'w-1/3 text-xs block mb-2 text-blue-400': mode2.value === 3,
+  'w-1/3 text-white hover:text-blue-400 text-xs block mb-2 transition ease-in duration-300 cursor-pointer': mode2.value !== 3,
+  'w-1/3 text-xs block mb-2 text-blue-400 cursor-pointer': mode2.value === 3,
 }));
 const Class2_4 = computed(() => ({
-  'w-1/3 text-white hover:text-blue-400 text-xs block mb-2': mode2.value !== 4,
-  'w-1/3 text-xs block mb-2 text-blue-400': mode2.value === 4,
+  'w-1/3 text-white hover:text-blue-400 text-xs block mb-2 transition ease-in duration-300 cursor-pointer': mode2.value !== 4,
+  'w-1/3 text-xs block mb-2 text-blue-400 cursor-pointer': mode2.value === 4,
 }));
 const Class2_5 = computed(() => ({
-  'w-1/3 text-white hover:text-blue-400 text-xs block mb-2': mode2.value !== 5,
-  'w-1/3 text-xs block mb-2 text-blue-400': mode2.value === 5,
+  'w-1/3 text-white hover:text-blue-400 text-xs block mb-2 transition ease-in duration-300 cursor-pointer': mode2.value !== 5,
+  'w-1/3 text-xs block mb-2 text-blue-400 cursor-pointer': mode2.value === 5,
 }));
 const Class2_6 = computed(() => ({
-  'w-1/3 text-white hover:text-blue-400 text-xs block mb-2': mode2.value !== 6,
-  'w-1/3 text-xs block mb-2 text-blue-400': mode2.value === 6,
+  'w-1/3 text-white hover:text-blue-400 text-xs block mb-2 transition ease-in duration-300 cursor-pointer': mode2.value !== 6,
+  'w-1/3 text-xs block mb-2 text-blue-400 cursor-pointer': mode2.value === 6,
 }));
 
 
 const Class3_1 = computed(() => ({
-  'w-1/3 text-white hover:text-blue-400 text-xs block mb-2': mode3.value !== 1,
-  'w-1/3 text-xs block mb-2 text-blue-400': mode3.value === 1,
+  'w-1/3 text-white hover:text-blue-400 text-xs block mb-2 transition ease-in duration-300 cursor-pointer': mode3.value !== 1,
+  'w-1/3 text-xs block mb-2 text-blue-400 cursor-pointer': mode3.value === 1,
 }));
 const Class3_2 = computed(() => ({
-  'w-1/3 text-white hover:text-blue-400 text-xs block mb-2': mode3.value !== 2,
-  'w-1/3 text-xs block mb-2 text-blue-400': mode3.value === 2,
+  'w-1/3 text-white hover:text-blue-400 text-xs block mb-2 transition ease-in duration-300 cursor-pointer': mode3.value !== 2,
+  'w-1/3 text-xs block mb-2 text-blue-400 cursor-pointer': mode3.value === 2,
 }));
 const Class3_3 = computed(() => ({
-  'w-1/3 text-white hover:text-blue-400 text-xs block mb-2': mode3.value !== 3,
-  'w-1/3 text-xs block mb-2 text-blue-400': mode3.value === 3,
+  'w-1/3 text-white hover:text-blue-400 text-xs block mb-2 transition ease-in duration-300 cursor-pointer': mode3.value !== 3,
+  'w-1/3 text-xs block mb-2 text-blue-400 cursor-pointer': mode3.value === 3,
 }));
 const Class3_4 = computed(() => ({
-  'w-1/3 text-white hover:text-blue-400 text-xs block mb-2': mode3.value !== 4,
-  'w-1/3 text-xs block mb-2 text-blue-400': mode3.value === 4,
+  'w-1/3 text-white hover:text-blue-400 text-xs block mb-2 transition ease-in duration-300 cursor-pointer': mode3.value !== 4,
+  'w-1/3 text-xs block mb-2 text-blue-400 cursor-pointer': mode3.value === 4,
 }));
 const Class3_5 = computed(() => ({
-  'w-1/3 text-white hover:text-blue-400 text-xs block mb-2': mode3.value !== 5,
-  'w-1/3 text-xs block mb-2 text-blue-400': mode3.value === 5,
+  'w-1/3 text-white hover:text-blue-400 text-xs block mb-2 transition ease-in duration-300 cursor-pointer': mode3.value !== 5,
+  'w-1/3 text-xs block mb-2 text-blue-400 cursor-pointer': mode3.value === 5,
 }));
 const Class3_6 = computed(() => ({
-  'w-1/3 text-white hover:text-blue-400 text-xs block mb-2': mode3.value !== 6,
-  'w-1/3 text-xs block mb-2 text-blue-400': mode3.value === 6,
+  'w-1/3 text-white hover:text-blue-400 text-xs block mb-2 transition ease-in duration-300 cursor-pointer': mode3.value !== 6,
+  'w-1/3 text-xs block mb-2 text-blue-400 cursor-pointer': mode3.value === 6,
 }));
 
 
 const Class4_1 = computed(() => ({
-  'w-1/3 text-white hover:text-blue-400 text-xs block mb-2': mode4.value !== 1,
-  'w-1/3 text-xs block mb-2 text-blue-400': mode4.value === 1,
+  'w-1/3 text-white hover:text-blue-400 text-xs block mb-2 transition ease-in duration-300 cursor-pointer': mode4.value !== 1,
+  'w-1/3 text-xs block mb-2 text-blue-400 cursor-pointer': mode4.value === 1,
 }));
 const Class4_2 = computed(() => ({
-  'w-1/3 text-white hover:text-blue-400 text-xs block mb-2': mode4.value !== 2,
-  'w-1/3 text-xs block mb-2 text-blue-400': mode4.value === 2,
+  'w-1/3 text-white hover:text-blue-400 text-xs block mb-2 transition ease-in duration-300 cursor-pointer': mode4.value !== 2,
+  'w-1/3 text-xs block mb-2 text-blue-400 cursor-pointer': mode4.value === 2,
 }));
 const Class4_3 = computed(() => ({
-  'w-1/3 text-white hover:text-blue-400 text-xs block mb-2': mode4.value !== 3,
-  'w-1/3 text-xs block mb-2 text-blue-400': mode4.value === 3,
+  'w-1/3 text-white hover:text-blue-400 text-xs block mb-2 transition ease-in duration-300 cursor-pointer': mode4.value !== 3,
+  'w-1/3 text-xs block mb-2 text-blue-400 cursor-pointer': mode4.value === 3,
 }));
 const Class4_4 = computed(() => ({
-  'w-1/3 text-white hover:text-blue-400 text-xs block mb-2': mode4.value !== 4,
-  'w-1/3 text-xs block mb-2 text-blue-400': mode4.value === 4,
+  'w-1/3 text-white hover:text-blue-400 text-xs block mb-2 transition ease-in duration-300 cursor-pointer': mode4.value !== 4,
+  'w-1/3 text-xs block mb-2 text-blue-400 cursor-pointer': mode4.value === 4,
 }));
 const Class4_5 = computed(() => ({
-  'w-1/3 text-white hover:text-blue-400 text-xs block mb-2': mode4.value !== 5,
-  'w-1/3 text-xs block mb-2 text-blue-400': mode4.value === 5,
+  'w-1/3 text-white hover:text-blue-400 text-xs block mb-2 transition ease-in duration-300 cursor-pointer': mode4.value !== 5,
+  'w-1/3 text-xs block mb-2 text-blue-400 cursor-pointer': mode4.value === 5,
 }));
 const Class4_6 = computed(() => ({
-  'w-1/3 text-white hover:text-blue-400 text-xs block mb-2': mode4.value !== 6,
-  'w-1/3 text-xs block mb-2 text-blue-400': mode4.value === 6,
+  'w-1/3 text-white hover:text-blue-400 text-xs block mb-2 transition ease-in duration-300 cursor-pointer': mode4.value !== 6,
+  'w-1/3 text-xs block mb-2 text-blue-400 cursor-pointer': mode4.value === 6,
 }));
 
 
 const Class5_1 = computed(() => ({
-  'w-1/3 text-white hover:text-blue-400 text-xs block mb-2': mode5.value !== 1,
-  'w-1/3 text-xs block mb-2 text-blue-400': mode5.value === 1,
+  'w-1/3 text-white hover:text-blue-400 text-xs block mb-2 transition ease-in duration-300 cursor-pointer': mode5.value !== 1,
+  'w-1/3 text-xs block mb-2 text-blue-400 cursor-pointer': mode5.value === 1,
 }));
 const Class5_2 = computed(() => ({
-  'w-1/3 text-white hover:text-blue-400 text-xs block mb-2': mode5.value !== 2,
-  'w-1/3 text-xs block mb-2 text-blue-400': mode5.value === 2,
+  'w-1/3 text-white hover:text-blue-400 text-xs block mb-2 transition ease-in duration-300 cursor-pointer': mode5.value !== 2,
+  'w-1/3 text-xs block mb-2 text-blue-400 cursor-pointer': mode5.value === 2,
 }));
 const Class5_3 = computed(() => ({
-  'w-1/3 text-white hover:text-blue-400 text-xs block mb-2': mode5.value !== 3,
-  'w-1/3 text-xs block mb-2 text-blue-400': mode5.value === 3,
+  'w-1/3 text-white hover:text-blue-400 text-xs block mb-2 transition ease-in duration-300 cursor-pointer': mode5.value !== 3,
+  'w-1/3 text-xs block mb-2 text-blue-400 cursor-pointer': mode5.value === 3,
 }));
 const Class5_4 = computed(() => ({
-  'w-1/3 text-white hover:text-blue-400 text-xs block mb-2': mode5.value !== 4,
-  'w-1/3 text-xs block mb-2 text-blue-400': mode5.value === 4,
+  'w-1/3 text-white hover:text-blue-400 text-xs block mb-2 transition ease-in duration-300 cursor-pointer': mode5.value !== 4,
+  'w-1/3 text-xs block mb-2 text-blue-400 cursor-pointer': mode5.value === 4,
 }));
 const Class5_5 = computed(() => ({
-  'w-1/3 text-white hover:text-blue-400 text-xs block mb-2': mode5.value !== 5,
-  'w-1/3 text-xs block mb-2 text-blue-400': mode5.value === 5,
+  'w-1/3 text-white hover:text-blue-400 text-xs block mb-2 transition ease-in duration-300 cursor-pointer': mode5.value !== 5,
+  'w-1/3 text-xs block mb-2 text-blue-400 cursor-pointer': mode5.value === 5,
 }));
 const Class5_6 = computed(() => ({
-  'w-1/3 text-white hover:text-blue-400 text-xs block mb-2': mode5.value !== 6,
-  'w-1/3 text-xs block mb-2 text-blue-400': mode5.value === 6,
+  'w-1/3 text-white hover:text-blue-400 text-xs block mb-2 transition ease-in duration-300 cursor-pointer': mode5.value !== 6,
+  'w-1/3 text-xs block mb-2 text-blue-400 cursor-pointer': mode5.value === 6,
 }));
 
 

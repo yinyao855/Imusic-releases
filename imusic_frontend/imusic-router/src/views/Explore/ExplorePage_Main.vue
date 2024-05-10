@@ -1,6 +1,6 @@
 <script setup>
 import {computed, ref} from "vue";
-import Singer_Show_Area from "@/views/Explore/Singer_Show_Area.vue";
+import Singer_Show_Area from "@/views/Explore/Songs_Show_Area.vue";
 import Search from "@/components/Search.vue";
 import List_Show_Area from "@/views/Explore/List_Show_Area.vue";
 
