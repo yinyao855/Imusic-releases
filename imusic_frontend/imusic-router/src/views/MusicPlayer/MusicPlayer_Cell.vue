@@ -1,5 +1,5 @@
 <script setup>
-import { ref, watch} from "vue";
+import {onMounted, ref, watch} from "vue";
 import axios from "axios";
 import MusicPlayerFullView from "@/views/MusicPlayer/MusicPlayerFullView.vue";
 import MusicPlayerView from "@/views/MusicPlayer/MusicPlayerView.vue";
@@ -19,6 +19,7 @@ const updateTime = () => {
 
 const initCurrentMusic=(music)=>{
   currentMusic.value=music;
+  fetchAndFormatLyrics(currentMusic.value.lyric);
   console.log(currentMusic.value);
 }
 
@@ -141,11 +142,11 @@ const fetchAndFormatLyrics = async (lrcUrl) => {
       return `[${time}${truncatedMs}]`;
     });
     lyric.value = parseLRC(formattedLyrics);
+    console.log(lyric.value);
   } catch (error) {
     console.error('Error fetching lyrics:', error);
   }
 };
-
 
 function parseLRC(lrc) {
   const lines = lrc.split("\n");
@@ -188,7 +189,6 @@ function randomSong() {
   curIndex.value = Math.floor(Math.random() * length);
 }
 
-
 function changeSize() {
   if (currentMusic.value.lyric !== null) {
     fetchAndFormatLyrics(currentMusic.value.lyric);
@@ -198,7 +198,6 @@ function changeSize() {
     isFull.value = !isFull.value;
   }
 }
-
 
 const mode=defineModel('mode');
 
@@ -212,7 +211,6 @@ watch(curIndex, () => {
   const id = currentMusic.value.id;
   updateusersonglist(id);
 })
-
 
 const updateusersonglist = (songid) => {
   const formData = new FormData();
@@ -242,6 +240,7 @@ function backSong() {
 }
 
 defineExpose({handlePlayNow,handlePlayAfter,initCurrentMusic})
+
 </script>
 
 <template>
@@ -282,6 +281,7 @@ defineExpose({handlePlayNow,handlePlayAfter,initCurrentMusic})
     <div v-if="isFull" key="musicPlay" class="transition-container z-50">
       <MusicPlayerFullView
           class="fixed top-0 left-0 w-full z-50"
+          v-model:playerMode="playerMode"
           v-model:audioPlayer="audioPlayer"
           v-model:durationInSeconds="durationInSeconds"
           v-model:currentTime="currentTime"
@@ -331,4 +331,5 @@ defineExpose({handlePlayNow,handlePlayAfter,initCurrentMusic})
   width: 100%;
   height: 100%;
 }
+
 </style>

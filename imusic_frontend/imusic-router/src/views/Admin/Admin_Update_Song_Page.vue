@@ -1,5 +1,5 @@
 <script setup>
-import UploadSong from "@/views/UploadSong.vue";
+import UploadSong from "@/views/CreateCenter/UploadSong.vue";
 import {onMounted, ref} from "vue";
 import Warning from "@/components/Warning.vue";
 import P from "particles.vue3";
@@ -8,7 +8,7 @@ import axios from "axios";
 const SongId = defineModel('SongId');
 const token = defineModel('token');
 const Song = ref([]);
-import buttonchangesize from '@/components/buttonchangesize.vue'
+import buttonchangesize from '@/components/ButtonChangeSizeRight.vue'
 
 const GetSongData = () => {
   console.log(SongId);

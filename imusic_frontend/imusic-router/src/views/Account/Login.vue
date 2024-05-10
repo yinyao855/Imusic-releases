@@ -46,7 +46,7 @@
 </template>
 
 <style>
-@import url('../css/Login.css');
+@import url('../../css/Login.css');
 
 .vx-enter-active,
 .vx-leave-active {

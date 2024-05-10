@@ -47,7 +47,6 @@ const mode = defineModel('mode');
 const UserRole = defineModel('UserRole');
 const changeMode = (newMode) => {
   mode.value = newMode.toString();
-  console.log(mode.value);
 };
 
 const LoginArea = () => {

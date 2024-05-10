@@ -1,415 +1,208 @@
 <script setup>
-import {computed, onMounted, ref, watch} from "vue";
+import {defineEmits, defineModel, onMounted, ref} from "vue"
+import buttonchangesize from '../../components/ButtonChangeSizeRight.vue'
 import axios from "axios";
-import CurrentUser_SongList from "@/components/CurrentUser_SongList.vue";
+import SongPage from "@/views/SongPage.vue";
+import Search_View from "@/views/HomePage/Search_View.vue";
 
-const emits = defineEmits(['handlePlayNow', 'handlePlayAfter', 'addToSongList'])
+const songlistlast = defineModel('songlist');
 const token = defineModel('token')
-const tag_language = ref('默认');
-const tag_theme = ref('默认')
-const tag_scene = ref('默认');
-const tag_mood = ref('默认');
-const tag_style = ref('默认');
-const Songs = ref([]);
-const username = defineModel('username');
-const SongLists = ref([]);
-const mode1=ref(1);
-const mode2=ref(1);
-const mode3=ref(1);
-const mode4=ref(1);
-const mode5=ref(1);
+const emits = defineEmits(['handlePlayNow', 'handlePlayAfter', 'changesize', 'ChangeSongList', 'addToSongList']);
+const SongListId = defineModel('SongListId');
 
-const Class1_1 = computed(() => ({
-  'w-1/3 text-white hover:text-blue-400 text-xs block mb-2': mode1.value !== 1,
-  'w-1/3 text-xs block mb-2 text-blue-400': mode1.value === 1,
-}));
-const Class1_2 = computed(() => ({
-  'w-1/3 text-white hover:text-blue-400 text-xs block mb-2': mode1.value !== 2,
-  'w-1/3 text-xs block mb-2 text-blue-400': mode1.value === 2,
-}));
-const Class1_3 = computed(() => ({
-  'w-1/3 text-white hover:text-blue-400 text-xs block mb-2': mode1.value !== 3,
-  'w-1/3 text-xs block mb-2 text-blue-400': mode1.value === 3,
-}));
-const Class1_4 = computed(() => ({
-  'w-1/3 text-white hover:text-blue-400 text-xs block mb-2': mode1.value !== 4,
-  'w-1/3 text-xs block mb-2 text-blue-400': mode1.value === 4,
-}));
-const Class1_5 = computed(() => ({
-  'w-1/3 text-white hover:text-blue-400 text-xs block mb-2': mode1.value !== 5,
-  'w-1/3 text-xs block mb-2 text-blue-400': mode1.value === 5,
-}));
-const Class1_6 = computed(() => ({
-  'w-1/3 text-white hover:text-blue-400 text-xs block mb-2': mode1.value !== 6,
-  'w-1/3 text-xs block mb-2 text-blue-400': mode1.value === 6,
-}));
-
-
-
-const Class2_1 = computed(() => ({
-  'w-1/3 text-white hover:text-blue-400 text-xs block mb-2': mode2.value !== 1,
-  'w-1/3 text-xs block mb-2 text-blue-400': mode2.value === 1,
-}));
-const Class2_2 = computed(() => ({
-  'w-1/3 text-white hover:text-blue-400 text-xs block mb-2': mode2.value !== 2,
-  'w-1/3 text-xs block mb-2 text-blue-400': mode2.value === 2,
-}));
-const Class2_3 = computed(() => ({
-  'w-1/3 text-white hover:text-blue-400 text-xs block mb-2': mode2.value !== 3,
-  'w-1/3 text-xs block mb-2 text-blue-400': mode2.value === 3,
-}));
-const Class2_4 = computed(() => ({
-  'w-1/3 text-white hover:text-blue-400 text-xs block mb-2': mode2.value !== 4,
-  'w-1/3 text-xs block mb-2 text-blue-400': mode2.value === 4,
-}));
-const Class2_5 = computed(() => ({
-  'w-1/3 text-white hover:text-blue-400 text-xs block mb-2': mode2.value !== 5,
-  'w-1/3 text-xs block mb-2 text-blue-400': mode2.value === 5,
-}));
-const Class2_6 = computed(() => ({
-  'w-1/3 text-white hover:text-blue-400 text-xs block mb-2': mode2.value !== 6,
-  'w-1/3 text-xs block mb-2 text-blue-400': mode2.value === 6,
-}));
-
-
-const Class3_1 = computed(() => ({
-  'w-1/3 text-white hover:text-blue-400 text-xs block mb-2': mode3.value !== 1,
-  'w-1/3 text-xs block mb-2 text-blue-400': mode3.value === 1,
-}));
-const Class3_2 = computed(() => ({
-  'w-1/3 text-white hover:text-blue-400 text-xs block mb-2': mode3.value !== 2,
-  'w-1/3 text-xs block mb-2 text-blue-400': mode3.value === 2,
-}));
-const Class3_3 = computed(() => ({
-  'w-1/3 text-white hover:text-blue-400 text-xs block mb-2': mode3.value !== 3,
-  'w-1/3 text-xs block mb-2 text-blue-400': mode3.value === 3,
-}));
-const Class3_4 = computed(() => ({
-  'w-1/3 text-white hover:text-blue-400 text-xs block mb-2': mode3.value !== 4,
-  'w-1/3 text-xs block mb-2 text-blue-400': mode3.value === 4,
-}));
-const Class3_5 = computed(() => ({
-  'w-1/3 text-white hover:text-blue-400 text-xs block mb-2': mode3.value !== 5,
-  'w-1/3 text-xs block mb-2 text-blue-400': mode3.value === 5,
-}));
-const Class3_6 = computed(() => ({
-  'w-1/3 text-white hover:text-blue-400 text-xs block mb-2': mode3.value !== 6,
-  'w-1/3 text-xs block mb-2 text-blue-400': mode3.value === 6,
-}));
-
-
-const Class4_1 = computed(() => ({
-  'w-1/3 text-white hover:text-blue-400 text-xs block mb-2': mode4.value !== 1,
-  'w-1/3 text-xs block mb-2 text-blue-400': mode4.value === 1,
-}));
-const Class4_2 = computed(() => ({
-  'w-1/3 text-white hover:text-blue-400 text-xs block mb-2': mode4.value !== 2,
-  'w-1/3 text-xs block mb-2 text-blue-400': mode4.value === 2,
-}));
-const Class4_3 = computed(() => ({
-  'w-1/3 text-white hover:text-blue-400 text-xs block mb-2': mode4.value !== 3,
-  'w-1/3 text-xs block mb-2 text-blue-400': mode4.value === 3,
-}));
-const Class4_4 = computed(() => ({
-  'w-1/3 text-white hover:text-blue-400 text-xs block mb-2': mode4.value !== 4,
-  'w-1/3 text-xs block mb-2 text-blue-400': mode4.value === 4,
-}));
-const Class4_5 = computed(() => ({
-  'w-1/3 text-white hover:text-blue-400 text-xs block mb-2': mode4.value !== 5,
-  'w-1/3 text-xs block mb-2 text-blue-400': mode4.value === 5,
-}));
-const Class4_6 = computed(() => ({
-  'w-1/3 text-white hover:text-blue-400 text-xs block mb-2': mode4.value !== 6,
-  'w-1/3 text-xs block mb-2 text-blue-400': mode4.value === 6,
-}));
-
-
-const Class5_1 = computed(() => ({
-  'w-1/3 text-white hover:text-blue-400 text-xs block mb-2': mode5.value !== 1,
-  'w-1/3 text-xs block mb-2 text-blue-400': mode5.value === 1,
-}));
-const Class5_2 = computed(() => ({
-  'w-1/3 text-white hover:text-blue-400 text-xs block mb-2': mode5.value !== 2,
-  'w-1/3 text-xs block mb-2 text-blue-400': mode5.value === 2,
-}));
-const Class5_3 = computed(() => ({
-  'w-1/3 text-white hover:text-blue-400 text-xs block mb-2': mode5.value !== 3,
-  'w-1/3 text-xs block mb-2 text-blue-400': mode5.value === 3,
-}));
-const Class5_4 = computed(() => ({
-  'w-1/3 text-white hover:text-blue-400 text-xs block mb-2': mode5.value !== 4,
-  'w-1/3 text-xs block mb-2 text-blue-400': mode5.value === 4,
-}));
-const Class5_5 = computed(() => ({
-  'w-1/3 text-white hover:text-blue-400 text-xs block mb-2': mode5.value !== 5,
-  'w-1/3 text-xs block mb-2 text-blue-400': mode5.value === 5,
-}));
-const Class5_6 = computed(() => ({
-  'w-1/3 text-white hover:text-blue-400 text-xs block mb-2': mode5.value !== 6,
-  'w-1/3 text-xs block mb-2 text-blue-400': mode5.value === 6,
-}));
-
-
-
-const HandleStyle=(event,value)=>{
-  mode5.value=value;
-  tag_style.value=event.target.textContent.trim();
+function handlePlayNow(index) {
+  emits('handlePlayNow', songlistlast.value.songs[index].id)
 }
 
-const HandleMood=(event,value)=>{
-  mode4.value=value;
-  tag_mood.value=event.target.textContent.trim();
+function handlePlayAfter(index) {
+  emits('handlePlayAfter', songlistlast.value.songs[index].id)
 }
 
-const HandleLanguage=(event,value)=>{
-  mode1.value=value;
-  tag_language.value=event.target.textContent.trim();
+const changesize = () => {
+  emits('changesize');
 }
 
-const HandleTheme=(event,value)=>{
-  mode2.value=value;
-  console.log(mode2.value);
-  tag_theme.value=event.target.textContent.trim();
+const ChangeSongList = () => {
+  emits('ChangeSongList', songlistlast.value.id);
 }
-
-const HandleScene=(event,value)=>{
-  mode3.value=value;
-  tag_scene.value=event.target.textContent.trim();
-}
-const GetMySongList = () => {
-  console.log(username.value);
-  const instance = axios.create({
-    baseURL: 'http://182.92.100.66:5000',
-    timeout: 5000, // 设置请求超时时间
-    headers: {
-      'Authorization': `Bearer ${token.value}`,
-    }
-  });
-  axios.defaults.withCredentials = true;
-  instance.get('/users/songlists', {
-    params: {
-      username: username.value
-    }
-  })
-      .then(response => {
-        SongLists.value = response.data.data;
-        console.log(SongLists.value);
-      })
-      .catch(error => {
-        console.log(error.response.data);
-      })
-}
-
-const gettime = (time) => {
-  const minute = Math.floor(time / 60);
-  const second = Math.floor(time - minute * 60);
-  if (second < 10) {
-    return `${minute}:0${second}`;
-  }
-  return `${minute}:${second}`;
-}
-
-const handlePlayNow = (index) => {
-  emits('handlePlayNow', Songs.value[index].id);
-}
-
-
-const handlePlayAfter = (index) => {
-  emits('handlePlayAfter', Songs.value[index].id);
-}
-const NeedToAddSongId = ref(0);
-
-const updateSongs = () => {
-  let web = '/songs/query?'
-  console.log(web);
-  let flag = 0;
-  if (tag_theme.value !== '默认') {
-    if (web === '/songs/query?') {
-      web = web + 'tag_theme=' + tag_theme.value;
-    } else {
-      web = web + '&tag_theme=' + tag_theme.value;
-    }
-    flag = 1;
-  }
-  if (tag_language.value !== '默认') {
-    if (web === '/songs/query?') {
-      web = web + 'tag_language=' + tag_language.value;
-    } else {
-      web = web + '&tag_language=' + tag_language.value;
-    }
-    flag = 1;
-  }
-  if (tag_scene.value !== '默认') {
-    if (web === '/songs/query?') {
-      web = web + 'tag_scene=' + tag_scene.value;
-    } else {
-      web = web + '&tag_scene=' + tag_scene.value;
-    }
-    flag = 1;
-  }
-  if (tag_mood.value !== '默认') {
-    if (web === '/songs/query?') {
-      web = web + 'tag_mood=' + tag_mood.value;
-    } else {
-      web = web + '&tag_mood=' + tag_mood.value;
-    }
-    flag = 1;
-  }
-  if (tag_style.value !== '默认') {
-    if (web === '/songs/query?') {
-      web = web + 'tag_style=' + tag_style.value;
-    } else {
-      web = web + '&tag_style=' + tag_style.value;
-    }
-    flag = 1;
-  }
-  if (flag === 0) {
-    GetInitSongs();
-    return;
-  }
-  const instance = axios.create({
-    baseURL: 'http://182.92.100.66:5000',
-    timeout: 5000, // 设置请求超时时间
-    headers: {
-      'Authorization': `Bearer ${token.value}`,
-    }
-  });
-  axios.defaults.withCredentials = true;
-  console.log(web);
-  instance.get(web)
-      .then(response => {
-        Songs.value = response.data.data;
-        let length = Songs.value.length;
-        for (let i = 0; i < length; ++i) {
-          Songs.value[i].duration = gettime(Songs.value[i].duration);
-        }
-      })
-      .catch(error => {
-        console.log(error.response.data);
-      })
-}
-watch(tag_language, () => {
-  updateSongs();
-});
-watch(tag_style, () => {
-  updateSongs();
-});
-watch(tag_theme, () => {
-  updateSongs();
-});
-watch(tag_scene, () => {
-  updateSongs();
-});
-watch(tag_mood, () => {
-  updateSongs();
-});
-const GetInitSongs = () => {
-  const instance = axios.create({
-    baseURL: 'http://182.92.100.66:5000',
-    timeout: 5000, // 设置请求超时时间
-    headers: {
-      'Authorization': `Bearer ${token.value}`,
-    }
-  });
-  axios.defaults.withCredentials = true;
-  instance.get('/songs/alldata')
-      .then(response => {
-        Songs.value = response.data.data;
-        let length = Songs.value.length;
-        for (let i = 0; i < length; ++i) {
-          Songs.value[i].duration = gettime(Songs.value[i].duration);
-        }
-      })
-      .catch(error => {
-        console.log(error.response.data);
-      })
-}
-
-const ShowCurrentUser_SongList = ref(false);
 
 const addToSongList = (index) => {
-  NeedToAddSongId.value = Songs.value[index].id;
-  GetMySongList();
-  ShowCurrentUser_SongList.value = true;
+  emits('addToSongList', songlistlast.value.songs[index].id);
 }
 
-const CloseCurrentUser_SongList = () => {
-  ShowCurrentUser_SongList.value = false;
+const username = defineModel('username');
+const addlike = (index) => {
+  const formData = new FormData();
+  formData.append('username', username.value);
+  formData.append('song_id', songlistlast.value.songs[index].id);
+  console.log(songlistlast.value.songs[index].id);
+  const instance = axios.create({
+    baseURL: 'http://182.92.100.66:5000',
+    timeout: 5000, // 设置请求超时时间
+    headers: {
+      'Authorization': `Bearer ${token.value}`,
+    }
+  });
+  axios.defaults.withCredentials = true;
+  instance.post('/like/songs/add', formData)
+      .then(response => {
+        console.log(response.data);
+        songlistlast.value.songs[index].user_like = true;
+      })
+      .catch(error => {
+        console.log(error.response.data);
+      })
 }
-onMounted(GetInitSongs);
+
+const deletelike = (index) => {
+  const formData = new FormData();
+  formData.append('username', username.value);
+  formData.append('song_id', songlistlast.value.songs[index].id);
+  const instance = axios.create({
+    baseURL: 'http://182.92.100.66:5000',
+    timeout: 5000, // 设置请求超时时间
+    headers: {
+      'Authorization': `Bearer ${token.value}`,
+    }
+  });
+  axios.defaults.withCredentials = true;
+  instance.post('/like/songs/delete', formData)
+      .then(response => {
+        console.log(response.data);
+        songlistlast.value.songs[index].user_like = false;
+      })
+      .catch(error => {
+        console.log(error.response.data);
+      })
+}
+
+const addSongListlike = () => {
+  console.log(SongListId.value);
+  const instance = axios.create({
+    baseURL: 'http://182.92.100.66:5000',
+    timeout: 5000, // 设置请求超时时间
+    headers: {
+      'Authorization': `Bearer ${token.value}`,
+    }
+  });
+  SongListLike.value = true;
+  axios.defaults.withCredentials = true;
+  const formData = new FormData();
+  formData.append('songlist_id', SongListId.value)
+  instance.post('/like/songlists/add', formData)
+      .then(response => {
+        console.log(response.data);
+      })
+      .catch(error => {
+        console.log(error.response.data);
+      })
+}
+
+
+const deleteSongListlike = () => {
+  console.log(SongListId.value);
+  const instance = axios.create({
+    baseURL: 'http://182.92.100.66:5000',
+    timeout: 5000, // 设置请求超时时间
+    headers: {
+      'Authorization': `Bearer ${token.value}`,
+    }
+  });
+  SongListLike.value = false;
+  axios.defaults.withCredentials = true;
+  const formData = new FormData();
+  formData.append('songlist_id', SongListId.value)
+  instance.post('/like/songlists/delete', formData)
+      .then(response => {
+        console.log(response.data);
+      })
+      .catch(error => {
+        console.log(error.response.data);
+      })
+}
+const SongListLike = ref(false);
+
+const GetUserLike = () => {
+  SongListLike.value = songlistlast.value.user_like === true;
+}
+
+const SongId=ref(0);
+const NeedShowSongDetail=ref(false);
+
+const ShowSongDetail=(index)=>{
+  SongId.value=songlistlast.value.songs[index].id;
+  NeedShowSongDetail.value=true;
+}
+
+const CloseSongPage=()=>{
+  NeedShowSongDetail.value=false;
+}
+onMounted(GetUserLike)
 </script>
 
 <template>
   <transition name="slide" appear>
-    <div class="transition-container-2" v-if="ShowCurrentUser_SongList">
-      <CurrentUser_SongList v-model:CurrentUser_SongListdata="SongLists" v-model:needtoaddSongid="NeedToAddSongId"
-                            v-model:token="token"
-                            @CloseCurrentUser_SongList="CloseCurrentUser_SongList"></CurrentUser_SongList>
+    <div class="transition-container-2" v-if="NeedShowSongDetail">
+      <SongPage  v-model:currentSongId="SongId"
+                @handlePlayNow="handlePlayNow" @CloseSong="CloseSongPage"
+                v-model:username="username" v-model:token="token"></SongPage>
     </div>
   </transition>
-  <div class="flex w-full h-full px-10" v-if="!ShowCurrentUser_SongList">
-    <div class="w-1/5 border-r border-gray-400 px-4 pb-6">
-      <div class="text-sm pb-4">语言</div>
-      <div class="flex flex-wrap ml-6">
-        <span :class="Class1_1" @click="HandleLanguage($event,1)">默认</span>
-        <span :class="Class1_2" @click="HandleLanguage($event,2)">英语</span>
-        <span :class="Class1_3" @click="HandleLanguage($event,3)">日语</span>
-        <span :class="Class1_4" @click="HandleLanguage($event,4)">粤语</span>
-        <span :class="Class1_5" @click="HandleLanguage($event,5)">国语</span>
-        <span :class="Class1_6" @click="HandleLanguage($event,6)">韩语</span>
+
+  <div class="bgx bg-cover bg-center h-2/5 relative" v-if="!NeedShowSongDetail">
+    <div class="bg-blur w-full h-full absolute top-0 left-0"
+         :style="{backgroundImage: `url(${songlistlast.cover})`}"></div>
+    <buttonchangesize class="absolute top-5 left-5" @fullsize="changesize" v-model:token="token"></buttonchangesize>
+    <img class="absolute top-10 left-24 w-60 aspect-square rounded-2xl" :src="songlistlast.cover" alt="歌单封面">
+    <div class="absolute top-4 left-96">
+      <div class="text-4xl text-white mt-8 mb-4">
+        {{ songlistlast.title }}
+      </div>
+      <div class="text-2xl text-white font-base">{{ songlistlast.owner }} 创建于 {{ songlistlast.create_date }}</div>
+      <details class="dropdown">
+        <summary class="mb-1 mt-1 btn mr-4 bg-blue-600 rounded-2xl hover:bg-blue-800 border-none text-white w-28">
+          歌单简介
+        </summary>
+        <ul class="p-2 shadow menu dropdown-content z-[1] rounded-box w-52 bg-gray-600 text-white">
+          <li><a>{{
+              songlistlast.introduction === 'null' || songlistlast.introduction === null ? '无简介' : songlistlast.introduction
+            }}</a></li>
+        </ul>
+      </details>
+      <div class="btn btn-xl my-8 bg-blue-600 border-none rounded-2xl hover:bg-blue-800 text-white fill-white"
+           @click="ChangeSongList">播放全部
+        <svg class="icon" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg"
+             width="25" height="25">
+          <path
+              d="M469.333333 469.333333V170.666667h85.333334v298.666666h298.666666v85.333334h-298.666666v298.666666h-85.333334v-298.666666H170.666667v-85.333334h298.666666z"
+          ></path>
+        </svg>
       </div>
     </div>
-    <div class="w-1/5 border-r border-gray-400 pl-4">
-      <div class="text-sm pb-4">主题</div>
-      <div class="flex flex-wrap ml-6">
-        <span :class="Class2_1" @click="HandleTheme($event,1)">默认</span>
-        <span :class="Class2_2" @click="HandleTheme($event,2)">背景音乐</span>
-        <span :class="Class2_3" @click="HandleTheme($event,3)">经典老歌</span>
-        <span :class="Class2_4" @click="HandleTheme($event,4)">KTV金曲</span>
-        <span :class="Class2_5" @click="HandleTheme($event,5)">游戏配乐</span>
-        <span :class="Class2_6" @click="HandleTheme($event,6)">电影配乐</span>
-      </div>
-    </div>
-    <div class="w-1/5 border-r border-gray-400 pl-4">
-      <div class="text-sm pb-4">场景</div>
-      <div class="flex flex-wrap ml-6">
-        <span :class="Class3_1" @click="HandleScene($event,1)">默认</span>
-        <span :class="Class3_2" @click="HandleScene($event,2)">咖啡馆</span>
-        <span :class="Class3_3" @click="HandleScene($event,3)">运动</span>
-        <span :class="Class3_4" @click="HandleScene($event,4)">睡前</span>
-        <span :class="Class3_5" @click="HandleScene($event,5)">旅行</span>
-        <span :class="Class3_6" @click="HandleScene($event,6)">派对</span>
-      </div>
-    </div>
-    <div class="w-1/5 border-r border-gray-400 pl-4">
-      <div class="text-sm pb-4">心情</div>
-      <div class="flex flex-wrap ml-6">
-        <span :class="Class4_1" @click="HandleMood($event,1)">默认</span>
-        <span :class="Class4_2" @click="HandleMood($event,2)">伤感</span>
-        <span :class="Class4_3" @click="HandleMood($event,3)">安静</span>
-        <span :class="Class4_4" @click="HandleMood($event,4)">思念</span>
-        <span :class="Class4_5" @click="HandleMood($event,5)">宣泄</span>
-        <span :class="Class4_6" @click="HandleMood($event,6)">开心</span>
-      </div>
-    </div>
-    <div class="w-1/5 pl-4">
-      <div class="text-sm pb-4">风格</div>
-      <div class="flex flex-wrap ml-6">
-        <span :class="Class5_1" @click="HandleStyle($event,1)">默认</span>
-        <span :class="Class5_2" @click="HandleStyle($event,2)">摇滚</span>
-        <span :class="Class5_3" @click="HandleStyle($event,3)">民谣</span>
-        <span :class="Class5_4" @click="HandleStyle($event,4)">轻音乐</span>
-        <span :class="Class5_5" @click="HandleStyle($event,5)">电音</span>
-        <span :class="Class5_6" @click="HandleStyle($event,6)">流行</span>
-      </div>
+    <div class="absolute top-4 right-4">
+      <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" @click="addSongListlike" v-if="!SongListLike"
+           class="icon fill-white mr-4 my-auto"
+           width="30" height="30">
+        <path
+            d="M323.106133 878.216533a59.733333 59.733333 0 0 1-86.698666-62.976l35.874133-208.9984-151.8592-148.002133a59.733333 59.733333 0 0 1 33.109333-101.888l209.851734-30.481067 93.866666-190.1568a59.733333 59.733333 0 0 1 107.1104 0l93.866667 190.122667 209.8176 30.5152a59.733333 59.733333 0 0 1 33.109333 101.888l-151.825066 148.002133 35.84 208.9984a59.733333 59.733333 0 0 1-86.698667 62.976l-187.665067-98.645333-187.6992 98.645333z m199.611734-150.254933l199.611733 104.925867a8.533333 8.533333 0 0 0 12.356267-8.977067l-38.126934-222.276267a25.6 25.6 0 0 1 7.3728-22.664533l161.4848-157.3888a8.533333 8.533333 0 0 0-4.744533-14.574933l-223.1296-32.426667a25.6 25.6 0 0 1-19.285333-13.994667L518.4512 158.378667a8.533333 8.533333 0 0 0-15.291733 0l-99.805867 202.205866a25.6 25.6 0 0 1-19.285333 13.994667l-223.163734 32.426667a8.533333 8.533333 0 0 0-4.744533 14.574933l161.4848 157.3888a25.6 25.6 0 0 1 7.3728 22.664533l-38.126933 222.276267a8.533333 8.533333 0 0 0 12.3904 8.977067l199.611733-104.925867a25.6 25.6 0 0 1 23.825067 0z"
+        ></path>
+      </svg>
+      <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" @click="deleteSongListlike" v-if="SongListLike"
+           class="icon mr-4 my-auto"
+           width="30" height="30">
+        <path
+            d="M774.9 603c-17.6 17.5-25.7 42.4-21.7 66.9L788.6 881c5.6 33.1-29.4 58.2-59 42.2l-159.5-85.8a122.08 122.08 0 0 0-115.6 0L295 923.3c-29.6 15.9-64.5-9.1-59-42.2L271.4 670c4.1-24.5-4-49.4-21.7-66.9L95.4 448.9c-23.5-23.4-10.2-63.6 22.6-68.5l208.7-31.1c26.1-3.7 48.7-20.2 60.3-43.9L475.9 121c14.7-30.5 58.1-30.5 72.8 0l88.9 184.5c11.6 23.7 34.2 40.1 60.3 43.9l208.8 31.1c32.8 4.9 46.1 45.1 22.6 68.5L774.9 603z"
+            fill="#d4237a"></path>
+      </svg>
     </div>
   </div>
-<!--  <hr class="w-full border border-gray-500 my-2" v-if="!ShowCurrentUser_SongList">-->
-  <div class="overflow-x-auto overflow-y-hidden mx-6" v-if="!ShowCurrentUser_SongList">
-    <div class="text-2xl text-white my-5">推荐歌曲</div>
-    <table class="table mb-32">
+
+  <div class="mt-6" v-if="!NeedShowSongDetail">
+    <table class="table">
+      <!-- head -->
       <thead>
       <tr>
+        <th class="text-left text-sm font-semibold w-12"></th>
         <th class="text-left text-sm font-semibold">音乐标题</th>
         <th class="text-left text-sm font-semibold">歌手</th>
         <th class="text-left text-sm font-semibold">上传者</th>
@@ -420,7 +213,26 @@ onMounted(GetInitSongs);
       <tbody>
       <!-- row 1 -->
       <tr class="text-white transition duration-400 hover:bg-gray-600/40 rounded-md"
-          v-for="(item, index) in Songs" :key="index">
+          v-for="(item, index) in songlistlast.songs" :key="index">
+        <td @click="handlePlayNow(index);">
+          <svg @click="addlike(index)" v-if="!item.user_like" class="icon fill-white mr-4 my-auto"
+               viewBox="0 0 1024 1024"
+               xmlns="http://www.w3.org/2000/svg" width="20" height="20">
+            <path
+                d="M744.0384 131.6864a209.5104 209.5104 0 0 1 190.976 124.8256c0.4096 0.9216 0.8192 1.9968 1.28 3.1232a241.0496 241.0496 0 0 1 15.0016 59.1872v0.9728a230.4 230.4 0 0 1 1.9456 30.72A247.04 247.04 0 0 1 880.64 526.0288l-363.52 363.52a9.0624 9.0624 0 0 1-6.5536 2.7136 8.9088 8.9088 0 0 1-6.3488-2.56l-359.0656-358.912a252.16 252.16 0 0 1-74.496-184.32v-0.3584A250.4704 250.4704 0 0 1 87.04 259.9424a208.896 208.896 0 0 1 259.6864-116.1216 217.856 217.856 0 0 1 111.36 93.1328A59.8528 59.8528 0 0 0 510.0032 266.24H517.12l6.8608-1.6896a61.696 61.696 0 0 0 34.0992-22.4256l1.792-2.4064 1.536-2.6112a198.912 198.912 0 0 1 21.76-30.1568l0.512-0.5632 0.512-0.5632c2.4064-2.8672 4.7616-5.5296 7.2192-8.0896 1.4336-1.536 3.072-3.2768 3.8912-3.9936l0.8192-0.8192 0.8192-0.768c2.9696-2.9696 5.12-5.12 7.68-7.2192 4.0448-3.5328 7.424-6.2976 10.24-8.4992l0.6144-0.4608 0.5632-0.4608c2.8672-2.2528 6.3488-4.6592 10.24-7.3728s8.2944-5.4272 11.776-7.424c3.5328-2.048 7.0656-3.9424 10.5984-5.7344a210.944 210.944 0 0 1 93.952-22.2208m0-57.4464A268.1856 268.1856 0 0 0 624.2816 102.4c-4.5568 2.304-9.1648 4.8128-13.7728 7.4752s-9.9328 6.144-14.8992 9.3696-9.5744 6.5536-14.1824 10.24-9.216 7.2704-13.6192 11.1104-7.424 6.656-11.0592 10.24c-2.5088 2.304-4.8128 4.8128-7.1168 7.2704-3.2256 3.4816-6.2976 6.912-9.3696 10.5472a258.048 258.048 0 0 0-28.16 38.8608 3.3792 3.3792 0 0 1-2.0992 1.3312 2.6624 2.6624 0 0 1-2.4576-1.3312 275.2512 275.2512 0 0 0-141.5168-117.76A266.24 266.24 0 0 0 34.0992 237.3632v0.3584a314.2144 314.2144 0 0 0 70.656 333.7216l358.9632 358.912a66.56 66.56 0 0 0 93.952 0l363.776-363.52a305.152 305.152 0 0 0 89.6-216.32 280.832 280.832 0 0 0-2.5088-38.2976 299.1616 299.1616 0 0 0-19.1488-74.8544c-0.3584-0.768-0.5632-1.3312-0.768-1.8944a266.9568 266.9568 0 0 0-244.6336-161.2288z"
+            ></path>
+          </svg>
+          <svg @click="deletelike(index)" v-if="item.user_like" class="icon  mr-4 my-auto" viewBox="0 0 1093 1024"
+               xmlns="http://www.w3.org/2000/svg"
+               width="20" height="20">
+            <path
+                d="M537.209749 246.735695c22.579939-125.653383 157.939631-190.594584 248.614765-187.827065 137.918426 6.636716 260.062434 134.142516 253.945461 284.241582a304.116193 304.116193 0 0 1-0.728528 11.660897c-0.071076 4.60661-0.017769 9.217661-0.284304 13.997519-12.802554 202.317673-142.422864 310.224281-261.164112 371.709414-198.697242 135.719514-243.279627 247.068863-243.279627 247.068864s-59.392835-104.637115-222.529894-243.301839c-117.524072-114.698804-260.457794-191.896162-267.343276-407.251828-0.155479-4.788742 0.519743-9.386467 0.839584-13.975308 0.008884-3.891408 0.053307-7.765047 0.21767-11.683108 6.094762-150.121277 140.699272-260.493332 278.62214-253.852174 80.497948 3.886966 183.442567 66.882463 213.090121 189.213046z"
+                fill="#F06262"></path>
+            <path
+                d="M534.291193 1021.019253c-11.914105 0-22.961972-6.476795-28.919025-16.924959-0.57305-1.003948-59.437258-102.05617-215.169091-234.421788a32.757125 32.757125 0 0 1-1.692496-1.545902c-21.527126-21.007383-44.537963-41.259585-66.793618-60.841007C121.166714 618.800489 17.191494 527.299097 11.141154 338.10382c-0.17769-5.441752 0.266535-10.20384 0.617472-14.028614 0.071076-0.777393 0.146594-1.554786 0.208786-2.327737 0.017769-3.918061 0.07996-7.822796 0.244324-11.767511 3.162879-77.921445 37.328197-150.694327 96.205731-204.86308C167.908032 50.379517 248.086138 20.509852 325.723279 24.250223c75.087292 3.620431 161.249104 50.006368 211.157743 133.938173 53.031538-83.598636 155.283167-132.685459 243.32405-132.685459a218.274222 218.274222 0 0 1 7.223093 0.119941c75.407134 3.629315 149.757013 39.762548 203.983515 99.133172 55.932325 61.236367 84.93131 139.273311 81.652932 219.744605-0.146594 3.882523-0.422013 7.818354-0.715202 11.7453l-0.026653 2.634252a247.673009 247.673009 0 0 1-0.297631 11.798606c-11.030098 174.340404-104.303947 308.314115-277.280581 398.47395-184.362112 126.355258-229.157726 230.006195-229.593066 231.04568a33.125832 33.125832 0 0 1-28.630279 20.740849 31.260088 31.260088 0 0 1-2.230007 0.079961z m-200.061012-301.379769c102.136131 86.930321 164.607442 160.867071 197.990925 205.662684 33.152485-48.042895 100.083813-125.893265 226.581223-212.294958 1.115004-0.759624 2.27443-1.452615 3.473836-2.074529 154.061549-79.773862 233.622183-192.371483 243.230763-344.225236 0.151036-2.683117 0.159921-5.526155 0.182132-8.342539l0.044423-4.055771c0.008884-0.679664 0.03998-1.359327 0.093287-2.034549 0.266535-3.433857 0.524185-6.894367 0.65301-10.377087 5.179659-127.021595-98.511257-243.577258-221.956844-249.694232-75.882454-2.181143-195.338903 53.70676-214.520524 160.427289a33.316848 33.316848 0 0 1-31.793158 27.408661 33.272426 33.272426 0 0 1-33.37904-25.454072c-24.952098-102.953504-110.603052-160.316232-182.318679-163.776743a213.116774 213.116774 0 0 0-10.239378-0.244323c-56.958484 0-114.818744 23.1752-158.743677 63.586315-45.759581 42.09917-72.302003 98.41797-74.745239 158.579314a256.45533 256.45533 0 0 0-0.191017 10.403742c0 0.746297-0.026653 1.492595-0.07996 2.23445-0.111056 1.603651-0.25765 3.216186-0.404245 4.828721-0.213228 2.296641-0.413129 4.464458-0.368706 5.766036 5.126352 160.369539 89.87553 234.950415 188.004755 321.298802 22.611034 19.905706 45.981693 40.473307 68.486113 62.378025z"
+                fill="#BF4C4C"></path>
+          </svg>
+        </td>
         <td @click="handlePlayNow(index);">
           <div class="flex items-center gap-3">
             <div class="avatar">
@@ -431,7 +243,7 @@ onMounted(GetInitSongs);
             </div>
             <div>
               <div class="font-bold">{{ item.title }}</div>
-              <div class="text-sm opacity-50">United States</div>
+              <!--              <div class="text-sm opacity-50">United States</div>-->
             </div>
           </div>
         </td>
@@ -442,7 +254,7 @@ onMounted(GetInitSongs);
         <td @click="handlePlayNow(index);">{{ item.duration }}</td>
         <th>
           <div
-              class="dropdown dropdown-left dropdown-top my-auto tooltip transition duration-400 hover:bg-gray-600/40 bg-zinc-900 btn btn-sm border-none"
+              class="dropdown dropdown-left dropdown-end my-auto tooltip transition duration-400 hover:bg-gray-600/40 bg-zinc-900 btn btn-sm border-none"
               data-tip="播放列表">
             <svg class="icon" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg"
                  width="32" height="32" tabindex="0" role="button">
@@ -450,10 +262,10 @@ onMounted(GetInitSongs);
                   d="M170.666667 213.333333h682.666666v85.333334H170.666667V213.333333z m0 512h682.666666v85.333334H170.666667v-85.333334z m0-256h682.666666v85.333334H170.666667v-85.333334z"
                   fill="white"></path>
             </svg>
-            <ul tabindex="0" class="dropdown-content z-50 menu p-2 shadow rounded-box bg-zinc-900 text-white text-sm"
+            <ul tabindex="0" class="dropdown-content menu p-2 shadow rounded-box bg-zinc-900 text-white text-sm"
                 style="width:300px">
-              <li class="z-50">
-                <div class="z-50">
+              <li>
+                <div>
                   <img :src="item.cover" alt="封面" class="aspect-square h-12 w-12 ml-0 pl-0">
                   <a class="font-semibold text-sm">{{ item.title }}</a>
                   <br>
@@ -461,7 +273,7 @@ onMounted(GetInitSongs);
                 </div>
               </li>
               <li>
-                <div class="text-sm font-semibold z-50" @click="handlePlayNow(index);">
+                <div class="text-sm font-semibold" @click="handlePlayNow(index);">
                   <svg class="icon ml-1" viewBox="0 0 1024 1024"
                        xmlns="http://www.w3.org/2000/svg" width="16" height="16">
                     <path
@@ -494,6 +306,20 @@ onMounted(GetInitSongs);
                   添加到歌单
                 </div>
               </li>
+              <li>
+                <div class="text-sm font-semibold" @click="ShowSongDetail(index)">
+                  <svg class="icon fill-white" viewBox="0 0 1024 1024"
+                       xmlns="http://www.w3.org/2000/svg" width="22" height="22">
+                    <path
+                        d="M501.5 109.38a403.52 403.52 0 0 1 285.32 688.84 403.52 403.52 0 0 1-570.66-570.66 400.94 400.94 0 0 1 285.34-118.18m0-64C243.3 45.38 34 254.7 34 512.88S243.3 980.4 501.5 980.4 969 771.08 969 512.88 759.68 45.38 501.5 45.38z"
+                    ></path>
+                    <path
+                        d="M501.5 291.16a7.64 7.64 0 1 1-7.64 7.64 7.64 7.64 0 0 1 7.64-7.64m0-64a71.64 71.64 0 1 0 71.62 71.64 71.64 71.64 0 0 0-71.62-71.64zM501.5 418.18a59.38 59.38 0 0 0-59.38 59.38V768a59.36 59.36 0 0 0 59.38 59.36A59.36 59.36 0 0 0 560.86 768V477.56a59.36 59.36 0 0 0-59.36-59.38z"
+                    ></path>
+                  </svg>
+                  详细信息
+                </div>
+              </li>
             </ul>
           </div>
         </th>
@@ -501,11 +327,19 @@ onMounted(GetInitSongs);
       </tbody>
     </table>
   </div>
+  <div class="h-32" v-if="!NeedShowSongDetail"></div>
+
 </template>
 
 <style scoped>
-.text-transition {
-  transition: color 0.5s ease;
+.bg-blur {
+  float: left;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  -webkit-filter: blur(19px);
+  -ms-filter: blur(19px);
+  filter: blur(19px);
 }
 
 

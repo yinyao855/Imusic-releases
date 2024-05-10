@@ -1,18 +1,18 @@
 <script setup>
 import {onMounted, ref} from "vue";
-import HomePage_Main from "@/views/HomePage_Main.vue";
+import HomePage_Main from "@/views/HomePage/HomePage_Main.vue";
 import ExplorePage_Main from "@/views/Explore/ExplorePage_Main.vue";
-import CreateCenter from "@/views/CreateCenterPage_Main.vue";
-import SettingPage_Main from "@/views/SettingPage_Main.vue";
-import Login from "../components/Login.vue";
-import Personal_Center from "@/views/Personal_Center.vue";
-import Sign_up from "./Sign_up.vue";
+import CreateCenter from "@/views/CreateCenter/CreateCenterPage_Main.vue";
+import SettingPage_Main from "@/views/Settings/SettingPage_Main.vue";
+import Login from "./Account/Login.vue";
+import Personal_Center from "@/views/Account/Personal_Center.vue";
+import Sign_up from "./Account/Sign_up.vue";
 import axios from "axios";
 import CreateSonglistPage_Main from "@/views/CreateSonglistPage_Main.vue";
 import Warning from "@/components/Warning.vue";
 import SideBar from "@/views/SideBar.vue";
-import MusicPlayer_Cell from "@/components/MusicPlayer_Cell.vue";
-import AdminPage_Main from "@/views/admin/AdminPage_Main.vue";
+import MusicPlayer_Cell from "@/views/MusicPlayer/MusicPlayer_Cell.vue";
+import AdminPage_Main from "@/views/Admin/AdminPage_Main.vue";
 import CreatedSonglist_Main from "@/views/CreatedSonglist_Main.vue";
 import FavoriteSonglist_Main from "@/views/FavoriteSonglist_Main.vue";
 
@@ -362,7 +362,7 @@ const getPageinit = () => {
     }
   });
   axios.defaults.withCredentials = true;
-  instance.get('/songlists/initdata')
+  instance.get('/feature/hotsonglists')
       .then(response => {
         songlists.value = response.data.data;
         let length = songlists.value.length;
@@ -387,6 +387,8 @@ const getPageinit = () => {
   GetHomePageRecommendLatest();
 }
 
+const HotSongs=ref([]);
+
 const GetHomePageRecommendLatest = () => {
   const instance = axios.create({
     baseURL: 'http://182.92.100.66:5000',
@@ -407,6 +409,22 @@ const GetHomePageRecommendLatest = () => {
         let length = HomePageRecommendLatest.value.length;
         for (let i = 0; i < length; ++i) {
           HomePageRecommendLatest.value[i].duration = gettime(HomePageRecommendLatest.value[i].duration);
+        }
+      })
+      .catch(error => {
+        console.log(error.response.data);
+      })
+  instance.get('/feature/hotsongs', {
+    params: {
+      'num': 10,
+    }
+  })
+      .then(response => {
+        console.log(response.data.data);
+        HotSongs.value = response.data.data;
+        let length = HotSongs.value.length;
+        for (let i = 0; i < length; ++i) {
+          HotSongs.value[i].duration = gettime(HotSongs.value[i].duration);
         }
       })
       .catch(error => {
@@ -506,12 +524,12 @@ onMounted(getPageinit);
                        v-model:userlike="userlike" @refreshNewest_Songs_Page="refreshNewest_Songs_Page"
                        v-model:songlistlast="songlistlast" v-model:HomePageRecommendLatest="HomePageRecommendLatest"
                        v-model:token="token" v-model:SongListId="SongListId"
-                       @changesonglist="changesonglist" @PlaySongList="PlaySongList"></HomePage_Main>
+                       @changesonglist="changesonglist" @PlaySongList="PlaySongList" v-model:HotSongs="HotSongs"></HomePage_Main>
         <ExplorePage_Main v-model:username="username" v-if="mode==='2'" v-model:token="token"
                           @handlePlayNow="handlePlayNow" @handlePlayAfter="handlePlayAfter"></ExplorePage_Main>
         <SettingPage_Main v-if="mode==='3'" v-model:token="token"></SettingPage_Main>
         <CreateCenter v-if="mode==='4'" :userUploadedSongs="userUploadedSongs" @handlePlayNow="handlePlayNow"
-                      v-model:HasLogin="HasLogin" v-model:username="username"
+                      v-model:HasLogin="HasLogin" v-model:username="username" @handlePlayAfter="handlePlayAfter"
                       v-model:token="token"></CreateCenter>
         <CreateSonglistPage_Main v-if="mode==='5'" v-model:HasLogin="HasLogin"
                                  v-model:username="username" v-model:token="token"></CreateSonglistPage_Main>

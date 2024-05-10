@@ -2,7 +2,7 @@
 import P from "particles.vue3";
 import axios from "axios";
 import {defineEmits, onMounted, ref} from "vue";
-import Buttonchangesize from "@/components/buttonchangesize.vue";
+import Buttonchangesize from "@/components/ButtonChangeSizeRight.vue";
 
 // global variables
 const token = defineModel('token')

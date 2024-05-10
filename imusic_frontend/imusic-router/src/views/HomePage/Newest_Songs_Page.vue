@@ -1,26 +1,18 @@
 <script setup>
-import {defineModel, defineEmits, ref} from "vue"
-import buttonchangesize from '../components/buttonchangesize.vue'
+import {defineModel, defineEmits} from "vue"
 import axios from "axios";
 
 const songlistlast = defineModel('songlistlast');
-const emits = defineEmits(['handlePlayNow', 'handlePlayAfter', 'changesize', 'addToSongList']);
+const emits = defineEmits(['handlePlayNow', 'handlePlayAfter', 'addToSongList']);
 const username = defineModel('username');
-const token=defineModel('token')
+const token = defineModel('token')
+
 function handlePlayNow(index) {
   emits('handlePlayNow', songlistlast.value[index].id)
 }
 
 function handlePlayAfter(index) {
   emits('handlePlayAfter', songlistlast.value[index].id)
-}
-
-const changesize = () => {
-  emits('changesize');
-}
-
-const addToSongList = (index) => {
-  emits('addToSongList', songlistlast.value[index].id);
 }
 
 const addlike = (index) => {
@@ -67,15 +59,16 @@ const deletelike = (index) => {
       })
 }
 
+const addToSongList = (id) => {
+  emits('addToSongList', id);
+}
+
 </script>
 
 <template>
-  <div class="text-2xl mx-auto my-6 w-full text-center text-white font-semibold">
-    <buttonchangesize class="absolute top-5 left-5" @fullsize="changesize" v-model:token="token"></buttonchangesize>
-    搜索结果
-  </div>
-  <div class="overflow-x-auto overflow-y-hidden mx-6 h-full">
-    <table class="table mb-32">
+  <div class="overflow-x-auto">
+    <table class="table">
+      <!-- head -->
       <thead>
       <tr>
         <th class="text-left text-sm font-semibold w-12"></th>
@@ -109,38 +102,38 @@ const deletelike = (index) => {
                 fill="#BF4C4C"></path>
           </svg>
         </td>
-        <td @click="handlePlayNow(index);">
+        <td>
           <div class="flex items-center gap-3">
-            <div class="avatar">
+            <div class="avatar justify-center">
               <div class="mask mask-squircle w-12 h-12">
                 <img :src="item.cover"
-                     alt="Avatar Tailwind CSS Component"/>
+                     alt="封面"/>
               </div>
             </div>
             <div>
               <div class="font-bold">{{ item.title }}</div>
-              <div class="text-sm opacity-50">United States</div>
+<!--              <div class="text-sm opacity-50">United States</div>-->
             </div>
           </div>
         </td>
-        <td @click="handlePlayNow(index);">
+        <td>
           {{ item.singer }}
         </td>
-        <td @click="handlePlayNow(index);">{{ item.uploader }}</td>
-        <td @click="handlePlayNow(index);">{{ item.duration }}</td>
+        <td>{{ item.uploader }}</td>
+        <td>{{ item.duration }}</td>
         <th>
           <div
-              class="dropdown dropdown-left dropdown-bottom my-auto tooltip transition duration-400 hover:bg-gray-600/40 bg-zinc-900 btn btn-sm border-none z-50"
-              data-tip="播放列表">
-            <svg class="icon z-50" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg"
+              class="dropdown dropdown-left dropdown-end my-auto tooltip transition duration-400 hover:bg-gray-600/40 bg-zinc-900 btn btn-sm border-none"
+              data-tip="详细信息">
+            <svg class="icon" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg"
                  width="32" height="32" tabindex="0" role="button">
               <path
                   d="M170.666667 213.333333h682.666666v85.333334H170.666667V213.333333z m0 512h682.666666v85.333334H170.666667v-85.333334z m0-256h682.666666v85.333334H170.666667v-85.333334z"
                   fill="white"></path>
             </svg>
-            <ul tabindex="0" class="dropdown-content z-50 menu p-2 shadow rounded-box bg-zinc-900 text-white text-sm"
+            <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow rounded-box bg-zinc-900 text-white text-sm"
                 style="width:300px">
-              <li class="z-50">
+              <li>
                 <div class="z-50">
                   <img :src="item.cover" alt="封面" class="aspect-square h-12 w-12 ml-0 pl-0">
                   <a class="font-semibold text-sm">{{ item.title }}</a>
@@ -149,7 +142,7 @@ const deletelike = (index) => {
                 </div>
               </li>
               <li>
-                <div class="text-sm font-semibold z-50" @click="handlePlayNow(index);">
+                <div class="text-sm font-semibold" @click="handlePlayNow(index);">
                   <svg class="icon ml-1" viewBox="0 0 1024 1024"
                        xmlns="http://www.w3.org/2000/svg" width="16" height="16">
                     <path
@@ -172,7 +165,7 @@ const deletelike = (index) => {
                 </div>
               </li>
               <li>
-                <div class="text-sm font-semibold" @click="addToSongList(index)">
+                <div class="text-sm font-semibold" @click="addToSongList(item.id)">
                   <svg class="icon fill-white" viewBox="0 0 1024 1024"
                        xmlns="http://www.w3.org/2000/svg" width="22" height="22">
                     <path

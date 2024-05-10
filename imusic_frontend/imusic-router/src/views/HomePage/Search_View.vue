@@ -1,18 +1,27 @@
 <script setup>
-import {defineModel, defineEmits} from "vue"
+import {defineModel, defineEmits, ref} from "vue"
+import buttonchangesize from '../../components/ButtonChangeSizeRight.vue'
 import axios from "axios";
+import SongPage from "@/views/SongPage.vue";
 
 const songlistlast = defineModel('songlistlast');
-const emits = defineEmits(['handlePlayNow', 'handlePlayAfter', 'addToSongList']);
+const emits = defineEmits(['handlePlayNow', 'handlePlayAfter', 'changesize', 'addToSongList']);
 const username = defineModel('username');
-const token = defineModel('token')
-
+const token=defineModel('token')
 function handlePlayNow(index) {
   emits('handlePlayNow', songlistlast.value[index].id)
 }
 
 function handlePlayAfter(index) {
   emits('handlePlayAfter', songlistlast.value[index].id)
+}
+
+const changesize = () => {
+  emits('changesize');
+}
+
+const addToSongList = (index) => {
+  emits('addToSongList', songlistlast.value[index].id);
 }
 
 const addlike = (index) => {
@@ -59,16 +68,34 @@ const deletelike = (index) => {
       })
 }
 
-const addToSongList = (id) => {
-  emits('addToSongList', id);
+const SongId=ref(0);
+const NeedShowSongDetail=ref(false);
+
+const ShowSongDetail=(index)=>{
+  SongId.value=songlistlast.value[index].id;
+  NeedShowSongDetail.value=true;
+}
+
+const CloseSongPage=()=>{
+  NeedShowSongDetail.value=false;
 }
 
 </script>
 
 <template>
-  <div class="overflow-x-auto">
-    <table class="table">
-      <!-- head -->
+  <transition name="slide" appear>
+    <div class="transition-container-2" v-if="NeedShowSongDetail">
+      <SongPage  v-model:currentSongId="SongId"
+                 @handlePlayNow="handlePlayNow" @CloseSong="CloseSongPage"
+                 v-model:username="username" v-model:token="token"></SongPage>
+    </div>
+  </transition>
+  <div class="text-2xl mx-auto my-6 w-full text-center text-white font-semibold" v-if="!NeedShowSongDetail">
+    <buttonchangesize class="absolute top-5 left-5" @fullsize="changesize" v-model:token="token"></buttonchangesize>
+    搜索结果
+  </div>
+  <div class="overflow-x-auto overflow-y-hidden mx-6 h-full" v-if="!NeedShowSongDetail">
+    <table class="table mb-32">
       <thead>
       <tr>
         <th class="text-left text-sm font-semibold w-12"></th>
@@ -102,12 +129,12 @@ const addToSongList = (id) => {
                 fill="#BF4C4C"></path>
           </svg>
         </td>
-        <td>
+        <td @click="handlePlayNow(index);">
           <div class="flex items-center gap-3">
-            <div class="avatar justify-center">
+            <div class="avatar">
               <div class="mask mask-squircle w-12 h-12">
                 <img :src="item.cover"
-                     alt="封面"/>
+                     alt="Avatar Tailwind CSS Component"/>
               </div>
             </div>
             <div>
@@ -116,24 +143,24 @@ const addToSongList = (id) => {
             </div>
           </div>
         </td>
-        <td>
+        <td @click="handlePlayNow(index);">
           {{ item.singer }}
         </td>
-        <td>{{ item.uploader }}</td>
-        <td>{{ item.duration }}</td>
+        <td @click="handlePlayNow(index);">{{ item.uploader }}</td>
+        <td @click="handlePlayNow(index);">{{ item.duration }}</td>
         <th>
           <div
-              class="dropdown dropdown-left dropdown-end my-auto tooltip transition duration-400 hover:bg-gray-600/40 bg-zinc-900 btn btn-sm border-none"
-              data-tip="详细信息">
-            <svg class="icon" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg"
+              class="dropdown dropdown-left dropdown-bottom my-auto tooltip transition duration-400 hover:bg-gray-600/40 bg-zinc-900 btn btn-sm border-none z-50"
+              data-tip="播放列表">
+            <svg class="icon z-50" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg"
                  width="32" height="32" tabindex="0" role="button">
               <path
                   d="M170.666667 213.333333h682.666666v85.333334H170.666667V213.333333z m0 512h682.666666v85.333334H170.666667v-85.333334z m0-256h682.666666v85.333334H170.666667v-85.333334z"
                   fill="white"></path>
             </svg>
-            <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow rounded-box bg-zinc-900 text-white text-sm"
+            <ul tabindex="0" class="dropdown-content z-50 menu p-2 shadow rounded-box bg-zinc-900 text-white text-sm"
                 style="width:300px">
-              <li>
+              <li class="z-50">
                 <div class="z-50">
                   <img :src="item.cover" alt="封面" class="aspect-square h-12 w-12 ml-0 pl-0">
                   <a class="font-semibold text-sm">{{ item.title }}</a>
@@ -142,7 +169,7 @@ const addToSongList = (id) => {
                 </div>
               </li>
               <li>
-                <div class="text-sm font-semibold" @click="handlePlayNow(index);">
+                <div class="text-sm font-semibold z-50" @click="handlePlayNow(index);">
                   <svg class="icon ml-1" viewBox="0 0 1024 1024"
                        xmlns="http://www.w3.org/2000/svg" width="16" height="16">
                     <path
@@ -165,7 +192,7 @@ const addToSongList = (id) => {
                 </div>
               </li>
               <li>
-                <div class="text-sm font-semibold" @click="addToSongList(item.id)">
+                <div class="text-sm font-semibold" @click="addToSongList(index)">
                   <svg class="icon fill-white" viewBox="0 0 1024 1024"
                        xmlns="http://www.w3.org/2000/svg" width="22" height="22">
                     <path
@@ -175,6 +202,20 @@ const addToSongList = (id) => {
                   添加到歌单
                 </div>
               </li>
+              <li>
+                <div class="text-sm font-semibold" @click="ShowSongDetail(index)">
+                  <svg class="icon fill-white" viewBox="0 0 1024 1024"
+                       xmlns="http://www.w3.org/2000/svg" width="22" height="22">
+                    <path
+                        d="M501.5 109.38a403.52 403.52 0 0 1 285.32 688.84 403.52 403.52 0 0 1-570.66-570.66 400.94 400.94 0 0 1 285.34-118.18m0-64C243.3 45.38 34 254.7 34 512.88S243.3 980.4 501.5 980.4 969 771.08 969 512.88 759.68 45.38 501.5 45.38z"
+                    ></path>
+                    <path
+                        d="M501.5 291.16a7.64 7.64 0 1 1-7.64 7.64 7.64 7.64 0 0 1 7.64-7.64m0-64a71.64 71.64 0 1 0 71.62 71.64 71.64 71.64 0 0 0-71.62-71.64zM501.5 418.18a59.38 59.38 0 0 0-59.38 59.38V768a59.36 59.36 0 0 0 59.38 59.36A59.36 59.36 0 0 0 560.86 768V477.56a59.36 59.36 0 0 0-59.36-59.38z"
+                    ></path>
+                  </svg>
+                  详细信息
+                </div>
+              </li>
             </ul>
           </div>
         </th>
@@ -182,8 +223,38 @@ const addToSongList = (id) => {
       </tbody>
     </table>
   </div>
+  <div class="h-32" v-if="!NeedShowSongDetail"></div>
 </template>
 
 <style scoped>
+.slide-leave-active {
+  transition: transform 0.5s ease;
+}
 
+.slide-enter-active {
+  transition: transform 0.5s ease;
+}
+
+.slide-enter-from,
+.slide-leave-to {
+  transform: translateX(100%);
+}
+
+.slide-enter-to,
+.slide-leave-from {
+  transform: translateX(0);
+}
+
+.transition-container {
+  right: 0;
+  top: 0;
+  height: 100%
+}
+
+
+.transition-container-2 {
+  right: 0;
+  top: 0;
+  height:100%;
+}
 </style>

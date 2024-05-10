@@ -1,47 +1,59 @@
 <script setup>
+import {defineEmits, onMounted, ref} from "vue";
 import axios from "axios";
-import {defineEmits, ref} from "vue";
-import Admin_Show_User_Information from "@/views/admin/Admin_Show_User_Information.vue";
-const Users = defineModel('Users');
+import buttonchangesize from "@/components/ButtonChangeSizeRight.vue"
+
+const Users = ref([]);
 const token = defineModel('token');
-const emits = defineEmits(['refresh']);
+const SearchContent = defineModel('SearchContent');
+const emits = defineEmits(['refresh', 'changesize', 'UpdateUser']);
 
 const refresh = () => {
   emits('refresh');
 }
 
-const UserId = ref(0);
-const ShowUpdateSongPage = ref(false);
-
-const ShowDetail = (index) => {
-  ShowUpdateSongPage.value = true;
-  UserId.value = Users.value[index].username;
-  console.log(Users.value[index].id);
-}
-
 const changesize = () => {
-  ShowUpdateSongPage.value = false;
+  emits('changesize');
 }
 
-const UpdateUserData=(role)=>{
-  console.log(role);
-  let length=Users.value.length;
-  for(let i=0;i<length;++i){
-    if(Users.value[i].username===UserId.value){
-      Users.value[i].role=role;
+
+const GetSearchResult = () => {
+  console.log('hello');
+  const instance = axios.create({
+    baseURL: 'http://182.92.100.66:5000',
+    timeout: 5000, // 设置请求超时时间
+    headers: {
+      'Authorization': `Bearer ${token.value}`,
     }
-  }
+  });
+  axios.defaults.withCredentials = true;
+  instance.get('/search/users', {
+    params: {
+      'keyword': SearchContent.value
+    }
+  })
+      .then(response => {
+        Users.value = response.data.data;
+        console.log(response.data.data);
+      })
+      .catch(error => {
+        console.log(error.response.data);
+      })
 }
+const ShowDetail = (index) => {
+  console.log(Users.value[index].id);
+  emits('UpdateUser', Users.value[index].username);
+}
+
+onMounted(GetSearchResult);
 </script>
 
 <template>
-  <transition name="slide" appear>
-    <div class="transition-container-2" v-if="ShowUpdateSongPage">
-      <Admin_Show_User_Information v-model:UserId="UserId" @changesize="changesize"
-                       v-model:token="token" @UpdateUserData="UpdateUserData"></Admin_Show_User_Information>
-    </div>
-  </transition>
-  <div class="overflow-x-auto mx-4" v-if="!ShowUpdateSongPage">
+  <div class="text-2xl mx-auto my-6 w-full text-center text-white font-semibold">
+    <buttonchangesize class="absolute top-5 left-5" @fullsize="changesize" v-model:token="token"></buttonchangesize>
+    搜索结果
+  </div>
+  <div class="overflow-x-auto mx-12">
     <table class="table">
       <!-- head -->
       <thead>
@@ -87,35 +99,9 @@ const UpdateUserData=(role)=>{
       </tbody>
     </table>
   </div>
+  <div class="h-32"></div>
 </template>
 
 <style scoped>
-.transition-container-2 {
-  right: 0;
-  top: 0;
-  height: 100%;
-}
 
-.text-transition {
-  transition: color 0.5s ease;
-}
-
-
-.slide-leave-active {
-  transition: transform 0.5s ease;
-}
-
-.slide-enter-active {
-  transition: transform 0.5s ease;
-}
-
-.slide-enter-from,
-.slide-leave-to {
-  transform: translateX(100%);
-}
-
-.slide-enter-to,
-.slide-leave-from {
-  transform: translateX(0);
-}
 </style>

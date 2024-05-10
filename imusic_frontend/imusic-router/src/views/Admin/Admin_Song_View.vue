@@ -1,14 +1,16 @@
 <script setup>
-import {defineEmits, onMounted, ref} from "vue";
 import axios from "axios";
-import buttonchangesize from "@/components/buttonchangesize.vue"
+import Admin_Update_Song_Page from "@/views/Admin/Admin_Update_Song_Page.vue";
+import {defineEmits, ref} from "vue";
+import Personal_Center from "@/views/Account/Personal_Center.vue";
 
-const SongLists = ref([]);
+const Songs = defineModel('Songs');
 const token = defineModel('token');
-const SearchContent = defineModel('SearchContent');
-const emits = defineEmits(['refresh', 'changesize', 'UpdateSongList']);
-const DeleteSongList = (index) => {
-  let SongListId = SongLists.value[index].id
+const emits = defineEmits(['refresh']);
+
+const DeleteSong = (index) => {
+  let SongId = Songs.value[index].id
+  console.log(SongId);
   const instance = axios.create({
     baseURL: 'http://182.92.100.66:5000',
     timeout: 5000, // 设置请求超时时间
@@ -17,13 +19,19 @@ const DeleteSongList = (index) => {
     }
   });
   axios.defaults.withCredentials = true;
-  const web = '/songlists/delete/' + SongListId;
+  const web = '/songs/delete/' + SongId;
   instance.delete(web)
       .then(response => {
         console.log(response.data);
         if (response.data.success === true) {
           alert('删除成功');
-          refresh();
+          let length = Songs.value.length;
+          for (let i = 0; i < length; ++i) {
+            if (Songs.value[i].id === SongId) {
+              Songs.value.splice(i, 1);
+              break;
+            }
+          }
         }
       })
       .catch(error => {
@@ -34,61 +42,43 @@ const refresh = () => {
   emits('refresh');
 }
 
+const SongId = ref(0);
+const ShowUpdateSongPage = ref(false);
+
+const UpdateSong = (index) => {
+  ShowUpdateSongPage.value = true;
+  SongId.value = Songs.value[index].id;
+  console.log(Songs.value[index].id);
+}
+
 const changesize = () => {
-  emits('changesize');
+  ShowUpdateSongPage.value = false;
 }
-
-const GetSearchResult = () => {
-  console.log('hello');
-  const instance = axios.create({
-    baseURL: 'http://182.92.100.66:5000',
-    timeout: 5000, // 设置请求超时时间
-    headers: {
-      'Authorization': `Bearer ${token.value}`,
-    }
-  });
-  axios.defaults.withCredentials = true;
-  instance.get('/search/songlists', {
-    params: {
-      'keyword': SearchContent.value
-    }
-  })
-      .then(response => {
-        console.log(response.data.data);
-        SongLists.value = response.data.data;
-      })
-      .catch(error => {
-        console.log(error.response.data);
-      })
-}
-const UpdateSongList = (index) => {
-  console.log(SongLists.value[index].id);
-  emits('UpdateSongList', SongLists.value[index].id);
-}
-
-onMounted(GetSearchResult);
 </script>
 
 <template>
-  <div class="text-2xl mx-auto my-6 w-full text-center text-white font-semibold">
-    <buttonchangesize class="absolute top-5 left-5" @fullsize="changesize" v-model:token="token"></buttonchangesize>
-    搜索结果
-  </div>
-  <div class="overflow-x-auto mx-12">
+  <transition name="slide" appear>
+    <div class="transition-container-2" v-if="ShowUpdateSongPage">
+      <Admin_Update_Song_Page v-model:token="token" v-model:SongId="SongId"
+                              @changesize="changesize"></Admin_Update_Song_Page>
+    </div>
+  </transition>
+  <div class="overflow-x-auto mx-4" v-if="!ShowUpdateSongPage">
     <table class="table">
       <!-- head -->
       <thead>
       <tr>
-        <th class="text-left text-sm font-semibold">歌单标题</th>
+        <th class="text-left text-sm font-semibold">音乐标题</th>
+        <th class="text-left text-sm font-semibold">歌手</th>
         <th class="text-left text-sm font-semibold">上传者</th>
-        <th class="text-left text-sm font-semibold">上传日期</th>
+        <th class="text-left text-sm font-semibold">时长</th>
         <th class="text-left text-sm font-semibold">操作</th>
       </tr>
       </thead>
       <tbody>
       <!-- row 1 -->
       <tr class="text-white rounded-md"
-          v-for="(item, index) in SongLists" :key="index">
+          v-for="(item, index) in Songs" :key="index">
         <td>
           <div class="flex items-center gap-3">
             <div class="avatar justify-center">
@@ -104,14 +94,15 @@ onMounted(GetSearchResult);
           </div>
         </td>
         <td>
-          {{ item.owner }}
+          {{ item.singer }}
         </td>
-        <td>{{ item.create_date }}</td>
+        <td>{{ item.uploader }}</td>
+        <td>{{ item.duration }}</td>
         <td>
-          <div class="inline pr-4" @click="DeleteSongList(index)">
-            <svg class="icon fill-red-600 hover:fill-red-800 inline" viewBox="0 0 1024 1024"
+          <div class="inline pr-4">
+            <svg class="icon fill-red-600 inline hover:fill-red-800" viewBox="0 0 1024 1024"
                  xmlns="http://www.w3.org/2000/svg"
-                 width="24" height="24">
+                 width="24" height="24" @click="DeleteSong(index)">
               <path
                   d="M607.897867 768.043004c-17.717453 0-31.994625-14.277171-31.994625-31.994625L575.903242 383.935495c0-17.717453 14.277171-31.994625 31.994625-31.994625s31.994625 14.277171 31.994625 31.994625l0 351.94087C639.892491 753.593818 625.61532 768.043004 607.897867 768.043004z"
               ></path>
@@ -128,7 +119,7 @@ onMounted(GetSearchResult);
           </div>
           <svg class="icon fill-white inline hover:fill-gray-500" viewBox="0 0 1024 1024"
                xmlns="http://www.w3.org/2000/svg"
-               width="24" height="24" @click="UpdateSongList(index)">
+               width="24" height="24" @click="UpdateSong(index)">
             <path
                 d="M684.202667 117.248c15.893333-15.872 42.154667-15.36 58.922666 1.408l90.517334 90.517333c16.661333 16.661333 17.344 42.986667 1.429333 58.922667l-445.653333 445.653333c-7.936 7.914667-23.104 16.746667-34.218667 19.776l-143.701333 39.253334c-21.909333 5.994667-35.114667-7.104-29.568-28.949334l37.248-146.773333c2.773333-10.944 11.562667-26.346667 19.392-34.176l445.653333-445.653333zM268.736 593.066667c-2.901333 2.901333-8.106667 12.074667-9.130667 16.021333l-29.12 114.773333 111.957334-30.570666c4.437333-1.216 13.632-6.549333 16.810666-9.728l445.653334-445.653334-90.517334-90.496-445.653333 445.653334zM682.794667 178.986667l90.517333 90.517333-30.186667 30.186667-90.496-90.517334 30.165334-30.165333z m-362.026667 362.048l90.496 90.517333-30.165333 30.165333-90.517334-90.496 30.165334-30.186666zM170.666667 874.666667c0-11.776 9.429333-21.333333 21.461333-21.333334h661.077333a21.333333 21.333333 0 1 1 0 42.666667H192.128A21.333333 21.333333 0 0 1 170.666667 874.666667z"
             ></path>
@@ -137,9 +128,38 @@ onMounted(GetSearchResult);
       </tr>
       </tbody>
     </table>
+
   </div>
+  <div class="h-32"></div>
 </template>
 
 <style scoped>
+.transition-container-2 {
+  right: 0;
+  top: 0;
+  height: 100%;
+}
 
+.text-transition {
+  transition: color 0.5s ease;
+}
+
+
+.slide-leave-active {
+  transition: transform 0.5s ease;
+}
+
+.slide-enter-active {
+  transition: transform 0.5s ease;
+}
+
+.slide-enter-from,
+.slide-leave-to {
+  transform: translateX(100%);
+}
+
+.slide-enter-to,
+.slide-leave-from {
+  transform: translateX(0);
+}
 </style>

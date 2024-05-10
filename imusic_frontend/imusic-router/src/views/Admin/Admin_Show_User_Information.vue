@@ -1,7 +1,7 @@
 <script setup>
 import {onMounted, ref} from "vue";
 import axios from "axios";
-import buttonchangesize from '@/components/buttonchangesize.vue'
+import buttonchangesize from '@/components/ButtonChangeSizeRight.vue'
 
 const token = defineModel('token');
 const UserId = defineModel('UserId');
@@ -12,7 +12,7 @@ const role=ref('');
 const submitdata=()=>{
   const submitrole=ref('');
   if(role.value==='管理员'){
-    submitrole.value='admin';
+    submitrole.value='Admin';
   }
   else{
     submitrole.value='user';
@@ -75,7 +75,7 @@ onMounted(GetUserData);
 </script>
 
 <template>
-  <div class="w-full h-screen">
+  <div class="w-full h-full">
     <div class="h-64 flex bg-zinc-700">
       <buttonchangesize class="absolute top-5 left-5" @fullsize="changesize" v-model:token="token"></buttonchangesize>
       <img :src="userdata.avatar" alt="用户头像" class="aspect-square my-auto mx-10 h-4/5 rounded-2xl">

@@ -1,16 +1,16 @@
 <script setup>
 import Search from "@/components/Search.vue";
-import Admin_SongList_View from "@/views/admin/Admin_SongList_View.vue";
+import Admin_SongList_View from "@/views/Admin/Admin_SongList_View.vue";
 import {computed, onMounted, ref} from "vue";
 import axios from "axios";
-import Admin_Song_View from "@/views/admin/Admin_Song_View.vue";
-import Admin_Search_Song_View from "@/views/admin/Admin_Search_Song_View.vue";
-import Admin_Search_Songlist_View from "@/views/admin/Admin_Search_Songlist_View.vue";
-import Admin_Update_Song_Page from "@/views/admin/Admin_Update_Song_Page.vue";
-import Admin_Update_SongList_Page from "@/views/admin/Admin_Update_SongList_Page.vue";
-import Admin_User_View from "@/views/admin/Admin_User_View.vue";
-import Admin_Search_User_View from "@/views/admin/Admin_Search_User_View.vue";
-import Admin_Show_User_Information from "@/views/admin/Admin_Show_User_Information.vue";
+import Admin_Song_View from "@/views/Admin/Admin_Song_View.vue";
+import Admin_Search_Song_View from "@/views/Admin/Admin_Search_Song_View.vue";
+import Admin_Search_Songlist_View from "@/views/Admin/Admin_Search_Songlist_View.vue";
+import Admin_Update_Song_Page from "@/views/Admin/Admin_Update_Song_Page.vue";
+import Admin_Update_SongList_Page from "@/views/Admin/Admin_Update_SongList_Page.vue";
+import Admin_User_View from "@/views/Admin/Admin_User_View.vue";
+import Admin_Search_User_View from "@/views/Admin/Admin_Search_User_View.vue";
+import Admin_Show_User_Information from "@/views/Admin/Admin_Show_User_Information.vue";
 const NaviClass1 = computed(() => ({
   'text-base inline-block mx-5 w-30 rounded-lg antialiased tracking-widest font-medium transition-colors duration-400 hover:bg-gray-600/40': true,
   'text-cyan-700 underline underline-offset-8 decoration-2': NaviMode.value === '1',
