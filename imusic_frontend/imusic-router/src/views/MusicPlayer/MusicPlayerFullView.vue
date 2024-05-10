@@ -110,7 +110,7 @@
         <Lyrics_Show_View></Lyrics_Show_View>
       </div>
     </div>
-    <div class="col2 bg-transparent overflow-hidden h-full" v-if="showComment===true">
+    <div class="bg-transparent overflow-hidden h-full w-full" v-if="showComment===true">
       <Transition name="slide-fade">
         <Comment :token="token" :id="songID" v-model:showComment="showComment" v-model:songID="songID"
                  v-model:WarningShow="WarningShow" v-model:message="message"></Comment>

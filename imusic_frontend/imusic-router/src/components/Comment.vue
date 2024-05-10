@@ -102,8 +102,8 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="col2  duration-300 h-1">
-    <div class="formx2 w-1 grid-cols-10 flexible">
+  <div class="col2  duration-300 h-1 w-4/5">
+    <div class="formx2 w-2/3 grid-cols-10 flexible">
     <div class="col-span-1">
     <button class="btn transition bg-transparent hover:-translate-y-1 hover:scale-110 hover:bg-transparent" @click="backComment">
       <svg t="1715236058449" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2905"
@@ -111,8 +111,8 @@ onMounted(() => {
     </button>
     </div>
     <div class="text-center text-3xl font-semibold text-white p-3 w-full ">评论</div>
-      <div class="h-1/2 overflow-auto w-full">
-        <div class="text-white bg-transparent transition duration-400 hover:bg-transparent-50 grid grid-cols-10 gap-4 w-full"
+      <div class="h-1/2 overflow-auto w-4/5">
+        <div class="text-white bg-transparent transition duration-400 hover:bg-transparent-50 grid grid-cols-10 gap-4 h-1/10"
             v-for="(item, index) in Comment" :key="index">
             <img class="icon fill-white mr-4 my-auto col-span-1 justify-center rounded-full"
                  :src="userImage[index]" alt="">
@@ -126,7 +126,7 @@ onMounted(() => {
         </div>
       </div>
 
-    <div class="inputForm bg-transparent/10 fill-white w-full">
+    <div class="inputForm bg-transparent/10 fill-white w-4/5">
       <div class="grid grid-cols-10 w-full">
         <svg t="1715238681389" class="icon col-span-1 justify-center" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="4044"
              width="42" height="42"><path d="M193 317h-29a6 6 0 0 0-6 6v408a6 6 0 0 0 6 6h83.806v121.532a6 6 0 0 0 10.195 4.29L386.698 737h200.66l60.159 58.815A66.346 66.346 0 0 1 635 797H411.154L299.945 905.725c-26.064 25.482-67.85 25.01-93.332-1.054a66 66 0 0 1-18.807-46.14V797H164c-36.45 0-66-29.55-66-66V323c0-36.45 29.55-66 66-66h29v60z m642.194 449.532a66 66 0 0 1-18.807 46.139c-25.482 26.064-67.268 26.536-93.332 1.054L582.183 676H299c-36.45 0-66-29.55-66-66V164c0-36.45 29.55-66 66-66h560c36.45 0 66 29.55 66 66v446c0 36.45-29.55 66-66 66h-23.806v90.532z m-60-150.532H859a6 6 0 0 0 6-6V164a6 6 0 0 0-6-6H299a6 6 0 0 0-6 6v446a6 6 0 0 0 6 6h307.64L765 770.822a6 6 0 0 0 10.194-4.29V616z" fill="#2c2c2c" p-id="4045"></path><path d="M757.5 384.5m0-49.5a49.5 49.5 0 1 0 0 99 49.5 49.5 0 1 0 0-99Z" fill="#2c2c2c" p-id="4046"></path><path d="M575.5 384.5m0-49.5a49.5 49.5 0 1 0 0 99 49.5 49.5 0 1 0 0-99Z" fill="#2c2c2c" p-id="4047"></path><path d="M392.5 384.5m0-49.5a49.5 49.5 0 1 0 0 99 49.5 49.5 0 1 0 0-99Z" fill="#2c2c2c" p-id="4048"></path></svg>
