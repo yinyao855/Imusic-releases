@@ -8,7 +8,6 @@ import Login from "./Account/Login.vue";
 import Personal_Center from "@/views/Account/Personal_Center.vue";
 import Sign_up from "./Account/Sign_up.vue";
 import axios from "axios";
-import CreateSonglistPage_Main from "@/views/CreateSonglistPage_Main.vue";
 import Warning from "@/components/Warning.vue";
 import SideBar from "@/views/SideBar.vue";
 import MusicPlayer_Cell from "@/views/MusicPlayer/MusicPlayer_Cell.vue";
@@ -531,11 +530,6 @@ onMounted(getPageinit);
         <CreateCenter v-if="mode==='4'" :userUploadedSongs="userUploadedSongs" @handlePlayNow="handlePlayNow"
                       v-model:HasLogin="HasLogin" v-model:username="username" @handlePlayAfter="handlePlayAfter"
                       v-model:token="token"></CreateCenter>
-        <CreateSonglistPage_Main v-if="mode==='5'" v-model:HasLogin="HasLogin"
-                                 v-model:username="username" v-model:token="token"></CreateSonglistPage_Main>
-        <!--        <CreatedSonglist :songlist="currentUserSongList" v-if="mode==='6'&&showUserSongList"-->
-        <!--                         @PlaySongList="PlaySongList" @handlePlayAfter="handlePlayAfter" @handlePlayNow="handlePlayNow"-->
-        <!--                         v-model:token="token" v-model:username="username"></CreatedSonglist>-->
         <CreatedSonglist_Main v-model:createdSonglists="createdSonglists" v-if="mode==='6'"
                               @PlaySongList="PlaySongList" @handlePlayAfter="handlePlayAfter"
                               @handlePlayNow="handlePlayNow"
