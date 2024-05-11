@@ -389,7 +389,7 @@ onMounted(GetInitSongLists);
     </div>
   </div>
   <div class="overflow-x-auto overflow-y-hidden mx-6" v-if="!ShowCurrentUser_SongList&&!NeedShowSongList">
-    <div class="text-2xl text-white my-5">推荐歌曲</div>
+    <div class="text-2xl text-white my-5">推荐歌单</div>
     <table class="table mb-32">
       <thead>
       <tr>

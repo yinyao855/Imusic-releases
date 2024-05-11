@@ -4,6 +4,8 @@ import axios from "axios";
 import ButtonChangeSizeRight from "@/components/ButtonChangeSizeRight.vue";
 import CurrentUser_SongList from "@/components/CurrentUser_SongList.vue";
 import SongPage from "@/components/SongPage.vue";
+import Explore_User_SongList_Page from "@/views/Explore/Explore_User_SongList_Page.vue";
+import CreatedSonglist from "@/views/CreatedSongList/CreatedSonglist.vue";
 
 
 const ShowUsername = defineModel('ShowUsername');
@@ -136,13 +138,35 @@ const handlePlayAfter = (id) => {
 }
 
 const ShowAddSong = ref(false);
+const ShowSongList=ref(false);
+
+const ActiveSongList=(id)=>{
+  ShowSongList.value=true;
+  SongListId.value=id;
+}
+
+const CloseSongList=()=>{
+  ShowSongList.value=false;
+}
+const SongListId=ref(0);
+
 
 onMounted(GetUserData);
 </script>
 
 <template>
   <transition name="slide" appear>
-    <div class="transition-container-2" v-if="ShowSongDetail&&!ShowAddSong">
+    <div class="transition-container z-50 ml-8" v-if="ShowSongList">
+      <CreatedSonglist v-model:currentSonglistId="SongListId" class="h-full"
+                       @PlaySongList="PlaySongList" @handlePlayAfter="handlePlayAfter"
+                       @handlePlayNow="handlePlayNow" @closeSonglist="CloseSongList"
+                       v-model:token="token" v-model:username="username"></CreatedSonglist>
+    </div>
+  </transition>
+
+
+  <transition name="slide" appear>
+    <div class="transition-container-2" v-if="ShowSongDetail&&!ShowAddSong&&!ShowSongList">
       <SongPage  v-model:currentSongId="SongId"
                  @handlePlayNow="handlePlayNow" @CloseSong="CloseShowSongDetail"
                  v-model:username="username" v-model:token="token"></SongPage>
@@ -152,7 +176,7 @@ onMounted(GetUserData);
 
 
   <transition name="slide" appear>
-    <div class="transition-container-2" v-if="ShowAddSong&&!ShowSongDetail">
+    <div class="transition-container-2" v-if="ShowAddSong&&!ShowSongDetail&&!ShowSongList">
       <CurrentUser_SongList v-model:CurrentUser_SongListdata="CurrentUser_SongListdata"
                             v-model:needtoaddSongid="needtoaddSongid" v-model:token="token"
                             @CloseCurrentUser_SongList="CloseCurrentUser_SongList"></CurrentUser_SongList>
@@ -160,7 +184,7 @@ onMounted(GetUserData);
   </transition>
 
 
-  <div class="w-full h-screen" v-if="!ShowAddSong&&!ShowSongDetail">
+  <div class="w-full h-screen" v-if="!ShowAddSong&&!ShowSongDetail&&!ShowSongList">
     <div class="h-1/3 flex bg-zinc-700">
       <ButtonChangeSizeRight @fullsize="changesize"></ButtonChangeSizeRight>
       <img :src="User.avatar" alt="用户头像" class="aspect-square my-auto mx-10 h-4/5 rounded-2xl">
@@ -283,6 +307,15 @@ onMounted(GetUserData);
         </tr>
         </tbody>
       </table>
+    </div>
+    <div class="w-full flex h-full" v-if="NaviMode===2">
+      <div class="mx-8 my-8 h-64 w-64" v-for="(item, index) in SongLists" :key="index">
+        <div class="relative cursor-pointer h-4/5 aspect-square mx-auto" @click="ActiveSongList(SongLists[index].id)">
+          <img :src="item.cover" alt="歌单封面" class="h-full aspect-square rounded-2xl">
+          <div class="absolute inset-0 bg-gray-500 opacity-0 hover:opacity-50 transition-opacity rounded-2xl"></div>
+        </div>
+        <div class="text-center text-lg h-1/5 mx-auto text-white">{{ item.title }}</div>
+      </div>
     </div>
     <div class="h-32"></div>
   </div>
