@@ -1,7 +1,7 @@
 <script setup>
 import {computed, onMounted, ref, watch} from "vue";
 import axios from "axios";
-import Songlist from "@/views/Songlist.vue";
+import Songlist from "@/views/CreatedSongList/Songlist.vue";
 
 const emits = defineEmits(['handlePlayNow', 'handlePlayAfter', 'addToSongList', 'PlaySongList'])
 const token = defineModel('token')

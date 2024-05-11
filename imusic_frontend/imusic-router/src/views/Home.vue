@@ -12,7 +12,7 @@ import Warning from "@/components/Warning.vue";
 import SideBar from "@/views/SideBar.vue";
 import MusicPlayer_Cell from "@/views/MusicPlayer/MusicPlayer_Cell.vue";
 import AdminPage_Main from "@/views/Admin/AdminPage_Main.vue";
-import CreatedSonglist_Main from "@/views/CreatedSonglist_Main.vue";
+import CreatedSonglist_Main from "@/views/CreatedSongList/CreatedSonglist_Main.vue";
 import FavoriteSonglist_Main from "@/views/FavoriteSonglist_Main.vue";
 
 const token = ref('');
@@ -163,7 +163,7 @@ function getsonglistinit() {
       .catch(error => {
         console.log(error.response.data);
       })
-  instance.get('/songlists/initdata')
+  instance.get('/feature/hotsonglists')
       .then(response => {
         songlists.value = response.data.data;
         let length = songlists.value;
@@ -488,6 +488,30 @@ const CloseWarning = () => {
   WarningShow.value = false;
 }
 
+const PlayLikeSongs=()=>{
+  console.log('ok');
+  const instance = axios.create({
+    baseURL: 'http://182.92.100.66:5000',
+    timeout: 5000, // 设置请求超时时间
+    headers: {
+      'Authorization': `Bearer ${token.value}`,
+    }
+  });
+  axios.defaults.withCredentials = true;
+  instance.get('/like/songs',{
+    params:{
+      'username':username.value
+    }
+  })
+      .then(response => {
+        musicList.value = response.data.data;
+        datax.value = response.data.data;
+      })
+      .catch(error => {
+        console.log(error.response.data);
+      })
+}
+
 onMounted(getPageinit);
 </script>
 
@@ -532,7 +556,7 @@ onMounted(getPageinit);
                       v-model:token="token"></CreateCenter>
         <CreatedSonglist_Main v-model:createdSonglists="createdSonglists" v-if="mode==='6'"
                               @PlaySongList="PlaySongList" @handlePlayAfter="handlePlayAfter"
-                              @handlePlayNow="handlePlayNow"
+                              @handlePlayNow="handlePlayNow" @PlayLikeSongs="PlayLikeSongs"
                               v-model:token="token" v-model:username="username"></CreatedSonglist_Main>
         <FavoriteSonglist_Main v-model:favoriteSonglists="favoriteSonglists" v-if="mode==='8'"
                                v-model:createdSonglists="createdSonglists"

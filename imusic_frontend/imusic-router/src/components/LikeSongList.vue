@@ -1,6 +1,6 @@
 <script setup>
 import {defineEmits, defineModel, ref} from "vue";
-import CreatedSonglist from "@/views/CreatedSonglist.vue";
+import CreatedSonglist from "@/views/CreatedSongList/CreatedSonglist.vue";
 import axios from "axios";
 // global variables
 const token = defineModel('token')

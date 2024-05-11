@@ -8,7 +8,7 @@ import SongList_Page from "@/views/HomePage/SongList_Page.vue";
 import axios from "axios";
 import Search_View from "@/views/HomePage/Search_View.vue";
 import CurrentUser_SongList from "@/components/CurrentUser_SongList.vue";
-import SongPage from "@/views/SongPage.vue";
+import SongPage from "@/components/SongPage.vue";
 
 const emits = defineEmits(['changesonglist', 'handlePlayNow', 'handlePlayAfter', 'PlaySongList', 'refreshNewest_Songs_Page', 'SearchOperation']);
 const songlistlast = defineModel('songlistlast')

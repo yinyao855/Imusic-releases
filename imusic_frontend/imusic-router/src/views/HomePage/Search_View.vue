@@ -2,7 +2,7 @@
 import {defineModel, defineEmits, ref} from "vue"
 import buttonchangesize from '../../components/ButtonChangeSizeRight.vue'
 import axios from "axios";
-import SongPage from "@/views/SongPage.vue";
+import SongPage from "@/components/SongPage.vue";
 
 const songlistlast = defineModel('songlistlast');
 const emits = defineEmits(['handlePlayNow', 'handlePlayAfter', 'changesize', 'addToSongList']);

@@ -1,5 +1,6 @@
 <script setup>
 import {defineModel, ref} from "vue";
+import ButtonChangeSizeRight from "@/components/ButtonChangeSizeRight.vue";
 import axios from "axios";
 
 const title = ref("");
@@ -11,11 +12,12 @@ const style = ref("")
 const language = ref("")
 const cover = ref(null);
 const coverImageFileUrl = ref('');
-const HasLogin = defineModel('HasLogin');
 const username = defineModel('username');
 const message = ref('');
 const WarningShow = ref(false);
-const token=defineModel('token')
+const token=defineModel('token');
+const Songs=defineModel('Songs');
+const emits=defineEmits(['changesize'])
 const onCoverFileChange = (event) => {
   cover.value = event.target.files[0];
   const files = event.target.files || event.dataTransfer.files;
@@ -46,13 +48,9 @@ function fileToBase64(file) {
   });
 }
 
+const SongListId=ref(0);
+
 function sendPostCreateSonglist() {
-  if (HasLogin.value === false) {
-    console.log('请先登录');
-    WarningShow.value = true;
-    message.value = '请先登录';
-    return;
-  }
   if (title.value === '') {
     console.log('请输入歌单名');
     WarningShow.value = true;
@@ -87,8 +85,29 @@ function sendPostCreateSonglist() {
   instance.post('/songlists/create', formData)
       .then(function (response) {
         if (response.data.success === true) {
-          console.log(response);
           alert("创建成功");
+          SongListId.value=response.data.id;
+          const instance = axios.create({
+            baseURL: 'http://182.92.100.66:5000',
+            timeout: 5000, // 设置请求超时时间
+            headers: {
+              'Authorization': `Bearer ${token.value}`,
+            }
+          });
+          axios.defaults.withCredentials = true;
+          let length=Songs.value.length;
+          for(let i=0;i<length;++i){
+            const formData=new FormData();
+            formData.append('songlist_id',SongListId.value);
+            formData.append('song_id',Songs.value[i].id);
+            instance.post('/songlists/addsong',formData)
+                .then(response=>{
+                  console.log(response.data);
+                })
+                .catch(error=>{
+                  console.log(error.response.data);
+                })
+          }
         }
       })
       .catch(function (error) {
@@ -96,9 +115,14 @@ function sendPostCreateSonglist() {
       });
 }
 
+
+const changesize=()=>{
+  emits('changesize');
+}
 </script>
 
 <template>
+  <ButtonChangeSizeRight @fullsize="changesize" class="top-4"></ButtonChangeSizeRight>
   <div class="form_create_container bg-zinc-900 w-full">
     <div class="w-3/5 m-auto mt-4 bg-zinc-900 p-3 rounded-2xl">
       <div class="text-2xl text-white mb-2">

@@ -3,7 +3,7 @@
 import {defineEmits, defineModel, onMounted, ref} from "vue";
 import axios from "axios";
 import CurrentUser_SongList from "@/components/CurrentUser_SongList.vue";
-import SongPage from "@/views/SongPage.vue";
+import SongPage from "@/components/SongPage.vue";
 import Buttonchangesize from "@/components/ButtonChangeSizeRight.vue";
 import EditSonglist from "@/views/EditSonglist.vue";
 

@@ -2,7 +2,7 @@
 import {defineEmits, defineModel, onMounted, ref} from "vue"
 import buttonchangesize from '../../components/ButtonChangeSizeRight.vue'
 import axios from "axios";
-import SongPage from "@/views/SongPage.vue";
+import SongPage from "@/components/SongPage.vue";
 import Search_View from "@/views/HomePage/Search_View.vue";
 
 const songlistlast = defineModel('songlist');

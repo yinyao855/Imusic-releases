@@ -2,7 +2,7 @@
 // 展示用户创建的歌单主界面
 import {defineEmits, defineModel, ref} from "vue";
 import axios from "axios";
-import Songlist from "@/views/Songlist.vue";
+import Songlist from "@/views/CreatedSongList/Songlist.vue";
 
 // global variables
 const token = defineModel('token')

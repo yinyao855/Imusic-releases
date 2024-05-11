@@ -3,7 +3,7 @@ import {computed, ref, defineModel} from "vue";
 import UploadSong from "@/views/CreateCenter/UploadSong.vue";
 import axios from "axios";
 import EditSong from "@/views/EditSong.vue";
-import SongPage from "@/views/SongPage.vue";
+import SongPage from "@/components/SongPage.vue";
 import Search_View from "@/views/HomePage/Search_View.vue";
 import CreateSonglist_Area from "@/views/CreateCenter/CreateSonglist_Area.vue";
 

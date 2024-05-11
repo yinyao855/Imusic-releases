@@ -1,15 +1,16 @@
 <script setup>
 // 展示用户创建的歌单主界面
 import {defineEmits, defineModel, ref} from "vue";
-import CreatedSonglist from "@/views/CreatedSonglist.vue";
+import CreatedSonglist from "@/views/CreatedSongList/CreatedSonglist.vue";
 import axios from "axios";
+import LikeSongs_Area from "@/views/CreatedSongList/LikeSongs_Area.vue";
 
 // global variables
 const token = defineModel('token')
 const username = defineModel('username')
 
 // defineEmits(播放歌单全部歌曲，加入播放列表，立即播放)
-const emits = defineEmits(['PlaySongList', 'handlePlayAfter', 'handlePlayNow'])
+const emits = defineEmits(['PlaySongList', 'handlePlayAfter', 'handlePlayNow','PlayLikeSongs'])
 
 // v-model
 const createdSonglists = defineModel('createdSonglists') // 用户创建的歌单
@@ -59,20 +60,60 @@ function activeSonglist(index) {
         console.log(error.response.data);
       })
 }
+
+const LikeSongCover=ref('./LikeSongs.webp');
+const ShowLikeSongs=ref(false);
+const ActiveLikeSongs=()=>{
+  console.log('hello');
+  ShowLikeSongs.value=true;
+}
+
+const CloseLikeSongs=()=>{
+  ShowLikeSongs.value=false;
+}
+
+const PlayLikeSongs=()=>{
+  emits('PlayLikeSongs');
+}
 </script>
 
 <template>
+  <transition name="slide" appear>
+    <div class="transition-container z-50 ml-8" v-if="ShowLikeSongs">
+      <LikeSongs_Area class="w-screen mb-32" v-model:LikeSongsCover="LikeSongCover" v-model:username="username"
+                     @changesize="CloseLikeSongs" @handlePlayAfter="handlePlayAfter" @handlePlayNow="handlePlayNow"
+                     v-model:token="token" @PlayLikeSongs="PlayLikeSongs"></LikeSongs_Area>
+    </div>
+  </transition>
+
+
   <!--  展示用户创建的歌单主界面-->
-  <div class="bg-gray-95000 w-full h-full mb-48" v-if="!showCurrentSongList">
+  <div class="bg-gray-95000 w-full h-full mb-48" v-if="!showCurrentSongList&&!ShowLikeSongs">
     <!--    标题-->
     <div class="w-full h-32 flex">
       <div class="text-4xl text-white text-center m-auto">我创建的歌单</div>
+    </div>
+    <div class="all inline-block px-8 pb-6">
+      <div @click="ActiveLikeSongs" class="card bg-gray-300 cursor-pointer">
+        <div class="content">
+          <img src="../../assets/cd.png" alt="Avatar" class="cd">
+          <img :src="LikeSongCover" alt="封面" class="cover">
+        </div>
+        <div class="text m-4 relative top-3/4 text-center">
+          <h1>我喜欢的歌曲</h1>
+        </div>
+        <div class="overlay">
+          <div class="overlay-text">
+            <h1>我喜欢的歌曲</h1>
+          </div>
+        </div>
+      </div>
     </div>
     <!--    内容：创建的歌单（v-for依次输出创建的歌单）-->
     <div v-for="(songlist, index) in createdSonglists" class="all inline-block px-8 pb-6">
       <div @click="activeSonglist(index)" class="card bg-gray-300 cursor-pointer">
         <div class="content">
-          <img src="../assets/cd.png" alt="Avatar" class="cd">
+          <img src="../../assets/cd.png" alt="Avatar" class="cd">
           <img :src="songlist.cover" alt="Avatar" class="cover">
         </div>
         <div class="text m-4 relative top-3/4 text-center">
@@ -161,5 +202,37 @@ function activeSonglist(index) {
   100% {
     transform: rotate(720deg);
   }
+}
+
+
+.slide-leave-active {
+  transition: transform 0.5s ease;
+}
+
+.slide-enter-active {
+  transition: transform 0.5s ease;
+}
+
+.slide-enter-from,
+.slide-leave-to {
+  transform: translateX(100%);
+}
+
+.slide-enter-to,
+.slide-leave-from {
+  transform: translateX(0);
+}
+
+.transition-container {
+  right: 0;
+  top: 0;
+  height: 100%
+}
+
+
+.transition-container-2 {
+  right: 0;
+  top: 0;
+  height:100%;
 }
 </style>
