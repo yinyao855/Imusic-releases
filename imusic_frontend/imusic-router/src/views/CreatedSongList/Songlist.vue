@@ -18,10 +18,10 @@ const emits = defineEmits(['PlaySongList', 'handlePlayAfter', 'handlePlayNow', '
 const currentSonglistId = defineModel("currentSonglistId")
 const currentSongId = ref(0);
 
-// EditSonglist需要的属性（用于修改歌单）
-const showEditSonglist = ref(false); // 是否展示修改歌单信息页面（默认：否），点击修改的icon后为true
-const cover = ref(null); // 存储当前歌单图片
-const coverImageFileUrl = ref(''); // 存储当前歌单图片url，若修改了图片，可以直接展示新选择的图片即使还没完成修改
+// // EditSonglist需要的属性（用于修改歌单）
+// const showEditSonglist = ref(false); // 是否展示修改歌单信息页面（默认：否），点击修改的icon后为true
+// const cover = ref(null); // 存储当前歌单图片
+// const coverImageFileUrl = ref(''); // 存储当前歌单图片url，若修改了图片，可以直接展示新选择的图片即使还没完成修改
 
 // SongPage需要的属性（用于歌曲详细信息）
 const ShowSong = ref(false); // 是否展示歌曲信息页面（默认：否），点击查看歌曲详细信息后为true
@@ -241,6 +241,24 @@ onMounted(getSonglistData);
 </script>
 
 <template>
+  <!--  展示选择加入的歌单界面(当ShowCreatedSongList为true)-->
+  <transition name="slide" appear>
+    <div class="transition-container-2" v-if="ShowCreatedSongList">
+      <CurrentUser_SongList v-model:CurrentUser_SongListdata="createdSongLists"
+                            v-model:needtoaddSongid="needtoaddSongid"
+                            @CloseCurrentUser_SongList="CloseCurrentUser_SongList"
+                            v-model:token="token"></CurrentUser_SongList>
+    </div>
+  </transition>
+  <!--  展示歌曲详细信息界面（当ShowSong为true）-->
+  <transition name="slide" appear>
+    <div class="transition-container-2" v-if="ShowSong">
+      <SongPage v-model:currentSongId="currentSongId"
+                @handlePlayNow="handlePlayNow" @CloseSong="CloseSong"
+                v-model:username="username" v-model:token="token"></SongPage>
+    </div>
+  </transition>
+
   <div v-if="showCurrentSonglist&&!ShowCreatedSongList&&!ShowSong">
     <!--      展示歌单信息-->
     <div class="h-80 relative">
@@ -303,7 +321,7 @@ onMounted(getSonglistData);
                  stroke-linecap="round" stroke-linejoin="round">
               <polygon points="5 3 19 12 5 21 5 3"/>
             </svg>
-            <p class="inline-block">Play All</p>
+            <p class="inline-block">播放全部</p>
           </button>
           <!--          收藏歌单-->
           <button @click="addFavoriteSonglist" v-if="!isFavoriteSonglist"
@@ -465,29 +483,12 @@ onMounted(getSonglistData);
       </div>
     </div>
   </div>
-  <!--  展示选择加入的歌单界面(当ShowCreatedSongList为true)-->
-  <transition name="slide" appear>
-    <div class="transition-container-2" v-if="ShowCreatedSongList">
-      <CurrentUser_SongList v-if="ShowCreatedSongList" v-model:CurrentUser_SongListdata="createdSongLists"
-                            v-model:needtoaddSongid="needtoaddSongid"
-                            @CloseCurrentUser_SongList="CloseCurrentUser_SongList"
-                            v-model:token="token"></CurrentUser_SongList>
-    </div>
-  </transition>
-  <!--  展示歌曲详细信息界面（当ShowSong为true）-->
-  <transition name="slide" appear>
-    <div class="transition-container-2" v-if="ShowSong">
-      <SongPage v-if="ShowSong" v-model:currentSongId="currentSongId"
-                @handlePlayNow="handlePlayNow" @CloseSong="CloseSong"
-                v-model:username="username" v-model:token="token"></SongPage>
-    </div>
-  </transition>
-  <!--  展示修改歌单信息界面（当showEditSonglist为true）-->
-  <EditSonglist :currentUserSongList="currentUserSongList" v-if="showEditSonglist"
-                @deleteFromSongList="deleteFromSongList"
-                v-model:showEditSonglist="showEditSonglist"
-                v-model:cover="cover" v-model:coverImageFileUrl="coverImageFileUrl"
-                v-model:token="token" v-model:username="username"></EditSonglist>
+<!--  &lt;!&ndash;  展示修改歌单信息界面（当showEditSonglist为true）&ndash;&gt;-->
+<!--  <EditSonglist :currentUserSongList="currentUserSongList" v-if="showEditSonglist"-->
+<!--                @deleteFromSongList="deleteFromSongList"-->
+<!--                v-model:showEditSonglist="showEditSonglist"-->
+<!--                v-model:cover="cover" v-model:coverImageFileUrl="coverImageFileUrl"-->
+<!--                v-model:token="token" v-model:username="username"></EditSonglist>-->
 </template>
 
 <style scoped>
@@ -538,5 +539,37 @@ onMounted(getSonglistData);
   -o-filter: blur(19px);
   -ms-filter: blur(19px);
   filter: blur(19px);
+}
+
+
+.slide-leave-active {
+  transition: transform 0.5s ease;
+}
+
+.slide-enter-active {
+  transition: transform 0.5s ease;
+}
+
+.slide-enter-from,
+.slide-leave-to {
+  transform: translateX(100%);
+}
+
+.slide-enter-to,
+.slide-leave-from {
+  transform: translateX(0);
+}
+
+.transition-container {
+  right: 0;
+  top: 0;
+  height: 100%
+}
+
+
+.transition-container-2 {
+  right: 0;
+  top: 0;
+  height: 100%;
 }
 </style>

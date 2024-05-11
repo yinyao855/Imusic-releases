@@ -10,7 +10,7 @@ const token = defineModel('token')
 const username = defineModel('username')
 
 // defineEmits(播放歌单全部歌曲，加入播放列表，立即播放)
-const emits = defineEmits(['PlaySongList', 'handlePlayAfter', 'handlePlayNow','PlayLikeSongs'])
+const emits = defineEmits(['PlaySongList', 'handlePlayAfter', 'handlePlayNow', 'PlayLikeSongs'])
 
 // v-model
 const createdSonglists = defineModel('createdSonglists') // 用户创建的歌单
@@ -61,18 +61,18 @@ function activeSonglist(index) {
       })
 }
 
-const LikeSongCover=ref('./LikeSongs.webp');
-const ShowLikeSongs=ref(false);
-const ActiveLikeSongs=()=>{
+const LikeSongCover = ref('./LikeSongs.webp');
+const ShowLikeSongs = ref(false);
+const ActiveLikeSongs = () => {
   console.log('hello');
-  ShowLikeSongs.value=true;
+  ShowLikeSongs.value = true;
 }
 
-const CloseLikeSongs=()=>{
-  ShowLikeSongs.value=false;
+const CloseLikeSongs = () => {
+  ShowLikeSongs.value = false;
 }
 
-const PlayLikeSongs=()=>{
+const PlayLikeSongs = () => {
   emits('PlayLikeSongs');
 }
 </script>
@@ -81,8 +81,17 @@ const PlayLikeSongs=()=>{
   <transition name="slide" appear>
     <div class="transition-container z-50 ml-8" v-if="ShowLikeSongs">
       <LikeSongs_Area class="w-screen mb-32" v-model:LikeSongsCover="LikeSongCover" v-model:username="username"
-                     @changesize="CloseLikeSongs" @handlePlayAfter="handlePlayAfter" @handlePlayNow="handlePlayNow"
-                     v-model:token="token" @PlayLikeSongs="PlayLikeSongs"></LikeSongs_Area>
+                      @changesize="CloseLikeSongs" @handlePlayAfter="handlePlayAfter" @handlePlayNow="handlePlayNow"
+                      v-model:token="token" @PlayLikeSongs="PlayLikeSongs"></LikeSongs_Area>
+    </div>
+  </transition>
+  <!--  展示选中的歌单信息页面（当showCurrentSongList==true）-->
+  <transition name="slide" appear>
+    <div class="transition-container-2 z-50 ml-8" v-if="showCurrentSongList">
+      <CreatedSonglist class="w-screen mb-32" v-model:currentSonglistId="currentSonglistId"
+                       @PlaySongList="PlaySongList" @handlePlayAfter="handlePlayAfter"
+                       @handlePlayNow="handlePlayNow" @changesize="closeSonglist"
+                       v-model:token="token" v-model:username="username"></CreatedSonglist>
     </div>
   </transition>
 
@@ -127,11 +136,6 @@ const PlayLikeSongs=()=>{
       </div>
     </div>
   </div>
-  <!--  展示选中的歌单信息页面（当showCurrentSongList==true）-->
-  <CreatedSonglist v-model:currentSonglistId="currentSonglistId" v-if="showCurrentSongList"
-                   @PlaySongList="PlaySongList" @handlePlayAfter="handlePlayAfter"
-                   @handlePlayNow="handlePlayNow" @closeSonglist="closeSonglist"
-                   v-model:token="token" v-model:username="username"></CreatedSonglist>
 </template>
 
 <style scoped>
@@ -233,6 +237,6 @@ const PlayLikeSongs=()=>{
 .transition-container-2 {
   right: 0;
   top: 0;
-  height:100%;
+  height: 100%;
 }
 </style>

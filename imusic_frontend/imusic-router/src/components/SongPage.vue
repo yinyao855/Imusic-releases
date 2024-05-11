@@ -186,7 +186,7 @@ onMounted(getFavoriteSongs);
                      stroke-linecap="round" stroke-linejoin="round">
                   <polygon points="5 3 19 12 5 21 5 3"/>
                 </svg>
-                <p class="inline-block">Play</p>
+                <p class="inline-block">播放</p>
               </button>
               <!--          评论-->
               <button

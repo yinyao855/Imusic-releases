@@ -62,6 +62,17 @@ function activeSonglist(index) {
 </script>
 
 <template>
+  <!--    展示选中的歌单信息页面（当showCurrentSongList==true）-->
+  <transition name="slide" appear>
+    <div class="transition-container z-50 ml-8" v-if="showCurrentSongList">
+      <Songlist v-model:currentSonglistId="currentSonglistId"
+                @PlaySongList="PlaySongList" @handlePlayAfter="handlePlayAfter"
+                @handlePlayNow="handlePlayNow" @closeSonglist="closeSonglist"
+                v-model:token="token" v-model:username="username"></Songlist>
+    </div>
+  </transition>
+
+
   <!--  展示用户创建的歌单主界面-->
   <div class="bg-gray-95000 w-full h-full mb-48" v-if="!showCurrentSongList">
     <!--    标题-->
@@ -86,11 +97,6 @@ function activeSonglist(index) {
       </div>
     </div>
   </div>
-  <!--    展示选中的歌单信息页面（当showCurrentSongList==true）-->
-  <Songlist v-model:currentSonglistId="currentSonglistId" v-if="showCurrentSongList"
-            @PlaySongList="PlaySongList" @handlePlayAfter="handlePlayAfter"
-            @handlePlayNow="handlePlayNow" @closeSonglist="closeSonglist"
-            v-model:token="token" v-model:username="username"></Songlist>
 </template>
 
 <style scoped>
@@ -161,5 +167,37 @@ function activeSonglist(index) {
   100% {
     transform: rotate(720deg);
   }
+}
+
+
+.slide-leave-active {
+  transition: transform 0.5s ease;
+}
+
+.slide-enter-active {
+  transition: transform 0.5s ease;
+}
+
+.slide-enter-from,
+.slide-leave-to {
+  transform: translateX(100%);
+}
+
+.slide-enter-to,
+.slide-leave-from {
+  transform: translateX(0);
+}
+
+.transition-container {
+  right: 0;
+  top: 0;
+  height: 100%
+}
+
+
+.transition-container-2 {
+  right: 0;
+  top: 0;
+  height: 100%;
 }
 </style>

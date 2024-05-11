@@ -12,7 +12,7 @@ const token = defineModel('token')
 const username = defineModel('username')
 
 // defineEmits(播放歌单全部歌曲，加入播放列表，立即播放，关闭当前页面/回到上一个页面展示创建的歌单)
-const emits = defineEmits(['PlaySongList', 'handlePlayAfter', 'handlePlayNow', 'closeSonglist'])
+const emits = defineEmits(['PlaySongList', 'handlePlayAfter', 'handlePlayNow', 'changesize'])
 
 // v-model
 const currentSonglistId = defineModel("currentSonglistId")
@@ -48,8 +48,8 @@ function handlePlayNow(id) {
   emits('handlePlayNow', id)
 }
 
-const fullsize = () => {
-  emits('closeSonglist');
+const changesize = () => {
+  emits('changesize');
 }
 
 // global function: 获取歌曲时长
@@ -271,6 +271,36 @@ onMounted(getSonglistData);
 </script>
 
 <template>
+  <!--  展示选择加入的歌单界面(当ShowCreatedSongList为true)-->
+  <transition name="slide" appear>
+    <div class="transition-container z-50 ml-8" v-if="ShowCreatedSongList">
+      <CurrentUser_SongList class="w-screen mb-32" v-if="ShowCreatedSongList"
+                            v-model:CurrentUser_SongListdata="createdSongLists"
+                            v-model:needtoaddSongid="needtoaddSongid"
+                            @CloseCurrentUser_SongList="CloseCurrentUser_SongList"
+                            v-model:token="token"></CurrentUser_SongList>
+    </div>
+  </transition>
+  <!--  展示歌曲详细信息界面（当ShowSong为true）-->
+  <transition name="slide" appear>
+    <div class="transition-container z-50 ml-8" v-if="ShowSong">
+      <SongPage class="w-screen mb-32" v-model:currentSongId="currentSongId" v-model:username="username"
+                @CloseSong="CloseSong" @handlePlayNow="handlePlayNow"
+                v-model:token="token"></SongPage>
+    </div>
+  </transition>
+  <!--  展示修改歌单信息界面（当showEditSonglist为true）-->
+  <transition name="slide" appear>
+    <div class="transition-container z-50 ml-8" v-if="showEditSonglist">
+      <EditSonglist :currentUserSongList="currentUserSongList"
+                    @deleteFromSongList="deleteFromSongList"
+                    v-model:showEditSonglist="showEditSonglist"
+                    v-model:cover="cover" v-model:coverImageFileUrl="coverImageFileUrl"
+                    v-model:token="token" v-model:username="username"></EditSonglist>
+    </div>
+  </transition>
+
+
   <div v-if="showCurrentSonglist&&!ShowCreatedSongList&&!ShowSong&&!showEditSonglist">
     <!--      展示歌单信息-->
     <div class="h-80 relative">
@@ -280,7 +310,7 @@ onMounted(getSonglistData);
       <!--        对歌单进行的操作-->
       <div class="px-8 py-3 absolute top-0 w-full">
         <!--    回到选择歌单界面-->
-        <buttonchangesize class="" @fullsize="fullsize" v-model:token="token"></buttonchangesize>
+        <buttonchangesize class="absolute" @fullsize="changesize" v-model:token="token"></buttonchangesize>
         <!--          删除歌单-->
         <div class="inline-block float-right cursor-pointer h-8 w-8 p-1 bg-gray-300 hover:bg-red-500 rounded-lg">
           <svg @click="deleteSonglist"
@@ -359,7 +389,7 @@ onMounted(getSonglistData);
                  stroke-linecap="round" stroke-linejoin="round">
               <polygon points="5 3 19 12 5 21 5 3"/>
             </svg>
-            <p class="inline-block">Play All</p>
+            <p class="inline-block">播放全部</p>
           </button>
           <button @click="addFavoriteSonglist" v-if="!isFavoriteSonglist"
                   class="mr-3 bg-gray-400 hover:bg-gray-500 text-white font-bold py-2 px-12 rounded-full inline-block">
@@ -520,29 +550,6 @@ onMounted(getSonglistData);
       </div>
     </div>
   </div>
-  <!--  展示选择加入的歌单界面(当ShowCreatedSongList为true)-->
-  <transition name="slide" appear>
-    <div class="transition-container-2" v-if="ShowCreatedSongList">
-      <CurrentUser_SongList v-if="ShowCreatedSongList" v-model:CurrentUser_SongListdata="createdSongLists"
-                            v-model:needtoaddSongid="needtoaddSongid"
-                            @CloseCurrentUser_SongList="CloseCurrentUser_SongList"
-                            v-model:token="token"></CurrentUser_SongList>
-    </div>
-  </transition>
-  <!--  展示歌曲详细信息界面（当ShowSong为true）-->
-  <transition name="slide" appear>
-    <div class="transition-container-2" v-if="ShowSong">
-      <SongPage v-if="ShowSong" v-model:currentSongId="currentSongId" v-model:username="username"
-                @CloseSong="CloseSong" @handlePlayNow="handlePlayNow"
-                v-model:token="token"></SongPage>
-    </div>
-  </transition>
-  <!--  展示修改歌单信息界面（当showEditSonglist为true）-->
-  <EditSonglist :currentUserSongList="currentUserSongList" v-if="showEditSonglist"
-                @deleteFromSongList="deleteFromSongList"
-                v-model:showEditSonglist="showEditSonglist"
-                v-model:cover="cover" v-model:coverImageFileUrl="coverImageFileUrl"
-                v-model:token="token" v-model:username="username"></EditSonglist>
 </template>
 
 <style scoped>
@@ -593,5 +600,37 @@ onMounted(getSonglistData);
   -o-filter: blur(19px);
   -ms-filter: blur(19px);
   filter: blur(19px);
+}
+
+
+.slide-leave-active {
+  transition: transform 0.5s ease;
+}
+
+.slide-enter-active {
+  transition: transform 0.5s ease;
+}
+
+.slide-enter-from,
+.slide-leave-to {
+  transform: translateX(100%);
+}
+
+.slide-enter-to,
+.slide-leave-from {
+  transform: translateX(0);
+}
+
+.transition-container {
+  right: 0;
+  top: 0;
+  height: 100%
+}
+
+
+.transition-container-2 {
+  right: 0;
+  top: 0;
+  height: 100%;
 }
 </style>
