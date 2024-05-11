@@ -171,8 +171,8 @@ onMounted(getFavoriteSongs);
     </div>
     <!--    歌曲基本信息-->
     <div class="my-10 mb-40 flex flex-col w-full lg:flex-row">
-      <div class="grid flex-grow h-full card rounded-box place-items-center">
-        <div class="ml-20">
+      <div class="w-1/2 grid flex-grow h-full card rounded-box place-items-center">
+        <div class="">
           <div class="">
             <img :src="songData.cover" alt="歌曲封面"
                  class="h-56 w-56 aspect-square rounded-xl border-gray-300 border-e-2 border-b-2">
@@ -286,7 +286,7 @@ onMounted(getFavoriteSongs);
       </div>
       <div class="divider lg:divider-horizontal"></div>
       <!--      歌词-->
-      <div class="grid flex-grow h-full card rounded-box place-items-center mr-16 py-8">
+      <div class="w-1/2 grid flex-grow h-full card rounded-box place-items-center py-8">
         <div v-for="lyric in lyrics" class="text-gray-300">
           <p>{{ lyric }}</p>
         </div>
