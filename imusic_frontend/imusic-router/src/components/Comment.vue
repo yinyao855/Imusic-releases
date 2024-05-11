@@ -95,7 +95,7 @@ const initUserImage = () => {
         });
   }
   for(let i = 0; i < Comment.value.length; i++){
-    if(Comment.value[i].content.length > 44){
+    if(Comment.value[i].content.length > 20){
       info.value[i]= Comment.value[i].content;
       showInfo.value[i] = true;
     }
@@ -168,12 +168,12 @@ watch(Comment, () => {
             <img class="icon fill-white mr-1 my-auto rounded-full row-start-1 row-span-3 col-start-1 col-span-1 w-19 h-19 mt-1"
                  :src="userImage[index]" alt="" v-if="showInfo[index]!==true||mouseOn[index]!==true">
           <div class="row-start-1 row-span-1 col-start-2 col-span-2 my-auto font-thin" v-if="showInfo[index]===false||mouseOn[index]===false">
-            <div class=" text-l">{{item.user}}：</div>
+            <div class=" text-sm">{{item.user}}：</div>
             </div>
           <div class="row-start-2 row-span-1 col-start-2 col-span-2 my-auto font-thin" v-if="showInfo[index]===false||mouseOn[index]===false">
-            <div class=" text-sm">{{item.comment_date}}</div>
+            <div style=" font-size:0.65rem;line-height:0.8rem">  {{item.comment_date}}</div>
           </div>
-          <div class="row-start-2 row-span-2 col-start-4 col-span-6 my-auto" v-if="showInfo[index]===false||mouseOn[index]===false">
+          <div class="row-start-2 row-span-2 col-start-3 col-span-7 my-auto" v-if="showInfo[index]===false||mouseOn[index]===false">
             <p class="m-auto text-l truncate">{{item.content}}</p>
             </div>
           <div class="row-start-2 row-span-2 col-start-10 col-span-1 w-1/2" @click="deleteComment(index)" v-if="(sameUser[index])">
