@@ -301,7 +301,7 @@ onMounted(getSonglistData);
   </transition>
 
 
-  <div v-if="showCurrentSonglist&&!ShowCreatedSongList&&!ShowSong&&!showEditSonglist">
+  <div v-if="showCurrentSonglist&&!ShowCreatedSongList&&!ShowSong&&!showEditSonglist" class="z-50 h-full">
     <!--      展示歌单信息-->
     <div class="h-80 relative">
       <div class="bg-center bg-cover bg-blur w-full h-full absolute top-0 left-0"

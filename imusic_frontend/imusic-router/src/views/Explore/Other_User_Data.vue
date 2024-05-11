@@ -9,9 +9,9 @@ import CreatedSonglist from "@/views/CreatedSongList/CreatedSonglist.vue";
 
 
 const ShowUsername = defineModel('ShowUsername');
-const username=defineModel('username');
+const username = defineModel('username');
 const token = defineModel('token');
-const emits = defineEmits(['changesize', 'handlePlayNow', 'handlePlayAfter','PlaySongList']);
+const emits = defineEmits(['changesize', 'handlePlayNow', 'handlePlayAfter', 'PlaySongList']);
 const User = ref([]);
 const SongLists = ref([]);
 const Songs = ref([]);
@@ -122,15 +122,15 @@ const CloseCurrentUser_SongList = () => {
   ShowAddSong.value = false;
 }
 
-const ShowSongDetail=ref(false);
+const ShowSongDetail = ref(false);
 
-const ActiveShowSongDetail=(id)=>{
-  SongId.value=id;
-  ShowSongDetail.value=true;
+const ActiveShowSongDetail = (id) => {
+  SongId.value = id;
+  ShowSongDetail.value = true;
 }
-const SongId=ref(0);
-const CloseShowSongDetail=()=>{
-  ShowSongDetail.value=false;
+const SongId = ref(0);
+const CloseShowSongDetail = () => {
+  ShowSongDetail.value = false;
 }
 
 const handlePlayAfter = (id) => {
@@ -138,20 +138,20 @@ const handlePlayAfter = (id) => {
 }
 
 const ShowAddSong = ref(false);
-const ShowSongList=ref(false);
+const ShowSongList = ref(false);
 
-const ActiveSongList=(id)=>{
-  ShowSongList.value=true;
-  SongListId.value=id;
+const ActiveSongList = (id) => {
+  ShowSongList.value = true;
+  SongListId.value = id;
 }
 
-const CloseSongList=()=>{
-  ShowSongList.value=false;
+const CloseSongList = () => {
+  ShowSongList.value = false;
 }
-const SongListId=ref(0);
+const SongListId = ref(0);
 
-const PlaySongList=(id)=>{
-  emits('PlaySongList',id);
+const PlaySongList = (id) => {
+  emits('PlaySongList', id);
 }
 
 onMounted(GetUserData);
@@ -160,9 +160,9 @@ onMounted(GetUserData);
 <template>
   <transition name="slide" appear>
     <div class="transition-container z-50 ml-8" v-if="ShowSongList">
-      <CreatedSonglist v-model:currentSonglistId="SongListId" class="h-full"
+      <CreatedSonglist v-model:currentSonglistId="SongListId"
                        @PlaySongList="PlaySongList" @handlePlayAfter="handlePlayAfter"
-                       @handlePlayNow="handlePlayNow" @closeSonglist="CloseSongList"
+                       @handlePlayNow="handlePlayNow" @changesize="CloseSongList"
                        v-model:token="token" v-model:username="username"></CreatedSonglist>
     </div>
   </transition>
@@ -170,12 +170,11 @@ onMounted(GetUserData);
 
   <transition name="slide" appear>
     <div class="transition-container-2" v-if="ShowSongDetail&&!ShowAddSong&&!ShowSongList">
-      <SongPage  v-model:currentSongId="SongId"
-                 @handlePlayNow="handlePlayNow" @CloseSong="CloseShowSongDetail"
-                 v-model:username="username" v-model:token="token"></SongPage>
+      <SongPage v-model:currentSongId="SongId"
+                @handlePlayNow="handlePlayNow" @CloseSong="CloseShowSongDetail"
+                v-model:username="username" v-model:token="token"></SongPage>
     </div>
   </transition>
-
 
 
   <transition name="slide" appear>
@@ -311,13 +310,15 @@ onMounted(GetUserData);
         </tbody>
       </table>
     </div>
-    <div class="w-full flex h-full" v-if="NaviMode===2">
-      <div class="mx-8 my-8 h-64 w-64" v-for="(item, index) in SongLists" :key="index">
-        <div class="relative cursor-pointer h-4/5 aspect-square mx-auto" @click="ActiveSongList(SongLists[index].id)">
-          <img :src="item.cover" alt="歌单封面" class="h-full aspect-square rounded-2xl">
-          <div class="absolute inset-0 bg-gray-500 opacity-0 hover:opacity-50 transition-opacity rounded-2xl"></div>
+    <div class="w-full flex h-full flex-wrap pt-6" v-if="NaviMode===2">
+      <div class="w-1/4 min-w-72" v-for="(item, index) in SongLists" :key="index">
+        <div class="mx-8 h-72">
+          <div class="relative cursor-pointer h-4/5 aspect-square mx-auto" @click="ActiveSongList(SongLists[index].id)">
+            <img :src="item.cover" alt="歌单封面" class="h-full aspect-square rounded-2xl">
+            <div class="absolute inset-0 bg-gray-500 opacity-0 hover:opacity-50 transition-opacity rounded-2xl"></div>
+          </div>
+          <div class="text-center text-lg h-1/5 mx-auto text-white">{{ item.title }}</div>
         </div>
-        <div class="text-center text-lg h-1/5 mx-auto text-white">{{ item.title }}</div>
       </div>
     </div>
     <div class="h-32"></div>

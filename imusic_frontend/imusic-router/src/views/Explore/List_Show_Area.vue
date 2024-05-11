@@ -44,7 +44,6 @@ const Class1_6 = computed(() => ({
 }));
 
 
-
 const Class2_1 = computed(() => ({
   'w-1/3 text-white hover:text-blue-400 text-xs block mb-2 transition ease-in duration-300 cursor-pointer': mode2.value !== 1,
   'w-1/3 text-xs block mb-2 text-blue-400 cursor-pointer': mode2.value === 1,
@@ -388,41 +387,19 @@ onMounted(GetInitSongLists);
       </div>
     </div>
   </div>
-  <div class="overflow-x-auto overflow-y-hidden mx-6" v-if="!ShowCurrentUser_SongList&&!NeedShowSongList">
+  <div class="mx-6" v-if="!ShowCurrentUser_SongList&&!NeedShowSongList">
     <div class="text-2xl text-white my-5">推荐歌单</div>
-    <table class="table mb-32">
-      <thead>
-      <tr>
-        <th class="text-left text-sm font-semibold">歌单标题</th>
-        <th class="text-left text-sm font-semibold">上传者</th>
-        <th class="text-left text-sm font-semibold">上传日期</th>
-      </tr>
-      </thead>
-      <tbody>
-      <!-- row 1 -->
-      <tr class="text-white transition duration-400 hover:bg-gray-600/40 rounded-md"
-          v-for="(item, index) in SongLists" :key="index" @click="ShowSongList(index)">
-        <td>
-          <div class="flex items-center gap-3">
-            <div class="avatar">
-              <div class="mask mask-squircle w-12 h-12">
-                <img :src="item.cover"
-                     alt="Avatar Tailwind CSS Component"/>
-              </div>
-            </div>
-            <div>
-              <div class="font-bold">{{ item.title }}</div>
-              <div class="text-sm opacity-50">United States</div>
-            </div>
+    <div class="w-full flex flex-wrap">
+      <div class="w-1/4 min-w-72" v-for="(item, index) in SongLists" :key="index">
+        <div class="mx-8 h-72">
+          <div class="relative cursor-pointer h-4/5 aspect-square mx-auto" @click="ShowSongList(index)">
+            <img :src="item.cover" alt="歌单封面" class="h-full aspect-square rounded-2xl">
+            <div class="absolute inset-0 bg-gray-500 opacity-0 hover:opacity-50 transition-opacity rounded-2xl"></div>
           </div>
-        </td>
-        <td>
-          {{ item.owner }}
-        </td>
-        <td>{{ item.create_date }}</td>
-      </tr>
-      </tbody>
-    </table>
+          <div class="text-center text-lg h-1/5 mx-auto text-white">{{ item.title }}</div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
