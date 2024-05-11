@@ -314,7 +314,7 @@ onMounted(getSonglistData);
         <div class="mt-3">
           <!--            播放歌单中所有歌曲-->
           <button @click="PlaySongList(currentUserSongList.id)"
-                  class="mr-3 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-16 rounded-full">
+                  class="mr-1 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-16 rounded-full">
             <svg class="h-5 w-5 inline-block align-sub text-white" viewBox="0 0 24 24" fill="none"
                  stroke="currentColor"
                  stroke-width="2"
@@ -325,7 +325,7 @@ onMounted(getSonglistData);
           </button>
           <!--          收藏歌单-->
           <button @click="addFavoriteSonglist" v-if="!isFavoriteSonglist"
-                  class="mr-3 bg-gray-400 hover:bg-gray-500 text-white font-bold py-2 px-12 rounded-full inline-block">
+                  class="mr-1 bg-gray-400 hover:bg-gray-500 text-white font-bold py-2 px-12 rounded-full inline-block">
             <svg class="h-5 w-5 text-white inline-block align-sub" viewBox="0 0 24 24" fill="none"
                  stroke="currentColor"
                  stroke-width="2"
@@ -337,7 +337,7 @@ onMounted(getSonglistData);
             ({{ currentUserSongList.like }})
           </button>
           <button @click="deleteFavoriteSonglist" v-if="isFavoriteSonglist"
-                  class="mr-3 bg-yellow-400 hover:bg-yellow-600 text-white font-bold py-2 px-12 rounded-full inline-block">
+                  class="mr-1 bg-yellow-400 hover:bg-yellow-600 text-white font-bold py-2 px-12 rounded-full inline-block">
             <svg class="h-5 w-5 fill-white inline-block align-sub" viewBox="0 0 24 24" fill="none"
                  stroke="currentColor"
                  stroke-width="2"
@@ -350,7 +350,7 @@ onMounted(getSonglistData);
           </button>
           <!--          评论-->
           <button
-              class="mr-3 bg-gray-400 hover:bg-gray-500 text-white font-bold py-2 px-20 rounded-full">
+              class="mr-1 bg-gray-400 hover:bg-gray-500 text-white font-bold py-2 px-20 rounded-full">
             <svg class="h-5 w-5 text-white inline-block align-sub" viewBox="0 0 24 24" stroke-width="2"
                  stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
               <path stroke="none" d="M0 0h24v24H0z"/>
@@ -368,18 +368,18 @@ onMounted(getSonglistData);
       <hr class="mx-5 border-gray-500">
       <div class="mt-3 m-5">
         <table class="w-full mb-32">
-          <thead class="">
+          <thead>
           <tr class="h-10 text-white">
             <th class="text-left p-3 text-sm font-semibold">歌名</th>
             <th class="text-center text-sm font-semibold">演唱者</th>
             <th class="text-center text-sm font-semibold">时长</th>
-            <th></th>
+            <th class="text-center text-sm font-semibold"></th>
           </tr>
           </thead>
           <tbody>
           <tr v-for="(song, index) in currentUserSongList.songs"
               class="text-white transition duration-400 hover:bg-gray-600/40">
-            <td class="pl-3 p-1 hover:cursor-pointer" @click="handlePlayNow(currentUserSongList.songs[index].id)">
+            <td class="pl-3 p-1 hover:cursor-pointer" @click="handlePlayNow(song.id)">
               <img :src="song.cover" class="img_song inline-block mr-3">
               <p class="inline-block">{{ song.title }}</p>
             </td>
@@ -387,94 +387,78 @@ onMounted(getSonglistData);
             <td class="text-center">{{ gettime(song.duration) }}</td>
             <td>
               <!--                对歌曲进行的操作-->
-              <div class="menu">
-                <button class="font-bold text-xl">···</button>
-                <div class="menu_item font-bold right-7 -bottom-1 bg-gray-600 text-white opacity-90">
-                  <!--                    查看歌曲信息(SongPage)-->
-                  <div @click="activeShowSong(index)"
-                       class="hover:bg-white hover:text-blue-500 hover:cursor-pointer rounded-md py-2 w-44 inline-block">
-                    <p>
-                      <svg class="ml-5 h-5 w-5 text-gray-900 inline-block align-sub" fill="none" viewBox="0 0 24 24"
-                           stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                              d="M4 6h16M4 10h16M4 14h16M4 18h16"/>
-                      </svg>
-                      查看歌曲信息
-                    </p>
-                  </div>
-                  <!--                    加入播放列表-->
-                  <div @click="handlePlayAfter(currentUserSongList.songs[index].id)"
-                       class="hover:bg-white hover:text-blue-500 hover:cursor-pointer rounded-md py-2 w-44 inline-block">
-                    <p>
-                      <svg class="ml-5 h-5 w-5 text-gray-900 inline-block align-sub" width="24" height="24"
-                           viewBox="0 0 24 24" stroke-width="2"
-                           stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                        <path stroke="none" d="M0 0h24v24H0z"/>
-                        <line x1="12" y1="5" x2="12" y2="19"/>
-                        <line x1="5" y1="12" x2="19" y2="12"/>
-                      </svg>
-                      加入播放列表
-                    </p>
-                  </div>
-                  <!--                    加入歌单(CurrentUser_Songlist)-->
-                  <div @click="activeAddToSongList(index)"
-                       class="hover:bg-white hover:text-blue-500 hover:cursor-pointer rounded-md py-2 w-44 inline-block">
-                    <p>
-                      <svg class="ml-5 h-5 w-5 text-gray-900 inline-block align-sub" fill="none" viewBox="0 0 24 24"
-                           stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                              d="M9 13h6m-3-3v6m-9 1V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z"/>
-                      </svg>
-                      加入歌单
-                    </p>
-                  </div>
-                  <div
-                      class="hover:bg-white hover:text-blue-500 hover:cursor-pointer rounded-md py-2 w-44 inline-block">
-                    <p>
-                      <svg class="ml-5 h-5 w-5 text-gray-900 inline-block align-sub" viewBox="0 0 24 24" fill="none"
-                           stroke="currentColor"
-                           stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <circle cx="18" cy="5" r="3"/>
-                        <circle cx="6" cy="12" r="3"/>
-                        <circle cx="18" cy="19" r="3"/>
-                        <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/>
-                        <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
-                      </svg>
-                      分享
-                    </p>
-                  </div>
-                  <!--                    从歌单中移除-->
-                  <div @click="deleteFromSongList(index)"
-                       class="hover:bg-white hover:text-blue-500 hover:cursor-pointer rounded-md py-2 w-44 inline-block">
-                    <p>
-                      <svg class="ml-5 h-5 w-5 text-black inline-block align-sub" width="24" height="24"
-                           viewBox="0 0 24 24" stroke-width="2"
-                           stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                        <path stroke="none" d="M0 0h24v24H0z"/>
-                        <line x1="4" y1="7" x2="20" y2="7"/>
-                        <line x1="10" y1="11" x2="10" y2="17"/>
-                        <line x1="14" y1="11" x2="14" y2="17"/>
-                        <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12"/>
-                        <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3"/>
-                      </svg>
-                      从歌单中移除
-                    </p>
-                  </div>
-                  <div
-                      class="hover:bg-white hover:text-blue-500 hover:cursor-pointer rounded-md py-2 w-44 inline-block">
-                    <p>
-                      <svg class="ml-5 h-5 w-5 text-gray-900 inline-block align-sub" viewBox="0 0 24 24" fill="none"
-                           stroke="currentColor"
-                           stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <div
+                  class="z-0 mr-5 float-right dropdown dropdown-left dropdown-top my-auto tooltip transition duration-400 hover:bg-gray-600/40 bg-zinc-900 btn btn-sm border-none z-50"
+                  data-tip="更多">
+                <svg class="icon" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg"
+                     width="32" height="32" tabindex="0" role="button">
+                  <path
+                      d="M170.666667 213.333333h682.666666v85.333334H170.666667V213.333333z m0 512h682.666666v85.333334H170.666667v-85.333334z m0-256h682.666666v85.333334H170.666667v-85.333334z"
+                      fill="white"></path>
+                </svg>
+                <ul tabindex="0"
+                    class="dropdown-content z-50 menu p-2 shadow rounded-box bg-zinc-900 text-white text-sm"
+                    style="width:300px">
+                  <li class="z-50">
+                    <div class="z-50">
+                      <img :src="song.cover" alt="封面" class="aspect-square h-12 w-12 ml-0 pl-0">
+                      <a class="font-semibold text-sm">{{ song.title }}</a>
+                      <br>
+                      <a class="block text-gray-600 text-xs mr-0">{{ song.singer }}</a>
+                    </div>
+                  </li>
+                  <li>
+                    <div class="text-sm font-semibold z-50" @click="handlePlayNow(song.id);">
+                      <svg class="icon ml-1" viewBox="0 0 1024 1024"
+                           xmlns="http://www.w3.org/2000/svg" width="16" height="16">
                         <path
-                            d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
-                        <line x1="12" y1="9" x2="12" y2="13"/>
-                        <line x1="12" y1="17" x2="12.01" y2="17"/>
+                            d="M128 138.666667c0-47.232 33.322667-66.666667 74.176-43.562667l663.146667 374.954667c40.96 23.168 40.853333 60.8 0 83.882666L202.176 928.896C161.216 952.064 128 932.565333 128 885.333333v-746.666666z"
+                            fill="white"></path>
+
                       </svg>
-                      举报
-                    </p>
-                  </div>
-                </div>
+                      立即播放
+                    </div>
+                  </li>
+                  <li>
+                    <div class="text-sm font-semibold" @click="handlePlayAfter(song.id)">
+                      <svg class="icon" viewBox="0 0 1024 1024"
+                           xmlns="http://www.w3.org/2000/svg" width="22" height="22">
+                        <path
+                            d="M655.706179 465.602819L332.053897 218.588294c-38.414608-29.327534-93.791393-1.929039-93.791392 46.396277v494.029051c0 48.325316 55.376785 75.725617 93.791392 46.398084l323.652282-247.014525c30.602722-23.357989 30.602722-69.436372 0-92.794362zM781.064814 780.798397V451.684117v-164.562559c0-19.628152 5.904521-60.475733-17.057907-75.841215-25.523642-17.068744-59.747828 1.210165-59.747828 31.919454v493.676839c0 19.628152-5.915358 60.473927 17.047069 75.841215 25.532673 17.068744 59.758666-1.211971 59.758666-31.919454z"
+                            fill="white"></path>
+                      </svg>
+                      添加到播放列表
+                    </div>
+                  </li>
+                  <li>
+                    <div class="text-sm font-semibold" @click="deleteFromSongList(song.id)">
+                      <svg class="icon fill-white" viewBox="0 0 1024 1024"
+                           xmlns="http://www.w3.org/2000/svg" width="22" height="22">
+                        <path
+                            d="M840 288H688v-56c0-40-32-72-72-72h-208C368 160 336 192 336 232V288h-152c-12.8 0-24 11.2-24 24s11.2 24 24 24h656c12.8 0 24-11.2 24-24s-11.2-24-24-24zM384 288v-56c0-12.8 11.2-24 24-24h208c12.8 0 24 11.2 24 24V288H384zM758.4 384c-12.8 0-24 11.2-24 24v363.2c0 24-19.2 44.8-44.8 44.8H332.8c-24 0-44.8-19.2-44.8-44.8V408c0-12.8-11.2-24-24-24s-24 11.2-24 24v363.2c0 51.2 41.6 92.8 92.8 92.8h358.4c51.2 0 92.8-41.6 92.8-92.8V408c-1.6-12.8-12.8-24-25.6-24z"
+                        ></path>
+                        <path
+                            d="M444.8 744v-336c0-12.8-11.2-24-24-24s-24 11.2-24 24v336c0 12.8 11.2 24 24 24s24-11.2 24-24zM627.2 744v-336c0-12.8-11.2-24-24-24s-24 11.2-24 24v336c0 12.8 11.2 24 24 24s24-11.2 24-24z"
+                        ></path>
+                      </svg>
+                      删除歌曲
+                    </div>
+                  </li>
+                  <li>
+                    <div class="text-sm font-semibold" @click="activeShowSong(index)">
+                      <svg class="icon fill-white" viewBox="0 0 1024 1024"
+                           xmlns="http://www.w3.org/2000/svg" width="22" height="22">
+                        <path
+                            d="M501.5 109.38a403.52 403.52 0 0 1 285.32 688.84 403.52 403.52 0 0 1-570.66-570.66 400.94 400.94 0 0 1 285.34-118.18m0-64C243.3 45.38 34 254.7 34 512.88S243.3 980.4 501.5 980.4 969 771.08 969 512.88 759.68 45.38 501.5 45.38z"
+                        ></path>
+                        <path
+                            d="M501.5 291.16a7.64 7.64 0 1 1-7.64 7.64 7.64 7.64 0 0 1 7.64-7.64m0-64a71.64 71.64 0 1 0 71.62 71.64 71.64 71.64 0 0 0-71.62-71.64zM501.5 418.18a59.38 59.38 0 0 0-59.38 59.38V768a59.36 59.36 0 0 0 59.38 59.36A59.36 59.36 0 0 0 560.86 768V477.56a59.36 59.36 0 0 0-59.36-59.38z"
+                        ></path>
+                      </svg>
+                      详细信息
+                    </div>
+                  </li>
+                </ul>
               </div>
             </td>
           </tr>
@@ -482,6 +466,7 @@ onMounted(getSonglistData);
         </table>
       </div>
     </div>
+    、
   </div>
 <!--  &lt;!&ndash;  展示修改歌单信息界面（当showEditSonglist为true）&ndash;&gt;-->
 <!--  <EditSonglist :currentUserSongList="currentUserSongList" v-if="showEditSonglist"-->
@@ -511,22 +496,6 @@ onMounted(getSonglistData);
   width: 40px;
   height: 40px;
   border-radius: 8px;
-}
-
-.menu {
-  position: relative;
-  display: inline-block;
-}
-
-.menu_item {
-  display: none;
-  position: absolute;
-  min-width: 160px;
-  border-radius: 8px;
-}
-
-.menu:hover .menu_item {
-  display: block;
 }
 
 .bg-blur {

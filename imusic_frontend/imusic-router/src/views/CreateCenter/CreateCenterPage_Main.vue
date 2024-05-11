@@ -172,7 +172,7 @@ const CloseSongPage=()=>{
     <div v-if="NaviMode==='1'">
       <div class="">
         <div class="text-2xl mx-4 text-white font-serif font-bold my-4 w-1/2">我的上传</div>
-        <div class="overflow-x-auto mx-6">
+        <div class="mx-6">
           <table class="table mb-32">
             <thead>
             <tr>
@@ -210,7 +210,7 @@ const CloseSongPage=()=>{
               <td @click="handlePlayNow(item.id);">{{ item.like }}</td>
               <th>
                 <div
-                    class="dropdown dropdown-left dropdown-top my-auto tooltip transition duration-400 hover:bg-gray-600/40 bg-zinc-900 btn btn-sm border-none z-50"
+                    class="dropdown dropdown-left dropdown-content my-auto tooltip transition duration-400 hover:bg-gray-600/40 bg-zinc-900 btn btn-sm border-none z-50"
                     data-tip="播放列表">
                   <svg class="icon z-50" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg"
                        width="32" height="32" tabindex="0" role="button">
