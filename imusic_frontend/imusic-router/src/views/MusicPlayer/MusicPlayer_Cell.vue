@@ -289,6 +289,7 @@ defineExpose({handlePlayNow,handlePlayAfter,initCurrentMusic})
           v-model:duration="duration"
           v-model:currentTimeInSeconds="currentTimeInSeconds"
           v-model:token="token"
+          v-model:username="username"
           @fullsize="changeSize"
           :name="currentMusic.title"
           :singer="currentMusic.singer"

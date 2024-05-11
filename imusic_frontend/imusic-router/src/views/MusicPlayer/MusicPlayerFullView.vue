@@ -106,10 +106,10 @@
         <Lyrics_Show_View v-model:currentduration="currentduration" v-model:lrcArr="lyric" v-model:audioPlayer="audioPlayer"></Lyrics_Show_View>
       </div>
     </div>
-    <div class="col2 bg-transparent overflow-hidden h-full" v-if="showComment">
-      <Transition name="slide-fade">
+    <div class="col2 bg-transparent h-2/3 w-full" v-if="showComment">
+      <Transition name="slide-fade" clss="h-2/3 w-full">
         <Comment :token="token" :id="songID" v-model:showComment="showComment" v-model:songID="songID"
-                 v-model:WarningShow="WarningShow" v-model:message="message"></Comment>
+                 v-model:WarningShow="WarningShow" v-model:message="message" v-model:username="username"></Comment>
       </Transition>
     </div>
   </div>
@@ -150,7 +150,7 @@ const lyric = defineModel("lyric")
 const audioPlayer = defineModel("audioPlayer");
 const token = defineModel('token')
 const text = ref('未播放');
-
+const username = defineModel('username');
 const togglePlay = () => {
   emit('togglePlay');
 };
@@ -280,5 +280,6 @@ const message = ref('');
   transform: translateX(10px);
   opacity: 0;
 }
+
 
 </style>

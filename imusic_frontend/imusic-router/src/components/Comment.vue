@@ -1,7 +1,7 @@
 <script setup>
 
 
-import {defineEmits, defineModel, onMounted, ref} from "vue";
+import {defineEmits, defineModel, onMounted, ref, watch} from "vue";
 import axios from "axios";
 import Warning from "@/components/Warning.vue";
 const emit = defineEmits(['fullsize', 'togglePlay', 'update', 'back', 'next']);
@@ -87,50 +87,109 @@ const initUserImage = () => {
     instance.get(url, {
     })
         .then((response) => {
-          console.log(response.data);
           userImage.value[index] = response.data.data.avatar;
-          console.log(userImage.value);
         })
         .catch((error) => {
           console.log(error);
         });
   }
+  for(let i = 0; i < Comment.value.length; i++){
+    if(Comment.value[i].content.length > 44){
+      info.value[i]= Comment.value[i].content;
+      showInfo.value[i] = true;
+    }
+    else {
+      info.value[i] = '';
+      showInfo.value[i] = false;
+    }
+    sameUser.value[i] = (Comment.value[i].user === username.value);
+    //comment_date仅保留年月日
+    Comment.value[i].comment_date = Comment.value[i].comment_date.split('T')[0];
+    mouseOn.value[i] = false;
+  }
+}
+const deleteComment = (index) => {
+  const instance = axios.create({
+    baseURL: 'http://182.92.100.66:5000',
+    timeout: 5000,
+    headers: {
+      'Authorization': `Bearer ${token.value}`,
+    }
+  });
+    axios.defaults.withCredentials = true;
+    let url='/comments/delete';
+    instance.delete(url, {
+      params: {
+        'contentID': Comment.value[index].id
+      }
+    })
+        .then((response) => {
+          console.log(response.data);
+        })
+        .catch((error) => {
+          console.log(error);
+          console.log(Comment.value[index].id);
+          console.log(url);
+          console.log(token.value);
+        });
+
+  getSongComment();
+}
+const info = ref([]);
+const showInfo = ref([]);
+const mouseOn=ref([]);
+const sameUser = ref([]);
+const username=defineModel('username');
+const over = (index) => {
+  mouseOn.value[index] = true;
+}
+const leave = (index) => {
+  mouseOn.value[index] = false;
 }
 onMounted(() => {
   getSongComment();
 })
+watch(Comment, () => {
+  initUserImage();
+});
 </script>
 
 <template>
-  <div class="col2  duration-300 h-1 w-4/5">
-    <div class="formx2 w-2/3 grid-cols-10 flexible">
-    <div class="col-span-1">
-<!--    <button class="btn transition bg-transparent hover:-translate-y-1 hover:scale-110 hover:bg-transparent" @click="backComment">-->
-<!--      <svg class="icon" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg"-->
-<!--           width="48" height="48"><path d="M597.12 512L768 682.88 682.88 768 512 597.12 341.12 768 256 682.88 426.88 512 256 341.12 341.12 256 512 426.88 682.88 256 768 341.12z" p-id="2906"></path></svg>-->
-<!--    </button>-->
-    </div>
-    <div class="text-center text-3xl font-semibold text-white p-3 w-full ">评论</div>
-      <div class="h-1/2 overflow-auto w-4/5">
-        <div class="text-white bg-transparent transition duration-400 hover:bg-transparent-50 grid grid-cols-10 gap-4 h-1/10"
-            v-for="(item, index) in Comment" :key="index">
-            <img class="icon fill-white mr-4 my-auto col-span-1 justify-center rounded-full"
-                 :src="userImage[index]" alt="">
-          <div class="col-span-2 my-auto">
-            <div class=" text-l">{{item.user}}</div>
+  <div class="duration-300 h-dvh w-2/3 overflow-visible">
+    <div class="text-center text-3xl  font-bold text-white p-3 w-full h-1/10">评论</div>
+    <div class="formx2 w-5/6 flexible h-5/6">
+      <div class="h-full overflow-auto w-5/6">
+        <div :style="{ height: (showInfo[index] === true && mouseOn[index] === true) ? (info[index].length/55*60)+'px' : '60px'}"
+             :class="index % 2 === 0 ? 'bg-even' : 'bg-odd'"
+             class="w-full rounded-l-lg flex-wrap text-white transition ease-in-out delay-100 hover:bg-transparent/20 grid grid-cols-10 grid-rows-4 gap-2"
+             v-for="(item, index) in Comment" :key="index" @mouseover="over(index)" @mouseleave="leave(index)">
+            <img class="icon fill-white mr-1 my-auto rounded-full row-start-1 row-span-3 col-start-1 col-span-1 w-19 h-19"
+                 :src="userImage[index]" alt="" v-if="showInfo[index]!==true||mouseOn[index]!==true">
+          <div class="row-start-1 row-span-1 col-start-2 col-span-2 my-auto font-thin" v-if="showInfo[index]===false||mouseOn[index]===false">
+            <div class=" text-l">{{item.user}}：</div>
             </div>
-          <div class="col-span-7 my-auto">
-            <div class="m-auto text-l">{{item.content}}</div>
+          <div class="row-start-2 row-span-1 col-start-2 col-span-2 my-auto font-thin" v-if="showInfo[index]===false||mouseOn[index]===false">
+            <div class=" text-sm">{{item.comment_date}}</div>
+          </div>
+          <div class="row-start-2 row-span-2 col-start-4 col-span-6 my-auto" v-if="showInfo[index]===false||mouseOn[index]===false">
+            <p class="m-auto text-l truncate">{{item.content}}</p>
             </div>
-          <hr class="m-0.5 border-gray-500 col-span-10" />
+          <div class="row-start-2 row-span-2 col-start-10 col-span-1 w-1/2" @click="deleteComment(index)" v-if="(showInfo[index]===false||mouseOn[index]===false)&&(sameUser[index])">
+            <svg t="1715420660678" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2545"
+                 width="24" height="24"><path d="M519.620465 0c-103.924093 0-188.511256 82.467721-192.083349 185.820279H85.015814A48.91386 48.91386 0 0 0 36.101953 234.686512a48.91386 48.91386 0 0 0 48.913861 48.866232h54.010046V831.345116c0 102.852465 69.822512 186.844279 155.909954 186.844279h439.200744c86.087442 0 155.909953-83.491721 155.909954-186.844279V284.100465h48.91386a48.91386 48.91386 0 0 0 48.913861-48.890046 48.91386 48.91386 0 0 0-48.913861-48.866233h-227.756651A191.559442 191.559442 0 0 0 519.620465 0z m-107.234232 177.080558c3.548279-49.771163 46.627721-88.540279 99.851907-88.540279 53.224186 0 96.327442 38.745302 99.351813 88.540279h-199.20372z m-111.997024 752.044651c-30.981953 0-65.083535-39.15014-65.083535-95.041488V287.744h575.488v546.839814c0 55.915163-34.077767 95.041488-65.059721 95.041488H300.389209v-0.500093z" fill="#D81E06" p-id="2546"></path><path d="M368.116093 796.814884c24.361674 0 44.27014-21.670698 44.27014-48.818605v-278.623256c0-27.147907-19.908465-48.818605-44.27014-48.818604-24.33786 0-44.27014 21.670698-44.27014 48.818604v278.623256c0 27.147907 19.360744 48.818605 44.293954 48.818605z m154.933581 0c24.361674 0 44.293953-21.670698 44.293954-48.818605v-278.623256c0-27.147907-19.932279-48.818605-44.293954-48.818604-24.33786 0-44.27014 21.670698-44.270139 48.818604v278.623256c0 27.147907 19.932279 48.818605 44.293953 48.818605z m132.810419 0c24.33786 0 44.27014-21.670698 44.27014-48.818605v-278.623256c0-27.147907-19.932279-48.818605-44.27014-48.818604s-44.27014 21.670698-44.27014 48.818604v278.623256c0 27.147907 19.360744 48.818605 44.27014 48.818605z" fill="#D81E06" p-id="2547"></path></svg>
+          </div>
+          <hr class="m-0.5 border-gray-500 row-start-4 col-start-3 col-span-9" v-if="showInfo[index]===false||mouseOn[index]===false"/>
+          <div class="text-l w-[560px] h-full my-auto text-wrap ml-10" v-if="showInfo[index]===true&&mouseOn[index]===true">
+            <p class="m-auto text-l  items-center">{{info[index]}}</p>
+            </div>
         </div>
       </div>
 
-    <div class="inputForm bg-transparent/10 fill-white w-4/5">
-      <div class="grid grid-cols-10 w-full">
+    <div class="inputForm bg-transparent/10 fill-white w-5/6">
+      <div class="grid grid-cols-9 w-full">
         <svg t="1715238681389" class="icon col-span-1 justify-center" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="4044"
              width="42" height="42"><path d="M193 317h-29a6 6 0 0 0-6 6v408a6 6 0 0 0 6 6h83.806v121.532a6 6 0 0 0 10.195 4.29L386.698 737h200.66l60.159 58.815A66.346 66.346 0 0 1 635 797H411.154L299.945 905.725c-26.064 25.482-67.85 25.01-93.332-1.054a66 66 0 0 1-18.807-46.14V797H164c-36.45 0-66-29.55-66-66V323c0-36.45 29.55-66 66-66h29v60z m642.194 449.532a66 66 0 0 1-18.807 46.139c-25.482 26.064-67.268 26.536-93.332 1.054L582.183 676H299c-36.45 0-66-29.55-66-66V164c0-36.45 29.55-66 66-66h560c36.45 0 66 29.55 66 66v446c0 36.45-29.55 66-66 66h-23.806v90.532z m-60-150.532H859a6 6 0 0 0 6-6V164a6 6 0 0 0-6-6H299a6 6 0 0 0-6 6v446a6 6 0 0 0 6 6h307.64L765 770.822a6 6 0 0 0 10.194-4.29V616z" fill="#2c2c2c" p-id="4045"></path><path d="M757.5 384.5m0-49.5a49.5 49.5 0 1 0 0 99 49.5 49.5 0 1 0 0-99Z" fill="#2c2c2c" p-id="4046"></path><path d="M575.5 384.5m0-49.5a49.5 49.5 0 1 0 0 99 49.5 49.5 0 1 0 0-99Z" fill="#2c2c2c" p-id="4047"></path><path d="M392.5 384.5m0-49.5a49.5 49.5 0 1 0 0 99 49.5 49.5 0 1 0 0-99Z" fill="#2c2c2c" p-id="4048"></path></svg>
-        <input type="text" class="input bg-transparent col-span-8" placeholder="请输入评论" v-model="addCommentInfo">
+        <input type="text" class="input bg-transparent col-span-7 text-gray-800" placeholder="请输入评论" v-model="addCommentInfo">
         <button class="btn transition col-span-1 bg-transparent/20 hover:bg-transparent/50 cursor-pointer" @click="addComment">
         确认</button>
         </div>
@@ -142,4 +201,37 @@ onMounted(() => {
 
 <style scoped>
 @import url('../css/Music_Play.css');
+::-webkit-scrollbar {
+  /*滚动条整体样式*/
+  width : 10px;  /*高宽分别对应横竖滚动条的尺寸*/
+  height: 1px;
+}
+::-webkit-scrollbar-thumb {
+  /*滚动条里面小方块*/
+  border-radius   : 10px;
+  background-color: rgba(0, 0, 0, 0.2);
+  background-image: -webkit-linear-gradient(
+      50deg,
+      rgba(255, 255, 255, 0.2) 25%,
+      transparent 25%,
+      transparent 50%,
+      rgba(255, 255, 255, 0.2) 50%,
+      rgba(255, 255, 255, 0.2) 75%,
+      transparent 75%,
+      transparent
+  );
+}
+::-webkit-scrollbar-track {
+  /*滚动条里面轨道*/
+  box-shadow   : inset 0 0 5px rgba(0, 0, 0, 0.2);
+  background   : transparent;
+  border-radius: 8px;
+}
+.bg-odd {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.bg-even {
+  background-color: rgba(255, 255, 255, 0.15);
+}
 </style>
