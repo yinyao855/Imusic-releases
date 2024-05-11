@@ -8,6 +8,7 @@ const Users = ref([]);
 const token = defineModel('token');
 const SearchContent = defineModel('SearchContent');
 const username = defineModel('username');
+const emits = defineEmits(['handlePlayNow', 'handlePlayAfter'])
 
 
 const GetSearchResult = () => {
@@ -89,17 +90,25 @@ const HandleLike = (index) => {
   Users.value[index].islike = !Users.value[index].islike
 }
 
-const ShowUserData=ref(false);
-const ShowUsername=ref('');
+const ShowUserData = ref(false);
+const ShowUsername = ref('');
 
-const ActiveUserDetail=(index)=>{
-  ShowUsername.value=Users.value[index].username;
+const ActiveUserDetail = (index) => {
+  ShowUsername.value = Users.value[index].username;
   console.log(ShowUsername.value);
-  ShowUserData.value=true;
+  ShowUserData.value = true;
 }
 
-const CloseUserDetail=()=>{
-  ShowUserData.value=false;
+const CloseUserDetail = () => {
+  ShowUserData.value = false;
+}
+
+const handlePlayNow = (id) => {
+  emits('handlePlayNow', id)
+}
+
+const handlePlayAfter = (id) => {
+  emits('handlePlayAfter', id);
 }
 
 onMounted(GetSearchResult);
@@ -108,7 +117,8 @@ onMounted(GetSearchResult);
 <template>
   <transition name="slide" appear>
     <div class="transition-container-2" v-if="ShowUserData">
-      <Other_User_Data v-model:token="token" v-model:username="ShowUsername" @changesize="CloseUserDetail"></Other_User_Data>
+      <Other_User_Data v-model:token="token" v-model:ShowUsername="ShowUsername" v-model:username="username" @changesize="CloseUserDetail"
+                       @handlePlayNow="handlePlayNow" @handlePlayAfter="handlePlayAfter"></Other_User_Data>
     </div>
   </transition>
 
@@ -213,6 +223,6 @@ onMounted(GetSearchResult);
 .transition-container-2 {
   right: 0;
   top: 0;
-  height:100%;
+  height: 100%;
 }
 </style>
