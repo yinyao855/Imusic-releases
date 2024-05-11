@@ -103,7 +103,7 @@
     </div>
     <div class="col2 w-1/2 flex" v-if="!showComment">
       <div class="w-full overflow-hidden mx-auto my-auto pr-20" style="height:90%">
-        <Lyrics_Show_View v-model:currentduration="currentduration" v-model:lrcArr="lyric"></Lyrics_Show_View>
+        <Lyrics_Show_View v-model:currentduration="currentduration" v-model:lrcArr="lyric" v-model:audioPlayer="audioPlayer"></Lyrics_Show_View>
       </div>
     </div>
     <div class="col2 bg-transparent overflow-hidden h-full" v-if="showComment">
