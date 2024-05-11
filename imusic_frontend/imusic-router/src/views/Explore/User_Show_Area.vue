@@ -1,11 +1,14 @@
 <script setup>
-import {defineEmits, onMounted, ref} from "vue";
+import {computed, defineEmits, onMounted, ref} from "vue";
 import axios from "axios";
+import SongPage from "@/components/SongPage.vue";
+import Other_User_Data from "@/views/Explore/Other_User_Data.vue";
 
 const Users = ref([]);
 const token = defineModel('token');
 const SearchContent = defineModel('SearchContent');
 const username = defineModel('username');
+
 
 const GetSearchResult = () => {
   const instance = axios.create({
@@ -86,11 +89,30 @@ const HandleLike = (index) => {
   Users.value[index].islike = !Users.value[index].islike
 }
 
+const ShowUserData=ref(false);
+const ShowUsername=ref('');
+
+const ActiveUserDetail=(index)=>{
+  ShowUsername.value=Users.value[index].username;
+  console.log(ShowUsername.value);
+  ShowUserData.value=true;
+}
+
+const CloseUserDetail=()=>{
+  ShowUserData.value=false;
+}
+
 onMounted(GetSearchResult);
 </script>
 
 <template>
-  <div class="overflow-x-auto mx-12 mb-32">
+  <transition name="slide" appear>
+    <div class="transition-container-2" v-if="ShowUserData">
+      <Other_User_Data v-model:token="token" v-model:username="ShowUsername" @changesize="CloseUserDetail"></Other_User_Data>
+    </div>
+  </transition>
+
+  <div class="overflow-x-auto mx-12 mb-32" v-if="!ShowUserData">
     <table class="table">
       <!-- head -->
       <thead>
@@ -98,6 +120,7 @@ onMounted(GetSearchResult);
         <th class="text-left text-sm font-semibold">账号及头像</th>
         <th class="text-left text-sm font-semibold">注册时间</th>
         <th class="text-left text-sm font-semibold">关注</th>
+        <th class="text-left text-sm font-semibold">详情</th>
       </tr>
       </thead>
       <tbody>
@@ -140,6 +163,21 @@ onMounted(GetSearchResult);
             </svg>
           </div>
         </td>
+        <td>
+          <div class="tooltip" data-tip="用户详情" @click="ActiveUserDetail(index)">
+            <svg class="icon fill-white hover:fill-gray-400 transition duration-400" viewBox="0 0 1024 1024"
+                 xmlns="http://www.w3.org/2000/svg"
+                 width="20" height="20">
+              <path
+                  d="M747.7 288.2c0-17.6-14.4-32.1-32.1-32.1H306.4c-17.6 0-32.1 14.4-32.1 32.1 0 17.6 14.4 32.1 32.1 32.1h409.2c17.7 0 32.1-14.5 32.1-32.1zM306.4 448c-17.6 0-32.1 14.4-32.1 32.1 0 17.6 14.4 32.1 32.1 32.1h191.1c17.7 0 32.2-14.4 32.1-32.1 0-17.6-14.4-32.1-32.1-32.1H306.4zM766.6 776.8c-2.1-2.1-4.4-3.9-6.9-5.2 18.1-25.8 28.7-57.1 28.7-90.9 0-88.2-72.4-159.6-161.7-159.6S465 592.5 465 680.7s72.4 159.6 161.7 159.6c32.7 0 63.2-9.6 88.7-26.1 1.5 2.9 3.4 5.6 5.8 8l83.3 83.3c12.5 12.5 32.9 12.5 45.4 0s12.5-32.9 0-45.4l-83.3-83.3z m-139.9 0.6c-54.1 0-98-43.3-98-96.7s43.9-96.7 98-96.7 98 43.3 98 96.7c0 53.4-43.8 96.7-98 96.7z"
+              ></path>
+              <path
+                  d="M577.6 895.4H221.2c-35.2 0-64-28.8-64-64V192.8c0-35.2 28.8-64 64-64h547.3c35.2 0 64 28.8 64 64v318.4h0.3v0.1c0 17.7 14.4 32.1 32.2 32.1s32.2-14.4 32.2-32.1c0-1.2-0.1-2.3-0.2-3.5v-316c0-70.4-27.6-128-98-128H225c-70.4 0-128 57.6-128 128v639.8c0 70.4 57.6 128 128 128h352.2c17.8 0 32.2-14.4 32.2-32.1 0-17.6-14.2-31.9-31.8-32.1z"
+              ></path>
+              <path d="M832.7 639.3a32.2 32.1 0 1 0 64.4 0 32.2 32.1 0 1 0-64.4 0Z"></path>
+            </svg>
+          </div>
+        </td>
       </tr>
       </tbody>
     </table>
@@ -147,5 +185,34 @@ onMounted(GetSearchResult);
 </template>
 
 <style scoped>
+.slide-leave-active {
+  transition: transform 0.5s ease;
+}
 
+.slide-enter-active {
+  transition: transform 0.5s ease;
+}
+
+.slide-enter-from,
+.slide-leave-to {
+  transform: translateX(100%);
+}
+
+.slide-enter-to,
+.slide-leave-from {
+  transform: translateX(0);
+}
+
+.transition-container {
+  right: 0;
+  top: 0;
+  height: 100%
+}
+
+
+.transition-container-2 {
+  right: 0;
+  top: 0;
+  height:100%;
+}
 </style>
