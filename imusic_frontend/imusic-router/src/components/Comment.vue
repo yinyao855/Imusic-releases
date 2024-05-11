@@ -38,6 +38,7 @@ const addComment = () => {
       .then(response => {
         console.log(response.data);
         addCommentInfo.value = '';
+        alert('评论成功');
         getSongComment();
       })
       .catch(error => {
@@ -109,6 +110,7 @@ const initUserImage = () => {
   }
 }
 const deleteComment = (index) => {
+  let commentID = Comment.value[index].id;
   const instance = axios.create({
     baseURL: 'http://182.92.100.66:5000',
     timeout: 5000,
@@ -120,11 +122,13 @@ const deleteComment = (index) => {
     let url='/comments/delete';
     instance.delete(url, {
       params: {
-        'contentID': Comment.value[index].id
+        'commentID': commentID
       }
     })
         .then((response) => {
           console.log(response.data);
+          alert('删除成功');
+          getSongComment();
         })
         .catch((error) => {
           console.log(error);
@@ -132,8 +136,6 @@ const deleteComment = (index) => {
           console.log(url);
           console.log(token.value);
         });
-
-  getSongComment();
 }
 const info = ref([]);
 const showInfo = ref([]);
@@ -159,11 +161,11 @@ watch(Comment, () => {
     <div class="text-center text-3xl  font-bold text-white p-3 w-full h-1/10">评论</div>
     <div class="formx2 w-5/6 flexible h-5/6">
       <div class="h-full overflow-auto w-5/6">
-        <div :style="{ height: (showInfo[index] === true && mouseOn[index] === true) ? (info[index].length/55*60)+'px' : '60px'}"
+        <div :style="{ height: (showInfo[index] === true && mouseOn[index] === true) ? (info[index].length/30*25+40)+'px' : '60px'}"
              :class="index % 2 === 0 ? 'bg-even' : 'bg-odd'"
-             class="w-full rounded-l-lg flex-wrap text-white transition ease-in-out delay-100 hover:bg-transparent/20 grid grid-cols-10 grid-rows-4 gap-2"
+             class="w-full rounded-l-lg text-white transition ease-in-out delay-100 hover:bg-transparent/20 grid grid-cols-10 grid-rows-4 gap-2"
              v-for="(item, index) in Comment" :key="index" @mouseover="over(index)" @mouseleave="leave(index)">
-            <img class="icon fill-white mr-1 my-auto rounded-full row-start-1 row-span-3 col-start-1 col-span-1 w-19 h-19"
+            <img class="icon fill-white mr-1 my-auto rounded-full row-start-1 row-span-3 col-start-1 col-span-1 w-19 h-19 mt-1"
                  :src="userImage[index]" alt="" v-if="showInfo[index]!==true||mouseOn[index]!==true">
           <div class="row-start-1 row-span-1 col-start-2 col-span-2 my-auto font-thin" v-if="showInfo[index]===false||mouseOn[index]===false">
             <div class=" text-l">{{item.user}}：</div>
@@ -174,13 +176,13 @@ watch(Comment, () => {
           <div class="row-start-2 row-span-2 col-start-4 col-span-6 my-auto" v-if="showInfo[index]===false||mouseOn[index]===false">
             <p class="m-auto text-l truncate">{{item.content}}</p>
             </div>
-          <div class="row-start-2 row-span-2 col-start-10 col-span-1 w-1/2" @click="deleteComment(index)" v-if="(showInfo[index]===false||mouseOn[index]===false)&&(sameUser[index])">
+          <div class="row-start-2 row-span-2 col-start-10 col-span-1 w-1/2" @click="deleteComment(index)" v-if="(sameUser[index])">
             <svg t="1715420660678" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2545"
                  width="24" height="24"><path d="M519.620465 0c-103.924093 0-188.511256 82.467721-192.083349 185.820279H85.015814A48.91386 48.91386 0 0 0 36.101953 234.686512a48.91386 48.91386 0 0 0 48.913861 48.866232h54.010046V831.345116c0 102.852465 69.822512 186.844279 155.909954 186.844279h439.200744c86.087442 0 155.909953-83.491721 155.909954-186.844279V284.100465h48.91386a48.91386 48.91386 0 0 0 48.913861-48.890046 48.91386 48.91386 0 0 0-48.913861-48.866233h-227.756651A191.559442 191.559442 0 0 0 519.620465 0z m-107.234232 177.080558c3.548279-49.771163 46.627721-88.540279 99.851907-88.540279 53.224186 0 96.327442 38.745302 99.351813 88.540279h-199.20372z m-111.997024 752.044651c-30.981953 0-65.083535-39.15014-65.083535-95.041488V287.744h575.488v546.839814c0 55.915163-34.077767 95.041488-65.059721 95.041488H300.389209v-0.500093z" fill="#D81E06" p-id="2546"></path><path d="M368.116093 796.814884c24.361674 0 44.27014-21.670698 44.27014-48.818605v-278.623256c0-27.147907-19.908465-48.818605-44.27014-48.818604-24.33786 0-44.27014 21.670698-44.27014 48.818604v278.623256c0 27.147907 19.360744 48.818605 44.293954 48.818605z m154.933581 0c24.361674 0 44.293953-21.670698 44.293954-48.818605v-278.623256c0-27.147907-19.932279-48.818605-44.293954-48.818604-24.33786 0-44.27014 21.670698-44.270139 48.818604v278.623256c0 27.147907 19.932279 48.818605 44.293953 48.818605z m132.810419 0c24.33786 0 44.27014-21.670698 44.27014-48.818605v-278.623256c0-27.147907-19.932279-48.818605-44.27014-48.818604s-44.27014 21.670698-44.27014 48.818604v278.623256c0 27.147907 19.360744 48.818605 44.27014 48.818605z" fill="#D81E06" p-id="2547"></path></svg>
           </div>
           <hr class="m-0.5 border-gray-500 row-start-4 col-start-3 col-span-9" v-if="showInfo[index]===false||mouseOn[index]===false"/>
-          <div class="text-l w-[560px] h-full my-auto text-wrap ml-10" v-if="showInfo[index]===true&&mouseOn[index]===true">
-            <p class="m-auto text-l  items-center">{{info[index]}}</p>
+          <div class="text-l w-[500px] h-full my-auto text-wrap ml-10 flex justify-center items-center" v-if="showInfo[index]===true&&mouseOn[index]===true">
+            <p class="m-auto text-l mt-2">{{info[index]}}</p>
             </div>
         </div>
       </div>
