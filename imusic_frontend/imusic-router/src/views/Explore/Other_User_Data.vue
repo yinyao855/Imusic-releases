@@ -11,7 +11,7 @@ import CreatedSonglist from "@/views/CreatedSongList/CreatedSonglist.vue";
 const ShowUsername = defineModel('ShowUsername');
 const username=defineModel('username');
 const token = defineModel('token');
-const emits = defineEmits(['changesize', 'handlePlayNow', 'handlePlayAfter']);
+const emits = defineEmits(['changesize', 'handlePlayNow', 'handlePlayAfter','PlaySongList']);
 const User = ref([]);
 const SongLists = ref([]);
 const Songs = ref([]);
@@ -150,6 +150,9 @@ const CloseSongList=()=>{
 }
 const SongListId=ref(0);
 
+const PlaySongList=(id)=>{
+  emits('PlaySongList',id);
+}
 
 onMounted(GetUserData);
 </script>

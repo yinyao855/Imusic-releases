@@ -8,7 +8,7 @@ const Users = ref([]);
 const token = defineModel('token');
 const SearchContent = defineModel('SearchContent');
 const username = defineModel('username');
-const emits = defineEmits(['handlePlayNow', 'handlePlayAfter'])
+const emits = defineEmits(['handlePlayNow', 'handlePlayAfter','PlaySongList'])
 
 
 const GetSearchResult = () => {
@@ -111,6 +111,10 @@ const handlePlayAfter = (id) => {
   emits('handlePlayAfter', id);
 }
 
+const PlaySongList=(id)=>{
+  emits('PlaySongList',id);
+}
+
 onMounted(GetSearchResult);
 </script>
 
@@ -118,7 +122,7 @@ onMounted(GetSearchResult);
   <transition name="slide" appear>
     <div class="transition-container-2" v-if="ShowUserData">
       <Other_User_Data v-model:token="token" v-model:ShowUsername="ShowUsername" v-model:username="username" @changesize="CloseUserDetail"
-                       @handlePlayNow="handlePlayNow" @handlePlayAfter="handlePlayAfter"></Other_User_Data>
+                       @handlePlayNow="handlePlayNow" @handlePlayAfter="handlePlayAfter" @PlaySongList="PlaySongList"></Other_User_Data>
     </div>
   </transition>
 

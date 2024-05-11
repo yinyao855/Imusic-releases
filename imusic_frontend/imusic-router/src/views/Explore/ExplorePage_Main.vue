@@ -31,6 +31,7 @@ const handlePlayAfter = (index) => {
 }
 
 const PlaySongList = (id) => {
+  console.log(id);
   emits('PlaySongList', id);
 }
 
@@ -48,8 +49,11 @@ const handlePlayNow = (index) => {
   <div class="w-full mt-16">
     <Singer_Show_Area v-model:username="username" v-if="NaviMode==='1'" v-model:token="token"
                       @handlePlayAfter="handlePlayAfter" @handlePlayNow="handlePlayNow"></Singer_Show_Area>
-    <List_Show_Area v-if="NaviMode==='2'" v-model:token="token" v-model:username="username" @handlePlayAfter="handlePlayAfter" @handlePlayNow="handlePlayNow"></List_Show_Area>
-    <User_Show_Area v-if="NaviMode==='3'" v-model:username="username" v-model:token="token" @handlePlayNow="handlePlayNow" @handlePlayAfter="handlePlayAfter"></User_Show_Area>
+    <List_Show_Area v-if="NaviMode==='2'" v-model:token="token" v-model:username="username"
+                    @handlePlayAfter="handlePlayAfter" @handlePlayNow="handlePlayNow"></List_Show_Area>
+    <User_Show_Area v-if="NaviMode==='3'" v-model:username="username" v-model:token="token"
+                    @handlePlayNow="handlePlayNow" @handlePlayAfter="handlePlayAfter"
+                    @PlaySongList="PlaySongList"></User_Show_Area>
   </div>
 </template>
 
