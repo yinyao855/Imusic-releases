@@ -103,14 +103,15 @@
     </div>
     <div class="col2 w-1/2 flex" v-if="!showComment">
       <div class="w-full overflow-hidden mx-auto my-auto pr-20" style="height:90%">
-        <Lyrics_Show_View v-model:currentduration="currentduration" v-model:lrcArr="lyric" v-model:audioPlayer="audioPlayer"></Lyrics_Show_View>
+        <Lyrics_Show_View v-model:currentduration="currentduration" v-model:lrcArr="lyric"
+                          v-model:audioPlayer="audioPlayer"></Lyrics_Show_View>
       </div>
     </div>
-    <div class="col2 bg-transparent h-2/3 w-full" v-if="showComment">
-      <Transition name="slide-fade" clss="h-2/3 w-full">
+    <div v-if="showComment" class="col2 w-1/2 flex">
+      <div class="w-full overflow-hidden mx-auto my-auto pr-20" style="height:90%">
         <Comment :token="token" :id="songID" v-model:showComment="showComment" v-model:songID="songID"
                  v-model:WarningShow="WarningShow" v-model:message="message" v-model:username="username"></Comment>
-      </Transition>
+      </div>
     </div>
   </div>
 </template>
@@ -118,7 +119,7 @@
 <script setup>
 import {ref, defineModel, watch} from 'vue';
 import buttonchangesize from '../../components/ButtonChangeSizeLeft.vue'
-import Comment from '../../components/Comment.vue'
+import Comment from '@/components/Comment.vue'
 import {defineEmits} from 'vue';
 import Warning from "@/components/Warning.vue";
 import Lyrics_Show_View from "@/views/MusicPlayer/Lyrics_Show_View.vue";

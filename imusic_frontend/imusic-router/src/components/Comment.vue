@@ -4,24 +4,25 @@
 import {defineEmits, defineModel, onMounted, ref, watch} from "vue";
 import axios from "axios";
 import Warning from "@/components/Warning.vue";
+
 const emit = defineEmits(['fullsize', 'togglePlay', 'update', 'back', 'next']);
 
-const token=defineModel('token')
+const token = defineModel('token')
 const showComment = defineModel('showComment');
 const backComment = () => {
   showComment.value = false;
   console.log(showComment.value);
 }
-const songID=defineModel('songID');
+const songID = defineModel('songID');
 const Comment = defineModel('Comment');
 const addCommentInfo = ref('');
 const WarningShow = defineModel('WarningShow');
 const message = defineModel('message');
 const addComment = () => {
   const formData = new FormData();
-  if(addCommentInfo.value === ''){
+  if (addCommentInfo.value === '') {
     WarningShow.value = true;
-    message.value='评论不能为空';
+    message.value = '评论不能为空';
     return;
   }
   formData.append('songID', songID.value);
@@ -62,19 +63,19 @@ const getSongComment = () => {
       'songID': songID.value
     }
   })
-    .then((response) => {
-      console.log(response.data);
-      console.log(songID.value);
-      Comment.value = response.data.data;
-      initUserImage();
-    })
-    .catch((error) => {
-      console.log(error);
-    });
+      .then((response) => {
+        console.log(response.data);
+        console.log(songID.value);
+        Comment.value = response.data.data;
+        initUserImage();
+      })
+      .catch((error) => {
+        console.log(error);
+      });
 }
 let userImage = ref([]);
 const initUserImage = () => {
-  for ( let index in Comment.value) {
+  for (let index in Comment.value) {
     let username = Comment.value[index].user;
     const instance = axios.create({
       baseURL: 'http://182.92.100.66:5000',
@@ -84,9 +85,8 @@ const initUserImage = () => {
       }
     });
     axios.defaults.withCredentials = true;
-    let url='/users/info/'+username;
-    instance.get(url, {
-    })
+    let url = '/users/info/' + username;
+    instance.get(url, {})
         .then((response) => {
           userImage.value[index] = response.data.data.avatar;
         })
@@ -94,12 +94,11 @@ const initUserImage = () => {
           console.log(error);
         });
   }
-  for(let i = 0; i < Comment.value.length; i++){
-    if(Comment.value[i].content.length > 20){
-      info.value[i]= Comment.value[i].content;
+  for (let i = 0; i < Comment.value.length; i++) {
+    if (Comment.value[i].content.length > 20) {
+      info.value[i] = Comment.value[i].content;
       showInfo.value[i] = true;
-    }
-    else {
+    } else {
       info.value[i] = '';
       showInfo.value[i] = false;
     }
@@ -118,30 +117,30 @@ const deleteComment = (index) => {
       'Authorization': `Bearer ${token.value}`,
     }
   });
-    axios.defaults.withCredentials = true;
-    let url='/comments/delete';
-    instance.delete(url, {
-      params: {
-        'commentID': commentID
-      }
-    })
-        .then((response) => {
-          console.log(response.data);
-          alert('删除成功');
-          getSongComment();
-        })
-        .catch((error) => {
-          console.log(error);
-          console.log(Comment.value[index].id);
-          console.log(url);
-          console.log(token.value);
-        });
+  axios.defaults.withCredentials = true;
+  let url = '/comments/delete';
+  instance.delete(url, {
+    params: {
+      'commentID': commentID
+    }
+  })
+      .then((response) => {
+        console.log(response.data);
+        alert('删除成功');
+        getSongComment();
+      })
+      .catch((error) => {
+        console.log(error);
+        console.log(Comment.value[index].id);
+        console.log(url);
+        console.log(token.value);
+      });
 }
 const info = ref([]);
 const showInfo = ref([]);
-const mouseOn=ref([]);
+const mouseOn = ref([]);
 const sameUser = ref([]);
-const username=defineModel('username');
+const username = defineModel('username');
 const over = (index) => {
   mouseOn.value[index] = true;
 }
@@ -157,45 +156,72 @@ watch(Comment, () => {
 </script>
 
 <template>
-  <div class="duration-300 h-dvh w-2/3 overflow-visible">
+  <div class="duration-300 h-full w-full overflow-visible">
     <div class="text-center text-3xl  font-bold text-white p-3 w-full h-1/10">评论</div>
     <div class="formx2 w-5/6 flexible h-5/6">
       <div class="h-full overflow-auto w-5/6">
-        <div :style="{ height: (showInfo[index] === true && mouseOn[index] === true) ? (info[index].length/30*25+40)+'px' : '60px'}"
-             :class="index % 2 === 0 ? 'bg-even' : 'bg-odd'"
-             class="w-full rounded-l-lg text-white transition ease-in-out delay-100 hover:bg-transparent/20 grid grid-cols-10 grid-rows-4 gap-2"
-             v-for="(item, index) in Comment" :key="index" @mouseover="over(index)" @mouseleave="leave(index)">
-            <img class="icon fill-white mr-1 my-auto rounded-full row-start-1 row-span-3 col-start-1 col-span-1 w-19 h-19 mt-1"
-                 :src="userImage[index]" alt="" v-if="showInfo[index]!==true||mouseOn[index]!==true">
-          <div class="row-start-1 row-span-1 col-start-2 col-span-2 my-auto font-thin" v-if="showInfo[index]===false||mouseOn[index]===false">
-            <div class=" text-sm">{{item.user}}：</div>
-            </div>
-          <div class="row-start-2 row-span-1 col-start-2 col-span-2 my-auto font-thin" v-if="showInfo[index]===false||mouseOn[index]===false">
-            <div style=" font-size:0.65rem;line-height:0.8rem">  {{item.comment_date}}</div>
+        <div
+            :style="{ height: (showInfo[index] === true && mouseOn[index] === true) ? (info[index].length/30*25+40)+'px' : '60px'}"
+            :class="index % 2 === 0 ? 'bg-even' : 'bg-odd'"
+            class="w-full rounded-l-lg text-white transition ease-in-out delay-100 hover:bg-transparent/20 grid grid-cols-10 grid-rows-4 gap-2"
+            v-for="(item, index) in Comment" :key="index" @mouseover="over(index)" @mouseleave="leave(index)">
+          <img
+              class="icon aspect-square fill-white mr-1 my-auto rounded-full row-start-1 row-span-3 col-start-1 col-span-1 w-19 h-19 mt-1"
+              :src="userImage[index]" alt="" v-if="showInfo[index]!==true||mouseOn[index]!==true">
+          <div class="row-start-1 row-span-1 col-start-2 col-span-2 my-auto font-thin"
+               v-if="showInfo[index]===false||mouseOn[index]===false">
+            <div class=" text-sm">{{ item.user }}：</div>
           </div>
-          <div class="row-start-2 row-span-2 col-start-3 col-span-7 my-auto" v-if="showInfo[index]===false||mouseOn[index]===false">
-            <p class="m-auto text-l truncate">{{item.content}}</p>
-            </div>
-          <div class="row-start-2 row-span-2 col-start-10 col-span-1 w-1/2" @click="deleteComment(index)" v-if="(sameUser[index])">
-            <svg t="1715420660678" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2545"
-                 width="24" height="24"><path d="M519.620465 0c-103.924093 0-188.511256 82.467721-192.083349 185.820279H85.015814A48.91386 48.91386 0 0 0 36.101953 234.686512a48.91386 48.91386 0 0 0 48.913861 48.866232h54.010046V831.345116c0 102.852465 69.822512 186.844279 155.909954 186.844279h439.200744c86.087442 0 155.909953-83.491721 155.909954-186.844279V284.100465h48.91386a48.91386 48.91386 0 0 0 48.913861-48.890046 48.91386 48.91386 0 0 0-48.913861-48.866233h-227.756651A191.559442 191.559442 0 0 0 519.620465 0z m-107.234232 177.080558c3.548279-49.771163 46.627721-88.540279 99.851907-88.540279 53.224186 0 96.327442 38.745302 99.351813 88.540279h-199.20372z m-111.997024 752.044651c-30.981953 0-65.083535-39.15014-65.083535-95.041488V287.744h575.488v546.839814c0 55.915163-34.077767 95.041488-65.059721 95.041488H300.389209v-0.500093z" fill="#D81E06" p-id="2546"></path><path d="M368.116093 796.814884c24.361674 0 44.27014-21.670698 44.27014-48.818605v-278.623256c0-27.147907-19.908465-48.818605-44.27014-48.818604-24.33786 0-44.27014 21.670698-44.27014 48.818604v278.623256c0 27.147907 19.360744 48.818605 44.293954 48.818605z m154.933581 0c24.361674 0 44.293953-21.670698 44.293954-48.818605v-278.623256c0-27.147907-19.932279-48.818605-44.293954-48.818604-24.33786 0-44.27014 21.670698-44.270139 48.818604v278.623256c0 27.147907 19.932279 48.818605 44.293953 48.818605z m132.810419 0c24.33786 0 44.27014-21.670698 44.27014-48.818605v-278.623256c0-27.147907-19.932279-48.818605-44.27014-48.818604s-44.27014 21.670698-44.27014 48.818604v278.623256c0 27.147907 19.360744 48.818605 44.27014 48.818605z" fill="#D81E06" p-id="2547"></path></svg>
+          <div class="row-start-2 row-span-1 col-start-2 col-span-2 my-auto font-thin"
+               v-if="showInfo[index]===false||mouseOn[index]===false">
+            <div style=" font-size:0.65rem;line-height:0.8rem"> {{ item.comment_date }}</div>
           </div>
-          <hr class="m-0.5 border-gray-500 row-start-4 col-start-3 col-span-9" v-if="showInfo[index]===false||mouseOn[index]===false"/>
-          <div class="text-l w-[500px] h-full my-auto text-wrap ml-10 flex justify-center items-center" v-if="showInfo[index]===true&&mouseOn[index]===true">
-            <p class="m-auto text-l mt-2">{{info[index]}}</p>
-            </div>
+          <div class="row-start-2 row-span-2 col-start-3 col-span-7 my-auto"
+               v-if="showInfo[index]===false||mouseOn[index]===false">
+            <p class="m-auto text-l truncate">{{ item.content }}</p>
+          </div>
+          <div class="row-start-2 row-span-2 col-start-10 col-span-1 w-1/2" @click="deleteComment(index)"
+               v-if="(sameUser[index])">
+            <svg class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"
+                 width="24" height="24">
+              <path
+                  d="M519.620465 0c-103.924093 0-188.511256 82.467721-192.083349 185.820279H85.015814A48.91386 48.91386 0 0 0 36.101953 234.686512a48.91386 48.91386 0 0 0 48.913861 48.866232h54.010046V831.345116c0 102.852465 69.822512 186.844279 155.909954 186.844279h439.200744c86.087442 0 155.909953-83.491721 155.909954-186.844279V284.100465h48.91386a48.91386 48.91386 0 0 0 48.913861-48.890046 48.91386 48.91386 0 0 0-48.913861-48.866233h-227.756651A191.559442 191.559442 0 0 0 519.620465 0z m-107.234232 177.080558c3.548279-49.771163 46.627721-88.540279 99.851907-88.540279 53.224186 0 96.327442 38.745302 99.351813 88.540279h-199.20372z m-111.997024 752.044651c-30.981953 0-65.083535-39.15014-65.083535-95.041488V287.744h575.488v546.839814c0 55.915163-34.077767 95.041488-65.059721 95.041488H300.389209v-0.500093z"
+                  fill="#D81E06"></path>
+              <path
+                  d="M368.116093 796.814884c24.361674 0 44.27014-21.670698 44.27014-48.818605v-278.623256c0-27.147907-19.908465-48.818605-44.27014-48.818604-24.33786 0-44.27014 21.670698-44.27014 48.818604v278.623256c0 27.147907 19.360744 48.818605 44.293954 48.818605z m154.933581 0c24.361674 0 44.293953-21.670698 44.293954-48.818605v-278.623256c0-27.147907-19.932279-48.818605-44.293954-48.818604-24.33786 0-44.27014 21.670698-44.270139 48.818604v278.623256c0 27.147907 19.932279 48.818605 44.293953 48.818605z m132.810419 0c24.33786 0 44.27014-21.670698 44.27014-48.818605v-278.623256c0-27.147907-19.932279-48.818605-44.27014-48.818604s-44.27014 21.670698-44.27014 48.818604v278.623256c0 27.147907 19.360744 48.818605 44.27014 48.818605z"
+                  fill="#D81E06"></path>
+            </svg>
+          </div>
+          <hr class="m-0.5 border-gray-500 row-start-4 col-start-3 col-span-9"
+              v-if="showInfo[index]===false||mouseOn[index]===false"/>
+          <div class="text-l w-[500px] h-full my-auto text-wrap ml-10 flex justify-center items-center"
+               v-if="showInfo[index]===true&&mouseOn[index]===true">
+            <p class="m-auto text-l mt-2">{{ info[index] }}</p>
+          </div>
         </div>
       </div>
 
-    <div class="inputForm bg-transparent/10 fill-white w-5/6">
-      <div class="grid grid-cols-9 w-full">
-        <svg t="1715238681389" class="icon col-span-1 justify-center" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="4044"
-             width="42" height="42"><path d="M193 317h-29a6 6 0 0 0-6 6v408a6 6 0 0 0 6 6h83.806v121.532a6 6 0 0 0 10.195 4.29L386.698 737h200.66l60.159 58.815A66.346 66.346 0 0 1 635 797H411.154L299.945 905.725c-26.064 25.482-67.85 25.01-93.332-1.054a66 66 0 0 1-18.807-46.14V797H164c-36.45 0-66-29.55-66-66V323c0-36.45 29.55-66 66-66h29v60z m642.194 449.532a66 66 0 0 1-18.807 46.139c-25.482 26.064-67.268 26.536-93.332 1.054L582.183 676H299c-36.45 0-66-29.55-66-66V164c0-36.45 29.55-66 66-66h560c36.45 0 66 29.55 66 66v446c0 36.45-29.55 66-66 66h-23.806v90.532z m-60-150.532H859a6 6 0 0 0 6-6V164a6 6 0 0 0-6-6H299a6 6 0 0 0-6 6v446a6 6 0 0 0 6 6h307.64L765 770.822a6 6 0 0 0 10.194-4.29V616z" fill="#2c2c2c" p-id="4045"></path><path d="M757.5 384.5m0-49.5a49.5 49.5 0 1 0 0 99 49.5 49.5 0 1 0 0-99Z" fill="#2c2c2c" p-id="4046"></path><path d="M575.5 384.5m0-49.5a49.5 49.5 0 1 0 0 99 49.5 49.5 0 1 0 0-99Z" fill="#2c2c2c" p-id="4047"></path><path d="M392.5 384.5m0-49.5a49.5 49.5 0 1 0 0 99 49.5 49.5 0 1 0 0-99Z" fill="#2c2c2c" p-id="4048"></path></svg>
-        <input type="text" class="input bg-transparent col-span-7 text-gray-800" placeholder="请输入评论" v-model="addCommentInfo">
-        <button class="btn transition col-span-1 bg-transparent/20 hover:bg-transparent/50 cursor-pointer" @click="addComment">
-        确认</button>
+      <div class="inputForm bg-transparent/10 fill-white w-5/6">
+        <div class="flex w-full h-full">
+          <svg class="icon my-auto fill-white" viewBox="0 0 1024 1024"
+               xmlns="http://www.w3.org/2000/svg"
+               width="30" height="30">
+            <path
+                d="M193 317h-29a6 6 0 0 0-6 6v408a6 6 0 0 0 6 6h83.806v121.532a6 6 0 0 0 10.195 4.29L386.698 737h200.66l60.159 58.815A66.346 66.346 0 0 1 635 797H411.154L299.945 905.725c-26.064 25.482-67.85 25.01-93.332-1.054a66 66 0 0 1-18.807-46.14V797H164c-36.45 0-66-29.55-66-66V323c0-36.45 29.55-66 66-66h29v60z m642.194 449.532a66 66 0 0 1-18.807 46.139c-25.482 26.064-67.268 26.536-93.332 1.054L582.183 676H299c-36.45 0-66-29.55-66-66V164c0-36.45 29.55-66 66-66h560c36.45 0 66 29.55 66 66v446c0 36.45-29.55 66-66 66h-23.806v90.532z m-60-150.532H859a6 6 0 0 0 6-6V164a6 6 0 0 0-6-6H299a6 6 0 0 0-6 6v446a6 6 0 0 0 6 6h307.64L765 770.822a6 6 0 0 0 10.194-4.29V616z"
+            ></path>
+            <path d="M757.5 384.5m0-49.5a49.5 49.5 0 1 0 0 99 49.5 49.5 0 1 0 0-99Z"></path>
+            <path d="M575.5 384.5m0-49.5a49.5 49.5 0 1 0 0 99 49.5 49.5 0 1 0 0-99Z"></path>
+            <path d="M392.5 384.5m0-49.5a49.5 49.5 0 1 0 0 99 49.5 49.5 0 1 0 0-99Z"></path>
+          </svg>
+          <input type="text" class="input bg-transparent text-white w-full" placeholder="请输入评论"
+                 v-model="addCommentInfo">
         </div>
-    </div>
+        <button
+            class="text-white btn transition col-span-1 bg-blue-600 hover:bg-blue-800 transition:ease-in duration-300 w-28 border-none cursor-pointer"
+            @click="addComment">
+          确认
+        </button>
+      </div>
     </div>
   </div>
 
@@ -203,14 +229,16 @@ watch(Comment, () => {
 
 <style scoped>
 @import url('../css/Music_Play.css');
+
 ::-webkit-scrollbar {
   /*滚动条整体样式*/
-  width : 10px;  /*高宽分别对应横竖滚动条的尺寸*/
+  width: 10px; /*高宽分别对应横竖滚动条的尺寸*/
   height: 1px;
 }
+
 ::-webkit-scrollbar-thumb {
   /*滚动条里面小方块*/
-  border-radius   : 10px;
+  border-radius: 10px;
   background-color: rgba(0, 0, 0, 0.2);
   background-image: -webkit-linear-gradient(
       50deg,
@@ -223,12 +251,14 @@ watch(Comment, () => {
       transparent
   );
 }
+
 ::-webkit-scrollbar-track {
   /*滚动条里面轨道*/
-  box-shadow   : inset 0 0 5px rgba(0, 0, 0, 0.2);
-  background   : transparent;
+  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+  background: transparent;
   border-radius: 8px;
 }
+
 .bg-odd {
   background-color: rgba(255, 255, 255, 0.05);
 }
