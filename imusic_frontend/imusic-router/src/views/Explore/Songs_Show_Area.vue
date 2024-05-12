@@ -428,7 +428,7 @@ onMounted(GetInitSongs);
     </div>
   </div>
 <!--  <hr class="w-full border border-gray-500 my-2" v-if="!ShowCurrentUser_SongList">-->
-  <div class="overflow-x-auto overflow-y-hidden mx-6" v-if="!ShowCurrentUser_SongList&&!NeedShowSongDetail">
+  <div class="mx-6" v-if="!ShowCurrentUser_SongList&&!NeedShowSongDetail">
     <div class="text-2xl text-white my-5">推荐歌曲</div>
     <table class="table mb-32">
       <thead>
