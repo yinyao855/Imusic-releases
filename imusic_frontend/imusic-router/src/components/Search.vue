@@ -28,7 +28,7 @@ const SearchOperation = () => {
           name="searchbar"
           v-model="SearchContent"
       />
-      <div class="btn btn-md ml-4 text-white tracking-widest" @click="SearchOperation">搜 索</div>
+      <div class="btn btn-md ml-4 text-white tracking-widest" @click="SearchOperation" @keypress.enter="SearchOperation">搜 索</div>
     </div>
 
   </div>
