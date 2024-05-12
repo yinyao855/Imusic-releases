@@ -142,7 +142,10 @@ const fetchAndFormatLyrics = async (lrcUrl) => {
     lines.forEach((line) => {
       const match = timeRegex.exec(line);
       if (match) {
-        const text = match[4].trim();
+        const text = {
+          time: `${match[1]}:${match[2]}.${match[3]}`,
+          text: match[4].trim()
+        };
         lyrics.value.push(text);
       }
     });
@@ -150,6 +153,32 @@ const fetchAndFormatLyrics = async (lrcUrl) => {
     console.error('Error fetching lyrics:', error);
   }
 };
+
+function convertLyricsToLRC(lyricsArray) {
+  let lrcContent = '';
+  for (const lyric of lyricsArray) {
+    lrcContent += `[${lyric.time}]${lyric.text}\n`;
+  }
+  return lrcContent;
+}
+
+function downloadLrcFile() {
+  if(lyrics.value.length===0){
+    return;
+  }
+  const lrcString = convertLyricsToLRC(lyrics.value);
+  const filename = songData.title ? `${songData.title}.lrc` : 'lyrics.lrc';
+  const lrcBlob = new Blob([lrcString], {type: 'text/plain'});
+  const blobUrl = URL.createObjectURL(lrcBlob);
+  const link = document.createElement('a');
+  link.style.display = 'none';
+  document.body.appendChild(link);
+  link.href = blobUrl;
+  link.download = filename;
+  link.click();
+  URL.revokeObjectURL(blobUrl);
+  document.body.removeChild(link);
+}
 
 // 判断是否需要展示该标签（若值为空表示没有此标签，不用展示false）
 function show_tag(tag) {
@@ -188,17 +217,18 @@ onMounted(getFavoriteSongs);
                 </svg>
                 <p class="inline-block">播放</p>
               </button>
-              <!--          评论-->
-              <button
-                  class="mr-3 bg-gray-400 hover:bg-gray-500 text-white font-bold py-2 px-10 rounded-full">
-                <svg class="h-5 w-5 text-white inline-block align-sub" viewBox="0 0 24 24" stroke-width="2"
+              <!--          导出歌词-->
+              <button @click="downloadLrcFile(songData.lyric)"
+                  class="mr-3 bg-gray-400 hover:bg-gray-500 text-white font-bold py-2 px-6 rounded-full">
+                <svg class="h-5 w-5 inline-block align-sub text-white" width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
                      stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                   <path stroke="none" d="M0 0h24v24H0z"/>
-                  <path d="M4 21v-13a3 3 0 0 1 3 -3h10a3 3 0 0 1 3 3v6a3 3 0 0 1 -3 3h-9l-4 4"/>
-                  <line x1="8" y1="9" x2="16" y2="9"/>
-                  <line x1="8" y1="13" x2="14" y2="13"/>
+                  <path d="M14 3v4a1 1 0 0 0 1 1h4"/>
+                  <path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z"/>
+                  <line x1="12" y1="11" x2="12" y2="17"/>
+                  <polyline points="9 14 12 17 15 14"/>
                 </svg>
-                <p class="inline-block">评论</p>
+                <p class="inline-block">下载歌词</p>
               </button>
             </div>
             <div class="mt-5 text-white">
@@ -288,7 +318,7 @@ onMounted(getFavoriteSongs);
       <!--      歌词-->
       <div class="w-1/2 grid flex-grow h-full card rounded-box place-items-center py-8">
         <div v-for="lyric in lyrics" class="text-gray-300">
-          <p>{{ lyric }}</p>
+          <p>{{ lyric.text }}</p>
         </div>
       </div>
     </div>
