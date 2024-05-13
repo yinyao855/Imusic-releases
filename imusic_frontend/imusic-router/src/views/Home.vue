@@ -533,6 +533,7 @@ const autoLogin=()=>{
             avatar.value=user_object.avatar;
             token.value=user_object.token;
             UserRole.value=user_object.UserRole;
+            getsonglistinit(user_object.username);
           }
         })
         .catch(error=>{
