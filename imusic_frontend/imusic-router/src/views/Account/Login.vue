@@ -131,6 +131,15 @@ const show = () => {
           changeMode();
           avatar.value = response.data.data.avatar;
           UserRole.value=response.data.data.role;
+          const User={
+            'UserRole':response.data.data.role,
+            'avatar':response.data.data.avatar,
+            'HasLogin':true,
+            'username':username.value,
+            'password':password.value,
+            'token':response.data.token,
+          }
+          localStorage.setItem("user-info", JSON.stringify(User));
           if (response.data.data.avatar === null) {
             avatar.value = '';
           }

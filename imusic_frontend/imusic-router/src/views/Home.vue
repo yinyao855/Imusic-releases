@@ -512,7 +512,38 @@ const PlayLikeSongs=()=>{
       })
 }
 
+const autoLogin=()=>{
+  const userinfo=localStorage.getItem('user-info');
+  if(userinfo!=null){
+    const user_object=JSON.parse(localStorage.getItem('user-info'));
+    console.log(user_object);
+    const instance = axios.create({
+      baseURL: 'http://182.92.100.66:5000',
+      timeout: 5000, // 设置请求超时时间
+      headers: {
+        'Authorization': `Bearer ${user_object.token}`,
+      }
+    });
+    axios.defaults.withCredentials = true;
+    instance.get('/check-token/')
+        .then(response=>{
+          if(response.data.success){
+            HasLogin.value=true;
+            username.value=user_object.username;
+            avatar.value=user_object.avatar;
+            token.value=user_object.token;
+            UserRole.value=user_object.UserRole;
+            getsonglistinit(user_object.username);
+          }
+        })
+        .catch(error=>{
+          console.log(error.response.data);
+        })
+  }
+}
+
 onMounted(getPageinit);
+onMounted(autoLogin);
 </script>
 
 <template>
