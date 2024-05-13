@@ -4,11 +4,11 @@ import axios from "axios";
 
 const title = ref("");
 const introduction = ref("");
-const theme = ref("")
-const scene = ref("")
-const mood = ref("")
-const style = ref("")
-const language = ref("")
+const theme = ref("默认")
+const scene = ref("默认")
+const mood = ref("默认")
+const style = ref("默认")
+const language = ref("默认")
 const cover = ref(null);
 const coverImageFileUrl = ref('');
 const HasLogin = defineModel('HasLogin');
