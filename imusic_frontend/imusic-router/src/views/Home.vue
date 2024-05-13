@@ -525,7 +525,7 @@ const autoLogin=()=>{
       }
     });
     axios.defaults.withCredentials = true;
-    instance.get('/check-token')
+    instance.get('/check-token/')
         .then(response=>{
           if(response.data.success){
             HasLogin.value=true;
