@@ -125,7 +125,6 @@ import Comment from '@/components/Comment.vue'
 import {defineEmits} from 'vue';
 import Warning from "@/components/Warning.vue";
 import Lyrics_Show_View from "@/views/MusicPlayer/Lyrics_Show_View.vue";
-import SongPage from "@/components/SongPage.vue";
 
 const emit = defineEmits(['fullsize', 'togglePlay', 'update', 'back', 'next']);
 const changesize = () => {

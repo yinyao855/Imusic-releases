@@ -83,7 +83,7 @@ function activeSonglist(index) {
     <div v-for="(songlist, index) in favoriteSonglists" class="all inline-block px-8 pb-6">
       <div @click="activeSonglist(index)" class="card bg-gray-300 cursor-pointer">
         <div class="content">
-          <img src="../assets/cd.png" alt="Avatar" class="cd">
+          <img src="../../assets/cd.png" alt="Avatar" class="cd">
           <img :src="songlist.cover" alt="Avatar" class="cover">
         </div>
         <div class="text m-4 relative top-3/4 text-center">

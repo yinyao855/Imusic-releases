@@ -13,7 +13,7 @@ import SideBar from "@/views/SideBar.vue";
 import MusicPlayer_Cell from "@/views/MusicPlayer/MusicPlayer_Cell.vue";
 import AdminPage_Main from "@/views/Admin/AdminPage_Main.vue";
 import CreatedSonglist_Main from "@/views/CreatedSongList/CreatedSonglist_Main.vue";
-import FavoriteSonglist_Main from "@/views/FavoriteSonglist_Main.vue";
+import FavoriteSonglist_Main from "@/views/FavoriteSongList/FavoriteSonglist_Main.vue";
 
 const token = ref('');
 const needshowsonglistpage = ref(false);
