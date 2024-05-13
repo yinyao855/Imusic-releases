@@ -8,12 +8,9 @@ const token = defineModel('token')
 const username = defineModel('username')
 
 // defineEmits(将歌曲从当前歌单删除)
-const emits = defineEmits(['deleteFromSongList'])
+const emits = defineEmits(['deleteFromSongList', 'CloseEditSongList'])
 
-// props
-const props = defineProps({
-  currentUserSongList: Object, // 选中的歌单
-})
+const currentUserSongList = defineModel('currentUserSongList')
 
 // v-model
 const showEditSonglist = defineModel('showEditSonglist')
@@ -23,6 +20,9 @@ const coverImageFileUrl = defineModel('coverImageFileUrl')
 // emits
 const deleteFromSongList = (index) => {
   emits('deleteFromSongList', index);
+}
+const CloseEditSongList = () => {
+  emits('CloseEditSongList');
 }
 
 // global function: 获取歌曲时长
@@ -69,17 +69,16 @@ function fileToBase64(file) {
 
 // 修改该歌单
 function sendEditSonglist(id) {
-  showEditSonglist.value = false;
   const formData = new FormData();
-  formData.append('title', props.currentUserSongList.title);
+  formData.append('title', currentUserSongList.value.title);
   formData.append('cover', cover.value);
-  formData.append('introduction', props.currentUserSongList.introduction);
-  formData.append('owner', props.currentUserSongList.owner);
-  formData.append('tag_theme', props.currentUserSongList.tag_theme);
-  formData.append('tag_scene', props.currentUserSongList.tag_scene);
-  formData.append('tag_mood', props.currentUserSongList.tag_mood);
-  formData.append('tag_style', props.currentUserSongList.tag_style);
-  formData.append('tag_language', props.currentUserSongList.tag_language);
+  formData.append('introduction', currentUserSongList.value.introduction);
+  formData.append('owner', currentUserSongList.value.owner);
+  formData.append('tag_theme', currentUserSongList.value.tag_theme);
+  formData.append('tag_scene', currentUserSongList.value.tag_scene);
+  formData.append('tag_mood', currentUserSongList.value.tag_mood);
+  formData.append('tag_style', currentUserSongList.value.tag_style);
+  formData.append('tag_language', currentUserSongList.value.tag_language);
   const instance = axios.create({
     baseURL: 'http://182.92.100.66:5000',
     timeout: 5000, // 设置请求超时时间
@@ -91,7 +90,8 @@ function sendEditSonglist(id) {
   instance.post('/songlists/update/' + id, formData)
       .then(function (response) {
         if (response.data.success === true) {
-          window.alert("edit success");
+          window.alert("修改成功");
+          CloseEditSongList();
         }
       })
       .catch(function (error) {
@@ -106,11 +106,11 @@ function sendEditSonglist(id) {
   <div>
     <div class="h-72 relative">
       <div class="bg-center bg-cover bg-blur w-full h-full absolute top-0 left-0"
-           :style="{backgroundImage: 'url(' + props.currentUserSongList.cover + ')'}">
+           :style="{backgroundImage: 'url(' + coverImageFileUrl + ')'}">
       </div>
       <div class="p-5 absolute w-full">
         <!--        点击后即保存修改后的信息-->
-        <button @click="sendEditSonglist(props.currentUserSongList.id)" class="btn m-1 inline-block float-right ">完成
+        <button @click="sendEditSonglist(currentUserSongList.id)" class="btn m-1 inline-block float-right ">完成
         </button>
         <div class="inline-block">
           <div>
@@ -151,7 +151,7 @@ function sendEditSonglist(id) {
                   p-id="5636"></path>
             </svg>
             <input type="text" class="input bg-zinc-900 text-white" placeholder="请输入歌单名"
-                   v-model="props.currentUserSongList.title">
+                   v-model="currentUserSongList.title">
           </div>
           <div class="flex-column text-md">
             <div class="text-white">介绍</div>
@@ -165,11 +165,11 @@ function sendEditSonglist(id) {
                   fill="white" p-id="9040"></path>
             </svg>
             <input type="text" class="input bg-zinc-900 text-white" placeholder="请为你的歌曲写一点介绍"
-                   v-model="props.currentUserSongList.introduction">
+                   v-model="currentUserSongList.introduction">
           </div>
           <!--          标签-->
           <div class="inline-block mt-5">
-            <select v-model="props.currentUserSongList.tag_theme"
+            <select v-model="currentUserSongList.tag_theme"
                     class="text-xs inline-flex items-center font-bold leading-sm px-0 py-1 bg-blue-200 text-blue-700 rounded-full">
               <option :value="null">-- 主题 --</option>
               <option>背景音乐</option>
@@ -180,7 +180,7 @@ function sendEditSonglist(id) {
             </select>
           </div>
           <div class="inline-block">
-            <select v-model="props.currentUserSongList.tag_scene"
+            <select v-model="currentUserSongList.tag_scene"
                     class="ml-1 text-xs inline-flex items-center font-bold leading-sm px-0 py-1 bg-green-200 text-green-700 rounded-full">
               <option :value="null">-- 场景 --</option>
               <option>咖啡馆</option>
@@ -191,7 +191,7 @@ function sendEditSonglist(id) {
             </select>
           </div>
           <div class="inline-block">
-            <select v-model="props.currentUserSongList.tag_mood"
+            <select v-model="currentUserSongList.tag_mood"
                     class="ml-1 text-xs inline-flex items-center font-bold leading-sm px-0 py-1 bg-red-200 text-red-700 rounded-full">
               <option :value="null">-- 心情 --</option>
               <option>伤感</option>
@@ -202,7 +202,7 @@ function sendEditSonglist(id) {
             </select>
           </div>
           <div class="inline-block">
-            <select v-model="props.currentUserSongList.tag_style"
+            <select v-model="currentUserSongList.tag_style"
                     class="ml-1 text-xs inline-flex items-center font-bold leading-sm px-0 py-1 bg-orange-200 text-orange-700 rounded-full">
               <option :value="null">-- 风格 --</option>
               <option>摇滚</option>
@@ -213,7 +213,7 @@ function sendEditSonglist(id) {
             </select>
           </div>
           <div class="inline-block">
-            <select v-model="props.currentUserSongList.tag_language"
+            <select v-model="currentUserSongList.tag_language"
                     class="ml-1 text-xs inline-flex items-center font-bold leading-sm px-0 py-1 bg-purple-200 text-purple-700 rounded-full">
               <option :value="null">-- 语言 --</option>
               <option>英语</option>
@@ -240,7 +240,7 @@ function sendEditSonglist(id) {
           </tr>
           </thead>
           <tbody>
-          <tr v-for="(song, index) in props.currentUserSongList.songs"
+          <tr v-for="(song, index) in currentUserSongList.songs"
               class="text-white transition duration-400 hover:bg-gray-600/40">
             <td class="pl-3 p-1 hover:cursor-pointer">
               <img :src="song.cover" class="img_song inline-block mr-3">

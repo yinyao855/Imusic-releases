@@ -183,9 +183,9 @@ function deleteFavoriteSonglist() {
 /* 对该歌单中的歌曲进行管理 */
 
 // 存储选择加入歌单的歌曲id，进入选择歌单界面（ShowCreatedSongList为true）
-function activeAddToSongList(index) {
+function activeAddToSongList(songid) {
   ShowCreatedSongList.value = true;
-  needtoaddSongid.value = currentUserSongList.songs[index].id;
+  needtoaddSongid.value = songid;
 }
 
 // back: 不展示选择歌单页面（回到歌单的主界面）
@@ -431,19 +431,29 @@ onMounted(getSonglistData);
                     </div>
                   </li>
                   <li>
-                    <div class="text-sm font-semibold" @click="deleteFromSongList(song.id)">
-                      <svg class="icon fill-white" viewBox="0 0 1024 1024"
-                           xmlns="http://www.w3.org/2000/svg" width="22" height="22">
-                        <path
-                            d="M840 288H688v-56c0-40-32-72-72-72h-208C368 160 336 192 336 232V288h-152c-12.8 0-24 11.2-24 24s11.2 24 24 24h656c12.8 0 24-11.2 24-24s-11.2-24-24-24zM384 288v-56c0-12.8 11.2-24 24-24h208c12.8 0 24 11.2 24 24V288H384zM758.4 384c-12.8 0-24 11.2-24 24v363.2c0 24-19.2 44.8-44.8 44.8H332.8c-24 0-44.8-19.2-44.8-44.8V408c0-12.8-11.2-24-24-24s-24 11.2-24 24v363.2c0 51.2 41.6 92.8 92.8 92.8h358.4c51.2 0 92.8-41.6 92.8-92.8V408c-1.6-12.8-12.8-24-25.6-24z"
-                        ></path>
-                        <path
-                            d="M444.8 744v-336c0-12.8-11.2-24-24-24s-24 11.2-24 24v336c0 12.8 11.2 24 24 24s24-11.2 24-24zM627.2 744v-336c0-12.8-11.2-24-24-24s-24 11.2-24 24v336c0 12.8 11.2 24 24 24s24-11.2 24-24z"
-                        ></path>
+                    <div class="text-sm font-semibold z-50" @click="activeAddToSongList(song.id)">
+                      <svg class="icon" viewBox="0 0 24 24" stroke="currentColor"
+                           stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="22" height="22" fill="white">
+                        <line x1="12" y1="5" x2="12" y2="19"/>
+                        <line x1="5" y1="12" x2="19" y2="12"/>
                       </svg>
-                      删除歌曲
+                      加入歌单
                     </div>
                   </li>
+<!--                  <li>-->
+<!--                    <div class="text-sm font-semibold" @click="deleteFromSongList(song.id)">-->
+<!--                      <svg class="icon fill-white" viewBox="0 0 1024 1024"-->
+<!--                           xmlns="http://www.w3.org/2000/svg" width="22" height="22">-->
+<!--                        <path-->
+<!--                            d="M840 288H688v-56c0-40-32-72-72-72h-208C368 160 336 192 336 232V288h-152c-12.8 0-24 11.2-24 24s11.2 24 24 24h656c12.8 0 24-11.2 24-24s-11.2-24-24-24zM384 288v-56c0-12.8 11.2-24 24-24h208c12.8 0 24 11.2 24 24V288H384zM758.4 384c-12.8 0-24 11.2-24 24v363.2c0 24-19.2 44.8-44.8 44.8H332.8c-24 0-44.8-19.2-44.8-44.8V408c0-12.8-11.2-24-24-24s-24 11.2-24 24v363.2c0 51.2 41.6 92.8 92.8 92.8h358.4c51.2 0 92.8-41.6 92.8-92.8V408c-1.6-12.8-12.8-24-25.6-24z"-->
+<!--                        ></path>-->
+<!--                        <path-->
+<!--                            d="M444.8 744v-336c0-12.8-11.2-24-24-24s-24 11.2-24 24v336c0 12.8 11.2 24 24 24s24-11.2 24-24zM627.2 744v-336c0-12.8-11.2-24-24-24s-24 11.2-24 24v336c0 12.8 11.2 24 24 24s24-11.2 24-24z"-->
+<!--                        ></path>-->
+<!--                      </svg>-->
+<!--                      删除歌曲-->
+<!--                    </div>-->
+<!--                  </li>-->
                   <li>
                     <div class="text-sm font-semibold" @click="activeShowSong(index)">
                       <svg class="icon fill-white" viewBox="0 0 1024 1024"

@@ -585,15 +585,14 @@ onMounted(autoLogin);
         <CreateCenter v-if="mode==='4'" :userUploadedSongs="userUploadedSongs" @handlePlayNow="handlePlayNow"
                       v-model:HasLogin="HasLogin" v-model:username="username" @handlePlayAfter="handlePlayAfter"
                       v-model:token="token"></CreateCenter>
-        <CreatedSonglist_Main v-model:createdSonglists="createdSonglists" v-if="mode==='6'"
+        <CreatedSonglist_Main v-if="mode==='6'"
                               @PlaySongList="PlaySongList" @handlePlayAfter="handlePlayAfter"
                               @handlePlayNow="handlePlayNow" @PlayLikeSongs="PlayLikeSongs"
-                              v-model:token="token" v-model:username="username"></CreatedSonglist_Main>
-        <FavoriteSonglist_Main v-model:favoriteSonglists="favoriteSonglists" v-if="mode==='8'"
-                               v-model:createdSonglists="createdSonglists"
+                              v-model:token="token" v-model:username="username" v-model:HasLogin="HasLogin" ></CreatedSonglist_Main>
+        <FavoriteSonglist_Main v-if="mode==='8'"
                                @PlaySongList="PlaySongList" @handlePlayAfter="handlePlayAfter"
                                @handlePlayNow="handlePlayNow"
-                               v-model:token="token" v-model:username="username"></FavoriteSonglist_Main>
+                               v-model:token="token" v-model:username="username" v-model:HasLogin="HasLogin"></FavoriteSonglist_Main>
         <AdminPage_Main v-model:token="token" v-if="mode==='7'"></AdminPage_Main>
       </div>
     </div>
