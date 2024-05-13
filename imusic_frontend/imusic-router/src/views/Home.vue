@@ -548,7 +548,7 @@ onMounted(autoLogin);
 
 <template>
   <div class="w-full absolute top-0 left-1/2 transform -translate-x-1/2" v-if="WarningShow">
-    <Warning :message="message" @CloseWarning="CloseWarning" class="mx-auto" v-model:token="token"></Warning>
+    <Warning :message="message" @CloseWarning="CloseWarning" class="mx-auto" v-model:token="token" v-model:Warningshow="WarningShow"></Warning>
   </div>
   <div class="flex w-full h-screen bg-zinc-900">
     <SideBar :HasLogin="HasLogin" :avatar="avatar" @checkLogin="checkLogin" v-model:mode="mode" :username="username"

@@ -1,7 +1,7 @@
 <template>
   <transition name="vx">
     <div class="w-full absolute top-0 left-1/2 transform -translate-x-1/2" v-if="WarningShow">
-      <Warning :message="message" @CloseWarning="CloseWarning" class="mx-auto" v-model:token="token"></Warning>
+      <Warning :message="message" @CloseWarning="CloseWarning" class="mx-auto" v-model:token="token" v-model:Warningshow="WarningShow"></Warning>
     </div>
   </transition>
   <div class="flex h-screen w-screen" :style="sty">
@@ -109,8 +109,10 @@
     </div>
     <div v-if="showComment" class="col2 w-1/2 flex">
       <div class="w-full overflow-hidden mx-auto my-auto pr-20" style="height:90%">
+        <transition name="all transition-duration: 300ms">
         <Comment :token="token" :id="songID" v-model:showComment="showComment" v-model:songID="songID"
                  v-model:WarningShow="WarningShow" v-model:message="message" v-model:username="username"></Comment>
+        </transition>
       </div>
     </div>
   </div>

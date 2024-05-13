@@ -2,7 +2,7 @@
   <div id="login" class="h-full w-full flex items-center" @keypress.enter="show">
     <transition name="vx">
       <div class="w-full absolute top-0 left-1/2 transform -translate-x-1/2" v-if="WarningShow">
-        <Warning :message="message" @CloseWarning="CloseWarning" class="mx-auto" v-model:token="token"></Warning>
+        <Warning :message="message" @CloseWarning="CloseWarning" class="mx-auto" v-model:token="token"  v-model:Warningshow="WarningShow"></Warning>
       </div>
     </transition>
     <div class="formx mx-auto my-auto">
