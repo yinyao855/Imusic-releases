@@ -309,7 +309,7 @@ onMounted(getSonglistData);
           <div>
             <details class="dropdown mt-3">
               <summary class="text-gray-200">简介</summary>
-              <ul class="m-1 p-2 shadow dropdown-content z-[1] bg-gray-200 text-gray-600 rounded-box w-96 opacity-70">
+              <ul class="m-1 p-2 dropdown-content z-[1] text-gray-300 w-96">
                 <li><a>{{
                     currentUserSongList.introduction === 'null' || currentUserSongList.introduction === null ? '无简介' : currentUserSongList.introduction
                   }}</a></li>
@@ -394,7 +394,7 @@ onMounted(getSonglistData);
             <td>
               <!--                对歌曲进行的操作-->
               <div
-                  class="z-0 mr-5 float-right dropdown dropdown-left dropdown-top my-auto tooltip transition duration-400 hover:bg-gray-600/40 bg-zinc-900 btn btn-sm border-none z-50"
+                  class="z-0 mr-5 float-right dropdown dropdown-left dropdown-top my-auto tooltip transition duration-400 hover:bg-gray-600/40 bg-zinc-900 btn btn-sm border-none"
                   data-tip="更多">
                 <svg class="icon" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg"
                      width="32" height="32" tabindex="0" role="button">
