@@ -39,9 +39,6 @@ const containerClass8 = computed(() => ({
 }));
 
 const emits = defineEmits(['checkLogin']);
-const createdSonglists = defineModel('createdSonglists');
-const favoriteSonglists = defineModel('favoriteSonglists');
-const currentUserSongList = defineModel('currentUserSongList');
 const userUploadedSongs = defineModel('userUploadedSongs');
 const mode = defineModel('mode');
 const UserRole = defineModel('UserRole');
@@ -76,88 +73,6 @@ const getuserdata = () => {
       })
 }
 
-const checkLogin = () => {
-  changeMode(0);
-  emits('checkLogin');
-}
-
-
-const extractDate = (dateTimeString) => {
-  const date = new Date(dateTimeString);
-  return date.toISOString().slice(0, 10);
-}
-
-
-const gettime = (time) => {
-  const minute = Math.floor(time / 60);
-  const second = Math.floor(time - minute * 60);
-  if (second < 10) {
-    return `${minute}:0${second}`;
-  }
-  return `${minute}:${second}`;
-}
-
-function activeSonglist(index) {
-  let SongListId = createdSonglists.value[index].id;
-  const instance = axios.create({
-    baseURL: 'http://182.92.100.66:5000',
-    timeout: 5000, // 设置请求超时时间
-    headers: {
-      'Authorization': `Bearer ${token.value}`,
-    }
-  });
-  axios.defaults.withCredentials = true;
-  const web = '/songlists/info/' + SongListId;
-  instance.get(web)
-      .then(response => {
-        console.log("hello");
-        console.log(response.data.data);
-        currentUserSongList.value = response.data.data;
-        console.log(currentUserSongList.value);
-        console.log('bye');
-        showUserSongList.value = true;
-        currentUserSongList.value.create_date = extractDate(currentUserSongList.value.create_date);
-        let length = currentUserSongList.value.songs.length;
-        console.log(length);
-        for (let i = 0; i < length; ++i) {
-          currentUserSongList.value.songs[i].duration = gettime(currentUserSongList.value.songs[i].duration)
-        }
-
-      })
-      .catch(error => {
-        console.log(error.response.data);
-      })
-}
-
-const showUserSongList = defineModel('showUserSongList');
-
-const listCreatedSonglists = () => {
-  changeMode(6)
-  if (props.HasLogin === false) {
-    message.value = '请先登录';
-    WarningShow.value = true;
-    return;
-  }
-  const formData = new FormData();
-  formData.append('username', props.username);
-  const instance = axios.create({
-    baseURL: 'http://182.92.100.66:5000',
-    timeout: 5000, // 设置请求超时时间
-    headers: {
-      'Authorization': `Bearer ${token.value}`,
-    }
-  });
-  axios.defaults.withCredentials = true;
-  instance.get("/users/songlists?username=" + props.username)
-      .then(function (response) {
-        if (response.data.success === true) {
-          createdSonglists.value = response.data.data;
-        }
-      })
-      .catch(function (error) {
-        console.log(error.response.data);
-      })
-};
 
 // 获取用户上传的所有歌曲
 function getUserUploadedSongs() {
@@ -185,33 +100,6 @@ function getUserUploadedSongs() {
         console.log(error.response.data);
       })
 }
-
-// 获取用户收藏的歌单
-const listFavoriteSonglists = () => {
-  changeMode(8)
-  if (props.HasLogin === false) {
-    message.value = '请先登录';
-    WarningShow.value = true;
-    return;
-  }
-  const instance = axios.create({
-    baseURL: 'http://182.92.100.66:5000',
-    timeout: 5000, // 设置请求超时时间
-    headers: {
-      'Authorization': `Bearer ${token.value}`,
-    }
-  });
-  axios.defaults.withCredentials = true;
-  instance.get("/like/songlists?username=" + props.username)
-      .then(function (response) {
-        if (response.data.success === true) {
-          favoriteSonglists.value = response.data.data;
-        }
-      })
-      .catch(function (error) {
-        console.log(error.response.data);
-      })
-};
 
 const token = defineModel('token');
 const userdata = defineModel('userdata');
@@ -321,7 +209,7 @@ const CloseWarning = () => {
       </svg>
       <span class="px-4 font-medium">创作中心</span>
     </div>
-    <div :class="containerClass6" @click="listCreatedSonglists">
+    <div :class="containerClass6" @click="changeMode(6)">
       <svg class="icon inline text-white my-auto" width="16" height="16" viewBox="0 0 24 24" stroke-width="2"
            stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
         <path stroke="none" d="M0 0h24v24H0z"/>
@@ -332,7 +220,7 @@ const CloseWarning = () => {
       </svg>
       <span class="px-4 font-medium">创建的歌单</span>
     </div>
-    <div :class="containerClass8" @click="listFavoriteSonglists">
+    <div :class="containerClass8" @click="changeMode(8)">
       <svg class="icon inline text-white my-auto" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
            stroke-linecap="round" stroke-linejoin="round">
         <polygon

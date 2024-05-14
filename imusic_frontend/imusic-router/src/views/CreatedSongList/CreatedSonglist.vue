@@ -27,7 +27,7 @@ const coverImageFileUrl = ref(''); // 存储当前歌单图片url，若修改了
 const ShowSong = ref(false); // 是否展示歌曲信息页面（默认：否），点击查看歌曲详细信息后为true
 
 // CurrentUser_SongList需要的属性（用于选择将歌曲加入哪个歌单）
-const showCurrentSonglist = ref(false);
+const showCurrentSonglist = ref(false); // 当前歌单界面
 let currentUserSongList;
 const createdSongLists = ref([])
 const ShowCreatedSongList = ref(false); // 是否展示选择歌单页面（默认：否），点击加入歌单后为true
@@ -35,7 +35,6 @@ const needtoaddSongid = ref(1); // 存储需要加入歌单的歌曲id
 
 const isFavoriteSonglist = ref(false);
 
-// emits
 const PlaySongList = (id) => {
   emits('PlaySongList', id);
 }
@@ -194,7 +193,8 @@ function deleteSonglist() {
   instance.delete('/songlists/delete/' + currentSonglistId.value)
       .then(function (response) {
         if (response.data.success === true) {
-          window.alert("delete success");
+          window.alert("歌单删除成功");
+          changesize();
         }
       })
       .catch(function (error) {
@@ -209,13 +209,19 @@ function activeShowEditSonglist(imgUrl) {
   showEditSonglist.value = true;
 }
 
+function CloseEditSongList() {
+  showCurrentSonglist.value = false;
+  getSonglistData();
+  showEditSonglist.value = false;
+}
+
 
 /* 对该歌单中的歌曲进行管理 */
 
 // 存储选择加入歌单的歌曲id，进入选择歌单界面（ShowCreatedSongList为true）
-function activeAddToSongList(index) {
+function activeAddToSongList(songid) {
   ShowCreatedSongList.value = true;
-  needtoaddSongid.value = currentUserSongList.songs[index].id;
+  needtoaddSongid.value = songid;
 }
 
 // back: 不展示选择歌单页面（回到歌单的主界面）
@@ -292,9 +298,9 @@ onMounted(getSonglistData);
   <!--  展示修改歌单信息界面（当showEditSonglist为true）-->
   <transition name="slide" appear>
     <div class="transition-container z-50 ml-8" v-if="showEditSonglist">
-      <EditSonglist :currentUserSongList="currentUserSongList"
-                    @deleteFromSongList="deleteFromSongList"
-                    v-model:showEditSonglist="showEditSonglist"
+      <EditSonglist v-model:currentUserSongList="currentUserSongList"
+                    @deleteFromSongList="deleteFromSongList" @refresh="getSonglistData"
+                    @CloseEditSongList="CloseEditSongList"
                     v-model:cover="cover" v-model:coverImageFileUrl="coverImageFileUrl"
                     v-model:token="token" v-model:username="username"></EditSonglist>
     </div>
@@ -415,18 +421,18 @@ onMounted(getSonglistData);
             取消收藏
             ({{ currentUserSongList.like }})
           </button>
-<!--          &lt;!&ndash;          评论&ndash;&gt;-->
-<!--          <button-->
-<!--              class="mr-1 bg-gray-400 hover:bg-gray-500 text-white font-bold py-2 px-20 rounded-full">-->
-<!--            <svg class="h-5 w-5 text-white inline-block align-sub" viewBox="0 0 24 24" stroke-width="2"-->
-<!--                 stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">-->
-<!--              <path stroke="none" d="M0 0h24v24H0z"/>-->
-<!--              <path d="M4 21v-13a3 3 0 0 1 3 -3h10a3 3 0 0 1 3 3v6a3 3 0 0 1 -3 3h-9l-4 4"/>-->
-<!--              <line x1="8" y1="9" x2="16" y2="9"/>-->
-<!--              <line x1="8" y1="13" x2="14" y2="13"/>-->
-<!--            </svg>-->
-<!--            <p class="inline-block">评论</p>-->
-<!--          </button>-->
+          <!--          &lt;!&ndash;          评论&ndash;&gt;-->
+          <!--          <button-->
+          <!--              class="mr-1 bg-gray-400 hover:bg-gray-500 text-white font-bold py-2 px-20 rounded-full">-->
+          <!--            <svg class="h-5 w-5 text-white inline-block align-sub" viewBox="0 0 24 24" stroke-width="2"-->
+          <!--                 stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">-->
+          <!--              <path stroke="none" d="M0 0h24v24H0z"/>-->
+          <!--              <path d="M4 21v-13a3 3 0 0 1 3 -3h10a3 3 0 0 1 3 3v6a3 3 0 0 1 -3 3h-9l-4 4"/>-->
+          <!--              <line x1="8" y1="9" x2="16" y2="9"/>-->
+          <!--              <line x1="8" y1="13" x2="14" y2="13"/>-->
+          <!--            </svg>-->
+          <!--            <p class="inline-block">评论</p>-->
+          <!--          </button>-->
         </div>
       </div>
     </div>
@@ -494,6 +500,16 @@ onMounted(getSonglistData);
                             fill="white"></path>
                       </svg>
                       添加到播放列表
+                    </div>
+                  </li>
+                  <li>
+                    <div class="text-sm font-semibold z-50" @click="activeAddToSongList(song.id)">
+                      <svg class="icon" viewBox="0 0 24 24" stroke="currentColor"
+                           stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="22" height="22" fill="white">
+                        <line x1="12" y1="5" x2="12" y2="19"/>
+                        <line x1="5" y1="12" x2="19" y2="12"/>
+                      </svg>
+                      加入歌单
                     </div>
                   </li>
                   <li>

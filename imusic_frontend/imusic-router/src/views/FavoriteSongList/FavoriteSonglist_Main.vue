@@ -1,22 +1,27 @@
 <script setup>
 // 展示用户创建的歌单主界面
-import {defineEmits, defineModel, ref} from "vue";
+import {defineEmits, defineModel, onMounted, ref} from "vue";
 import axios from "axios";
 import Songlist from "@/views/CreatedSongList/Songlist.vue";
+import Warning from "@/components/Warning.vue";
 
 // global variables
 const token = defineModel('token')
 const username = defineModel('username')
+const HasLogin = defineModel('HasLogin');
+const message = ref('错误消息');
+const WarningShow = ref(false);
+const CloseWarning = () => {
+  WarningShow.value = false;
+}
 
 // defineEmits(播放歌单全部歌曲，加入播放列表，立即播放)
 const emits = defineEmits(['PlaySongList', 'handlePlayAfter', 'handlePlayNow'])
 
-// v-model
-const favoriteSonglists = defineModel('favoriteSonglists') // 用户收藏的歌单
+const favoriteSonglists = ref([]); // 用户收藏的歌单
 
 // 点击歌单后需要的属性
 const showCurrentSongList = ref(false); // 是否展示选中的歌单信息页面（默认：否），选择歌单后为true
-const currentUserSongList = ref([]); // 选中的歌单
 const currentSonglistId = ref(0);
 
 // emits
@@ -34,11 +39,23 @@ function handlePlayNow(id) {
 
 // back: 不展示选中的歌单信息页面（回到选择创建的歌单的主界面）
 function closeSonglist() {
+  getFavoriteSonglists()
   showCurrentSongList.value = false;
 }
 
 // choose: 展示选中的歌单信息页面（进入歌单信息界面）
 function activeSonglist(index) {
+  showCurrentSongList.value = true;
+  currentSonglistId.value = favoriteSonglists.value[index].id
+}
+
+// 获取用户收藏的歌单
+const getFavoriteSonglists = () => {
+  if (HasLogin.value === false) {
+    message.value = '请先登录';
+    WarningShow.value = true;
+    return;
+  }
   const instance = axios.create({
     baseURL: 'http://182.92.100.66:5000',
     timeout: 5000, // 设置请求超时时间
@@ -47,21 +64,24 @@ function activeSonglist(index) {
     }
   });
   axios.defaults.withCredentials = true;
-  instance.get("/songlists/info/" + favoriteSonglists.value[index].id)
+  instance.get("/like/songlists?username=" + username.value)
       .then(function (response) {
         if (response.data.success === true) {
-          showCurrentSongList.value = true;
-          currentUserSongList.value = response.data.data; // 保存选中的歌单
-          currentSonglistId.value = currentUserSongList.value.id;
+          favoriteSonglists.value = response.data.data;
         }
       })
       .catch(function (error) {
         console.log(error.response.data);
       })
-}
+};
+
+onMounted(getFavoriteSonglists);
 </script>
 
 <template>
+  <div class="w-full absolute top-0 left-1/2 transform -translate-x-1/2" v-if="WarningShow">
+    <Warning :message="message" @CloseWarning="CloseWarning" class="mx-auto" v-model:token="token"></Warning>
+  </div>
   <!--    展示选中的歌单信息页面（当showCurrentSongList==true）-->
   <transition name="slide" appear>
     <div class="transition-container z-50 ml-8" v-if="showCurrentSongList">
@@ -73,7 +93,7 @@ function activeSonglist(index) {
   </transition>
 
 
-  <!--  展示用户创建的歌单主界面-->
+  <!--  展示用户收藏的歌单主界面-->
   <div class="bg-gray-95000 w-full h-full mb-48" v-if="!showCurrentSongList">
     <!--    标题-->
     <div class="w-full h-32 flex">

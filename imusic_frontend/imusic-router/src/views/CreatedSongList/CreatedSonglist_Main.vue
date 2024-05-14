@@ -1,23 +1,27 @@
 <script setup>
 // 展示用户创建的歌单主界面
-import {defineEmits, defineModel, ref} from "vue";
+import {defineEmits, defineModel, onMounted, ref} from "vue";
 import CreatedSonglist from "@/views/CreatedSongList/CreatedSonglist.vue";
 import axios from "axios";
 import LikeSongs_Area from "@/views/CreatedSongList/LikeSongs_Area.vue";
+import Warning from "@/components/Warning.vue";
 
 // global variables
 const token = defineModel('token')
 const username = defineModel('username')
+const HasLogin = defineModel('HasLogin');
+const message = ref('错误消息');
+const WarningShow = ref(false);
+const CloseWarning = () => {
+  WarningShow.value = false;
+}
 
 // defineEmits(播放歌单全部歌曲，加入播放列表，立即播放)
 const emits = defineEmits(['PlaySongList', 'handlePlayAfter', 'handlePlayNow', 'PlayLikeSongs'])
 
-// v-model
-const createdSonglists = defineModel('createdSonglists') // 用户创建的歌单
-
 // 点击歌单后需要的属性
+const createdSonglists = ref([]);
 const showCurrentSongList = ref(false); // 是否展示选中的歌单信息页面（默认：否），选择歌单后为true
-const currentUserSongList = ref([]); // 选中的歌单
 const currentSonglistId = ref(0);
 
 // emits
@@ -35,30 +39,14 @@ function handlePlayNow(id) {
 
 // back: 不展示选中的歌单信息页面（回到选择创建的歌单的主界面）
 function closeSonglist() {
+  getCreatedSonglists();
   showCurrentSongList.value = false;
 }
 
 // choose: 展示选中的歌单信息页面（进入歌单信息界面）
 function activeSonglist(index) {
-  const instance = axios.create({
-    baseURL: 'http://182.92.100.66:5000',
-    timeout: 5000, // 设置请求超时时间
-    headers: {
-      'Authorization': `Bearer ${token.value}`,
-    }
-  });
-  axios.defaults.withCredentials = true;
-  instance.get("/songlists/info/" + createdSonglists.value[index].id)
-      .then(function (response) {
-        if (response.data.success === true) {
-          showCurrentSongList.value = true;
-          currentUserSongList.value = response.data.data; // 保存选中的歌单
-          currentSonglistId.value = currentUserSongList.value.id;
-        }
-      })
-      .catch(function (error) {
-        console.log(error.response.data);
-      })
+  currentSonglistId.value = createdSonglists.value[index].id;
+  showCurrentSongList.value = true;
 }
 
 const LikeSongCover = ref('./LikeSongs.webp');
@@ -75,9 +63,39 @@ const CloseLikeSongs = () => {
 const PlayLikeSongs = () => {
   emits('PlayLikeSongs');
 }
+
+function getCreatedSonglists() {
+  if (HasLogin.value === false) {
+    message.value = '请先登录';
+    WarningShow.value = true;
+    return;
+  }
+  const instance = axios.create({
+    baseURL: 'http://182.92.100.66:5000',
+    timeout: 5000, // 设置请求超时时间
+    headers: {
+      'Authorization': `Bearer ${token.value}`,
+    }
+  });
+  axios.defaults.withCredentials = true;
+  instance.get("/users/songlists?username=" + username.value)
+      .then(function (response) {
+        if (response.data.success === true) {
+          createdSonglists.value = response.data.data;
+        }
+      })
+      .catch(function (error) {
+        console.log(error.response.data);
+      })
+}
+
+onMounted(getCreatedSonglists);
 </script>
 
 <template>
+  <div class="w-full absolute top-0 left-1/2 transform -translate-x-1/2" v-if="WarningShow">
+    <Warning :message="message" @CloseWarning="CloseWarning" class="mx-auto" v-model:token="token"></Warning>
+  </div>
   <transition name="slide" appear>
     <div class="transition-container z-50 ml-8" v-if="ShowLikeSongs">
       <LikeSongs_Area class="w-screen mb-32" v-model:LikeSongsCover="LikeSongCover" v-model:username="username"
@@ -89,6 +107,7 @@ const PlayLikeSongs = () => {
   <transition name="slide" appear>
     <div class="transition-container-2 z-50 ml-8" v-if="showCurrentSongList">
       <CreatedSonglist class="w-screen mb-32" v-model:currentSonglistId="currentSonglistId"
+                       @refresh="getCreatedSonglists"
                        @PlaySongList="PlaySongList" @handlePlayAfter="handlePlayAfter"
                        @handlePlayNow="handlePlayNow" @changesize="closeSonglist"
                        v-model:token="token" v-model:username="username"></CreatedSonglist>
@@ -97,7 +116,7 @@ const PlayLikeSongs = () => {
 
 
   <!--  展示用户创建的歌单主界面-->
-  <div class="bg-gray-95000 w-full h-full mb-48" v-if="!showCurrentSongList&&!ShowLikeSongs">
+  <div class="w-full h-full mb-32" v-if="!showCurrentSongList&&!ShowLikeSongs">
     <!--    标题-->
     <div class="w-full h-32 flex">
       <div class="text-4xl text-white text-center m-auto">我创建的歌单</div>
@@ -135,6 +154,9 @@ const PlayLikeSongs = () => {
         </div>
       </div>
     </div>
+  </div>
+  <div class="mb-8">
+    、
   </div>
 </template>
 

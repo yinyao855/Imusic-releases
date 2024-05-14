@@ -92,6 +92,7 @@ const GetUserLike = () => {
 }
 
 const CloseSongPage = () => {
+  GetUserLike();
   NeedShowSongDetail.value = false;
 }
 

@@ -18,6 +18,7 @@ const lyrics = ref([]) // 存储歌词（字符串数组）
 const showCurrentSong = ref(false);
 
 const isFavoriteSong = ref(false);
+const likes = ref(0);
 
 // emits
 function handlePlayNow(id) {
@@ -79,6 +80,7 @@ function addFavoriteSong() {
       .then(function (response) {
         if (response.data.success === true) {
           isFavoriteSong.value = true;
+          songData.like++;
         }
       })
       .catch(function (error) {
@@ -102,6 +104,7 @@ function deleteFavoriteSong() {
       .then(function (response) {
         if (response.data.success === true) {
           isFavoriteSong.value = false;
+          songData.like--;
         }
       })
       .catch(function (error) {
@@ -270,10 +273,6 @@ onMounted(getFavoriteSongs);
               <div>
                 <h1 class="text-gray-200 inline-block">上传日期</h1>
                 <p class="inline-block mx-11 text-gray-500"> {{ songData.upload_date }}</p>
-              </div>
-              <div>
-                <h1 class="text-gray-200 inline-block">收藏</h1>
-                <p class="inline-block mx-20 text-gray-500"> {{ songData.like }}</p>
               </div>
               <!--            标签-->
               <div>
