@@ -6,6 +6,7 @@ import CurrentUser_SongList from "@/components/CurrentUser_SongList.vue";
 import SongPage from "@/components/SongPage.vue";
 import Buttonchangesize from "@/components/ButtonChangeSizeRight.vue";
 import EditSonglist from "@/views/EditSonglist.vue";
+import Other_User_Data from "@/views/Explore/Other_User_Data.vue";
 
 // global variables
 const token = defineModel('token')
@@ -29,6 +30,8 @@ const ShowCreatedSongList = ref(false); // 是否展示选择歌单页面（默�
 const needtoaddSongid = ref(1); // 存储需要加入歌单的歌曲id
 
 const isFavoriteSonglist = ref(false);
+
+const showUser = ref(false);
 
 // emits
 const PlaySongList = (id) => {
@@ -55,6 +58,10 @@ const gettime = (time) => {
     return `${minute}:0${second}`;
   }
   return `${minute}:${second}`;
+}
+const extractDate = (dateTimeString) => {
+  const date = new Date(dateTimeString);
+  return date.toISOString().slice(0, 10);
 }
 
 /* 对歌单进行管理 */
@@ -205,6 +212,14 @@ function show_tag(tag) {
   return true;
 }
 
+function activeShowUser() {
+  showUser.value = true;
+}
+
+function CloseUserDetail() {
+  showUser.value = false;
+}
+
 onMounted(getFavoriteSonglists);
 onMounted(getCreatedSonglists);
 onMounted(getSonglistData);
@@ -228,6 +243,15 @@ onMounted(getSonglistData);
                 v-model:username="username" v-model:token="token"></SongPage>
     </div>
   </transition>
+  <!--  展示用户信息界面-->
+  <transition name="slide" appear>
+    <div class="transition-container" v-if="showUser">
+      <Other_User_Data class="w-screen mb-32" v-model:token="token" v-model:ShowUsername="currentUserSongList.owner"
+                       v-model:username="username" @changesize="CloseUserDetail"
+                       @handlePlayNow="handlePlayNow" @handlePlayAfter="handlePlayAfter"
+                       @PlaySongList="PlaySongList"></Other_User_Data>
+    </div>
+  </transition>
 
   <div v-if="showCurrentSonglist&&!ShowCreatedSongList&&!ShowSong">
     <!--      展示歌单信息-->
@@ -245,20 +269,22 @@ onMounted(getSonglistData);
         <div class="inline-block ml-7 align-top">
           <div>
             <h1 class="mt-2 text-white font-extrabold text-3xl">{{ currentUserSongList.title }}</h1>
-            <p class="mt-2 text-white">{{ currentUserSongList.owner }} · {{
-                currentUserSongList.create_date
-              }}</p>
-          </div>
-          <div>
-            <details class="text-white text-sm">
-              <summary class="mt-3 text-white font-bold">介绍</summary>
-              <div class="mt-3 absolute">
-                {{ currentUserSongList.introduction }}
-              </div>
-            </details>
+            <div class="inline-block tooltip-left tooltip" data-tip="用户详情">
+              <svg @click="activeShowUser" class="cursor-pointer h-4 w-4 text-white inline-block mr-1" width="24"
+                   height="24" viewBox="0 0 24 24"
+                   stroke-width="2"
+                   stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                <path stroke="none" d="M0 0h24v24H0z"/>
+                <circle cx="12" cy="7" r="4"/>
+                <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2"/>
+              </svg>
+              <p @click="activeShowUser" class="cursor-pointer mt-2 text-white inline-block">
+                {{ currentUserSongList.owner }} ·</p>
+            </div>
+            <p class="mt-2 ml-2 text-white inline-block">{{ extractDate(currentUserSongList.create_date) }} </p>
           </div>
           <!--            标签-->
-          <div class="mt-16 inline-block">
+          <div class="mt-3 inline-block">
             <div v-if="show_tag(currentUserSongList.tag_theme)"
                  class="text-xs inline-flex items-center font-bold leading-sm px-2 py-1 bg-blue-200 text-blue-700 rounded-full">
               {{ currentUserSongList.tag_theme }}
@@ -279,6 +305,16 @@ onMounted(getSonglistData);
                  class="ml-1 text-xs inline-flex items-center font-bold leading-sm px-2 py-1 bg-purple-200 text-purple-700 rounded-full">
               {{ currentUserSongList.tag_language }}
             </div>
+          </div>
+          <div>
+            <details class="dropdown mt-3">
+              <summary class="text-gray-200">简介</summary>
+              <ul class="m-1 p-2 shadow dropdown-content z-[1] bg-gray-200 text-gray-600 rounded-box w-96 opacity-70">
+                <li><a>{{
+                    currentUserSongList.introduction === 'null' || currentUserSongList.introduction === null ? '无简介' : currentUserSongList.introduction
+                  }}</a></li>
+              </ul>
+            </details>
           </div>
         </div>
         <div class="mt-3">

@@ -201,7 +201,7 @@ onMounted(GetUserData);
         <div :class="[NaviClass2, 'text-transition']" @click='ChangeNaviMode(2)'>TA收藏的歌单</div>
       </div>
     </div>
-    <div class="overflow-x-auto overflow-y-hidden mx-6 mt-5" v-if="NaviMode===1">
+    <div class="mx-6 mt-5" v-if="NaviMode===1">
       <table class="table">
         <thead>
         <tr>
