@@ -18,11 +18,6 @@ const emits = defineEmits(['PlaySongList', 'handlePlayAfter', 'handlePlayNow', '
 const currentSonglistId = defineModel("currentSonglistId")
 const currentSongId = ref(0);
 
-// // EditSonglist需要的属性（用于修改歌单）
-// const showEditSonglist = ref(false); // 是否展示修改歌单信息页面（默认：否），点击修改的icon后为true
-// const cover = ref(null); // 存储当前歌单图片
-// const coverImageFileUrl = ref(''); // 存储当前歌单图片url，若修改了图片，可以直接展示新选择的图片即使还没完成修改
-
 // SongPage需要的属性（用于歌曲详细信息）
 const ShowSong = ref(false); // 是否展示歌曲信息页面（默认：否），点击查看歌曲详细信息后为true
 
@@ -191,31 +186,6 @@ function activeAddToSongList(songid) {
 // back: 不展示选择歌单页面（回到歌单的主界面）
 const CloseCurrentUser_SongList = () => {
   ShowCreatedSongList.value = false;
-}
-
-// 将歌曲从当前歌单删除
-function deleteFromSongList(index) {
-  const needtodeleteSongid = ref(1);
-  needtodeleteSongid.value = currentUserSongList.songs[index].id;
-  const formData = new FormData();
-  formData.append('song_id', needtodeleteSongid.value);
-  formData.append('songlist_id', currentSonglistId.value);
-  const instance = axios.create({
-    baseURL: 'http://182.92.100.66:5000',
-    timeout: 5000, // 设置请求超时时间
-    headers: {
-      'Authorization': `Bearer ${token.value}`,
-    }
-  });
-  axios.defaults.withCredentials = true;
-  instance.post('/songlists/delsong', formData)
-      .then(response => {
-        console.log(response.data);
-        alert('歌曲删除成功');
-      })
-      .catch(error => {
-        console.log(error.response.data);
-      })
 }
 
 // 存储歌曲信息，进入歌曲详细信息界面（ShowSong为true）
@@ -440,20 +410,6 @@ onMounted(getSonglistData);
                       加入歌单
                     </div>
                   </li>
-<!--                  <li>-->
-<!--                    <div class="text-sm font-semibold" @click="deleteFromSongList(song.id)">-->
-<!--                      <svg class="icon fill-white" viewBox="0 0 1024 1024"-->
-<!--                           xmlns="http://www.w3.org/2000/svg" width="22" height="22">-->
-<!--                        <path-->
-<!--                            d="M840 288H688v-56c0-40-32-72-72-72h-208C368 160 336 192 336 232V288h-152c-12.8 0-24 11.2-24 24s11.2 24 24 24h656c12.8 0 24-11.2 24-24s-11.2-24-24-24zM384 288v-56c0-12.8 11.2-24 24-24h208c12.8 0 24 11.2 24 24V288H384zM758.4 384c-12.8 0-24 11.2-24 24v363.2c0 24-19.2 44.8-44.8 44.8H332.8c-24 0-44.8-19.2-44.8-44.8V408c0-12.8-11.2-24-24-24s-24 11.2-24 24v363.2c0 51.2 41.6 92.8 92.8 92.8h358.4c51.2 0 92.8-41.6 92.8-92.8V408c-1.6-12.8-12.8-24-25.6-24z"-->
-<!--                        ></path>-->
-<!--                        <path-->
-<!--                            d="M444.8 744v-336c0-12.8-11.2-24-24-24s-24 11.2-24 24v336c0 12.8 11.2 24 24 24s24-11.2 24-24zM627.2 744v-336c0-12.8-11.2-24-24-24s-24 11.2-24 24v336c0 12.8 11.2 24 24 24s24-11.2 24-24z"-->
-<!--                        ></path>-->
-<!--                      </svg>-->
-<!--                      删除歌曲-->
-<!--                    </div>-->
-<!--                  </li>-->
                   <li>
                     <div class="text-sm font-semibold" @click="activeShowSong(index)">
                       <svg class="icon fill-white" viewBox="0 0 1024 1024"
@@ -478,24 +434,9 @@ onMounted(getSonglistData);
     </div>
     、
   </div>
-<!--  &lt;!&ndash;  展示修改歌单信息界面（当showEditSonglist为true）&ndash;&gt;-->
-<!--  <EditSonglist :currentUserSongList="currentUserSongList" v-if="showEditSonglist"-->
-<!--                @deleteFromSongList="deleteFromSongList"-->
-<!--                v-model:showEditSonglist="showEditSonglist"-->
-<!--                v-model:cover="cover" v-model:coverImageFileUrl="coverImageFileUrl"-->
-<!--                v-model:token="token" v-model:username="username"></EditSonglist>-->
 </template>
 
 <style scoped>
-.bg_img {
-  margin: 0;
-  height: 330px;
-  background-size: cover;
-  filter: blur(30px);
-  float: left;
-  width: 100%;
-}
-
 .img_songlist {
   width: 200px;
   height: 200px;

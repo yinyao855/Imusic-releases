@@ -18,12 +18,10 @@ const CloseWarning = () => {
 // defineEmits(播放歌单全部歌曲，加入播放列表，立即播放)
 const emits = defineEmits(['PlaySongList', 'handlePlayAfter', 'handlePlayNow'])
 
-
 const favoriteSonglists = ref([]); // 用户收藏的歌单
 
 // 点击歌单后需要的属性
 const showCurrentSongList = ref(false); // 是否展示选中的歌单信息页面（默认：否），选择歌单后为true
-const currentUserSongList = ref([]); // 选中的歌单
 const currentSonglistId = ref(0);
 
 // emits

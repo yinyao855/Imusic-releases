@@ -13,7 +13,6 @@ const emits = defineEmits(['deleteFromSongList', 'CloseEditSongList'])
 const currentUserSongList = defineModel('currentUserSongList')
 
 // v-model
-const showEditSonglist = defineModel('showEditSonglist')
 const cover = defineModel('cover')
 const coverImageFileUrl = defineModel('coverImageFileUrl')
 
@@ -110,7 +109,9 @@ function sendEditSonglist(id) {
       </div>
       <div class="p-5 absolute w-full">
         <!--        点击后即保存修改后的信息-->
-        <button @click="sendEditSonglist(currentUserSongList.id)" class="btn m-1 inline-block float-right ">完成
+        <button @click="sendEditSonglist(currentUserSongList.id)" class="btn bg-blue-500 text-white border-blue-500 hover:bg-blue-700 m-1 inline-block float-right ">完成
+        </button>
+        <button @click="CloseEditSongList" class="btn bg-white m-1 inline-block float-right ">取消
         </button>
         <div class="inline-block">
           <div>
