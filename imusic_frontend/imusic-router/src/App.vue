@@ -5,7 +5,6 @@ import SideBar from "@/views/SideBar.vue";
 
 <template>
   <Home></Home>
-<!--  <SideBar></SideBar>-->
 </template>
 
 <style scoped>
