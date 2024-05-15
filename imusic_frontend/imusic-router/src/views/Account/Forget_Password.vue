@@ -173,11 +173,10 @@ const UpdateUser = () => {
     return;
   }
   const formData = new FormData();
-  formData.append('email', email.value)
+  console.log(verify_code.value);
   formData.append('username', username.value);
   formData.append('new_password', password.value);
   formData.append('verification_code', verify_code.value);
-  console.log(verify_code.value);
   const instance = axios.create({
     baseURL: 'http://182.92.100.66:5000',
     timeout: 5000, // 设置请求超时时间
@@ -186,11 +185,10 @@ const UpdateUser = () => {
     }
   });
   axios.defaults.withCredentials = true;
-  instance.post(' /users/change-pwd', formData)
+  instance.post('/users/change-pwd', formData)
       .then(response => {
         console.log(response.data);
         if (response.data.success === true) {
-          usernametofather.value = username.value;
           confetti({
             particleCount: 500,
             angle: 90,
