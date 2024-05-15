@@ -21,6 +21,7 @@ const userrole = computed(() => {
 const changeHasLogin = () => {
   username.value = '点击登录'
   HasLogin.value = !HasLogin.value;
+  localStorage.removeItem('user-info');
 }
 
 const updateavatar = () => {

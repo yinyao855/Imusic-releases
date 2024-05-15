@@ -1,5 +1,5 @@
 <template>
-  <div id="sign_up" class="h-full w-full flex items-center" @keypress.enter="show">
+  <div id="sign_up" class="h-full w-full flex items-center" @keypress.enter="UpdateUser">
     <transition>
       <div class="w-full absolute top-0 left-1/2 transform -translate-x-1/2" v-if="WarningShow">
         <Warning :message="message" @CloseWarning="CloseWarning" class="mx-auto" v-model:token="token" v-model:Warningshow="WarningShow"></Warning>
@@ -7,7 +7,7 @@
     </transition>
     <div class="formx mx-auto my-auto">
       <div class="flex-column">
-        <label>邮 箱 </label>
+        <label>邮 箱</label>
       </div>
       <div class="inputForm">
         <svg class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"
@@ -98,7 +98,7 @@
       <div class="flex-row">
         <span class="span" @click="gotologin">登录</span>
       </div>
-      <button class="button-submit" @click="show">注 册</button>
+      <button class="button-submit" @click="UpdateUser">更 新 密 码</button>
     </div>
   </div>
 </template>
@@ -145,7 +145,7 @@ const gotologin = () => {
   emits('ChangerRegisterMode');
 }
 
-const show = () => {
+const UpdateUser = () => {
   const button = document.querySelector('.button-submit');
   const rect = button.getBoundingClientRect();
   const x = rect.left + rect.width / 2 + window.scrollX;
@@ -173,11 +173,10 @@ const show = () => {
     return;
   }
   const formData = new FormData();
-  formData.append('email', email.value)
-  formData.append('username', username.value);
-  formData.append('password', password.value);
-  formData.append('verification_code', verify_code.value);
   console.log(verify_code.value);
+  formData.append('username', username.value);
+  formData.append('new_password', password.value);
+  formData.append('verification_code', verify_code.value);
   const instance = axios.create({
     baseURL: 'http://182.92.100.66:5000',
     timeout: 5000, // 设置请求超时时间
@@ -186,11 +185,10 @@ const show = () => {
     }
   });
   axios.defaults.withCredentials = true;
-  instance.post('/users/register', formData)
+  instance.post('/users/change-pwd', formData)
       .then(response => {
         console.log(response.data);
         if (response.data.success === true) {
-          usernametofather.value = username.value;
           confetti({
             particleCount: 500,
             angle: 90,

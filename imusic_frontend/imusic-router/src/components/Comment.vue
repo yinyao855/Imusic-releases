@@ -1,6 +1,4 @@
 <script setup>
-
-
 import {defineEmits, defineModel, onMounted, ref, watch} from "vue";
 import axios from "axios";
 import Warning from "@/components/Warning.vue";
@@ -240,16 +238,6 @@ watch(Comment, () => {
   /*滚动条里面小方块*/
   border-radius: 10px;
   background-color: rgba(0, 0, 0, 0.2);
-  background-image: -webkit-linear-gradient(
-      50deg,
-      rgba(255, 255, 255, 0.2) 25%,
-      transparent 25%,
-      transparent 50%,
-      rgba(255, 255, 255, 0.2) 50%,
-      rgba(255, 255, 255, 0.2) 75%,
-      transparent 75%,
-      transparent
-  );
 }
 
 ::-webkit-scrollbar-track {
