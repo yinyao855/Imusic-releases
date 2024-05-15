@@ -218,7 +218,7 @@ const handlePlayNow = (index) => {
 const handlePlayAfter = (index) => {
   emits('handlePlayAfter', Songs.value[index].id);
 }
-const NeedToAddSongId = ref(0);
+const NeedToAddSongId = ref([]);
 
 const updateSongs = () => {
   let web = '/songs/query?'
@@ -329,7 +329,7 @@ const GetInitSongs = () => {
 const ShowCurrentUser_SongList = ref(false);
 
 const addToSongList = (index) => {
-  NeedToAddSongId.value = Songs.value[index].id;
+  NeedToAddSongId.value = [Songs.value[index].id];
   GetMySongList();
   ShowCurrentUser_SongList.value = true;
 }

@@ -31,7 +31,7 @@ const showCurrentSonglist = ref(false);
 let currentUserSongList;
 const createdSongLists = ref([])
 const ShowCreatedSongList = ref(false); // 是否展示选择歌单页面（默认：否），点击加入歌单后为true
-const needtoaddSongid = ref(1); // 存储需要加入歌单的歌曲id
+const needtoaddSongid = ref([]); // 存储需要加入歌单的歌曲id
 
 const isFavoriteSonglist = ref(false);
 
@@ -185,7 +185,7 @@ function deleteFavoriteSonglist() {
 // 存储选择加入歌单的歌曲id，进入选择歌单界面（ShowCreatedSongList为true）
 function activeAddToSongList(index) {
   ShowCreatedSongList.value = true;
-  needtoaddSongid.value = currentUserSongList.songs[index].id;
+  needtoaddSongid.value = [currentUserSongList.songs[index].id];
 }
 
 // back: 不展示选择歌单页面（回到歌单的主界面）

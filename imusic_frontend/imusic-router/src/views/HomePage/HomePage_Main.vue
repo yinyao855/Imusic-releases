@@ -24,7 +24,7 @@ const SearchContent = defineModel('SearchContent');
 const needshowsonglistpage = defineModel('needshowsonglistpage');
 const NaviMode = ref('1');
 const ShowCurrentUser_SongList = ref(false);
-const needtoaddSongid = ref(1);
+const needtoaddSongid = ref([]);
 const token=defineModel('token');
 const NaviClass1 = computed(() => ({
   'text-base inline-block mx-5 w-30 rounded-lg antialiased tracking-widest font-medium transition-colors duration-400 hover:bg-gray-600/40': true,
@@ -94,7 +94,7 @@ const addToSongList = (songid) => {
   console.log(songid);
   GetCurrentUser_SongListdata();
   ShowCurrentUser_SongList.value = true;
-  needtoaddSongid.value = songid;
+  needtoaddSongid.value = [songid];
   needshowsonglistpage.value = false;
 }
 

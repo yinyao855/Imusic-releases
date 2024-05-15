@@ -1,5 +1,5 @@
 <script setup>
-import {defineModel} from "vue"
+import {defineModel, ref} from "vue"
 import axios from "axios";
 import buttonchangesize from './ButtonChangeSizeRight.vue'
 
@@ -8,10 +8,17 @@ const CurrentUser_SongListdata = defineModel('CurrentUser_SongListdata')
 const emits = defineEmits(['CloseCurrentUser_SongList'])
 const token=defineModel('token')
 
-const addtosonglist = (index) => {
+function addtosonglist(index) {
+  const length = ref(0);
+  length.value = needtoaddSongid.value.length;
+  for (let i = 0; i < length.value; i++) {
+    add(index, needtoaddSongid.value[i]);
+  }
+}
+const add = (index, songid) => {
   const songlistid = CurrentUser_SongListdata.value[index].id;
   const formData = new FormData();
-  formData.append('song_id', needtoaddSongid.value);
+  formData.append('song_id', songid);
   formData.append('songlist_id', songlistid);
   const instance = axios.create({
     baseURL: 'http://182.92.100.66:5000',
@@ -24,10 +31,11 @@ const addtosonglist = (index) => {
   instance.post('/songlists/addsong', formData)
       .then(response => {
         console.log(response.data);
-        alert('歌曲添加成功');
+        alert("歌曲添加成功")
       })
       .catch(error => {
         console.log(error.response.data);
+        alert("歌曲添加失败")
       })
 }
 const fullsize = () => {

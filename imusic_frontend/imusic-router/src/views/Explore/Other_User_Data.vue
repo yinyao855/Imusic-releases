@@ -92,11 +92,11 @@ const ChangeNaviMode = (num) => {
 }
 
 
-const needtoaddSongid = ref(0);
+const needtoaddSongid = ref([]);
 const CurrentUser_SongListdata = ref([]);
 const addToSongList = (id) => {
   console.log(id);
-  needtoaddSongid.value = id;
+  needtoaddSongid.value = [id];
   ShowAddSong.value = true;
   const instance = axios.create({
     baseURL: 'http://182.92.100.66:5000',

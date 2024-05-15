@@ -32,11 +32,13 @@ const showCurrentSonglist = ref(false); // 当前歌单界面
 let currentUserSongList;
 const createdSongLists = ref([])
 const ShowCreatedSongList = ref(false); // 是否展示选择歌单页面（默认：否），点击加入歌单后为true
-const needtoaddSongid = ref(1); // 存储需要加入歌单的歌曲id
+const needtoaddSongid = ref([]); // 存储需要加入歌单的歌曲id
 
 const isFavoriteSonglist = ref(false);
 
 const showUser = ref(false);
+
+const showSelect = ref(false);
 
 const PlaySongList = (id) => {
   emits('PlaySongList', id);
@@ -154,7 +156,7 @@ function addFavoriteSonglist() {
       .then(function (response) {
         if (response.data.success === true) {
           isFavoriteSonglist.value = true;
-          window.alert("success");
+          currentUserSongList.like++;
         }
       })
       .catch(function (error) {
@@ -178,7 +180,7 @@ function deleteFavoriteSonglist() {
       .then(function (response) {
         if (response.data.success === true) {
           isFavoriteSonglist.value = false;
-          window.alert("success");
+          currentUserSongList.like--;
         }
       })
       .catch(function (error) {
@@ -228,20 +230,19 @@ function CloseEditSongList() {
 // 存储选择加入歌单的歌曲id，进入选择歌单界面（ShowCreatedSongList为true）
 function activeAddToSongList(songid) {
   ShowCreatedSongList.value = true;
-  needtoaddSongid.value = songid;
+  needtoaddSongid.value = [songid];
 }
 
 // back: 不展示选择歌单页面（回到歌单的主界面）
 const CloseCurrentUser_SongList = () => {
+  needtoaddSongid.value = [];
   ShowCreatedSongList.value = false;
 }
 
 // 将歌曲从当前歌单删除
 function deleteFromSongList(index) {
-  const needtodeleteSongid = ref(1);
-  needtodeleteSongid.value = currentUserSongList.songs[index].id;
   const formData = new FormData();
-  formData.append('song_id', needtodeleteSongid.value);
+  formData.append('song_id', currentUserSongList.songs[index].id);
   formData.append('songlist_id', currentSonglistId.value);
   const instance = axios.create({
     baseURL: 'http://182.92.100.66:5000',
@@ -284,6 +285,24 @@ function activeShowUser() {
 
 function CloseUserDetail() {
   showUser.value = false;
+}
+
+function activeSelect() {
+  showSelect.value = true;
+}
+
+function finishSelect() {
+  if (needtoaddSongid.value.length === 0) {
+    alert("还未选择歌曲");
+    return;
+  }
+  showSelect.value = false;
+  ShowCreatedSongList.value = true;
+}
+
+function cancelSelect() {
+  showSelect.value = false;
+  needtoaddSongid.value = [];
 }
 
 onMounted(getFavoriteSonglists);
@@ -442,7 +461,7 @@ onMounted(getSonglistData);
         <div class="mt-3">
           <!--            播放歌单中所有歌曲-->
           <button @click="PlaySongList(currentUserSongList.id)"
-                  class="mr-1 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-16 rounded-full">
+                  class="mr-1 bg-blue-500 hover:bg-blue-700 text-white button font-bold py-2 w-32 rounded-xl">
             <svg class="h-5 w-5 inline-block align-sub text-white" viewBox="0 0 24 24" fill="none"
                  stroke="currentColor"
                  stroke-width="2"
@@ -452,7 +471,7 @@ onMounted(getSonglistData);
             <p class="inline-block">播放全部</p>
           </button>
           <button @click="addFavoriteSonglist" v-if="!isFavoriteSonglist"
-                  class="mr-1 bg-gray-400 hover:bg-gray-500 text-white font-bold py-2 px-12 rounded-full inline-block">
+                  class="mr-1 bg-gray-400 hover:bg-gray-500 text-white font-bold py-2 w-32 rounded-xl inline-block">
             <svg class="h-5 w-5 text-white inline-block align-sub" viewBox="0 0 24 24" fill="none"
                  stroke="currentColor"
                  stroke-width="2"
@@ -464,7 +483,7 @@ onMounted(getSonglistData);
             ({{ currentUserSongList.like }})
           </button>
           <button @click="deleteFavoriteSonglist" v-if="isFavoriteSonglist"
-                  class="mr-1 bg-yellow-400 hover:bg-yellow-600 text-white font-bold py-2 px-12 rounded-full inline-block">
+                  class="mr-1 bg-yellow-400 hover:bg-yellow-600 text-white font-bold py-2 w-32 rounded-xl inline-block">
             <svg class="h-5 w-5 fill-white inline-block align-sub" viewBox="0 0 24 24" fill="none"
                  stroke="currentColor"
                  stroke-width="2"
@@ -475,18 +494,18 @@ onMounted(getSonglistData);
             取消收藏
             ({{ currentUserSongList.like }})
           </button>
-          <!--          &lt;!&ndash;          评论&ndash;&gt;-->
-          <!--          <button-->
-          <!--              class="mr-1 bg-gray-400 hover:bg-gray-500 text-white font-bold py-2 px-20 rounded-full">-->
-          <!--            <svg class="h-5 w-5 text-white inline-block align-sub" viewBox="0 0 24 24" stroke-width="2"-->
-          <!--                 stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">-->
-          <!--              <path stroke="none" d="M0 0h24v24H0z"/>-->
-          <!--              <path d="M4 21v-13a3 3 0 0 1 3 -3h10a3 3 0 0 1 3 3v6a3 3 0 0 1 -3 3h-9l-4 4"/>-->
-          <!--              <line x1="8" y1="9" x2="16" y2="9"/>-->
-          <!--              <line x1="8" y1="13" x2="14" y2="13"/>-->
-          <!--            </svg>-->
-          <!--            <p class="inline-block">评论</p>-->
-          <!--          </button>-->
+          <!--          评论-->
+          <button
+              class="mr-1 bg-gray-400 hover:bg-gray-500 text-white font-bold py-2 w-32 rounded-xl">
+            <svg class="h-5 w-5 text-white inline-block align-sub" viewBox="0 0 24 24" stroke-width="2"
+                 stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+              <path stroke="none" d="M0 0h24v24H0z"/>
+              <path d="M4 21v-13a3 3 0 0 1 3 -3h10a3 3 0 0 1 3 3v6a3 3 0 0 1 -3 3h-9l-4 4"/>
+              <line x1="8" y1="9" x2="16" y2="9"/>
+              <line x1="8" y1="13" x2="14" y2="13"/>
+            </svg>
+            <p class="inline-block">评论</p>
+          </button>
         </div>
       </div>
     </div>
@@ -500,7 +519,21 @@ onMounted(getSonglistData);
             <th class="text-left p-3 text-sm font-semibold">歌名</th>
             <th class="text-center text-sm font-semibold">演唱者</th>
             <th class="text-center text-sm font-semibold">时长</th>
-            <th class="text-center text-sm font-semibold"></th>
+            <th class="text-sm font-semibold float-right mr-0 mt-3 w-24">
+              <!--          批量处理-->
+              <button @click="activeSelect" v-if="!showSelect"
+                      class="ml-3 btn btn-xs p-0 px-1 rounded bg-blue-500 hover:bg-blue-700 text-white border-none">
+                <p class="inline-block">批量处理</p>
+              </button>
+              <button @click="finishSelect" v-if="showSelect"
+                      class="mr-1 btn btn-xs p-0 px-1 rounded bg-blue-500 hover:bg-blue-700 text-white border-none">
+                <p class="inline-block">加入歌单</p>
+              </button>
+              <button @click="cancelSelect" v-if="showSelect"
+                      class="btn btn-xs p-0 px-1 rounded bg-gray-300 hover:bg-gray-500 text-white border-none">
+                <p class="inline-block">取消</p>
+              </button>
+            </th>
           </tr>
           </thead>
           <tbody>
@@ -513,9 +546,13 @@ onMounted(getSonglistData);
             <td class="text-center">{{ song.singer }}</td>
             <td class="text-center">{{ gettime(song.duration) }}</td>
             <td>
-              <div
-                  class="z-0 mr-5 float-right dropdown dropdown-left dropdown-top my-auto tooltip transition duration-400 hover:bg-gray-600/40 bg-zinc-900 btn btn-sm border-none"
-                  data-tip="更多">
+              <div v-if="showSelect"
+                   class="z-0 float-right mr-7 my-auto">
+                <input type="checkbox" :value="song.id" v-model="needtoaddSongid" class="checkbox checkbox-info">
+              </div>
+              <div v-if="!showSelect"
+                   class="z-0 float-right mr-3 dropdown dropdown-left dropdown-top my-auto tooltip transition duration-400 hover:bg-gray-600/40 bg-zinc-900 btn btn-sm border-none"
+                   data-tip="更多">
                 <svg class="icon" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg"
                      width="32" height="32" tabindex="0" role="button">
                   <path
