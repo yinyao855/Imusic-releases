@@ -1,5 +1,5 @@
 <template>
-  <div id="sign_up" class="h-full w-full flex items-center" @keypress.enter="show">
+  <div id="sign_up" class="h-full w-full flex items-center" @keypress.enter="UpdateUser">
     <transition>
       <div class="w-full absolute top-0 left-1/2 transform -translate-x-1/2" v-if="WarningShow">
         <Warning :message="message" @CloseWarning="CloseWarning" class="mx-auto" v-model:token="token" v-model:Warningshow="WarningShow"></Warning>
@@ -7,7 +7,7 @@
     </transition>
     <div class="formx mx-auto my-auto">
       <div class="flex-column">
-        <label>Email </label>
+        <label>邮 箱</label>
       </div>
       <div class="inputForm">
         <svg class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"
@@ -21,7 +21,7 @@
 
 
       <div class="flex-column">
-        <label>Verification Code </label>
+        <label>验 证 码 </label>
       </div>
       <div class="inputForm">
         <svg class="icon fill-black" viewBox="0 0 1024 1024"
@@ -50,7 +50,7 @@
 
 
       <div class="flex-column">
-        <label>Username </label>
+        <label>账 号 </label>
       </div>
       <div class="inputForm">
         <svg height="20" viewBox="0 0 32 32" width="20" xmlns="http://www.w3.org/2000/svg">
@@ -63,7 +63,7 @@
       </div>
 
       <div class="flex-column">
-        <label>Password </label>
+        <label>密 码 </label>
       </div>
       <div class="inputForm">
         <svg height="20" viewBox="-64 0 512 512" width="20" xmlns="http://www.w3.org/2000/svg">
@@ -80,7 +80,7 @@
       </div>
 
       <div class="flex-column">
-        <label>Repeat Password </label>
+        <label>重 复 密 码 </label>
       </div>
       <div class="inputForm">
         <svg height="20" viewBox="-64 0 512 512" width="20" xmlns="http://www.w3.org/2000/svg">
@@ -96,9 +96,9 @@
         </svg>
       </div>
       <div class="flex-row">
-        <span class="span" @click="gotologin">Log in</span>
+        <span class="span" @click="gotologin">登录</span>
       </div>
-      <button class="button-submit" @click="UpdateUser">Sign Up</button>
+      <button class="button-submit" @click="UpdateUser">更 新 密 码</button>
     </div>
   </div>
 </template>
