@@ -38,6 +38,10 @@ const gettime = (time) => {
   }
   return `${minute}:${second}`;
 }
+const extractDate = (dateTimeString) => {
+  const date = new Date(dateTimeString);
+  return date.toISOString().slice(0, 10);
+}
 
 function getFavoriteSongs() {
   const instance = axios.create({
@@ -272,7 +276,7 @@ onMounted(getFavoriteSongs);
               </div>
               <div>
                 <h1 class="text-gray-200 inline-block">上传日期</h1>
-                <p class="inline-block mx-11 text-gray-500"> {{ songData.upload_date }}</p>
+                <p class="inline-block mx-11 text-gray-500"> {{ extractDate(songData.upload_date) }}</p>
               </div>
               <!--            标签-->
               <div>

@@ -6,6 +6,7 @@ import CurrentUser_SongList from "@/components/CurrentUser_SongList.vue";
 import SongPage from "@/components/SongPage.vue";
 import Buttonchangesize from "@/components/ButtonChangeSizeRight.vue";
 import EditSonglist from "@/views/EditSonglist.vue";
+import Other_User_Data from "@/views/Explore/Other_User_Data.vue";
 
 // global variables
 const token = defineModel('token')
@@ -35,6 +36,8 @@ const needtoaddSongid = ref(1); // 存储需要加入歌单的歌曲id
 
 const isFavoriteSonglist = ref(false);
 
+const showUser = ref(false);
+
 const PlaySongList = (id) => {
   emits('PlaySongList', id);
 }
@@ -59,6 +62,10 @@ const gettime = (time) => {
     return `${minute}:0${second}`;
   }
   return `${minute}:${second}`;
+}
+const extractDate = (dateTimeString) => {
+  const date = new Date(dateTimeString);
+  return date.toISOString().slice(0, 10);
 }
 
 /* 对歌单进行管理 */
@@ -271,6 +278,14 @@ function show_tag(tag) {
   return true;
 }
 
+function activeShowUser() {
+  showUser.value = true;
+}
+
+function CloseUserDetail() {
+  showUser.value = false;
+}
+
 onMounted(getFavoriteSonglists);
 onMounted(getCreatedSonglists);
 onMounted(getSonglistData);
@@ -279,7 +294,7 @@ onMounted(getSonglistData);
 <template>
   <!--  展示选择加入的歌单界面(当ShowCreatedSongList为true)-->
   <transition name="slide" appear>
-    <div class="transition-container z-50 ml-8" v-if="ShowCreatedSongList">
+    <div class="transition-container" v-if="ShowCreatedSongList">
       <CurrentUser_SongList class="w-screen mb-32" v-if="ShowCreatedSongList"
                             v-model:CurrentUser_SongListdata="createdSongLists"
                             v-model:needtoaddSongid="needtoaddSongid"
@@ -289,7 +304,7 @@ onMounted(getSonglistData);
   </transition>
   <!--  展示歌曲详细信息界面（当ShowSong为true）-->
   <transition name="slide" appear>
-    <div class="transition-container z-50 ml-8" v-if="ShowSong">
+    <div class="transition-container" v-if="ShowSong">
       <SongPage class="w-screen mb-32" v-model:currentSongId="currentSongId" v-model:username="username"
                 @CloseSong="CloseSong" @handlePlayNow="handlePlayNow"
                 v-model:token="token"></SongPage>
@@ -297,7 +312,7 @@ onMounted(getSonglistData);
   </transition>
   <!--  展示修改歌单信息界面（当showEditSonglist为true）-->
   <transition name="slide" appear>
-    <div class="transition-container z-50 ml-8" v-if="showEditSonglist">
+    <div class="transition-container" v-if="showEditSonglist">
       <EditSonglist v-model:currentUserSongList="currentUserSongList"
                     @deleteFromSongList="deleteFromSongList" @refresh="getSonglistData"
                     @CloseEditSongList="CloseEditSongList"
@@ -305,9 +320,18 @@ onMounted(getSonglistData);
                     v-model:token="token" v-model:username="username"></EditSonglist>
     </div>
   </transition>
+  <!--  展示用户信息界面-->
+  <transition name="slide" appear>
+    <div class="transition-container" v-if="showUser">
+      <Other_User_Data class="w-screen mb-32" v-model:token="token" v-model:ShowUsername="currentUserSongList.owner"
+                       v-model:username="username" @changesize="CloseUserDetail"
+                       @handlePlayNow="handlePlayNow" @handlePlayAfter="handlePlayAfter"
+                       @PlaySongList="PlaySongList"></Other_User_Data>
+    </div>
+  </transition>
 
 
-  <div v-if="showCurrentSonglist&&!ShowCreatedSongList&&!ShowSong&&!showEditSonglist" class="z-50 h-full">
+  <div v-if="showCurrentSonglist&&!ShowCreatedSongList&&!ShowSong&&!showEditSonglist&&!showUser" class="z-50 h-full">
     <!--      展示歌单信息-->
     <div class="h-80 relative">
       <div class="bg-center bg-cover bg-blur w-full h-full absolute top-0 left-0"
@@ -317,31 +341,49 @@ onMounted(getSonglistData);
       <div class="px-8 py-3 absolute top-0 w-full">
         <!--    回到选择歌单界面-->
         <buttonchangesize class="absolute" @fullsize="changesize" v-model:token="token"></buttonchangesize>
-        <!--          删除歌单-->
-        <div class="inline-block float-right cursor-pointer h-8 w-8 p-1 bg-gray-300 hover:bg-red-500 rounded-lg">
-          <svg @click="deleteSonglist"
-               class="inline-block h-6 w-6 align-top text-red-600 hover:text-red-800" width="24"
-               height="24"
-               viewBox="0 0 24 24" stroke-width="2"
-               stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-            <path stroke="none" d="M0 0h24v24H0z"/>
-            <line x1="4" y1="7" x2="20" y2="7"/>
-            <line x1="10" y1="11" x2="10" y2="17"/>
-            <line x1="14" y1="11" x2="14" y2="17"/>
-            <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12"/>
-            <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3"/>
+        <div
+            class="float-right dropdown dropdown-bottom tooltip transition duration-400 border-none z-50"
+            data-tip="歌单操作">
+          <svg class="icon" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg"
+               width="32" height="32" tabindex="0" role="button">
+            <path
+                d="M170.666667 213.333333h682.666666v85.333334H170.666667V213.333333z m0 512h682.666666v85.333334H170.666667v-85.333334z m0-256h682.666666v85.333334H170.666667v-85.333334z"
+                fill="white"></path>
           </svg>
-        </div>
-        <!--          修改歌单信息-->
-        <div class="inline-block float-right cursor-pointer h-8 w-8 p-1 mr-1 bg-gray-300 hover:bg-blue-500 rounded-lg">
-          <svg @click="activeShowEditSonglist(currentUserSongList.cover)"
-               class="inline-block h-6 w-6 align-top text-blue-600 hover:text-blue-800" width="24"
-               height="24"
-               viewBox="0 0 24 24"
-               xmlns="http://www.w3.org/2000/svg" fill="none"
-               stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/>
-          </svg>
+          <ul tabindex="0"
+              class="dropdown-content z-50 text-white text-sm"
+              style="width:50px">
+            <li class="py-2">
+              <!--          修改歌单-->
+              <div class="cursor-pointer h-8 w-8 p-1 bg-gray-300 hover:bg-blue-500 rounded-lg">
+                <svg @click="activeShowEditSonglist(currentUserSongList.cover)"
+                     class="inline-block h-6 w-6 align-top text-blue-600 hover:text-blue-800" width="24"
+                     height="24"
+                     viewBox="0 0 24 24"
+                     xmlns="http://www.w3.org/2000/svg" fill="none"
+                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/>
+                </svg>
+              </div>
+            </li>
+            <li>
+              <!--          删除歌单-->
+              <div class="cursor-pointer h-8 w-8 p-1 bg-gray-300 hover:bg-red-500 rounded-lg">
+                <svg @click="deleteSonglist"
+                     class="h-6 w-6 align-top text-red-600 hover:text-red-800" width="24"
+                     height="24"
+                     viewBox="0 0 24 24" stroke-width="2"
+                     stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                  <path stroke="none" d="M0 0h24v24H0z"/>
+                  <line x1="4" y1="7" x2="20" y2="7"/>
+                  <line x1="10" y1="11" x2="10" y2="17"/>
+                  <line x1="14" y1="11" x2="14" y2="17"/>
+                  <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12"/>
+                  <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3"/>
+                </svg>
+              </div>
+            </li>
+          </ul>
         </div>
         <div class="inline-block">
           <img :src="currentUserSongList.cover" class="img_songlist shadow-2xl">
@@ -349,20 +391,22 @@ onMounted(getSonglistData);
         <div class="inline-block ml-7 align-top">
           <div>
             <h1 class="mt-2 text-white font-extrabold text-3xl">{{ currentUserSongList.title }}</h1>
-            <p class="mt-2 text-white">{{ currentUserSongList.owner }} · {{
-                currentUserSongList.create_date
-              }}</p>
-          </div>
-          <div>
-            <details class="text-white text-sm">
-              <summary class="mt-3 text-white font-bold">介绍</summary>
-              <div class="mt-3 absolute">
-                {{ currentUserSongList.introduction }}
-              </div>
-            </details>
+            <div class="inline-block tooltip-left tooltip" data-tip="用户详情">
+              <svg @click="activeShowUser" class="cursor-pointer h-4 w-4 text-white inline-block mr-1" width="24"
+                   height="24" viewBox="0 0 24 24"
+                   stroke-width="2"
+                   stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                <path stroke="none" d="M0 0h24v24H0z"/>
+                <circle cx="12" cy="7" r="4"/>
+                <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2"/>
+              </svg>
+              <p @click="activeShowUser" class="cursor-pointer mt-2 text-white inline-block">
+                {{ currentUserSongList.owner }} ·</p>
+            </div>
+            <p class="mt-2 ml-2 text-white inline-block">{{ extractDate(currentUserSongList.create_date) }} </p>
           </div>
           <!--            标签-->
-          <div class="mt-16 inline-block">
+          <div class="mt-3 inline-block">
             <div v-if="show_tag(currentUserSongList.tag_theme)"
                  class="text-xs inline-flex items-center font-bold leading-sm px-2 py-1 bg-blue-200 text-blue-700 rounded-full">
               {{ currentUserSongList.tag_theme }}
@@ -383,6 +427,16 @@ onMounted(getSonglistData);
                  class="ml-1 text-xs inline-flex items-center font-bold leading-sm px-2 py-1 bg-purple-200 text-purple-700 rounded-full">
               {{ currentUserSongList.tag_language }}
             </div>
+          </div>
+          <div>
+            <details class="dropdown mt-3">
+              <summary class="text-gray-200">简介</summary>
+              <ul class="m-1 p-2 dropdown-content z-[1] text-gray-300 w-96">
+                <li><a>{{
+                    currentUserSongList.introduction === 'null' || currentUserSongList.introduction === null ? '无简介' : currentUserSongList.introduction
+                  }}</a></li>
+              </ul>
+            </details>
           </div>
         </div>
         <div class="mt-3">
@@ -460,7 +514,7 @@ onMounted(getSonglistData);
             <td class="text-center">{{ gettime(song.duration) }}</td>
             <td>
               <div
-                  class="z-0 mr-5 float-right dropdown dropdown-left dropdown-top my-auto tooltip transition duration-400 hover:bg-gray-600/40 bg-zinc-900 btn btn-sm border-none z-50"
+                  class="z-0 mr-5 float-right dropdown dropdown-left dropdown-top my-auto tooltip transition duration-400 hover:bg-gray-600/40 bg-zinc-900 btn btn-sm border-none"
                   data-tip="更多">
                 <svg class="icon" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg"
                      width="32" height="32" tabindex="0" role="button">
@@ -505,7 +559,8 @@ onMounted(getSonglistData);
                   <li>
                     <div class="text-sm font-semibold z-50" @click="activeAddToSongList(song.id)">
                       <svg class="icon" viewBox="0 0 24 24" stroke="currentColor"
-                           stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="22" height="22" fill="white">
+                           stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="22" height="22"
+                           fill="white">
                         <line x1="12" y1="5" x2="12" y2="19"/>
                         <line x1="5" y1="12" x2="19" y2="12"/>
                       </svg>
