@@ -175,7 +175,7 @@ const UpdateUser = () => {
   const formData = new FormData();
   formData.append('email', email.value)
   formData.append('username', username.value);
-  formData.append('password', password.value);
+  formData.append('new_password', password.value);
   formData.append('verification_code', verify_code.value);
   console.log(verify_code.value);
   const instance = axios.create({
@@ -186,7 +186,7 @@ const UpdateUser = () => {
     }
   });
   axios.defaults.withCredentials = true;
-  instance.post('/users/register', formData)
+  instance.post(' /users/change-pwd', formData)
       .then(response => {
         console.log(response.data);
         if (response.data.success === true) {
