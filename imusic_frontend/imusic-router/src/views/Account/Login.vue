@@ -7,7 +7,7 @@
     </transition>
     <div class="formx mx-auto my-auto">
       <div class="flex-column">
-        <label>Username </label>
+        <label>账 号</label>
       </div>
       <div class="inputForm">
         <svg class="icon" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg"
@@ -20,7 +20,7 @@
       </div>
 
       <div class="flex-column">
-        <label>Password </label>
+        <label>密 码</label>
       </div>
       <div class="inputForm">
         <svg height="20" viewBox="-64 0 512 512" width="20" xmlns="http://www.w3.org/2000/svg">
@@ -37,10 +37,10 @@
       </div>
 
       <div class="flex-row">
-        <span class="span" @click="gotosignup">Forgot password?</span>
+        <span class="span" @click="ForgetPassword">忘记密码？</span>
       </div>
-      <button class="button-submit" @click="show">Sign In</button>
-      <p class="p">Don't have an account? <span class="span" @click="gotosignup">Sign Up</span></p>
+      <button class="button-submit" @click="show">登 录</button>
+      <p class="p">还没有账号？ <span class="span" @click="gotosignup">注册</span></p>
     </div>
   </div>
 </template>
@@ -65,10 +65,15 @@ import {ref} from "vue";
 import axios from "axios";
 import Warning from "@/components/Warning.vue";
 import {defineEmits, defineModel} from "vue"
+import Forget_Password from "@/views/Account/Forget_Password.vue";
 
-const emits = defineEmits(['ChangerRegisterMode', 'changeMode', 'getsonglistinit']);
+const emits = defineEmits(['ChangerRegisterMode', 'changeMode', 'getsonglistinit','ChangeForgetMode']);
 const token=defineModel('token');
 const UserRole=defineModel('UserRole');
+
+const ForgetPassword=()=>{
+  emits('ChangeForgetMode');
+}
 const show = () => {
   const button = document.querySelector('.button-submit');
   const rect = button.getBoundingClientRect();

@@ -14,6 +14,7 @@ import MusicPlayer_Cell from "@/views/MusicPlayer/MusicPlayer_Cell.vue";
 import AdminPage_Main from "@/views/Admin/AdminPage_Main.vue";
 import CreatedSonglist_Main from "@/views/CreatedSongList/CreatedSonglist_Main.vue";
 import FavoriteSonglist_Main from "@/views/FavoriteSongList/FavoriteSonglist_Main.vue";
+import Forget_Password from "@/views/Account/Forget_Password.vue";
 
 const token = ref('');
 const needshowsonglistpage = ref(false);
@@ -63,6 +64,10 @@ const changeMode = (newMode) => {
 
 const ChangerRegisterMode = () => {
   RegisterMode.value = !RegisterMode.value;
+  if(ShowForget.value){
+    ShowForget.value=false;
+    RegisterMode.value=false;
+  }
 }
 
 const refreshNewest_Songs_Page = () => {
@@ -386,7 +391,7 @@ const getPageinit = () => {
   GetHomePageRecommendLatest();
 }
 
-const HotSongs=ref([]);
+const HotSongs = ref([]);
 
 const GetHomePageRecommendLatest = () => {
   const instance = axios.create({
@@ -488,7 +493,7 @@ const CloseWarning = () => {
   WarningShow.value = false;
 }
 
-const PlayLikeSongs=()=>{
+const PlayLikeSongs = () => {
   console.log('ok');
   const instance = axios.create({
     baseURL: 'http://182.92.100.66:5000',
@@ -498,9 +503,9 @@ const PlayLikeSongs=()=>{
     }
   });
   axios.defaults.withCredentials = true;
-  instance.get('/like/songs',{
-    params:{
-      'username':username.value
+  instance.get('/like/songs', {
+    params: {
+      'username': username.value
     }
   })
       .then(response => {
@@ -512,10 +517,10 @@ const PlayLikeSongs=()=>{
       })
 }
 
-const autoLogin=()=>{
-  const userinfo=localStorage.getItem('user-info');
-  if(userinfo!=null){
-    const user_object=JSON.parse(localStorage.getItem('user-info'));
+const autoLogin = () => {
+  const userinfo = localStorage.getItem('user-info');
+  if (userinfo != null) {
+    const user_object = JSON.parse(localStorage.getItem('user-info'));
     console.log(user_object);
     const instance = axios.create({
       baseURL: 'http://182.92.100.66:5000',
@@ -526,20 +531,26 @@ const autoLogin=()=>{
     });
     axios.defaults.withCredentials = true;
     instance.get('/check-token/')
-        .then(response=>{
-          if(response.data.success){
-            HasLogin.value=true;
-            username.value=user_object.username;
-            avatar.value=user_object.avatar;
-            token.value=user_object.token;
-            UserRole.value=user_object.UserRole;
+        .then(response => {
+          if (response.data.success) {
+            HasLogin.value = true;
+            username.value = user_object.username;
+            avatar.value = user_object.avatar;
+            token.value = user_object.token;
+            UserRole.value = user_object.UserRole;
             getsonglistinit(user_object.username);
           }
         })
-        .catch(error=>{
+        .catch(error => {
           console.log(error.response.data);
         })
   }
+}
+
+const ShowForget = ref(false);
+const ChangeForgetMode = () => {
+  ShowForget.value = !ShowForget.value;
+  console.log(ShowForget.value);
 }
 
 onMounted(getPageinit);
@@ -548,7 +559,8 @@ onMounted(autoLogin);
 
 <template>
   <div class="w-full absolute top-0 left-1/2 transform -translate-x-1/2" v-if="WarningShow">
-    <Warning :message="message" @CloseWarning="CloseWarning" class="mx-auto" v-model:token="token" v-model:Warningshow="WarningShow"></Warning>
+    <Warning :message="message" @CloseWarning="CloseWarning" class="mx-auto" v-model:token="token"
+             v-model:Warningshow="WarningShow"></Warning>
   </div>
   <div class="flex w-full h-screen bg-zinc-900">
     <SideBar :HasLogin="HasLogin" :avatar="avatar" @checkLogin="checkLogin" v-model:mode="mode" :username="username"
@@ -561,11 +573,17 @@ onMounted(autoLogin);
     <div class="w-full lg:w-5/6 h-full mr-0">
       <div class="bg-zinc-900 h-screen overflow-auto">
         <div v-if="mode==='0'&&!HasLogin" class="w-full h-full z-50">
-          <Login v-if="!RegisterMode" @ChangerRegisterMode="ChangerRegisterMode" v-model:username="username"
+          <Login v-if="!RegisterMode&&!ShowForget" @ChangerRegisterMode="ChangerRegisterMode"
+                 v-model:username="username"
                  @changeMode="changeMode" v-model:HasLogin="HasLogin" @getsonglistinit="getsonglistinit"
-                 v-model:avatar="avatar" v-model:token="token" v-model:UserRole="UserRole"></Login>
-          <Sign_up v-if="RegisterMode" @ChangerRegisterMode="ChangerRegisterMode" v-model:username="username"
+                 v-model:avatar="avatar" v-model:token="token" v-model:UserRole="UserRole"
+                 @ChangeForgetMode="ChangeForgetMode"></Login>
+          <Sign_up v-if="RegisterMode&&!ShowForget" @ChangerRegisterMode="ChangerRegisterMode"
+                   v-model:username="username"
                    v-model:token="token"></Sign_up>
+          <Forget_Password v-if="!RegisterMode&&ShowForget" @ChangerRegisterMode="ChangerRegisterMode"
+                           v-model:username="username"
+                           v-model:token="token"></Forget_Password>
         </div>
         <Personal_Center v-model:userdata="userdata" v-model:HasLogin="HasLogin" v-model:username="username"
                          v-if="HasLogin&&mode==='0'" @updateavatar="updateavatar"
@@ -578,7 +596,8 @@ onMounted(autoLogin);
                        v-model:userlike="userlike" @refreshNewest_Songs_Page="refreshNewest_Songs_Page"
                        v-model:songlistlast="songlistlast" v-model:HomePageRecommendLatest="HomePageRecommendLatest"
                        v-model:token="token" v-model:SongListId="SongListId"
-                       @changesonglist="changesonglist" @PlaySongList="PlaySongList" v-model:HotSongs="HotSongs"></HomePage_Main>
+                       @changesonglist="changesonglist" @PlaySongList="PlaySongList"
+                       v-model:HotSongs="HotSongs"></HomePage_Main>
         <ExplorePage_Main v-model:username="username" v-if="mode==='2'" v-model:token="token"
                           @handlePlayNow="handlePlayNow" @handlePlayAfter="handlePlayAfter"></ExplorePage_Main>
         <SettingPage_Main v-if="mode==='3'" v-model:token="token"></SettingPage_Main>
@@ -588,11 +607,13 @@ onMounted(autoLogin);
         <CreatedSonglist_Main v-if="mode==='6'"
                               @PlaySongList="PlaySongList" @handlePlayAfter="handlePlayAfter"
                               @handlePlayNow="handlePlayNow" @PlayLikeSongs="PlayLikeSongs"
-                              v-model:token="token" v-model:username="username" v-model:HasLogin="HasLogin" ></CreatedSonglist_Main>
+                              v-model:token="token" v-model:username="username"
+                              v-model:HasLogin="HasLogin"></CreatedSonglist_Main>
         <FavoriteSonglist_Main v-if="mode==='8'"
                                @PlaySongList="PlaySongList" @handlePlayAfter="handlePlayAfter"
                                @handlePlayNow="handlePlayNow"
-                               v-model:token="token" v-model:username="username" v-model:HasLogin="HasLogin"></FavoriteSonglist_Main>
+                               v-model:token="token" v-model:username="username"
+                               v-model:HasLogin="HasLogin"></FavoriteSonglist_Main>
         <AdminPage_Main v-model:token="token" v-if="mode==='7'"></AdminPage_Main>
       </div>
     </div>

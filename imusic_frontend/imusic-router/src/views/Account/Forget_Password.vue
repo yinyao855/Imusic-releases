@@ -7,7 +7,7 @@
     </transition>
     <div class="formx mx-auto my-auto">
       <div class="flex-column">
-        <label>邮 箱 </label>
+        <label>Email </label>
       </div>
       <div class="inputForm">
         <svg class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"
@@ -98,7 +98,7 @@
       <div class="flex-row">
         <span class="span" @click="gotologin">Log in</span>
       </div>
-      <button class="button-submit" @click="show">Sign Up</button>
+      <button class="button-submit" @click="UpdateUser">Sign Up</button>
     </div>
   </div>
 </template>
@@ -145,7 +145,7 @@ const gotologin = () => {
   emits('ChangerRegisterMode');
 }
 
-const show = () => {
+const UpdateUser = () => {
   const button = document.querySelector('.button-submit');
   const rect = button.getBoundingClientRect();
   const x = rect.left + rect.width / 2 + window.scrollX;
