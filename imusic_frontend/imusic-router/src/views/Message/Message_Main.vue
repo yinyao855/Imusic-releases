@@ -67,12 +67,14 @@ function getMessage() {
 
 const playSongMessage = ref([])
 const createMessage = ref([])
+const systemMessage = ref([])
 
 function getSystemMessage() {
   const length = ref(0);
   length.value = Message.value.length;
   for (let i = 0; i < length.value; i++) {
     if (Message.value[i].type === 1) {
+      systemMessage.value.push(Message.value[i]);
       if (Message.value[i].title === "创作周报") {
         createMessage.value.push(Message.value[i]);
       }
@@ -95,7 +97,7 @@ onMounted(getMessage);
     <div :class="[NaviClass5, 'text-transition']" @click="changeNaviMode(5)" style="line-height: 56px">私信通知</div>
   </div>
   <SystemNotifications v-if="NaviMode==='1'" v-model:token="token" v-model:username="username" v-model:Message="Message"
-                       v-model:playSongMessage="playSongMessage" v-model:createMessage="createMessage"
+                       v-model:playSongMessage="playSongMessage" v-model:createMessage="createMessage" v-model:systemMessage="systemMessage"
   ></SystemNotifications>
   <CommentNotifications v-if="NaviMode==='2'" v-model:token="token" v-model:username="username"
                         v-model:Message="Message"
