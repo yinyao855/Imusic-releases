@@ -93,7 +93,7 @@ const initUserImage = () => {
     if (Comment.value[i].content.length > 20) {
       info.value[i] = Comment.value[i].content;
       showDetail.value[i] = true;
-      showInfo.value[i] = true;
+      showInfo.value[i] = false;
     } else {
       info.value[i] = '';
       showDetail.value[i] = false;
