@@ -26,19 +26,16 @@ onMounted(getSystemMessage)
 </script>
 
 <template>
-  <table class="table mb-32 text-center w-1/2 m-auto">
+  <table class="table mb-32 mt-10 text-center w-3/4 m-auto">
     <thead>
     <tr>
-      <th class="">系统通知</th>
-      <th class="">内容</th>
-      <th class="">日期</th>
     </tr>
     </thead>
     <tbody>
-    <tr v-for="(message, index) in systemMessage" class="text-white">
-      <td>{{ message.title }}</td>
+    <tr v-for="(message, index) in systemMessage" class="text-white hover:bg-gray-800">
+      <td>{{ message.sender }}</td>
       <td>{{ message.content }}</td>
-      <td>{{ message.send_date }}</td>
+      <td class="text-right">{{ message.send_date }}</td>
     </tr>
     </tbody>
   </table>
