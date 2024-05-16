@@ -90,7 +90,7 @@ const initUserImage = () => {
         });
   }
   for (let i = 0; i < Comment.value.length; i++) {
-    if (Comment.value[i].content.length > 20) {
+    if (Comment.value[i].content.length > 31) {
       info.value[i] = Comment.value[i].content;
       showDetail.value[i] = true;
       showInfo.value[i] = false;
@@ -152,7 +152,7 @@ watch(Comment, () => {
 </script>
 
 <template>
-  <div class="duration-300 h-full w-full overflow-visible">
+  <div class="duration-300 h-full w-full overflow-visible transition ease-in-out delay-150">
     <div class="text-center text-3xl  font-bold text-white p-3 w-full h-1/10">评论</div>
     <div class="formx2 w-5/6 flexible h-5/6">
       <div class="h-full overflow-auto w-5/6">
@@ -161,37 +161,33 @@ watch(Comment, () => {
               (showDetail[index] === true) ? '80px' : '60px'
             }" style="position:relative"
             :class="index % 2 === 0 ? 'bg-even' : 'bg-odd'"
-            class="w-full rounded-lg text-white transition ease-in-out delay-100 hover:bg-transparent/20 grid grid-cols-10 grid-rows-8 gap-2"
+            class="w-full rounded-lg text-white transition ease-in-out delay-100 hover:bg-transparent/20 grid grid-cols-12 grid-rows-8 gap-2"
             v-for="(item, index) in Comment" :key="index">
           <img
-              class="icon aspect-square fill-white mr-1 my-auto rounded-full row-start-1 row-span-3 col-start-1 col-span-1 w-19 h-19 mt-1"
-              :src="userImage[index]" alt="" v-if="showInfo[index]!==true">
+              class="icon aspect-square fill-white mr-1 my-auto rounded-full row-start-1 col-start-1 w-10 h-10 mt-1"
+              :src="userImage[index]" alt="">
           <div class="row-start-1 row-span-1 col-start-2 col-span-2 my-auto font-thin"
-               v-if="showInfo[index]===false">
+               >
             <div class=" text-sm">{{ item.user }}：</div>
           </div>
-          <div class="row-start-3 row-span-1 col-start-2 col-span-2 my-auto font-thin"
+          <div class="row-start-6 row-span-1 col-start-2 col-span-2 my-auto font-thin"
                v-if="showInfo[index]===false">
             <div style=" font-size:0.65rem;line-height:0.8rem"> {{ item.comment_date }}</div>
           </div>
-          <div class="row-start-2 row-span-2 col-start-3 col-span-7 my-auto"
+          <div class="row-start-3 row-span-2 col-start-2 col-span-10 my-auto"
                v-if="showInfo[index]===false">
             <p class="m-auto text-l truncate">{{ item.content }}</p>
           </div>
-          <transition name="fade">
-            <button class="row-start-4 row-span-1 col-start-3 col-span-2 my-auto font-thin text-cyan-600  hover:underline"
+            <button class="row-start-5 row-span-1 col-start-3 col-span-2 my-auto font-thin text-cyan-600  hover:underline "
                  v-if="showInfo[index]===false&&showDetail[index]===true" @click="on(index)">
               <div class="text-l font-black">展开</div>
             </button>
-          </transition>
-          <transition name="fade">
             <button class="col-start-3 col-span-2 my-auto font-thin text-cyan-600  hover:underline ml-10"
-                    style="position:absolute;bottom:0"
+                    style="position:absolute;bottom:5px"
                     v-if="showInfo[index]===true" @click="off(index)">
               <div class="text-l font-black">收起</div>
             </button>
-          </transition>
-          <div class="row-start-2 row-span-2 col-start-10 col-span-1 w-1/2" @click="deleteComment(index)"
+          <div class="row-start-4 row-span-2 col-start-12 col-span-1 w-1/2" @click="deleteComment(index)"
                v-if="(sameUser[index])">
             <svg class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"
                  width="24" height="24">
@@ -205,7 +201,7 @@ watch(Comment, () => {
           </div>
           <hr class="m-0.5 border-gray-500 row-start-8 col-start-3 col-span-9"
               v-if="showInfo[index]===false"/>
-          <div class="text-l w-[500px] h-full my-auto text-wrap ml-10 flex justify-center items-center"
+          <div class="row-start-2 row-span-2 col-start-2 col-span-10 my-auto"
                v-if="showInfo[index]===true">
             <p class="m-auto text-l mt-2">{{ info[index] }}</p>
           </div>
