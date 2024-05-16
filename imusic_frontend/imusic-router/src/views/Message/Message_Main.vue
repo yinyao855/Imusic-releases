@@ -56,12 +56,33 @@ function getMessage() {
   instance.get(web)
       .then(response => {
         Message.value = response.data.data;
+        getSystemMessage();
         console.log(Message.value);
       })
       .catch(error => {
         console.log(error.data);
         console.log(token.value)
       })
+}
+
+const playSongMessage = ref([])
+const createMessage = ref([])
+const systemMessage = ref([])
+
+function getSystemMessage() {
+  const length = ref(0);
+  length.value = Message.value.length;
+  for (let i = 0; i < length.value; i++) {
+    if (Message.value[i].type === 1) {
+      systemMessage.value.push(Message.value[i]);
+      if (Message.value[i].title === "创作周报") {
+        createMessage.value.push(Message.value[i]);
+      }
+      if (Message.value[i].title === "听歌周报") {
+        playSongMessage.value.push(Message.value[i]);
+      }
+    }
+  }
 }
 
 onMounted(getMessage);
@@ -76,14 +97,18 @@ onMounted(getMessage);
     <div :class="[NaviClass5, 'text-transition']" @click="changeNaviMode(5)" style="line-height: 56px">私信通知</div>
   </div>
   <SystemNotifications v-if="NaviMode==='1'" v-model:token="token" v-model:username="username" v-model:Message="Message"
+                       v-model:playSongMessage="playSongMessage" v-model:createMessage="createMessage" v-model:systemMessage="systemMessage"
   ></SystemNotifications>
-  <CommentNotifications v-if="NaviMode==='2'" v-model:token="token" v-model:username="username" v-model:Message="Message"
+  <CommentNotifications v-if="NaviMode==='2'" v-model:token="token" v-model:username="username"
+                        v-model:Message="Message"
   ></CommentNotifications>
   <LikeNotifications v-if="NaviMode==='3'" v-model:token="token" v-model:username="username" v-model:Message="Message"
   ></LikeNotifications>
-  <SubscribeNotifications v-if="NaviMode==='4'" v-model:token="token" v-model:username="username" v-model:Message="Message"
+  <SubscribeNotifications v-if="NaviMode==='4'" v-model:token="token" v-model:username="username"
+                          v-model:Message="Message"
   ></SubscribeNotifications>
-  <PrivateNotifications v-if="NaviMode==='5'" v-model:token="token" v-model:username="username" v-model:Message="Message"
+  <PrivateNotifications v-if="NaviMode==='5'" v-model:token="token" v-model:username="username"
+                        v-model:Message="Message"
   ></PrivateNotifications>
 </template>
 
