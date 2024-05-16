@@ -18,9 +18,12 @@ const userrole = computed(() => {
   }
 })
 
+const CountNotRead=defineModel('CountNotRead');
+
 const changeHasLogin = () => {
   username.value = '点击登录'
   HasLogin.value = !HasLogin.value;
+  CountNotRead.value=0;
   localStorage.removeItem('user-info');
 }
 
