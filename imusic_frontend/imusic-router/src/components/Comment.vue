@@ -7,10 +7,7 @@ const emit = defineEmits(['fullsize', 'togglePlay', 'update', 'back', 'next']);
 
 const token = defineModel('token')
 const showComment = defineModel('showComment');
-const backComment = () => {
-  showComment.value = false;
-  console.log(showComment.value);
-}
+
 const songID = defineModel('songID');
 const Comment = defineModel('Comment');
 const addCommentInfo = ref('');
@@ -95,15 +92,16 @@ const initUserImage = () => {
   for (let i = 0; i < Comment.value.length; i++) {
     if (Comment.value[i].content.length > 20) {
       info.value[i] = Comment.value[i].content;
+      showDetail.value[i] = true;
       showInfo.value[i] = true;
     } else {
       info.value[i] = '';
+      showDetail.value[i] = false;
       showInfo.value[i] = false;
     }
     sameUser.value[i] = (Comment.value[i].user === username.value);
     //comment_date仅保留年月日
     Comment.value[i].comment_date = Comment.value[i].comment_date.split('T')[0];
-    mouseOn.value[i] = false;
   }
 }
 const deleteComment = (index) => {
@@ -136,14 +134,14 @@ const deleteComment = (index) => {
 }
 const info = ref([]);
 const showInfo = ref([]);
-const mouseOn = ref([]);
+const showDetail = ref([]);
 const sameUser = ref([]);
 const username = defineModel('username');
-const over = (index) => {
-  mouseOn.value[index] = true;
+function on(index) {
+  showInfo.value[index] = true;
 }
-const leave = (index) => {
-  mouseOn.value[index] = false;
+function off(index) {
+  showInfo.value[index] = false;
 }
 onMounted(() => {
   getSongComment();
@@ -159,25 +157,40 @@ watch(Comment, () => {
     <div class="formx2 w-5/6 flexible h-5/6">
       <div class="h-full overflow-auto w-5/6">
         <div
-            :style="{ height: (showInfo[index] === true && mouseOn[index] === true) ? (info[index].length/30*25+40)+'px' : '60px'}"
+            :style="{ height: (showInfo[index] === true) ? (info[index].length/30*25+50)+'px' :
+              (showDetail[index] === true) ? '80px' : '60px'
+            }" style="position:relative"
             :class="index % 2 === 0 ? 'bg-even' : 'bg-odd'"
-            class="w-full rounded-l-lg text-white transition ease-in-out delay-100 hover:bg-transparent/20 grid grid-cols-10 grid-rows-4 gap-2"
-            v-for="(item, index) in Comment" :key="index" @mouseover="over(index)" @mouseleave="leave(index)">
+            class="w-full rounded-lg text-white transition ease-in-out delay-100 hover:bg-transparent/20 grid grid-cols-10 grid-rows-8 gap-2"
+            v-for="(item, index) in Comment" :key="index">
           <img
               class="icon aspect-square fill-white mr-1 my-auto rounded-full row-start-1 row-span-3 col-start-1 col-span-1 w-19 h-19 mt-1"
-              :src="userImage[index]" alt="" v-if="showInfo[index]!==true||mouseOn[index]!==true">
+              :src="userImage[index]" alt="" v-if="showInfo[index]!==true">
           <div class="row-start-1 row-span-1 col-start-2 col-span-2 my-auto font-thin"
-               v-if="showInfo[index]===false||mouseOn[index]===false">
+               v-if="showInfo[index]===false">
             <div class=" text-sm">{{ item.user }}：</div>
           </div>
-          <div class="row-start-2 row-span-1 col-start-2 col-span-2 my-auto font-thin"
-               v-if="showInfo[index]===false||mouseOn[index]===false">
+          <div class="row-start-3 row-span-1 col-start-2 col-span-2 my-auto font-thin"
+               v-if="showInfo[index]===false">
             <div style=" font-size:0.65rem;line-height:0.8rem"> {{ item.comment_date }}</div>
           </div>
           <div class="row-start-2 row-span-2 col-start-3 col-span-7 my-auto"
-               v-if="showInfo[index]===false||mouseOn[index]===false">
+               v-if="showInfo[index]===false">
             <p class="m-auto text-l truncate">{{ item.content }}</p>
           </div>
+          <transition name="fade">
+            <button class="row-start-4 row-span-1 col-start-3 col-span-2 my-auto font-thin text-cyan-600  hover:underline"
+                 v-if="showInfo[index]===false&&showDetail[index]===true" @click="on(index)">
+              <div class="text-l font-black">展开</div>
+            </button>
+          </transition>
+          <transition name="fade">
+            <button class="col-start-3 col-span-2 my-auto font-thin text-cyan-600  hover:underline ml-10"
+                    style="position:absolute;bottom:0"
+                    v-if="showInfo[index]===true" @click="off(index)">
+              <div class="text-l font-black">收起</div>
+            </button>
+          </transition>
           <div class="row-start-2 row-span-2 col-start-10 col-span-1 w-1/2" @click="deleteComment(index)"
                v-if="(sameUser[index])">
             <svg class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"
@@ -190,10 +203,10 @@ watch(Comment, () => {
                   fill="#D81E06"></path>
             </svg>
           </div>
-          <hr class="m-0.5 border-gray-500 row-start-4 col-start-3 col-span-9"
-              v-if="showInfo[index]===false||mouseOn[index]===false"/>
+          <hr class="m-0.5 border-gray-500 row-start-6 col-start-3 col-span-9"
+              v-if="showInfo[index]===false"/>
           <div class="text-l w-[500px] h-full my-auto text-wrap ml-10 flex justify-center items-center"
-               v-if="showInfo[index]===true&&mouseOn[index]===true">
+               v-if="showInfo[index]===true">
             <p class="m-auto text-l mt-2">{{ info[index] }}</p>
           </div>
         </div>
@@ -247,11 +260,4 @@ watch(Comment, () => {
   border-radius: 8px;
 }
 
-.bg-odd {
-  background-color: rgba(255, 255, 255, 0.05);
-}
-
-.bg-even {
-  background-color: rgba(255, 255, 255, 0.15);
-}
 </style>
