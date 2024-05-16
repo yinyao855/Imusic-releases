@@ -203,7 +203,7 @@ watch(Comment, () => {
                   fill="#D81E06"></path>
             </svg>
           </div>
-          <hr class="m-0.5 border-gray-500 row-start-6 col-start-3 col-span-9"
+          <hr class="m-0.5 border-gray-500 row-start-8 col-start-3 col-span-9"
               v-if="showInfo[index]===false"/>
           <div class="text-l w-[500px] h-full my-auto text-wrap ml-10 flex justify-center items-center"
                v-if="showInfo[index]===true">
