@@ -30,13 +30,7 @@ const changeNaviMode = (newMode) => {
   NaviMode.value = newMode.toString();
   console.log(NaviMode.value);
 }
-const uploadSong = (newOne) => {
-  if (upload.value === '1') {
-    upload.value = '0';
-    return;
-  }
-  upload.value = newOne.toString();
-}
+
 const uploadSongSuccess = () => {
   upload.value = '0';
 }

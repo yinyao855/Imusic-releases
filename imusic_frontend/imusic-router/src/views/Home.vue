@@ -15,6 +15,7 @@ import AdminPage_Main from "@/views/Admin/AdminPage_Main.vue";
 import CreatedSonglist_Main from "@/views/CreatedSongList/CreatedSonglist_Main.vue";
 import FavoriteSonglist_Main from "@/views/FavoriteSongList/FavoriteSonglist_Main.vue";
 import Forget_Password from "@/views/Account/Forget_Password.vue";
+import Message_main from "@/views/Message/Message_Main.vue";
 
 const token = ref('');
 const needshowsonglistpage = ref(false);
@@ -614,6 +615,10 @@ onMounted(autoLogin);
                                @handlePlayNow="handlePlayNow"
                                v-model:token="token" v-model:username="username"
                                v-model:HasLogin="HasLogin"></FavoriteSonglist_Main>
+        <Message_main v-if="mode==='9'" @PlaySongList="PlaySongList" @handlePlayAfter="handlePlayAfter"
+                      @handlePlayNow="handlePlayNow"
+                      v-model:token="token" v-model:username="username"
+                      v-model:HasLogin="HasLogin"></Message_main>
         <AdminPage_Main v-model:token="token" v-if="mode==='7'"></AdminPage_Main>
       </div>
     </div>
