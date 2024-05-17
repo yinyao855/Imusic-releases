@@ -26,8 +26,8 @@ function formatDateTime(dateTimeStr) {
   return `${year}年${formattedMonth}月${formattedDay}日`;
 }
 
-function activeShowSystemMessage(message) {
-  currentMessage.value = message;
+function activeShowSystemMessage(index) {
+  currentMessage.value = Message.value[index];
   showSystemMessage.value = true;
 }
 
@@ -46,15 +46,13 @@ function closeShowSystemMessage() {
                       v-model:token="token"></SystemMessages>
     </div>
   </transition>
-
-  <div class="m-auto w-4/5" v-if="!showSystemMessage">
-    <div class="text-white text-lg mt-5 mb-3 text-center">系统通知</div>
-    <table class="table m-auto w-4/5 text-center">
+  <div class="overflow-x-auto px-10" v-if="!showSystemMessage">
+    <table class="table">
       <tbody>
-      <tr v-for="(message, index) in Message" class="text-white hover:bg-gray-800 h-14 border-b-gray-500"
-          @click="activeShowSystemMessage(message)">
-        <td>
-          <svg v-if="message.title === '听歌周报'" class="h-8 w-8 mr-5 align-middle text-cyan-400 inline-block"
+      <tr class="text-white transition duration-400 hover:bg-gray-600/40 rounded-md"
+          v-for="(item, index) in Message" :key="index" @click="activeShowSystemMessage(index)">
+        <td class="w-24">
+          <svg v-if="item.title === '听歌周报'" class="h-10 w-10 align-middle text-cyan-400 inline-block"
                viewBox="0 0 24 24"
                fill="none" stroke="currentColor" stroke-width="2"
                stroke-linecap="round" stroke-linejoin="round">
@@ -62,15 +60,19 @@ function closeShowSystemMessage() {
             <path
                 d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/>
           </svg>
-          <svg v-if="message.title === '创作周报'" class="h-8 w-8 mr-5 align-middle text-pink-400 inline-block"
+          <svg v-if="item.title === '创作周报'" class="h-10 w-10 align-middle text-pink-400 inline-block"
                width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill="none"
                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M12 20h9"/>
             <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
           </svg>
-          <p class="inline-block align-middle text-gray-300">{{ message.title }}</p>
         </td>
-        <td class="text-gray-500 opacity-30">{{ formatDateTime(message.send_date) }}</td>
+        <td class="align-middle">
+          <div class="font-bold text-xl">{{ item.title }}</div>
+        </td>
+        <td class="w-40 text-sm opacity-50">
+          {{ formatDateTime(item.send_date) }}
+        </td>
       </tr>
       </tbody>
     </table>

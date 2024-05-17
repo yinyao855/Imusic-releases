@@ -27,7 +27,7 @@ onMounted(getMessageArr)
   <buttonchangesize class="left-4 top-4" @fullsize="closeShowSystemMessage" v-model:token="token"></buttonchangesize>
   <div>
     <div class="w-full h-14 flex">
-      <div class="text-4xl text-indigo-200 text-center mx-auto">{{ props.currentMessage.title }}</div>
+      <div class="text-4xl text-gray-100 text-center mx-auto">{{ props.currentMessage.title }}</div>
     </div>
     <table class="text-white m-auto w-3/5">
       <tbody>
