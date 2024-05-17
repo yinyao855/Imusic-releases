@@ -685,7 +685,7 @@ onMounted(autoLogin);
                       v-model:MessageType4="MessageType4"
                       v-model:MessageType5="MessageType5"
                       v-model:token="token" v-model:username="username"
-                      v-model:HasLogin="HasLogin"></Message_main>
+                      v-model:HasLogin="HasLogin" @GetMessage="GetMessage"></Message_main>
         <AdminPage_Main v-model:token="token" v-if="mode==='7'"></AdminPage_Main>
       </div>
     </div>

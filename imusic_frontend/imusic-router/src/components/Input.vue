@@ -5,6 +5,7 @@ import axios from "axios";
 const username = defineModel('username')
 const SendContent = ref('');
 const token = defineModel('token')
+const emits=defineEmits(['GetMessage']);
 const SendOperation = () => {
   const instance = axios.create({
     baseURL: 'http://182.92.100.66:5000',
@@ -20,6 +21,7 @@ const SendOperation = () => {
   instance.post('/messages/send', formData)
       .then(response => {
         console.log(response.data.success);
+        emits('GetMessage');
       })
       .catch(error => {
         console.log(error.response.data);

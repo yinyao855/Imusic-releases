@@ -17,6 +17,7 @@ const MessageType2 = defineModel('MessageType2');
 const MessageType3 = defineModel('MessageType3');
 const MessageType4 = defineModel('MessageType4');
 const MessageType5 = defineModel('MessageType5');
+const emits=defineEmits(['GetMessage']);
 const NaviClass1 = computed(() => ({
   'text-base inline-block mx-3 w-30 text-center rounded-lg antialiased tracking-widest font-medium transition-colors duration-400 hover:bg-gray-600/40': true,
   'text-cyan-700 underline underline-offset-8 decoration-2': NaviMode.value === '1',
@@ -78,6 +79,10 @@ const GetHasRead = () => {
   }
 }
 
+const GetMessage=()=>{
+  emits('GetMessage')
+}
+
 onMounted(GetHasRead)
 </script>
 
@@ -125,20 +130,20 @@ onMounted(GetHasRead)
       </svg>
     </div>
   </div>
-<!--      <SystemNotifications v-if="NaviMode==='1'" v-model:token="token" v-model:username="username"-->
-<!--                           v-model:Message="MessageType1"-->
-<!--      ></SystemNotifications>-->
-<!--    <CommentNotifications v-if="NaviMode==='2'" v-model:token="token" v-model:username="username"-->
-<!--                          v-model:Message="MessageType2"-->
-<!--    ></CommentNotifications>-->
-<!--    <LikeNotifications v-if="NaviMode==='3'" v-model:token="token" v-model:username="username"-->
-<!--                       v-model:Message="MessageType3"-->
-<!--    ></LikeNotifications>-->
-<!--    <SubscribeNotifications v-if="NaviMode==='4'" v-model:token="token" v-model:username="username"-->
-<!--                            v-model:Message="MessageType4"-->
-<!--    ></SubscribeNotifications>-->
+      <SystemNotifications v-if="NaviMode==='1'" v-model:token="token" v-model:username="username"
+                           v-model:Message="MessageType1"
+      ></SystemNotifications>
+    <CommentNotifications v-if="NaviMode==='2'" v-model:token="token" v-model:username="username"
+                          v-model:Message="MessageType2"
+    ></CommentNotifications>
+    <LikeNotifications v-if="NaviMode==='3'" v-model:token="token" v-model:username="username"
+                       v-model:Message="MessageType3"
+    ></LikeNotifications>
+    <SubscribeNotifications v-if="NaviMode==='4'" v-model:token="token" v-model:username="username"
+                            v-model:Message="MessageType4"
+    ></SubscribeNotifications>
   <PrivateNotifications class="w-full" v-model:token="token" v-model:username="username"
-                        v-model:Message="MessageType5" v-if="NaviMode==='5'"
+                        v-model:Message="MessageType5" v-if="NaviMode==='5'" @GetMessage="GetMessage"
   ></PrivateNotifications>
   </div>
 </template>

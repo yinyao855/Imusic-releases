@@ -7,23 +7,20 @@ const token = defineModel("token");
 const username = defineModel("username");
 const Message = defineModel("Message");
 const ClassifiedMessage = ref([]);
+const emits=defineEmits(['GetMessage']);
 
 
 function formatDateTime(dateTimeStr) {
   const date = new Date(dateTimeStr);
 
   const year = date.getFullYear();
-  const month = date.getMonth() + 1; // 月份从 0 开始，所以要加 1
+  const month = date.getMonth() + 1;
   const day = date.getDate();
   const hours = date.getHours();
   const minutes = date.getMinutes();
-
-  // 格式化月份和日期，确保在数字小于 10 时前面补零
   const formattedMonth = month < 10 ? '0' + month : month;
   const formattedDay = day < 10 ? '0' + day : day;
-
-  // 返回格式化后的日期时间字符串
-  return `${year}年${formattedMonth}月${formattedDay}日 ${hours}:${minutes}`;
+  return `${year}年${formattedMonth}月${formattedDay}日 ${hours}:${minutes<10?'0'+minutes:minutes}`;
 }
 
 
@@ -36,7 +33,7 @@ const Classify = () => {
           let avatar = Message.value[i].avatar;
           ClassifiedMessage.value[j] = Message.value[i];
           Message.value[i]['avatar'] = avatar;
-          ClassifiedMessage.value[j].send_date = formatDateTime(ClassifiedMessage.value[j].send_date);
+          // ClassifiedMessage.value[j].send_date = formatDateTime(ClassifiedMessage.value[j].send_date);
         }
         flag = true;
         break;
@@ -58,7 +55,6 @@ const Classify = () => {
             let length = ClassifiedMessage.value.length;
             length = length - 1;
             ClassifiedMessage.value[length]['avatar'] = response.data.data.avatar;
-            ClassifiedMessage.value[length].send_date = formatDateTime(ClassifiedMessage.value[length].send_date);
           })
           .catch(error => {
             console.log(error.response.data);
@@ -72,6 +68,10 @@ const Classify = () => {
           })
     }
   }
+  // let length=ClassifiedMessage.value.length;
+  // for(let i=0;i<length;++i){
+  //   ClassifiedMessage.value[i].send_date = formatDateTime(ClassifiedMessage.value[i].send_date);
+  // }
 }
 const ShowMessageDetail = ref(false);
 const ForeignUser = ref('');
@@ -84,16 +84,27 @@ const ActiveMessageDetail = (index) => {
   ShowMessageDetail.value = true;
   OtherAvatar.value = ClassifiedMessage.value[index].avatar;
 }
+
+const GetMessage=()=>{
+  emits('GetMessage');
+}
+
+const ChangeSize=()=>{
+  ShowMessageDetail.value=false;
+}
+
 onMounted(Classify)
 watch(Message, Classify)
 </script>
 
 <template>
-  <div class="w-full h-full" v-if="ShowMessageDetail">
-    <Message_Detail v-model:username="username" v-model:token="token" v-model:ForeignUser="ForeignUser"
-                    v-model:Message="Message" v-model:MyAvatar="MyAvatar"
-                    v-model:OtherAvatar="OtherAvatar"></Message_Detail>
-  </div>
+  <transition name="slide" appear>
+    <div class="transition-container z-50 ml-8" v-if="ShowMessageDetail">
+      <Message_Detail v-model:username="username" v-model:token="token" v-model:ForeignUser="ForeignUser"
+                      v-model:Message="Message" v-model:MyAvatar="MyAvatar"
+                      v-model:OtherAvatar="OtherAvatar" @GetMessage="GetMessage" @ChangeSize="ChangeSize"></Message_Detail>
+    </div>
+  </transition>
   <div class="overflow-x-auto px-10" v-if="!ShowMessageDetail">
     <table class="table">
       <tbody>
@@ -116,5 +127,27 @@ watch(Message, Classify)
 </template>
 
 <style scoped>
+.slide-leave-active {
+  transition: transform 0.5s ease;
+}
 
+.slide-enter-active {
+  transition: transform 0.5s ease;
+}
+
+.slide-enter-from,
+.slide-leave-to {
+  transform: translateX(100%);
+}
+
+.slide-enter-to,
+.slide-leave-from {
+  transform: translateX(0);
+}
+
+.transition-container {
+  right: 0;
+  top: 0;
+  height: 100%
+}
 </style>
