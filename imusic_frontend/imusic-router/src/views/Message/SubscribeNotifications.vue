@@ -116,7 +116,6 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="text-white text-lg mt-5 mb-3 text-center">关注通知</div>
   <div class="w-full h-full flex">
   <table class="table w-2/5 h-1/6 text-center overflow-auto">
     <thead>
