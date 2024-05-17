@@ -27,9 +27,9 @@ function initMessage() {
           if (Message.value[i].last_message === null) {
             Message_null.value.push(Message.value[i]);
             Message.value.splice(i, 1);
+            --i;
           }
         }
-        console.log(Message.value);
         //按时间降序排序
         Message.value.sort((a, b) => {
           return new Date(b.last_message.send_date) - new Date(a.last_message.send_date);
@@ -37,10 +37,25 @@ function initMessage() {
         changeTime();
         //read未读消息
         for (let i = 0; i < Message.value.length; ++i) {
-          if (Message.value[i].last_message.is_read === false) {
-            readMessage(Message.value[i].laast_message.id);
+          if (Message.value[i].last_message && Message.value[i].last_message.is_read === false) {
+            readMessage(Message.value[i].last_message.id);
+          }
+          if(Message.value[i].last_message.sender===username.value){
+            Friend.value.push(Message.value[i].last_message.receiver);
+          }
+          else{
+            Friend.value.push(Message.value[i].last_message.sender);
           }
         }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  let web = '/users/info/'+username.value;
+  instance.get(web, {})
+      .then((response) => {
+        MyAvatar.value = response.data.data.avatar;
+        console.log(MyAvatar.value);
       })
       .catch((error) => {
         console.log(error);
@@ -59,7 +74,6 @@ function readMessage(id) {
   formData.append('message_id',id);
   instance.post('/messages/read',formData)
       .then(response=>{
-        console.log(response.data);
         GetMessage();
       })
       .catch(error=>{
@@ -124,6 +138,7 @@ function changeTime() {
 
 const ShowMessageDetail = ref(false);
 const ForeignUser = ref('');
+const Friend=ref([]);
 const MyAvatar = ref('');
 const OtherAvatar = ref('');
 
@@ -132,10 +147,8 @@ const ActiveMessageDetail = (index) => {
   if(index>=Message.value.length){
     index=index-Message.value.length;
     ForeignUser.value=Message_null.value[index].friend;
-    console.log(ForeignUser.value);
     ShowMessageDetail.value = true;
     OtherAvatar.value = Message_null.value[index].friend_avatar;
-    console.log(OtherAvatar.value);
   }
   //ForeignUser是sender和receiver中非username的
   else {
@@ -168,17 +181,17 @@ onMounted(initMessage)
                       v-model:OtherAvatar="OtherAvatar" @GetMessage="GetMessage" @ChangeSize="ChangeSize"></Message_Detail>
     </div>
   </transition>
-  <div class="overflow-x-auto px-10" v-if="!ShowMessageDetail">
-    <table class="table">
+  <div class="overflow-x-auto px-10 w-full" v-if="!ShowMessageDetail">
+    <table class="table w-full">
       <tbody>
-      <tr class="text-white transition duration-400 hover:bg-gray-600/40 rounded-md"
+      <tr class="text-white w-full transition duration-400 hover:bg-gray-600/40 rounded-md"
           v-for="(item, index) in Message" :key="index" @click="ActiveMessageDetail(index)">
         <td class="w-24">
           <img :src="item.friend_avatar" alt="头像" class="h-14 rounded-xl aspect-square">
         </td>
-        <td class="">
-          <div class="font-bold text-xl mb-2">{{ForeignUser}}</div>
-          <div class="text-sm opacity-50 truncate ...">{{ item.last_message.content }}</div>
+        <td class="w-96">
+          <div class="font-bold text-xl mb-2">{{Friend[index]}}</div>
+          <div class="text-sm w-96 opacity-50 truncate ...">{{ item.last_message.content }}</div>
         </td>
         <td class="w-40 text-sm opacity-50">
           {{ item.last_message.send_date }}

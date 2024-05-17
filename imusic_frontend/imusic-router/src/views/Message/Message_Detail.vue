@@ -26,7 +26,6 @@ const GetInitData = () => {
   instance.get(url, {})
       .then((response) => {
         ShowMessage.value = response.data.data;
-        console.log(Message.value);
         length = ShowMessage.value.length;
         for (let i = 0; i < length; ++i) {
           if (ShowMessage.value[i]['sender'] === username.value)
@@ -34,12 +33,9 @@ const GetInitData = () => {
           else
             ShowMessage.value[i]['direction'] = 0;
         }
-        //是否是今天
         changeTime();
-        console.log(ShowMessage.value);
       })
       .catch((error) => {
-        console.log(token.value);
         console.log(error);
       });
 }

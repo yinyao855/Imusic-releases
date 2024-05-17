@@ -25,7 +25,6 @@ const SendOperation = () => {
   instance.post('/messages/send', formData)
       .then(response => {
         console.log(response.data.success);
-        alert('发送成功');
         SendContent.value = '';
         emits('GetMessage');
       })

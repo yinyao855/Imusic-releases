@@ -59,7 +59,6 @@ function initFollowMessage() {
       followMutual.value.push(isMutual);
     }
   }
-  changeTime();
   for (let index in followMessage.value) {
     let username = followMessage.value[index].sender;
     const instance = axios.create({
@@ -121,7 +120,6 @@ function getFollowMessage() {
   }
 }
 function getFollows() {
-  console.log(Message.value);
   const instance = axios.create({
     baseURL: 'http://182.92.100.66:5000',
     timeout: 5000,
@@ -153,7 +151,6 @@ function readMessage(id) {
   formData.append('message_id',id);
   instance.post('/messages/read',formData)
       .then(response=>{
-        console.log(response.data);
         GetMessage();
       })
       .catch(error=>{
@@ -220,48 +217,7 @@ function addFollow(index) {
 
       })
 }
-function changeTime() {
-  const length = followMessage.value.length;
-  for (let i = 0; i < length; ++i) {
-    let date = new Date(followMessage.value[i].send_date);
-    let now = new Date();
-    //当天
-    if (date.getFullYear() === now.getFullYear() && date.getMonth() === now.getMonth() && date.getDate() === now.getDate()) {
-      //超过5h显示xx小时前
-      if (now.getHours() - date.getHours() >= 5) {
-        followMessage.value[i].send_date = (now.getHours() - date.getHours()) + '小时前';
-      }
-      //分钟相同显示刚刚
-      else if (now.getMinutes() === date.getMinutes() && now.getHours() === date.getHours()&&now.getDate() - date.getDate()===0&&now.getMonth() - date.getMonth()===0&&now.getFullYear() - date.getFullYear()===0) {
-        followMessage.value[i].send_date = '刚刚';
-      }
-      //10min内显示x分钟前
-      else if ((now.getMinutes() - date.getMinutes() < 10&&now.getHours() - date.getHours()===0&&now.getDate() - date.getDate()===0&&now.getMonth() - date.getMonth()===0&&now.getFullYear() - date.getFullYear()===0)) {
-        followMessage.value[i].send_date = (now.getMinutes() - date.getMinutes()) + '分钟前';
-      }
-      else if (now.getMinutes() + 60 - date.getMinutes() < 10&&now.getHours() - date.getHours()===1&&now.getDate() - date.getDate()===0&&now.getMonth() - date.getMonth()===0&&now.getFullYear() - date.getFullYear()===0){
-        followMessage.value[i].send_date = (now.getMinutes() + 60 - date.getMinutes()) + '分钟前';
-      }
-      else{
-        followMessage.value[i].send_date = date.getHours() + ':' + date.getMinutes();
-        if(date.getMinutes()<10)
-          followMessage.value[i].send_date = date.getHours() + ':0' + date.getMinutes();
-      }
-    }
-    //前一天
-    else if (date.getFullYear() === now.getFullYear() && date.getMonth() === now.getMonth() && date.getDate() === now.getDate() - 1) {
-      followMessage.value[i].send_date = '昨天'+date.getHours() + ':' + date.getMinutes();
-      if(date.getMinutes()<10)
-        followMessage.value[i].send_date = '昨天'+date.getHours() + ':0' + date.getMinutes();
-    }
-    else
-    {
-      followMessage.value[i].send_date = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate()
-      if(date.getMinutes()<10)
-        followMessage.value[i].send_date = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
-    }
-  }
-}
+
 const ChangeSize=()=>{
   ShowMessage.value=false;
 }
@@ -282,7 +238,8 @@ onMounted(() => {
     </div>
   </transition>
   <div class="w-full h-full flex divide-dashed" v-if="!ShowMessage">
-  <table class="table w-2/5 h-1/6 text-center overflow-auto">
+    <div class="h-full w-2/5 border-r border-e border-gray-400 pl-4">
+  <table class="table w-full h-20 text-center overflow-auto">
     <thead>
     <tr>
       <th></th>
@@ -301,8 +258,7 @@ onMounted(() => {
     </tr>
     </tbody>
   </table>
-<!--    分割线-->
-    <div class="h-32 flex"></div>
+      </div>
   <div class="w-3/5 h-full">
     <div class="w-full h-full px-4">
       <div class="w-full h-1/2 overflow-auto">
