@@ -62,6 +62,7 @@ onMounted(getLikeMessage)
         <img :src="userImage[index]" alt="" class="w-8 h-8 rounded-full">
       </button></td>
       <td><p class="inline-block align-middle text-gray-300">{{ message.sender }}</p></td>
+      <td><p class="inline-block align-middle text-gray-300"></p></td>
       <td class="text-gray-500 opacity-30">{{ message.send_date }}</td>
     </tr>
     </tbody>
