@@ -257,7 +257,7 @@ const CloseWarning = () => {
             p-id="2759" fill="#ffffff"></path>
       </svg>
       <span class="px-4 font-medium">消息中心
-        <svg v-show="ShowRedPoint" class="icon inline text-white my-auto" viewBox="0 0 1024 1024"
+        <svg v-if="ShowRedPoint" class="icon inline text-white my-auto" viewBox="0 0 1024 1024"
              xmlns="http://www.w3.org/2000/svg" width="4" height="4"><path
             d="M512 512m-512 0a512 512 0 1 0 1024 0 512 512 0 1 0-1024 0Z" fill="#FC3227"
             ></path></svg></span>

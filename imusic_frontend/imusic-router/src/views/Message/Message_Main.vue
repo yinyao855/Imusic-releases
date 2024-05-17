@@ -41,7 +41,7 @@ const NaviClass5 = computed(() => ({
 
 const changeNaviMode = (newMode) => {
   NaviMode.value = newMode.toString();
-  console.log(NaviMode.value);
+  console.log(Count4);
 }
 const Count1 = ref(0)
 const Count2 = ref(0);
@@ -90,7 +90,7 @@ onMounted(GetHasRead)
   <div class="w-full h-full">
   <div class="w-full h-14 pl-6">
     <div :class="[NaviClass1, 'text-transition']" @click="changeNaviMode(1)" style="line-height: 56px">系统通知
-      <svg v-show="Count1!==0" class="icon inline text-white my-auto" viewBox="0 0 1024 1024"
+      <svg v-if="Count1!==0" class="icon inline text-white my-auto" viewBox="0 0 1024 1024"
            xmlns="http://www.w3.org/2000/svg" width="4" height="4">
         <path
             d="M512 512m-512 0a512 512 0 1 0 1024 0 512 512 0 1 0-1024 0Z" fill="#FC3227"
@@ -98,7 +98,7 @@ onMounted(GetHasRead)
       </svg>
     </div>
     <div :class="[NaviClass2, 'text-transition']" @click="changeNaviMode(2)" style="line-height: 56px">评论通知
-      <svg v-show="Count2!==0" class="icon inline text-white my-auto" viewBox="0 0 1024 1024"
+      <svg v-if="Count2!==0" class="icon inline text-white my-auto" viewBox="0 0 1024 1024"
            xmlns="http://www.w3.org/2000/svg" width="4" height="4">
         <path
             d="M512 512m-512 0a512 512 0 1 0 1024 0 512 512 0 1 0-1024 0Z" fill="#FC3227"
@@ -106,7 +106,7 @@ onMounted(GetHasRead)
       </svg>
     </div>
     <div :class="[NaviClass3, 'text-transition']" @click="changeNaviMode(3)" style="line-height: 56px">喜欢通知
-      <svg v-show="Count3!==0" class="icon inline text-white my-auto" viewBox="0 0 1024 1024"
+      <svg v-if="Count3!==0" class="icon inline text-white my-auto" viewBox="0 0 1024 1024"
            xmlns="http://www.w3.org/2000/svg" width="4" height="4">
         <path
             d="M512 512m-512 0a512 512 0 1 0 1024 0 512 512 0 1 0-1024 0Z" fill="#FC3227"
@@ -114,7 +114,7 @@ onMounted(GetHasRead)
       </svg>
     </div>
     <div :class="[NaviClass4, 'text-transition']" @click="changeNaviMode(4)" style="line-height: 56px">关注通知
-      <svg v-show="Count4!==0" class="icon inline text-white my-auto" viewBox="0 0 1024 1024"
+      <svg v-if="Count4!==0" class="icon inline text-white my-auto" viewBox="0 0 1024 1024"
            xmlns="http://www.w3.org/2000/svg" width="4" height="4">
         <path
             d="M512 512m-512 0a512 512 0 1 0 1024 0 512 512 0 1 0-1024 0Z" fill="#FC3227"
@@ -122,7 +122,7 @@ onMounted(GetHasRead)
       </svg>
     </div>
     <div :class="[NaviClass5, 'text-transition']" @click="changeNaviMode(5)" style="line-height: 56px">私信通知
-      <svg v-show="Count5!==0" class="icon inline text-white my-auto" viewBox="0 0 1024 1024"
+      <svg v-if="Count5!==0" class="icon inline text-white my-auto" viewBox="0 0 1024 1024"
            xmlns="http://www.w3.org/2000/svg" width="4" height="4">
         <path
             d="M512 512m-512 0a512 512 0 1 0 1024 0 512 512 0 1 0-1024 0Z" fill="#FC3227"

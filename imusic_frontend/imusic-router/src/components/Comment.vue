@@ -211,6 +211,7 @@ function tip(index) {
 }
 onMounted(() => {
   getSongComment();
+  console.log(token.value);
 })
 </script>
 
@@ -227,7 +228,7 @@ onMounted(() => {
             class="w-full rounded-lg text-white transition ease-in-out delay-100 hover:bg-transparent/20 grid grid-cols-12 grid-rows-8 gap-2"
             v-for="(item, index) in Comment" :key="index">
           <div class="icon aspect-square fill-white ml-1 mr-1 mt-1 row-start-1 col-start-1 w-10 h-10">
-          <img class="rounded-full w-10 h-10" :src="userImage[index]" alt="">
+            <button class="rounded-full w-10 h-10"><img class="rounded-full w-10 h-10" :src="userImage[index]" alt=""></button>
           <div class="my-0 font-thin ml-7 -mt-2  relative" v-if="sameUser[index]===false">
             <button class="hover:-translate-y-0.1 tooltip overflow-visible" @click="followUser(index)" :data-tip="tip(index)">
               <svg t="1715907551136" class="icon" v-if="addUser[index]===true" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2927"
