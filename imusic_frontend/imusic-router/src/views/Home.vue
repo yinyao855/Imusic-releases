@@ -576,6 +576,7 @@ const GetMessage = () => {
   instance.get(web)
       .then(response => {
         Message.value = response.data.data;
+        console.log(Message.value);
         let length = Message.value.length;
         MessageType1.value=[];
         MessageType2.value=[];
@@ -598,7 +599,7 @@ const GetMessage = () => {
             MessageType5.value.push(Message.value[i]);
           }
         }
-        console.log(MessageType5.value);
+        console.log(CountNotRead.value);
       })
       .catch(error => {
         console.log(error.response.data);

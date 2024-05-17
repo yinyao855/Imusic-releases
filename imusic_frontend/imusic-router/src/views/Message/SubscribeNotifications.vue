@@ -13,6 +13,7 @@ const userImage = ref([])
 const MyAvatar = ref();
 const followings = ref([]);
 const followMutual = ref([]);
+const ShowMessage= ref(false);
 const extractDate = (dateTimeString) => {
   const date = new Date(dateTimeString);
   return date.toISOString().slice(0, 10);
@@ -58,10 +59,7 @@ function initFollowMessage() {
       followMutual.value.push(isMutual);
     }
   }
-  console.log('Mutual');
-  console.log(length);
-  console.log(followMutual.value);
-  console.log(followings.value);
+  changeTime();
   for (let index in followMessage.value) {
     let username = followMessage.value[index].sender;
     const instance = axios.create({
@@ -79,7 +77,6 @@ function initFollowMessage() {
         })
         .catch((error) => {
           console.log(error);
-          console.log(error.response.data);
         });
   }
 }
@@ -102,10 +99,6 @@ function getFollowMessage() {
       followMutual.value[i]=(isMutual);
     }
   }
-  console.log('Mutual');
-  console.log(length);
-  console.log(followMutual.value);
-  console.log(followings.value);
   for (let index in followMessage.value) {
     let username = followMessage.value[index].sender;
     const instance = axios.create({
@@ -123,11 +116,12 @@ function getFollowMessage() {
         })
         .catch((error) => {
           console.log(error);
-          console.log(error.response.data);
+
         });
   }
 }
 function getFollows() {
+  console.log(Message.value);
   const instance = axios.create({
     baseURL: 'http://182.92.100.66:5000',
     timeout: 5000,
@@ -160,6 +154,7 @@ function readMessage(id) {
   instance.post('/messages/read',formData)
       .then(response=>{
         console.log(response.data);
+        GetMessage();
       })
       .catch(error=>{
         console.log(error.response.data);
@@ -188,6 +183,11 @@ const GetMessage=()=>{
   emits('GetMessage');
 }
 function addFollow(index) {
+  if(followMutual.value[index]===true)
+  {
+    ShowMessage.value=true;
+    return;
+  }
   const formData = new FormData();
   formData.append('username', followMessage.value[index].sender);
 
@@ -206,6 +206,9 @@ function addFollow(index) {
         {
           followMutual.value[index]=true;
           alert('关注成功');
+
+          ShowMessage.value=true;
+
           console.log(followMutual.value);
         }
         else {
@@ -217,6 +220,52 @@ function addFollow(index) {
 
       })
 }
+function changeTime() {
+  const length = followMessage.value.length;
+  for (let i = 0; i < length; ++i) {
+    let date = new Date(followMessage.value[i].send_date);
+    let now = new Date();
+    //当天
+    if (date.getFullYear() === now.getFullYear() && date.getMonth() === now.getMonth() && date.getDate() === now.getDate()) {
+      //超过5h显示xx小时前
+      if (now.getHours() - date.getHours() >= 5) {
+        followMessage.value[i].send_date = (now.getHours() - date.getHours()) + '小时前';
+      }
+      //分钟相同显示刚刚
+      else if (now.getMinutes() === date.getMinutes() && now.getHours() === date.getHours()&&now.getDate() - date.getDate()===0&&now.getMonth() - date.getMonth()===0&&now.getFullYear() - date.getFullYear()===0) {
+        followMessage.value[i].send_date = '刚刚';
+      }
+      //10min内显示x分钟前
+      else if ((now.getMinutes() - date.getMinutes() < 10&&now.getHours() - date.getHours()===0&&now.getDate() - date.getDate()===0&&now.getMonth() - date.getMonth()===0&&now.getFullYear() - date.getFullYear()===0)) {
+        followMessage.value[i].send_date = (now.getMinutes() - date.getMinutes()) + '分钟前';
+      }
+      else if (now.getMinutes() + 60 - date.getMinutes() < 10&&now.getHours() - date.getHours()===1&&now.getDate() - date.getDate()===0&&now.getMonth() - date.getMonth()===0&&now.getFullYear() - date.getFullYear()===0){
+        followMessage.value[i].send_date = (now.getMinutes() + 60 - date.getMinutes()) + '分钟前';
+      }
+      else{
+        followMessage.value[i].send_date = date.getHours() + ':' + date.getMinutes();
+        if(date.getMinutes()<10)
+          followMessage.value[i].send_date = date.getHours() + ':0' + date.getMinutes();
+      }
+    }
+    //前一天
+    else if (date.getFullYear() === now.getFullYear() && date.getMonth() === now.getMonth() && date.getDate() === now.getDate() - 1) {
+      followMessage.value[i].send_date = '昨天'+date.getHours() + ':' + date.getMinutes();
+      if(date.getMinutes()<10)
+        followMessage.value[i].send_date = '昨天'+date.getHours() + ':0' + date.getMinutes();
+    }
+    else
+    {
+      followMessage.value[i].send_date = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate()
+      if(date.getMinutes()<10)
+        followMessage.value[i].send_date = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
+    }
+  }
+}
+const ChangeSize=()=>{
+  ShowMessage.value=false;
+}
+
 onMounted(() => {
   getFollows();
   initFollowMessage();
@@ -225,13 +274,20 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="w-full h-full flex">
+  <transition name="slide" appear>
+    <div class="transition-container z-50 ml-8 h-5/6" v-if="ShowMessage">
+      <Message_Detail v-model:username="username" v-model:token="token" v-model:ForeignUser="followMessage[detailVisible].sender"
+                      v-model:Message="Message" v-model:MyAvatar="MyAvatar"
+                      v-model:OtherAvatar="userImage[detailVisible]" @GetMessage="GetMessage" @ChangeSize="ChangeSize"></Message_Detail>
+    </div>
+  </transition>
+  <div class="w-full h-full flex divide-dashed" v-if="!ShowMessage">
   <table class="table w-2/5 h-1/6 text-center overflow-auto">
     <thead>
     <tr>
       <th></th>
       <th class="">关注者</th>
-      <th class="">日期</th>
+      <th class="">时间</th>
     </tr>
     </thead>
     <tbody>
@@ -241,10 +297,11 @@ onMounted(() => {
         <img :src="userImage[index]" alt="" class="w-16 h-16 rounded-full">
       </button></td>
       <td><p class="text-xl inline-block align-middle text-gray-100">{{ message.sender }}</p></td>
-      <td class="text-gray-300 opacity-30">{{ message.send_date }}</td>
+      <td class="text-gray-300 opacity-50 text-lg">{{ message.send_date }}</td>
     </tr>
     </tbody>
   </table>
+<!--    分割线-->
     <div class="h-32 flex"></div>
   <div class="w-3/5 h-full">
     <div class="w-full h-full px-4">
@@ -268,9 +325,9 @@ onMounted(() => {
         <div class="flex">
           <div class="group mx-auto">
             <div class="btn btn-md ml-4 text-white tracking-widest bg-orange-700 hover:bg-orange-800 transition:ease-in duration-300"
-                @click="addFollow(detailVisible)">
+                @click="addFollow(detailVisible);">
               <p v-if="followMutual[detailVisible]!==true">关 注</p>
-              <p v-if="followMutual[detailVisible]===true">取消关注</p>
+              <p v-if="followMutual[detailVisible]===true">进入聊天</p>
             </div>
           </div>
         </div>
@@ -282,5 +339,27 @@ onMounted(() => {
 </template>
 
 <style scoped>
+.slide-leave-active {
+  transition: transform 0.5s ease;
+}
 
+.slide-enter-active {
+  transition: transform 0.5s ease;
+}
+
+.slide-enter-from,
+.slide-leave-to {
+  transform: translateX(100%);
+}
+
+.slide-enter-to,
+.slide-leave-from {
+  transform: translateX(0);
+}
+
+.transition-container {
+  right: 0;
+  top: 0;
+  height: 100%
+}
 </style>
