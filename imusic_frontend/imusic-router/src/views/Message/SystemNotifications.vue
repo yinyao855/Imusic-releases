@@ -28,8 +28,10 @@ function formatDateTime(dateTimeStr) {
 
 function activeShowSystemMessage(index) {
   currentMessage.value = Message.value[index];
-  if(currentMessage.value.is_read === false)
+  if(currentMessage.value.is_read === false) {
     readMessage(currentMessage.value.id);
+    currentMessage.value.is_read = true;
+  }
   console.log(currentMessage.value.id);
   showSystemMessage.value = true;
 }
@@ -37,6 +39,7 @@ function activeShowSystemMessage(index) {
 function closeShowSystemMessage() {
   showSystemMessage.value = false;
 }
+
 function readMessage(id) {
   const instance = axios.create({
     baseURL: 'http://182.92.100.66:5000',
@@ -46,11 +49,13 @@ function readMessage(id) {
     }
   });
   axios.defaults.withCredentials = true;
-  instance.post('/messages/read?message_id='+id)
-      .then(response=>{
+  const formData = new FormData();
+  formData.append('message_id', id);
+  instance.post('/messages/read', formData)
+      .then(response => {
         console.log(response.data);
       })
-      .catch(error=>{
+      .catch(error => {
         console.log(error.response.data);
       })
 }
@@ -85,6 +90,7 @@ function readMessage(id) {
             <path d="M12 20h9"/>
             <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
           </svg>
+          <div v-if="!item.is_read" class="text-red-500 inline-block " style="font-size: 50px">.</div>
         </td>
         <td class="align-middle">
           <div class="font-bold text-xl">{{ item.title }}</div>
