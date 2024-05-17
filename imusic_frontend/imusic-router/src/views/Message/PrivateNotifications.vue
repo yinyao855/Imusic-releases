@@ -68,10 +68,6 @@ const Classify = () => {
           })
     }
   }
-  // let length=ClassifiedMessage.value.length;
-  // for(let i=0;i<length;++i){
-  //   ClassifiedMessage.value[i].send_date = formatDateTime(ClassifiedMessage.value[i].send_date);
-  // }
 }
 const ShowMessageDetail = ref(false);
 const ForeignUser = ref('');
