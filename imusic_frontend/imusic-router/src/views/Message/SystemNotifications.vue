@@ -13,9 +13,17 @@ const currentMessage = ref([]);
 // const createMessage = defineModel("createMessage");
 const showSystemMessage = ref(false);
 
-const extractDate = (dateTimeString) => {
-  const date = new Date(dateTimeString);
-  return date.toISOString().slice(0, 10);
+function formatDateTime(dateTimeStr) {
+  const date = new Date(dateTimeStr);
+
+  const year = date.getFullYear();
+  const month = date.getMonth() + 1;
+  const day = date.getDate();
+  const hours = date.getHours();
+  const minutes = date.getMinutes();
+  const formattedMonth = month < 10 ? '0' + month : month;
+  const formattedDay = day < 10 ? '0' + day : day;
+  return `${year}年${formattedMonth}月${formattedDay}日`;
 }
 
 function activeShowSystemMessage(message) {
@@ -62,7 +70,7 @@ function closeShowSystemMessage() {
           </svg>
           <p class="inline-block align-middle text-gray-300">{{ message.title }}</p>
         </td>
-        <td class="text-gray-500 opacity-30">{{ message.send_date }}</td>
+        <td class="text-gray-500 opacity-30">{{ formatDateTime(message.send_date) }}</td>
       </tr>
       </tbody>
     </table>
