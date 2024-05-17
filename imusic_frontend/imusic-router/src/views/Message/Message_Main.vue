@@ -1,9 +1,6 @@
 <script setup>
 
-import SongPage from "@/components/SongPage.vue";
-import EditSong from "@/views/EditSong.vue";
 import {computed, defineModel, onMounted, ref} from "vue";
-import Search from "@/components/Search.vue";
 import SystemNotifications from "@/views/Message/SystemNotifications.vue";
 import axios from "axios";
 import CommentNotifications from "@/views/Message/CommentNotifications.vue";
@@ -13,25 +10,32 @@ import PrivateNotifications from "@/views/Message/PrivateNotifications.vue";
 
 const NaviMode = ref('1');
 const upload = ref('0');
-const token = defineModel('token')
+const token = defineModel('token');
+const Message = defineModel('Message');
+const MessageType1 = defineModel('MessageType1');
+const MessageType2 = defineModel('MessageType2');
+const MessageType3 = defineModel('MessageType3');
+const MessageType4 = defineModel('MessageType4');
+const MessageType5 = defineModel('MessageType5');
+const emits=defineEmits(['GetMessage']);
 const NaviClass1 = computed(() => ({
-  'text-base inline-block mx-3 w-20 text-center rounded-lg antialiased tracking-widest font-medium transition-colors duration-400 hover:bg-gray-600/40': true,
+  'text-base inline-block mx-3 w-30 text-center rounded-lg antialiased tracking-widest font-medium transition-colors duration-400 hover:bg-gray-600/40': true,
   'text-cyan-700 underline underline-offset-8 decoration-2': NaviMode.value === '1',
 }));
 const NaviClass2 = computed(() => ({
-  'text-base inline-block mx-3 w-20 text-center rounded-lg antialiased tracking-widest font-medium transition-colors duration-400 hover:bg-gray-600/40': true,
+  'text-base inline-block mx-3 w-30 text-center rounded-lg antialiased tracking-widest font-medium transition-colors duration-400 hover:bg-gray-600/40': true,
   'text-cyan-700 underline underline-offset-8 decoration-2': NaviMode.value === '2',
 }));
 const NaviClass3 = computed(() => ({
-  'text-base inline-block mx-3 w-20 text-center rounded-lg antialiased tracking-widest font-medium transition-colors duration-400 hover:bg-gray-600/40': true,
+  'text-base inline-block mx-3 w-30 text-center rounded-lg antialiased tracking-widest font-medium transition-colors duration-400 hover:bg-gray-600/40': true,
   'text-cyan-700 underline underline-offset-8 decoration-2': NaviMode.value === '3',
 }));
 const NaviClass4 = computed(() => ({
-  'text-base inline-block mx-3 w-20 text-center rounded-lg antialiased tracking-widest font-medium transition-colors duration-400 hover:bg-gray-600/40': true,
+  'text-base inline-block mx-3 w-30 text-center rounded-lg antialiased tracking-widest font-medium transition-colors duration-400 hover:bg-gray-600/40': true,
   'text-cyan-700 underline underline-offset-8 decoration-2': NaviMode.value === '4',
 }));
 const NaviClass5 = computed(() => ({
-  'text-base inline-block mx-3 w-20 text-center rounded-lg antialiased tracking-widest font-medium transition-colors duration-400 hover:bg-gray-600/40': true,
+  'text-base inline-block mx-3 w-30 text-center rounded-lg antialiased tracking-widest font-medium transition-colors duration-400 hover:bg-gray-600/40': true,
   'text-cyan-700 underline underline-offset-8 decoration-2': NaviMode.value === '5',
 }));
 
@@ -39,77 +43,109 @@ const changeNaviMode = (newMode) => {
   NaviMode.value = newMode.toString();
   console.log(NaviMode.value);
 }
-const username = defineModel('username')
-const Message = ref([])
-const HasLogin = defineModel('HasLogin')
+const Count1 = ref(0)
+const Count2 = ref(0);
+const Count3 = ref(0);
+const Count4 = ref(0);
+const Count5 = ref(0);
+const username = defineModel('username');
+const HasLogin = defineModel('HasLogin');
 
-function getMessage() {
-  const instance = axios.create({
-    baseURL: 'http://182.92.100.66:5000',
-    timeout: 5000, // 设置请求超时时间
-    headers: {
-      'Authorization': `Bearer ${token.value}`,
+const GetHasRead = () => {
+  for (let i = 0; i < MessageType1.value.length; ++i) {
+    if (MessageType1.value[i].is_read === false) {
+      Count1.value++;
     }
-  });
-  axios.defaults.withCredentials = true;
-  const web = '/messages/';
-  instance.get(web)
-      .then(response => {
-        Message.value = response.data.data;
-        getSystemMessage();
-        console.log(Message.value);
-      })
-      .catch(error => {
-        console.log(error.data);
-        console.log(token.value)
-      })
-}
-
-const playSongMessage = ref([])
-const createMessage = ref([])
-const systemMessage = ref([])
-
-function getSystemMessage() {
-  const length = ref(0);
-  length.value = Message.value.length;
-  for (let i = 0; i < length.value; i++) {
-    if (Message.value[i].type === 1) {
-      systemMessage.value.push(Message.value[i]);
-      if (Message.value[i].title === "创作周报") {
-        createMessage.value.push(Message.value[i]);
-      }
-      if (Message.value[i].title === "听歌周报") {
-        playSongMessage.value.push(Message.value[i]);
-      }
+  }
+  for (let i = 0; i < MessageType2.value.length; ++i) {
+    if (MessageType2.value[i].is_read === false) {
+      Count2.value++;
+    }
+  }
+  for (let i = 0; i < MessageType3.value.length; ++i) {
+    if (MessageType3.value[i].is_read === false) {
+      Count3.value++;
+    }
+  }
+  for (let i = 0; i < MessageType4.value.length; ++i) {
+    if (MessageType4.value[i].is_read === false) {
+      Count4.value++;
+    }
+  }
+  for (let i = 0; i < MessageType5.value.length; ++i) {
+    if (MessageType5.value[i].is_read === false) {
+      Count5.value++;
     }
   }
 }
 
-onMounted(getMessage);
+const GetMessage=()=>{
+  emits('GetMessage')
+}
+
+onMounted(GetHasRead)
 </script>
 
 <template>
+  <div class="w-full h-full">
   <div class="w-full h-14 pl-6">
-    <div :class="[NaviClass1, 'text-transition']" @click="changeNaviMode(1)" style="line-height: 56px">系统通知</div>
-    <div :class="[NaviClass2, 'text-transition']" @click="changeNaviMode(2)" style="line-height: 56px">评论通知</div>
-    <div :class="[NaviClass3, 'text-transition']" @click="changeNaviMode(3)" style="line-height: 56px">喜欢通知</div>
-    <div :class="[NaviClass4, 'text-transition']" @click="changeNaviMode(4)" style="line-height: 56px">关注通知</div>
-    <div :class="[NaviClass5, 'text-transition']" @click="changeNaviMode(5)" style="line-height: 56px">私信通知</div>
+    <div :class="[NaviClass1, 'text-transition']" @click="changeNaviMode(1)" style="line-height: 56px">系统通知
+      <svg v-show="Count1!==0" class="icon inline text-white my-auto" viewBox="0 0 1024 1024"
+           xmlns="http://www.w3.org/2000/svg" width="4" height="4">
+        <path
+            d="M512 512m-512 0a512 512 0 1 0 1024 0 512 512 0 1 0-1024 0Z" fill="#FC3227"
+        ></path>
+      </svg>
+    </div>
+    <div :class="[NaviClass2, 'text-transition']" @click="changeNaviMode(2)" style="line-height: 56px">评论通知
+      <svg v-show="Count2!==0" class="icon inline text-white my-auto" viewBox="0 0 1024 1024"
+           xmlns="http://www.w3.org/2000/svg" width="4" height="4">
+        <path
+            d="M512 512m-512 0a512 512 0 1 0 1024 0 512 512 0 1 0-1024 0Z" fill="#FC3227"
+        ></path>
+      </svg>
+    </div>
+    <div :class="[NaviClass3, 'text-transition']" @click="changeNaviMode(3)" style="line-height: 56px">喜欢通知
+      <svg v-show="Count3!==0" class="icon inline text-white my-auto" viewBox="0 0 1024 1024"
+           xmlns="http://www.w3.org/2000/svg" width="4" height="4">
+        <path
+            d="M512 512m-512 0a512 512 0 1 0 1024 0 512 512 0 1 0-1024 0Z" fill="#FC3227"
+        ></path>
+      </svg>
+    </div>
+    <div :class="[NaviClass4, 'text-transition']" @click="changeNaviMode(4)" style="line-height: 56px">关注通知
+      <svg v-show="Count4!==0" class="icon inline text-white my-auto" viewBox="0 0 1024 1024"
+           xmlns="http://www.w3.org/2000/svg" width="4" height="4">
+        <path
+            d="M512 512m-512 0a512 512 0 1 0 1024 0 512 512 0 1 0-1024 0Z" fill="#FC3227"
+        ></path>
+      </svg>
+    </div>
+    <div :class="[NaviClass5, 'text-transition']" @click="changeNaviMode(5)" style="line-height: 56px">私信通知
+      <svg v-show="Count5!==0" class="icon inline text-white my-auto" viewBox="0 0 1024 1024"
+           xmlns="http://www.w3.org/2000/svg" width="4" height="4">
+        <path
+            d="M512 512m-512 0a512 512 0 1 0 1024 0 512 512 0 1 0-1024 0Z" fill="#FC3227"
+        ></path>
+      </svg>
+    </div>
   </div>
-  <SystemNotifications v-if="NaviMode==='1'" v-model:token="token" v-model:username="username" v-model:Message="Message"
-                       v-model:playSongMessage="playSongMessage" v-model:createMessage="createMessage" v-model:systemMessage="systemMessage"
-  ></SystemNotifications>
-  <CommentNotifications v-if="NaviMode==='2'" v-model:token="token" v-model:username="username"
-                        v-model:Message="Message"
-  ></CommentNotifications>
-  <LikeNotifications v-if="NaviMode==='3'" v-model:token="token" v-model:username="username" v-model:Message="Message"
-  ></LikeNotifications>
-  <SubscribeNotifications v-if="NaviMode==='4'" v-model:token="token" v-model:username="username"
-                          v-model:Message="Message"
-  ></SubscribeNotifications>
-  <PrivateNotifications v-if="NaviMode==='5'" v-model:token="token" v-model:username="username"
-                        v-model:Message="Message"
+      <SystemNotifications v-if="NaviMode==='1'" v-model:token="token" v-model:username="username"
+                           v-model:Message="MessageType1"
+      ></SystemNotifications>
+    <CommentNotifications v-if="NaviMode==='2'" v-model:token="token" v-model:username="username"
+                          v-model:Message="MessageType2"
+    ></CommentNotifications>
+    <LikeNotifications v-if="NaviMode==='3'" v-model:token="token" v-model:username="username"
+                       v-model:Message="MessageType3"
+    ></LikeNotifications>
+    <SubscribeNotifications v-if="NaviMode==='4'" v-model:token="token" v-model:username="username"
+                            v-model:Message="MessageType4"
+    ></SubscribeNotifications>
+  <PrivateNotifications class="w-full" v-model:token="token" v-model:username="username"
+                        v-model:Message="MessageType5" v-if="NaviMode==='5'" @GetMessage="GetMessage"
   ></PrivateNotifications>
+  </div>
 </template>
 
 <style scoped>

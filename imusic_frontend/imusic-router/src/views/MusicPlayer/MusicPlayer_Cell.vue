@@ -20,7 +20,6 @@ const updateTime = () => {
 const initCurrentMusic=(music)=>{
   currentMusic.value=music;
   fetchAndFormatLyrics(currentMusic.value.lyric);
-  console.log(currentMusic.value);
 }
 
 function handleModeChange() {
@@ -142,7 +141,6 @@ const fetchAndFormatLyrics = async (lrcUrl) => {
       return `[${time}${truncatedMs}]`;
     });
     lyric.value = parseLRC(formattedLyrics);
-    console.log(lyric.value);
   } catch (error) {
     console.error('Error fetching lyrics:', error);
   }
