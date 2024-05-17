@@ -27,6 +27,7 @@ function formatDateTime(dateTimeStr) {
 }
 
 function activeShowSystemMessage(index) {
+  console.log(Message.value)
   currentMessage.value = Message.value[index];
   if(currentMessage.value.is_read === false)
     readMessage(currentMessage.value.id);
@@ -37,6 +38,7 @@ function activeShowSystemMessage(index) {
 function closeShowSystemMessage() {
   showSystemMessage.value = false;
 }
+
 function readMessage(id) {
   const instance = axios.create({
     baseURL: 'http://182.92.100.66:5000',

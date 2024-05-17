@@ -598,6 +598,7 @@ const GetMessage = () => {
             MessageType5.value.push(Message.value[i]);
           }
         }
+        console.log(MessageType4.value)
         console.log(MessageType5.value);
       })
       .catch(error => {
