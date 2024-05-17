@@ -89,6 +89,7 @@ const ChangeSize=()=>{
   ShowMessageDetail.value=false;
 }
 
+
 onMounted(Classify)
 watch(Message, Classify)
 </script>

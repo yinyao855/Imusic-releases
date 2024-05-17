@@ -28,13 +28,32 @@ function formatDateTime(dateTimeStr) {
 
 function activeShowSystemMessage(index) {
   currentMessage.value = Message.value[index];
+  if(currentMessage.value.is_read === false)
+    readMessage(currentMessage.value.id);
+  console.log(currentMessage.value.id);
   showSystemMessage.value = true;
 }
 
 function closeShowSystemMessage() {
   showSystemMessage.value = false;
 }
-
+function readMessage(id) {
+  const instance = axios.create({
+    baseURL: 'http://182.92.100.66:5000',
+    timeout: 5000,
+    headers: {
+      'Authorization': `Bearer ${token.value}`,
+    }
+  });
+  axios.defaults.withCredentials = true;
+  instance.post('/messages/read?message_id='+id)
+      .then(response=>{
+        console.log(response.data);
+      })
+      .catch(error=>{
+        console.log(error.response.data);
+      })
+}
 </script>
 
 <template>

@@ -7,6 +7,10 @@ const SendContent = ref('');
 const token = defineModel('token')
 const emits=defineEmits(['GetMessage']);
 const SendOperation = () => {
+  if(SendContent.value===''){
+    alert('发送内容不能为空');
+    return;
+  }
   const instance = axios.create({
     baseURL: 'http://182.92.100.66:5000',
     timeout: 5000, // 设置请求超时时间
