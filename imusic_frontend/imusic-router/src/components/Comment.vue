@@ -63,6 +63,7 @@ const getSongComment = () => {
         console.log(songID.value);
         Comment.value = response.data.data;
         initUserImage();
+        initCheckFollow();
       })
       .catch((error) => {
         console.log(error);
@@ -132,23 +133,84 @@ const deleteComment = (index) => {
         console.log(token.value);
       });
 }
+function initCheckFollow() {
+  const instance = axios.create({
+    baseURL: 'http://182.92.100.66:5000',
+    timeout: 5000,
+    headers: {
+      'Authorization': `Bearer ${token.value}`,
+    }
+  });
+  axios.defaults.withCredentials = true;
+  let url = '/users/followings?username=' + username.value;
+  instance.get(url, {})
+      .then((response) => {
+        userFollow.value = response.data.data;
+        console.log(userFollow.value);
+        for (let i = 0; i < Comment.value.length; i++) {
+          addUser.value[i] = true;
+          for (let j = 0; j < userFollow.value.length; j++) {
+            if (Comment.value[i].user === userFollow.value[j].username) {
+              addUser.value[i] = false;
+              console.log(i);
+              break;
+            }
+          }
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+
+      });
+  console.log(addUser.value);
+}
 const info = ref([]);
 const showInfo = ref([]);
 const showDetail = ref([]);
 const sameUser = ref([]);
 const username = defineModel('username');
+const userFollow = ref([]);
+const addUser = ref([]);
 function on(index) {
   showInfo.value[index] = true;
 }
 function off(index) {
   showInfo.value[index] = false;
 }
+function followUser(index) {
+  const formData = new FormData();
+  formData.append('username', Comment.value[index].user);
+  console.log(Comment.value[index].user);
+  const instance = axios.create({
+    baseURL: 'http://182.92.100.66:5000',
+    timeout: 5000, // 设置请求超时时间
+    headers: {
+      'Authorization': `Bearer ${token.value}`,
+    }
+  });
+  axios.defaults.withCredentials = true;
+  instance.post('/users/follow', formData)
+      .then(response => {
+        console.log(response.data);
+        initCheckFollow();
+        if(response.data.message==='加关注成功')
+        {
+          alert('加关注成功'+index);
+          addUser[index]=false;
+        }
+        else {
+          alert('取消关注成功'+index);
+          addUser[index]=true;
+        }
+        console.log(addUser);
+      })
+      .catch(error => {
+        console.log(error.data);
+      })
+}
 onMounted(() => {
   getSongComment();
 })
-watch(Comment, () => {
-  initUserImage();
-});
 </script>
 
 <template>
@@ -157,17 +219,24 @@ watch(Comment, () => {
     <div class="formx2 w-5/6 flexible h-5/6">
       <div class="h-full overflow-auto w-5/6">
         <div
-            :style="{ height: (showInfo[index] === true) ? (info[index].length/30*25+50)+'px' :
+            :style="{ height: (showInfo[index] === true) ? (info[index].length/30*28+50)+'px' :
               (showDetail[index] === true) ? '80px' : '60px'
             }" style="position:relative"
             :class="index % 2 === 0 ? 'bg-even' : 'bg-odd'"
             class="w-full rounded-lg text-white transition ease-in-out delay-100 hover:bg-transparent/20 grid grid-cols-12 grid-rows-8 gap-2"
             v-for="(item, index) in Comment" :key="index">
           <img
-              class="icon aspect-square fill-white mr-1 my-auto rounded-full row-start-1 col-start-1 w-10 h-10 mt-1"
+              class="icon aspect-square fill-white mr-1 my-auto rounded-full row-start-1 col-start-1 w-10 h-10 mt-1 hover:"
               :src="userImage[index]" alt="">
-          <div class="row-start-1 row-span-1 col-start-2 col-span-2 my-auto font-thin"
-               >
+          <div class="row-start-5 row-span-1 col-start-1 col-span-2 my-auto font-thin ml-8" v-if="sameUser[index]===false">
+            <button class="hover:scale-110 hover:-translate-y-0.1" @click="followUser(index)">
+              <svg t="1715907551136" class="icon" v-if="addUser[index]===true" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2927"
+                   width="16" height="16"><path d="M512 1024C229.238154 1024 0 794.761846 0 512S229.238154 0 512 0s512 229.238154 512 512-229.238154 512-512 512z m236.307692-551.384615H551.384615V275.692308a39.384615 39.384615 0 1 0-78.76923 0v196.923077H275.692308a39.384615 39.384615 0 1 0 0 78.76923h196.923077v196.923077a39.384615 39.384615 0 1 0 78.76923 0V551.384615h196.923077a39.384615 39.384615 0 0 0 0-78.76923z" fill="#13227a" p-id="2928"></path></svg>
+              <svg t="1715908677501" class="icon" v-if="addUser[index]===false" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="4054"
+                   width="16" height="16"><path d="M511.658216 52.364625c-254.320243 0-460.487789 206.167546-460.487789 460.487789s206.167546 460.487789 460.487789 460.487789 460.487789-206.167546 460.487789-460.487789S765.978459 52.364625 511.658216 52.364625zM837.041958 570.014298 186.274474 570.014298c-23.931039 0-43.51098-19.579941-43.51098-43.51098l0-29.006637c0-23.931039 19.579941-43.51098 43.51098-43.51098l650.767484 0c23.931039 0 43.51098 19.579941 43.51098 43.51098l0 29.006637C880.552937 550.434358 860.972996 570.014298 837.041958 570.014298z" fill="#d81e06" p-id="4055"></path></svg>
+            </button>
+            </div>
+          <div class="row-start-1 row-span-1 col-start-2 col-span-2 my-auto font-thin">
             <div class=" text-sm">{{ item.user }}：</div>
           </div>
           <div class="row-start-6 row-span-1 col-start-2 col-span-2 my-auto font-thin"
@@ -176,9 +245,9 @@ watch(Comment, () => {
           </div>
           <div class="row-start-3 row-span-2 col-start-2 col-span-10 my-auto"
                v-if="showInfo[index]===false">
-            <p class="m-auto text-l truncate">{{ item.content }}</p>
+            <p class="ml-2 text-l truncate">{{item.content }}</p>
           </div>
-            <button class="row-start-5 row-span-1 col-start-3 col-span-2 my-auto font-thin text-cyan-600  hover:underline "
+            <button class="row-start-6 row-span-1 col-start-3 col-span-2 my-auto font-thin text-cyan-600  hover:underline "
                  v-if="showInfo[index]===false&&showDetail[index]===true" @click="on(index)">
               <div class="text-l font-black">展开</div>
             </button>
