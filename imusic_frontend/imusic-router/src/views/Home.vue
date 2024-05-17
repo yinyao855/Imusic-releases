@@ -1,5 +1,5 @@
 <script setup>
-import {onMounted, ref} from "vue";
+import {computed, onBeforeUnmount, onMounted, ref} from "vue";
 import HomePage_Main from "@/views/HomePage/HomePage_Main.vue";
 import ExplorePage_Main from "@/views/Explore/ExplorePage_Main.vue";
 import CreateCenter from "@/views/CreateCenter/CreateCenterPage_Main.vue";
@@ -65,9 +65,9 @@ const changeMode = (newMode) => {
 
 const ChangerRegisterMode = () => {
   RegisterMode.value = !RegisterMode.value;
-  if(ShowForget.value){
-    ShowForget.value=false;
-    RegisterMode.value=false;
+  if (ShowForget.value) {
+    ShowForget.value = false;
+    RegisterMode.value = false;
   }
 }
 
@@ -123,6 +123,7 @@ const refreshNewest_Songs_Page = () => {
 }
 
 function getsonglistinit() {
+  GetMessage();
   const instance = axios.create({
     baseURL: 'http://182.92.100.66:5000',
     timeout: 5000, // 设置请求超时时间
@@ -164,7 +165,6 @@ function getsonglistinit() {
         }
         datax.value = response.data.data.songs;
         MusicPlayer_Cell_Ref.value.initCurrentMusic(musicList.value[0])
-        console.log(musicList.value);
       })
       .catch(error => {
         console.log(error.response.data);
@@ -409,7 +409,6 @@ const GetHomePageRecommendLatest = () => {
     }
   })
       .then(response => {
-        console.log(response.data.data);
         HomePageRecommendLatest.value = response.data.data;
         let length = HomePageRecommendLatest.value.length;
         for (let i = 0; i < length; ++i) {
@@ -425,7 +424,6 @@ const GetHomePageRecommendLatest = () => {
     }
   })
       .then(response => {
-        console.log(response.data.data);
         HotSongs.value = response.data.data;
         let length = HotSongs.value.length;
         for (let i = 0; i < length; ++i) {
@@ -519,10 +517,10 @@ const PlayLikeSongs = () => {
 }
 
 const autoLogin = () => {
+  localStorage.removeItem('user-info');
   const userinfo = localStorage.getItem('user-info');
   if (userinfo != null) {
     const user_object = JSON.parse(localStorage.getItem('user-info'));
-    console.log(user_object);
     const instance = axios.create({
       baseURL: 'http://182.92.100.66:5000',
       timeout: 5000, // 设置请求超时时间
@@ -540,6 +538,7 @@ const autoLogin = () => {
             token.value = user_object.token;
             UserRole.value = user_object.UserRole;
             getsonglistinit(user_object.username);
+            GetMessage();
           }
         })
         .catch(error => {
@@ -554,6 +553,72 @@ const ChangeForgetMode = () => {
   console.log(ShowForget.value);
 }
 
+
+const MessageType1 = ref([]);
+const MessageType2 = ref([]);
+const MessageType3 = ref([]);
+const MessageType4 = ref([]);
+const MessageType5 = ref([]);
+const Message = ref([]);
+
+let intervalId = null;
+
+const GetMessage = () => {
+  const instance = axios.create({
+    baseURL: 'http://182.92.100.66:5000',
+    timeout: 5000, // 设置请求超时时间
+    headers: {
+      'Authorization': `Bearer ${token.value}`,
+    }
+  });
+  axios.defaults.withCredentials = true;
+  const web = '/messages/';
+  instance.get(web)
+      .then(response => {
+        Message.value = response.data.data;
+        let length = Message.value.length;
+        MessageType1.value=[];
+        MessageType2.value=[];
+        MessageType3.value=[];
+        MessageType4.value=[];
+        MessageType5.value=[];
+        for (let i = 0; i < length; ++i) {
+          if (Message.value[i].is_read === false) {
+            CountNotRead.value = CountNotRead.value + 1;
+          }
+          if (Message.value[i].type === 1 || Message.value[i].type === 6 || Message.value[i].type === 7) {
+            MessageType1.value.push(Message.value[i]);
+          } else if (Message.value[i].type === 2) {
+            MessageType2.value.push(Message.value[i]);
+          } else if (Message.value[i].type === 3) {
+            MessageType3.value.push(Message.value[i]);
+          } else if (Message.value[i].type === 4) {
+            MessageType4.value.push(Message.value[i]);
+          } else {
+            MessageType5.value.push(Message.value[i]);
+          }
+        }
+        console.log(MessageType5.value);
+      })
+      .catch(error => {
+        console.log(error.response.data);
+      })
+};
+
+const CountNotRead = ref(0);
+const ShowRedPoint = computed(() => {
+  return CountNotRead.value !== 0;
+});
+
+onMounted(() => {
+  intervalId = setInterval(GetMessage, 10000); // 10000 毫秒即 10 秒
+});
+
+onBeforeUnmount(() => {
+  if (intervalId) {
+    clearInterval(intervalId);
+  }
+});
 onMounted(getPageinit);
 onMounted(autoLogin);
 </script>
@@ -568,7 +633,7 @@ onMounted(autoLogin);
              v-model:userdata="userdata" v-model:token="token" v-model:createdSonglists="createdSonglists"
              v-model:favoriteSonglists="favoriteSonglists"
              v-model:currentUserSongList="currentUserSongList" v-model:userUploadedSongs="userUploadedSongs"
-             v-model:showUserSongList="showUserSongList"
+             v-model:showUserSongList="showUserSongList" v-model:ShowRedPoint="ShowRedPoint"
              v-model:UserRole="UserRole"></SideBar>
     <div class="lg:w-1/6 w-0 h-full mr-0"></div>
     <div class="w-full lg:w-5/6 h-full mr-0">
@@ -588,7 +653,7 @@ onMounted(autoLogin);
         </div>
         <Personal_Center v-model:userdata="userdata" v-model:HasLogin="HasLogin" v-model:username="username"
                          v-if="HasLogin&&mode==='0'" @updateavatar="updateavatar"
-                         v-model:token="token"></Personal_Center>
+                         v-model:token="token" v-model:CountNotRead="CountNotRead"></Personal_Center>
         <HomePage_Main v-model:songlist="songlist" v-model:needshowsonglistpage="needshowsonglistpage"
                        @handlePlayAfter="handlePlayAfter" @handlePlayNow="handlePlayNow" v-if="mode==='1'"
                        v-model:SearchContent="SearchContent" v-model:ShowSearchView="ShowSearchView"
@@ -615,10 +680,12 @@ onMounted(autoLogin);
                                @handlePlayNow="handlePlayNow"
                                v-model:token="token" v-model:username="username"
                                v-model:HasLogin="HasLogin"></FavoriteSonglist_Main>
-        <Message_main v-if="mode==='9'" @PlaySongList="PlaySongList" @handlePlayAfter="handlePlayAfter"
-                      @handlePlayNow="handlePlayNow"
+        <Message_main v-if="mode==='9'" v-model:Message="Message" v-model:MessageType1="MessageType1"
+                      v-model:MessageType2="MessageType2" v-model:MessageType3="MessageType3"
+                      v-model:MessageType4="MessageType4"
+                      v-model:MessageType5="MessageType5"
                       v-model:token="token" v-model:username="username"
-                      v-model:HasLogin="HasLogin"></Message_main>
+                      v-model:HasLogin="HasLogin" @GetMessage="GetMessage"></Message_main>
         <AdminPage_Main v-model:token="token" v-if="mode==='7'"></AdminPage_Main>
       </div>
     </div>

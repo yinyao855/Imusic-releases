@@ -52,6 +52,8 @@ const changeMode = (newMode) => {
   mode.value = newMode.toString();
 };
 
+const ShowRedPoint = defineModel('ShowRedPoint');
+
 const LoginArea = () => {
   if (props.HasLogin === true) {
     getuserdata();
@@ -106,35 +108,7 @@ function getUserUploadedSongs() {
         console.log(error.response.data);
       })
 }
-function getMessage () {
-  if (props.HasLogin === false) {
-    message.value = '请先登录';
-    WarningShow.value = true;
-    return;
-  }
-  const instance = axios.create({
-    baseURL: 'http://182.92.100.66:5000',
-    timeout: 5000, // 设置请求超时时间
-    headers: {
-      'Authorization': `Bearer ${token.value}`,
-    }
-  });
-  axios.defaults.withCredentials = true;
-  const web = '/messages/';
-  instance.get(web)
-      .then(response => {
-        Message.value = response.data.data;
-        console.log(Message.value);
-        if(Message.value.length>0){
-          unread.value=true;
-          console.log(unread.value);
-        }
-      })
-      .catch(error => {
-        console.log(error.data);
-        console.log(token.value)
-      })
-}
+
 const token = defineModel('token');
 const userdata = defineModel('userdata');
 const message = ref('错误消息');
@@ -142,24 +116,12 @@ const WarningShow = ref(false);
 const CloseWarning = () => {
   WarningShow.value = false;
 }
-let intervalId = ref();
-onMounted(() => {
-  // 设置一个定时器，每5秒调用一次getMessage函数
-  intervalId.value = setInterval(getMessage, 5000);
-});
-
-onUnmounted(() => {
-  // 清除定时器
-  if (intervalId.value) {
-    clearInterval(intervalId.value);
-  }
-});
-
 </script>
 
 <template>
   <div class="w-full absolute top-0 left-1/2 transform -translate-x-1/2" v-if="WarningShow">
-    <Warning :message="message" @CloseWarning="CloseWarning" class="mx-auto" v-model:token="token" v-model:Warningshow="WarningShow"></Warning>
+    <Warning :message="message" @CloseWarning="CloseWarning" class="mx-auto" v-model:token="token"
+             v-model:Warningshow="WarningShow"></Warning>
   </div>
   <div class="w-1/6 h-screen fixed hidden lg:block" style="background-color:#2E2E30">
     <div
@@ -267,7 +229,8 @@ onUnmounted(() => {
       <span class="px-4 font-medium">创建的歌单</span>
     </div>
     <div :class="containerClass8" @click="changeMode(8)">
-      <svg class="icon inline text-white my-auto" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+      <svg class="icon inline text-white my-auto" width="16" height="16" viewBox="0 0 24 24" fill="none"
+           stroke="currentColor" stroke-width="2"
            stroke-linecap="round" stroke-linejoin="round">
         <polygon
             points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
@@ -275,11 +238,31 @@ onUnmounted(() => {
       <span class="px-4 font-medium">收藏的歌单</span>
     </div>
     <div :class="containerClass9" @click="changeMode(9)">
-      <svg t="1715824231953" class="icon inline text-white my-auto" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2754" width="16" height="16"><path d="M768.6 635.2h-0.4c-17.7-0.2-31.8-14.7-31.7-32.3 0.8-76.9 1.2-164.4 0.3-176.5-2.3-17 9.3-32.9 26.4-35.8 17.4-3 33.9 8.8 36.9 26.2 0.7 4 1.6 9.5 1.1 100.1-0.2 43.5-0.7 86.2-0.7 86.7-0.1 17.5-14.4 31.6-31.9 31.6z m-31.7-208.5c0 0.3 0.1 0.6 0.1 0.8 0-0.3-0.1-0.5-0.1-0.8z" p-id="2755" fill="#ffffff"></path><path d="M768.4 456c-17.7 0-32-14.3-32-32 0-123.1-100.1-223.2-223.2-223.2S290 300.9 290 424c0 17.7-14.3 32-32 32s-32-14.3-32-32c0-76.7 29.9-148.8 84.1-203.1 54.2-54.2 126.4-84.1 203.1-84.1s148.8 29.9 203.1 84.1c54.2 54.2 84.1 126.4 84.1 203.1 0 17.7-14.4 32-32 32z" p-id="2756" fill="#ffffff"></path><path d="M586.3 211.5c-3.1 0-6.2-0.4-9.2-1.3-20.7-6.2-42.2-9.3-63.9-9.3-21.7 0-43.2 3.1-63.9 9.3-8.8 2.6-18.2 1.4-26-3.4-7.8-4.8-13.1-12.7-14.7-21.7-1.1-6-1.6-12.2-1.6-18.3 0-28.6 11.4-54.9 32-73.9 19.7-18.2 46-28.2 74.2-28.2s54.5 10 74.2 28.2c20.6 19.1 32 45.4 32 73.9 0 6.1-0.5 12.3-1.6 18.3-1.6 9-6.9 16.9-14.7 21.7-5.1 3-10.9 4.7-16.8 4.7z m-73.1-83.1c-10.6 0-21.2 3.3-29.2 9.9 19.3-2 39-2 58.4 0-8-6.5-18.6-9.9-29.2-9.9zM258.1 630.1h-0.4c-17.7-0.2-31.8-14.7-31.7-32.3 0.8-76.9 1.2-164.4 0.3-176.5-2.3-17 9.3-32.9 26.4-35.8 17.4-3 33.9 8.8 36.9 26.2 0.7 4 1.6 9.5 1.1 100.1-0.2 43.5-0.7 86.2-0.7 86.7-0.1 17.5-14.4 31.6-31.9 31.6z m-31.7-208.5c0 0.3 0.1 0.6 0.1 0.9 0-0.4 0-0.7-0.1-0.9z" p-id="2757" fill="#ffffff"></path><path d="M807.2 838h-0.2l-590.4-4c-22.6 0-42.9-10.8-54.2-28.8-10.7-16.9-11.8-38.1-3.1-57l69.3-162.7c6.9-16.3 25.7-23.8 42-16.9 16.3 6.9 23.8 25.7 16.9 42L219.7 770l586.4 4-67.8-163.6c-6.8-16.3 1-35 17.3-41.8 16.3-6.8 35 1 41.8 17.3l68.3 164.8v0.1c8 19.5 5.8 41.7-6 59.2-11.7 17.5-31.3 28-52.5 28z m-589.8-62.7z m589.1-0.2z" p-id="2758" fill="#ffffff"></path><path d="M508.2 961.6c-41 0-79.7-16.8-109-47.4-28.7-30-44.4-69-44.4-110 0-17.7 14.3-32 32-32s32 14.3 32 32c0 50.6 40.9 93.4 89.4 93.4 50.4 0 89.4-50.2 89.4-93.4 0-17.7 14.3-32 32-32s32 14.3 32 32c0 38.5-16.1 77.9-44.2 108-29.7 31.9-68.5 49.4-109.2 49.4z" p-id="2759" fill="#ffffff"></path></svg>
+      <svg class="icon inline text-white my-auto" viewBox="0 0 1024 1024" version="1.1"
+           xmlns="http://www.w3.org/2000/svg" width="16" height="16">
+        <path
+            d="M768.6 635.2h-0.4c-17.7-0.2-31.8-14.7-31.7-32.3 0.8-76.9 1.2-164.4 0.3-176.5-2.3-17 9.3-32.9 26.4-35.8 17.4-3 33.9 8.8 36.9 26.2 0.7 4 1.6 9.5 1.1 100.1-0.2 43.5-0.7 86.2-0.7 86.7-0.1 17.5-14.4 31.6-31.9 31.6z m-31.7-208.5c0 0.3 0.1 0.6 0.1 0.8 0-0.3-0.1-0.5-0.1-0.8z"
+            p-id="2755" fill="#ffffff"></path>
+        <path
+            d="M768.4 456c-17.7 0-32-14.3-32-32 0-123.1-100.1-223.2-223.2-223.2S290 300.9 290 424c0 17.7-14.3 32-32 32s-32-14.3-32-32c0-76.7 29.9-148.8 84.1-203.1 54.2-54.2 126.4-84.1 203.1-84.1s148.8 29.9 203.1 84.1c54.2 54.2 84.1 126.4 84.1 203.1 0 17.7-14.4 32-32 32z"
+            p-id="2756" fill="#ffffff"></path>
+        <path
+            d="M586.3 211.5c-3.1 0-6.2-0.4-9.2-1.3-20.7-6.2-42.2-9.3-63.9-9.3-21.7 0-43.2 3.1-63.9 9.3-8.8 2.6-18.2 1.4-26-3.4-7.8-4.8-13.1-12.7-14.7-21.7-1.1-6-1.6-12.2-1.6-18.3 0-28.6 11.4-54.9 32-73.9 19.7-18.2 46-28.2 74.2-28.2s54.5 10 74.2 28.2c20.6 19.1 32 45.4 32 73.9 0 6.1-0.5 12.3-1.6 18.3-1.6 9-6.9 16.9-14.7 21.7-5.1 3-10.9 4.7-16.8 4.7z m-73.1-83.1c-10.6 0-21.2 3.3-29.2 9.9 19.3-2 39-2 58.4 0-8-6.5-18.6-9.9-29.2-9.9zM258.1 630.1h-0.4c-17.7-0.2-31.8-14.7-31.7-32.3 0.8-76.9 1.2-164.4 0.3-176.5-2.3-17 9.3-32.9 26.4-35.8 17.4-3 33.9 8.8 36.9 26.2 0.7 4 1.6 9.5 1.1 100.1-0.2 43.5-0.7 86.2-0.7 86.7-0.1 17.5-14.4 31.6-31.9 31.6z m-31.7-208.5c0 0.3 0.1 0.6 0.1 0.9 0-0.4 0-0.7-0.1-0.9z"
+            p-id="2757" fill="#ffffff"></path>
+        <path
+            d="M807.2 838h-0.2l-590.4-4c-22.6 0-42.9-10.8-54.2-28.8-10.7-16.9-11.8-38.1-3.1-57l69.3-162.7c6.9-16.3 25.7-23.8 42-16.9 16.3 6.9 23.8 25.7 16.9 42L219.7 770l586.4 4-67.8-163.6c-6.8-16.3 1-35 17.3-41.8 16.3-6.8 35 1 41.8 17.3l68.3 164.8v0.1c8 19.5 5.8 41.7-6 59.2-11.7 17.5-31.3 28-52.5 28z m-589.8-62.7z m589.1-0.2z"
+            p-id="2758" fill="#ffffff"></path>
+        <path
+            d="M508.2 961.6c-41 0-79.7-16.8-109-47.4-28.7-30-44.4-69-44.4-110 0-17.7 14.3-32 32-32s32 14.3 32 32c0 50.6 40.9 93.4 89.4 93.4 50.4 0 89.4-50.2 89.4-93.4 0-17.7 14.3-32 32-32s32 14.3 32 32c0 38.5-16.1 77.9-44.2 108-29.7 31.9-68.5 49.4-109.2 49.4z"
+            p-id="2759" fill="#ffffff"></path>
+      </svg>
       <span class="px-4 font-medium">消息中心
-        <svg t="1715828492967" class="icon inline text-white my-auto" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="4131" width="4" height="4"><path d="M512 512m-512 0a512 512 0 1 0 1024 0 512 512 0 1 0-1024 0Z" fill="#FC3227" p-id="4132"></path></svg></span>
-      </div>
-      </div>
+        <svg v-show="ShowRedPoint" class="icon inline text-white my-auto" viewBox="0 0 1024 1024"
+             xmlns="http://www.w3.org/2000/svg" width="4" height="4"><path
+            d="M512 512m-512 0a512 512 0 1 0 1024 0 512 512 0 1 0-1024 0Z" fill="#FC3227"
+            ></path></svg></span>
+    </div>
+  </div>
 </template>
 
 <style scoped>
