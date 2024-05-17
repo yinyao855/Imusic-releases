@@ -106,7 +106,7 @@ onMounted(getCommentMessage)
         <td class="w-28">
           <img src="http://182.92.100.66:5000/media/avatars/imgPlaylist.jpeg" alt="头像"
                class="h-14 rounded-xl aspect-square inline-block"/>
-          <div v-if="!item.is_read" class="text-red-500 inline-block align-text-bottom" style="font-size: 50px">.</div>
+          <div v-if="!item.is_read" class="text-red-500 inline-block" style="font-size: 50px">.</div>
         </td>
         <td class="">
           <div class="font-bold text-xl mb-2">{{ item.sender }}</div>
