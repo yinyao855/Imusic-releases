@@ -7,6 +7,7 @@ import CommentNotifications from "@/views/Message/CommentNotifications.vue";
 import LikeNotifications from "@/views/Message/LikeNotifications.vue";
 import SubscribeNotifications from "@/views/Message/SubscribeNotifications.vue";
 import PrivateNotifications from "@/views/Message/PrivateNotifications.vue";
+import Warning from "@/components/Warning.vue";
 
 const NaviMode = ref('1');
 const upload = ref('0');
@@ -87,6 +88,7 @@ onMounted(GetHasRead)
 </script>
 
 <template>
+
   <div class="w-full h-full">
   <div class="w-full h-14 pl-6">
     <div :class="[NaviClass1, 'text-transition']" @click="changeNaviMode(1)" style="line-height: 56px">系统通知
