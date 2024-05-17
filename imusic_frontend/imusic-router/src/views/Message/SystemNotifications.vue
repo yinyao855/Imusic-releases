@@ -43,7 +43,7 @@ function closeShowSystemMessage() {
     <div class="text-white text-lg mt-5 mb-3 text-center">系统通知</div>
     <table class="table m-auto w-4/5 text-center">
       <tbody>
-      <tr v-for="(message, index) in systemMessage" class="text-white hover:bg-gray-800 h-16 border-b-gray-500"
+      <tr v-for="(message, index) in systemMessage" class="text-white hover:bg-gray-800 h-14 border-b-gray-500"
           @click="activeShowSystemMessage(message)">
         <td>
           <svg v-if="message.title === '听歌周报'" class="h-8 w-8 mr-5 align-middle text-cyan-400 inline-block"
