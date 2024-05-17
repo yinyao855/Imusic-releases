@@ -11,6 +11,8 @@ const Message = defineModel("Message");
 const followMessage = ref([])
 const userImage = ref([])
 const MyAvatar = ref();
+const followings = ref([]);
+const followMutual = ref([]);
 const extractDate = (dateTimeString) => {
   const date = new Date(dateTimeString);
   return date.toISOString().slice(0, 10);
@@ -35,17 +37,31 @@ const showMessageDetail = (index) => {
     detailVisible.value = index;
   }
 }
-function getFollowMessage() {
+function initFollowMessage() {
   const length = ref(0);
   length.value = Message.value.length;
+  followMutual.value=[];
   for (let i = 0; i < length.value; i++) {
     if (Message.value[i].type === 4) {
       followMessage.value.push(Message.value[i]);
       if (Message.value[i].is_read === false)
         readMessage(Message.value[i].id);
+      let isMutual = false;
+      for(let j=0;j<followings.value.length;j++)
+      {
+        if(followings.value[j].username===Message.value[i].sender)
+        {
+          isMutual = true;
+          break;
+        }
+      }
+      followMutual.value.push(isMutual);
     }
   }
-  console.log(followMessage.value);
+  console.log('Mutual');
+  console.log(length);
+  console.log(followMutual.value);
+  console.log(followings.value);
   for (let index in followMessage.value) {
     let username = followMessage.value[index].sender;
     const instance = axios.create({
@@ -67,6 +83,69 @@ function getFollowMessage() {
         });
   }
 }
+function getFollowMessage() {
+  const length = ref(0);
+  length.value = Message.value.length;
+  followMutual.value=[];
+  for (let i = 0; i < length.value; i++) {
+    if (Message.value[i].type === 4) {
+      followMessage.value[i]=(Message.value[i]);
+      let isMutual = false;
+      for(let j=0;j<followings.value.length;j++)
+      {
+        if(followings.value[j].username===Message.value[i].sender)
+        {
+          isMutual = true;
+          break;
+        }
+      }
+      followMutual.value[i]=(isMutual);
+    }
+  }
+  console.log('Mutual');
+  console.log(length);
+  console.log(followMutual.value);
+  console.log(followings.value);
+  for (let index in followMessage.value) {
+    let username = followMessage.value[index].sender;
+    const instance = axios.create({
+      baseURL: 'http://182.92.100.66:5000',
+      timeout: 5000,
+      headers: {
+        'Authorization': `Bearer ${token.value}`,
+      }
+    });
+    axios.defaults.withCredentials = true;
+    let url = '/users/info/' + username;
+    instance.get(url, {})
+        .then((response) => {
+          userImage.value[index] = response.data.data.avatar;
+        })
+        .catch((error) => {
+          console.log(error);
+          console.log(error.response.data);
+        });
+  }
+}
+function getFollows() {
+  const instance = axios.create({
+    baseURL: 'http://182.92.100.66:5000',
+    timeout: 5000,
+    headers: {
+      'Authorization': `Bearer ${token.value}`,
+    }
+  });
+  axios.defaults.withCredentials = true;
+  let url = '/users/followings?username=' + username.value;
+  instance.get(url, {})
+      .then((response) => {
+        followings.value = response.data.data;
+        getFollowMessage();
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+}
 function readMessage(id) {
   const instance = axios.create({
     baseURL: 'http://182.92.100.66:5000',
@@ -78,7 +157,7 @@ function readMessage(id) {
   axios.defaults.withCredentials = true;
   const formData=new FormData();
   formData.append('message_id',id);
-  instance.post('/messages/read?message_id='+id)
+  instance.post('/messages/read',formData)
       .then(response=>{
         console.log(response.data);
       })
@@ -108,9 +187,39 @@ function getMyAvatar()
 const GetMessage=()=>{
   emits('GetMessage');
 }
+function addFollow(index) {
+  const formData = new FormData();
+  formData.append('username', followMessage.value[index].sender);
 
+  const instance = axios.create({
+    baseURL: 'http://182.92.100.66:5000',
+    timeout: 5000, // 设置请求超时时间
+    headers: {
+      'Authorization': `Bearer ${token.value}`,
+    }
+  });
+  axios.defaults.withCredentials = true;
+  instance.post('/users/follow', formData)
+      .then(response => {
+
+        if(response.data.message==='加关注成功')
+        {
+          followMutual.value[index]=true;
+          alert('关注成功');
+          console.log(followMutual.value);
+        }
+        else {
+          followMutual.value[index]=false;
+          alert('取消关注成功');
+        }
+      })
+      .catch(error => {
+
+      })
+}
 onMounted(() => {
-  getFollowMessage();
+  getFollows();
+  initFollowMessage();
   showMessageDetail(detailVisible.value);
 })
 </script>
@@ -139,7 +248,7 @@ onMounted(() => {
     <div class="h-32 flex"></div>
   <div class="w-3/5 h-full">
     <div class="w-full h-full px-4">
-      <div class="w-full h-2/3 overflow-auto">
+      <div class="w-full h-1/2 overflow-auto">
         <div :class="['chat', item.direction === 0 ? 'chat-start' : 'chat-end']" v-for="(item, index) in messageDetail"
              :key="index">
           <div class="chat-image avatar">
@@ -154,8 +263,17 @@ onMounted(() => {
           <div class="chat-bubble">{{ item.content}}</div>
         </div>
       </div>
-      <div class="h-12 w-full mb-4">
-        <Input v-model:username="username" v-model:token="token" @GetMessage="GetMessage"></Input>
+      <div class="text-xl text-gray-300 text-center bg-gray-800 my-10 w-2/3 mx-auto rounded-l">互相关注后可以发送消息</div>
+      <div class="h-12 w-full mb-20">
+        <div class="flex">
+          <div class="group mx-auto">
+            <div class="btn btn-md ml-4 text-white tracking-widest bg-orange-700 hover:bg-orange-800 transition:ease-in duration-300"
+                @click="addFollow(detailVisible)">
+              <p v-if="followMutual[detailVisible]!==true">关 注</p>
+              <p v-if="followMutual[detailVisible]===true">取消关注</p>
+            </div>
+          </div>
+        </div>
       </div>
       <div class="h-32"></div>
     </div>

@@ -209,6 +209,7 @@ function tip(index) {
     return '取消关注';
   }
 }
+
 onMounted(() => {
   getSongComment();
   console.log(token.value);
