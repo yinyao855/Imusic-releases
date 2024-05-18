@@ -180,7 +180,7 @@ onMounted(GetUserData);
   <transition name="slide" appear>
     <div class="transition-container-2" v-if="ShowAddSong&&!ShowSongDetail&&!ShowSongList">
       <CurrentUser_SongList v-model:CurrentUser_SongListdata="CurrentUser_SongListdata"
-                            v-model:needtoaddSongid="needtoaddSongid" v-model:token="token"
+                            v-model:needtoaddSongid="needtoaddSongid" v-model:token="token" v-model:username="username"
                             @CloseCurrentUser_SongList="CloseCurrentUser_SongList"></CurrentUser_SongList>
     </div>
   </transition>

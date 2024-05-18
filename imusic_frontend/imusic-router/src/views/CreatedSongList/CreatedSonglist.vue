@@ -318,7 +318,7 @@ onMounted(getSonglistData);
                             v-model:CurrentUser_SongListdata="createdSongLists"
                             v-model:needtoaddSongid="needtoaddSongid"
                             @CloseCurrentUser_SongList="CloseCurrentUser_SongList"
-                            v-model:token="token"></CurrentUser_SongList>
+                            v-model:token="token" v-model:username="username"></CurrentUser_SongList>
     </div>
   </transition>
   <!--  展示歌曲详细信息界面（当ShowSong为true）-->

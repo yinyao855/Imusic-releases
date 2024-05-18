@@ -155,7 +155,7 @@ const CloseSongPage=()=>{
   <transition name="slide" appear>
     <div class="transition-container-2" v-if="ShowCurrentUser_SongList&&!NeedShowSongDetail">
       <CurrentUser_SongList v-if="ShowCurrentUser_SongList" v-model:CurrentUser_SongListdata="CurrentUser_SongListdata"
-                            v-model:needtoaddSongid="needtoaddSongid"
+                            v-model:needtoaddSongid="needtoaddSongid" v-model:username="username"
                             @CloseCurrentUser_SongList="CloseCurrentUser_SongList" v-model:token="token"></CurrentUser_SongList>
     </div>
   </transition>
