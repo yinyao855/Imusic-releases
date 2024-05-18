@@ -3,11 +3,14 @@
 import {defineModel, defineEmits, onMounted, ref} from "vue";
 import buttonchangesize from "@/components/ButtonChangeSizeRight.vue";
 import axios from "axios";
+import Comment from "@/components/Comment.vue";
 
 // global variables
 const token = defineModel('token')
 const username = defineModel('username')
-
+const WarningShow = ref(false);
+const message = ref('');
+const showComment = ref(true);
 // defineEmits(关闭当前页面/回到上一个页面展示歌单)
 const emits = defineEmits(['handlePlayNow', 'CloseSong'])
 
@@ -314,6 +317,15 @@ onMounted(getFavoriteSongs);
     <div class="mt-10 ml-5">
       <div v-for="lyric in lyrics" class="text-gray-300 mt-1">
         <p>{{ lyric.text }}</p>
+      </div>
+    </div>
+    <hr class="my-5">
+    <div v-if="showComment" class="w-5/6 m-auto">
+      <div class="w-full overflow-hidden mx-auto my-auto pr-20" style="height:500px">
+        <transition name="all transition-duration: 300ms">
+          <Comment :token="token" :id="currentSongId" v-model:showComment="showComment" v-model:songID="currentSongId"
+                   v-model:WarningShow="WarningShow" v-model:message="message" v-model:username="username"></Comment>
+        </transition>
       </div>
     </div>
   </div>

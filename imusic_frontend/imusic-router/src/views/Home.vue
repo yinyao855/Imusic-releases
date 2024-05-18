@@ -589,7 +589,7 @@ const GetMessage = () => {
           }
           if (Message.value[i].type === 1 || Message.value[i].type === 6 || Message.value[i].type === 7) {
             MessageType1.value.push(Message.value[i]);
-          } else if (Message.value[i].type === 2) {
+          } else if (Message.value[i].type === 2 && Message.value[i].sender !== username.value) {
             MessageType2.value.push(Message.value[i]);
           } else if (Message.value[i].type === 3) {
             MessageType3.value.push(Message.value[i]);
