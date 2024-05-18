@@ -11,6 +11,7 @@ const songId = ref(0);
 const title = ref("");
 const currentMessage = ref([]);
 const ShowSong = ref(false);
+const emits = defineEmits(["GetMessage", "readMessage"]);
 
 const CloseSong = () => {
   ShowSong.value = false;
@@ -57,23 +58,7 @@ function activeCommentMessage(index, content) {
 }
 
 function readMessage(messageId) {
-  const instance = axios.create({
-    baseURL: 'http://182.92.100.66:5000',
-    timeout: 5000,
-    headers: {
-      'Authorization': `Bearer ${token.value}`,
-    }
-  });
-  axios.defaults.withCredentials = true;
-  const formData = new FormData();
-  formData.append('message_id', messageId);
-  instance.post('/messages/read', formData)
-      .then(response => {
-        console.log(response.data);
-      })
-      .catch(error => {
-        console.log(error.response.data);
-      })
+  emits('readMessage', messageId);
 }
 
 function getSongId() {
@@ -140,31 +125,6 @@ onMounted(getCommentMessage)
 </template>
 
 <style scoped>
-.img_songlist {
-  width: 200px;
-  height: 200px;
-  border-radius: 20px;
-}
-
-.img_song {
-  width: 40px;
-  height: 40px;
-  border-radius: 8px;
-}
-
-.bg-blur {
-  position: relative;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-  -webkit-filter: blur(19px);
-  -moz-filter: blur(19px);
-  -o-filter: blur(19px);
-  -ms-filter: blur(19px);
-  filter: blur(19px);
-}
-
-
 .slide-leave-active {
   transition: transform 0.5s ease;
 }

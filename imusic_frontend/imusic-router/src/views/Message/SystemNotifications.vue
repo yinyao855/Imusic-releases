@@ -12,6 +12,7 @@ const currentMessage = ref([]);
 // const playSongMessage = defineModel("playSongMessage");
 // const createMessage = defineModel("createMessage");
 const showSystemMessage = ref(false);
+const emits = defineEmits(["GetMessage", "readMessage"]);
 
 function formatDateTime(dateTimeStr) {
   const date = new Date(dateTimeStr);
@@ -41,23 +42,7 @@ function closeShowSystemMessage() {
 }
 
 function readMessage(id) {
-  const instance = axios.create({
-    baseURL: 'http://182.92.100.66:5000',
-    timeout: 5000,
-    headers: {
-      'Authorization': `Bearer ${token.value}`,
-    }
-  });
-  axios.defaults.withCredentials = true;
-  const formData = new FormData();
-  formData.append('message_id', id);
-  instance.post('/messages/read', formData)
-      .then(response => {
-        console.log(response.data);
-      })
-      .catch(error => {
-        console.log(error.response.data);
-      })
+  emits('readMessage', id);
 }
 </script>
 

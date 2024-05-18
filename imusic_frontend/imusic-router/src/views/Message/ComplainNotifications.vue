@@ -1,24 +1,109 @@
 <script setup>
-import {defineModel} from "vue";
+import {defineEmits, defineModel, onMounted, ref} from "vue";
+import axios from "axios";
+import SongPage from "@/components/SongPage.vue";
 
 const token = defineModel("token");
 const username = defineModel("username");
 const Message = defineModel("Message");
+const title = ref("");
+const currentMessage = ref([]);
+const songData = ref([]);
+const image = ref([]);
+const songId = ref(0);
+const ShowSong = ref(false);
+const emits = defineEmits(["GetMessage", "readMessage"]);
+
+function activeComplaintMessage(index, content) {
+  // 获取歌曲名
+  const s1 = ref([]);
+  const s2 = ref([]);
+  s1.value = content.split("《");
+  s2.value = s1.value[1].split("》");
+  title.value = s2.value[0];
+  getSongId(index);
+  // 已读
+  currentMessage.value = Message.value[index];
+  if (currentMessage.value.is_read === false) {
+    readMessage(currentMessage.value.id);
+    currentMessage.value.is_read = true;
+  }
+}
+
+function readMessage(id) {
+  emits("readMessage", id);
+}
+
+function getSongId(index) {
+  songId.value = songData.value[index].id;
+  // 打开歌曲详细界面
+  ShowSong.value = true;
+}
+
+function getSongData() {
+  const length = ref(0);
+  length.value = Message.value.length;
+  for (let index in Message.value) {
+    const s1 = ref([]);
+    const s2 = ref([]);
+    s1.value = Message.value[index].content.split("《");
+    s2.value = s1.value[1].split("》");
+    title.value = s2.value[0];
+    const instance = axios.create({
+      baseURL: 'http://182.92.100.66:5000',
+      timeout: 5000,
+      headers: {
+        'Authorization': `Bearer ${token.value}`,
+      }
+    });
+    axios.defaults.withCredentials = true;
+    instance.get('/users/songs?username=' + username.value)
+        .then(response => {
+          const length = ref(0);
+          length.value = response.data.data.length;
+          for (let i = 0; i < length.value; i++) {
+            if (response.data.data[i].title === title.value) {
+              songData.value.push(response.data.data[i]);
+              image.value[index] = response.data.data[i].cover;
+            }
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        })
+  }
+}
+
+const CloseSong = () => {
+  ShowSong.value = false;
+}
+
+onMounted(getSongData)
 </script>
 
 <template>
-  <div class="overflow-x-auto px-10">
+  <!--  展示歌曲详细信息界面（当ShowSong为true）-->
+  <transition name="slide" appear>
+    <div class="transition-container-2" v-if="ShowSong">
+      <SongPage v-model:currentSongId="songId"
+                @handlePlayNow="handlePlayNow" @CloseSong="CloseSong"
+                v-model:username="username" v-model:token="token"></SongPage>
+    </div>
+  </transition>
+
+
+  <div class="overflow-x-auto px-10" v-if="!ShowSong">
     <table class="table">
       <tbody>
       <tr class="text-white hover:bg-gray-600/40 rounded-md"
-          v-for="(item, index) in Message" @click="">
+          v-for="(item, index) in Message" @click="activeComplaintMessage(index, item.content)">
         <td class="w-28">
-          <img src="" alt="头像"
+          <img :src="image[index]" alt="头像"
                class="h-14 rounded-xl aspect-square inline-block"/>
           <div v-if="!item.is_read" class="text-red-500 inline-block" style="font-size: 50px">.</div>
         </td>
         <td class="">
-          <div class="font-bold text-xl mb-2">{{ item.sender }}</div>
+          <div class="font-bold text-xl mb-2">{{ item.title }}</div>
           <div class="text-sm text-left opacity-50 truncate w-96">{{ item.content }}</div>
         </td>
         <td class="w-40 text-sm opacity-50">
@@ -31,5 +116,34 @@ const Message = defineModel("Message");
 </template>
 
 <style scoped>
+.slide-leave-active {
+  transition: transform 0.5s ease;
+}
 
+.slide-enter-active {
+  transition: transform 0.5s ease;
+}
+
+.slide-enter-from,
+.slide-leave-to {
+  transform: translateX(100%);
+}
+
+.slide-enter-to,
+.slide-leave-from {
+  transform: translateX(0);
+}
+
+.transition-container {
+  right: 0;
+  top: 0;
+  height: 100%
+}
+
+
+.transition-container-2 {
+  right: 0;
+  top: 0;
+  height: 100%;
+}
 </style>

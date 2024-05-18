@@ -4,6 +4,8 @@ import {defineModel, defineEmits, onMounted, ref} from "vue";
 import buttonchangesize from "@/components/ButtonChangeSizeRight.vue";
 import axios from "axios";
 import Comment from "@/components/Comment.vue";
+import CurrentUser_SongList from "@/components/CurrentUser_SongList.vue";
+import Complaint from "@/components/Complaint.vue";
 
 // global variables
 const token = defineModel('token')
@@ -11,6 +13,8 @@ const username = defineModel('username')
 const WarningShow = ref(false);
 const message = ref('');
 const showComment = ref(true);
+const showComplaint = ref(false);
+const complaintType = ref("songs")
 // defineEmits(关闭当前页面/回到上一个页面展示歌单)
 const emits = defineEmits(['handlePlayNow', 'CloseSong'])
 
@@ -248,16 +252,35 @@ function handleSubscribeUser() {
   isSubscribe.value = !isSubscribe.value;
 }
 
+function activeShowComplaint() {
+  showComplaint.value = true;
+}
+
+function closeComplaint() {
+  showComplaint.value = false;
+}
+
 onMounted(getSongData)
 onMounted(getFavoriteSongs);
 onMounted(getSubscribeUser);
 </script>
 
 <template>
+  <transition name="slide" appear>
+    <div class="transition-container-2" v-if="showComplaint">
+      <Complaint v-model:complaintType="complaintType"
+                 v-model:id="songData.id" v-model:title="songData.title"
+                 @closeComplaint="closeComplaint"
+                 v-model:token="token" v-model:username="username"></Complaint>
+    </div>
+  </transition>
+
+
   <!--  回到歌单界面-->
-  <buttonchangesize class="left-4 top-4" @fullsize="fullsize" v-model:token="token"></buttonchangesize>
+  <buttonchangesize v-if="showCurrentSong&&!showComplaint" class="left-4 top-4" @fullsize="fullsize"
+                    v-model:token="token"></buttonchangesize>
   <!--  歌曲详细信息新界面-->
-  <div v-if="showCurrentSong" class="w-2/3 m-auto">
+  <div v-if="showCurrentSong&&!showComplaint" class="w-2/3 m-auto">
     <div class="inline-block mt-10">
       <img :src="songData.cover" alt="歌曲封面"
            class="mr-10 h-72 w-72 aspect-square rounded-xl border-gray-300 border-e-2 border-b-2">
@@ -353,7 +376,7 @@ onMounted(getSubscribeUser);
       <div class="mt-14">
         <!--            播放歌单中所有歌曲-->
         <button @click="handlePlayNow(songData.id)"
-                class="mr-3 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-10 rounded-full">
+                class="mr-1 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-10 rounded-full">
           <svg class="h-5 w-5 inline-block align-sub text-white" viewBox="0 0 24 24" fill="none"
                stroke="currentColor"
                stroke-width="2"
@@ -364,7 +387,7 @@ onMounted(getSubscribeUser);
         </button>
         <!--          导出歌词-->
         <button @click="downloadLrcFile(songData.lyric)"
-                class="mr-3 bg-gray-400 hover:bg-gray-500 text-white font-bold py-2 px-6 rounded-full">
+                class="mr-1 bg-gray-400 hover:bg-gray-500 text-white font-bold py-2 px-6 rounded-full">
           <svg class="h-5 w-5 inline-block align-sub text-white" width="24" height="24" viewBox="0 0 24 24"
                stroke-width="2"
                stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -375,6 +398,19 @@ onMounted(getSubscribeUser);
             <polyline points="9 14 12 17 15 14"/>
           </svg>
           <p class="inline-block">下载歌词</p>
+        </button>
+        <!--          投诉-->
+        <button @click="activeShowComplaint"
+                class="mr-1 bg-gray-400 hover:bg-gray-500 text-white font-bold py-2 px-10 rounded-full">
+          <svg class="h-5 w-5 inline-block align-sub text-white" width="24" height="24" viewBox="0 0 24 24"
+               stroke-width="2"
+               stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+            <path stroke="none" d="M0 0h24v24H0z"/>
+            <circle cx="12" cy="12" r="9"/>
+            <line x1="12" y1="8" x2="12" y2="12"/>
+            <line x1="12" y1="16" x2="12.01" y2="16"/>
+          </svg>
+          <p class="inline-block">投诉</p>
         </button>
       </div>
     </div>
@@ -397,4 +433,34 @@ onMounted(getSubscribeUser);
 </template>
 
 <style scoped>
+.slide-leave-active {
+  transition: transform 0.5s ease;
+}
+
+.slide-enter-active {
+  transition: transform 0.5s ease;
+}
+
+.slide-enter-from,
+.slide-leave-to {
+  transform: translateX(100%);
+}
+
+.slide-enter-to,
+.slide-leave-from {
+  transform: translateX(0);
+}
+
+.transition-container {
+  right: 0;
+  top: 0;
+  height: 100%
+}
+
+
+.transition-container-2 {
+  right: 0;
+  top: 0;
+  height: 100%;
+}
 </style>

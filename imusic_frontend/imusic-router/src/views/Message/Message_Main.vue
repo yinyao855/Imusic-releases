@@ -108,6 +108,26 @@ const GetMessage = () => {
   emits('GetMessage')
 }
 
+function readMessage(messageId) {
+  const instance = axios.create({
+    baseURL: 'http://182.92.100.66:5000',
+    timeout: 5000,
+    headers: {
+      'Authorization': `Bearer ${token.value}`,
+    }
+  });
+  axios.defaults.withCredentials = true;
+  const formData = new FormData();
+  formData.append('message_id', messageId);
+  instance.post('/messages/read', formData)
+      .then(response => {
+        console.log(response.data);
+      })
+      .catch(error => {
+        console.log(error.response.data);
+      })
+}
+
 onMounted(GetHasRead)
 </script>
 
@@ -155,7 +175,7 @@ onMounted(GetHasRead)
           ></path>
         </svg>
       </div>
-      <div v-if="UserRole==='admin'" :class="[NaviClass6, 'text-transition']" @click="changeNaviMode(6)" style="line-height: 56px">投诉通知
+      <div :class="[NaviClass6, 'text-transition']" @click="changeNaviMode(6)" style="line-height: 56px">投诉通知
         <svg v-if="Count6!==0" class="icon inline text-white my-auto" viewBox="0 0 1024 1024"
              xmlns="http://www.w3.org/2000/svg" width="4" height="4">
           <path
@@ -163,7 +183,8 @@ onMounted(GetHasRead)
           ></path>
         </svg>
       </div>
-      <div v-if="UserRole==='admin'" :class="[NaviClass7, 'text-transition']" @click="changeNaviMode(7)" style="line-height: 56px">申诉通知
+      <div v-if="UserRole==='admin'" :class="[NaviClass7, 'text-transition']" @click="changeNaviMode(7)"
+           style="line-height: 56px">申诉通知
         <svg v-if="Count7!==0" class="icon inline text-white my-auto" viewBox="0 0 1024 1024"
              xmlns="http://www.w3.org/2000/svg" width="4" height="4">
           <path
@@ -173,10 +194,10 @@ onMounted(GetHasRead)
       </div>
     </div>
     <SystemNotifications v-if="NaviMode==='1'" v-model:token="token" v-model:username="username"
-                         v-model:Message="MessageType1"
+                         v-model:Message="MessageType1" @readMessage="readMessage"
     ></SystemNotifications>
     <CommentNotifications v-if="NaviMode==='2'" v-model:token="token" v-model:username="username"
-                          v-model:Message="MessageType2"
+                          v-model:Message="MessageType2" @readMessage="readMessage"
     ></CommentNotifications>
     <SubscribeNotifications v-if="NaviMode==='4'" v-model:token="token" v-model:username="username"
                             v-model:Message="MessageType4"
@@ -185,10 +206,11 @@ onMounted(GetHasRead)
                           v-model:Message="MessageType5" v-if="NaviMode==='5'" @GetMessage="GetMessage"
     ></PrivateNotifications>
     <ComplainNotifications class="w-full" v-model:token="token" v-model:username="username"
-                          v-model:Message="MessageType6" v-if="NaviMode==='6'" @GetMessage="GetMessage"
+                           v-model:Message="MessageType6" v-if="NaviMode==='6'" @GetMessage="GetMessage"
+                           @readMessage="readMessage"
     ></ComplainNotifications>
     <AppealNotifications class="w-full" v-model:token="token" v-model:username="username"
-                          v-model:Message="MessageType7" v-if="NaviMode==='7'" @GetMessage="GetMessage"
+                         v-model:Message="MessageType7" v-if="NaviMode==='7'" @GetMessage="GetMessage"
     ></AppealNotifications>
   </div>
 </template>
