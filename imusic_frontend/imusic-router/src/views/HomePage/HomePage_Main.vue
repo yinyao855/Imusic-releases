@@ -27,11 +27,11 @@ const ShowCurrentUser_SongList = ref(false);
 const needtoaddSongid = ref([]);
 const token=defineModel('token');
 const NaviClass1 = computed(() => ({
-  'text-base inline-block mx-5 w-30 rounded-lg antialiased tracking-widest font-medium transition-colors duration-400 hover:bg-gray-600/40': true,
+  'text-base inline-block mx-5 w-30 rounded-lg antialiased tracking-widest font-medium transition-colors duration-400 hover:bg-gray-600/40  cursor-pointer': true,
   'text-cyan-700 underline underline-offset-8 decoration-2': NaviMode.value === '1',
 }));
 const NaviClass2 = computed(() => ({
-  'text-base inline-block mx-5 w-30 rounded-lg antialiased tracking-widest font-medium transition-colors duration-400 hover:bg-gray-600/40': true,
+  'text-base inline-block mx-5 w-30 rounded-lg antialiased tracking-widest font-medium transition-colors duration-400 hover:bg-gray-600/40  cursor-pointer': true,
   'text-cyan-700 underline underline-offset-8 decoration-2': NaviMode.value === '2',
 }));
 const CurrentUser_SongListdata = ref([]);
@@ -182,7 +182,7 @@ const CloseSongPage=()=>{
                      v-model:username="username" v-model:userlike="userlike"
                      v-if="NaviMode!=='1'&&!needshowsonglistpage&&!NeedShowSongDetail&&!ShowSearchView&&!ShowCurrentUser_SongList" @addToSongList="addToSongList"
                      class="text-2xl mb-32 mx-4 text-white font-serif font-bold mt-16 ml-8 z-50" v-model:token="token"></Newest_Songs_Page>
-  <div class="text-2xl mx-4 text-white font-serif font-bold mt-16 ml-8"
+  <div class="text-2xl mx-4 text-white font-serif font-bold mt-16 ml-8  cursor-default"
        v-if="NaviMode==='1'&&!needshowsonglistpage&&!ShowSearchView&&!ShowCurrentUser_SongList&&!NeedShowSongDetail">
     歌单
   </div>
@@ -190,7 +190,7 @@ const CloseSongPage=()=>{
                 v-if="NaviMode==='1'&&!NeedShowSongDetail&&!needshowsonglistpage&&!ShowSearchView&&!ShowCurrentUser_SongList" v-model:token="token"></Image_Scrool>
   <hr class="m-5 border-gray-500"
       v-if="NaviMode==='1'&&!NeedShowSongDetail&&!needshowsonglistpage&&!ShowSearchView&&!ShowCurrentUser_SongList">
-  <div class="text-2xl mx-4 text-white font-serif font-bold ml-8"
+  <div class="text-2xl mx-4 text-white font-serif font-bold ml-8  cursor-default"
        v-if="NaviMode==='1'&&!needshowsonglistpage&&!NeedShowSongDetail&&!ShowSearchView&&!ShowCurrentUser_SongList">
     推荐艺人
   </div>
@@ -201,8 +201,8 @@ const CloseSongPage=()=>{
   <div class="mx-4 mb-32" v-if="NaviMode==='1'&&!NeedShowSongDetail&&!needshowsonglistpage&&!ShowSearchView&&!ShowCurrentUser_SongList">
     <div class="grid grid-cols-2 gap-4">
       <div class="grid-col-2">
-        <div class="text-2xl mx-8 text-white font-serif font-bold my-4">热门单曲</div>
-        <div class="overflow-x-auto">
+        <div class="text-2xl mx-8 text-white font-serif font-bold my-4 cursor-default">热门单曲</div>
+        <div class="overflow-x-auto  cursor-default">
           <table class="table">
             <!-- head -->
             <thead>
@@ -215,7 +215,7 @@ const CloseSongPage=()=>{
             </thead>
             <tbody>
             <!-- row 1 -->
-            <tr class="text-white transition duration-400 hover:bg-gray-600/40 rounded-md"
+            <tr class="text-white transition duration-400 hover:bg-gray-600/40 rounded-md  cursor-pointer"
                 v-for="(item, index) in HotSongs" :key="index">
               <td @click="handlePlayNow(HotSongs[index].id);">
                 <div class="flex items-center gap-3">
@@ -313,7 +313,7 @@ const CloseSongPage=()=>{
           </table>
         </div>
       </div>
-      <div class="grid-col-2">
+      <div class="grid-col-2 cursor-default">
         <div class="text-2xl mx-4 text-white font-serif font-bold my-4">最新上传</div>
         <div class="overflow-x-auto">
           <table class="table">
@@ -328,7 +328,7 @@ const CloseSongPage=()=>{
             </thead>
             <tbody>
             <!-- row 1 -->
-            <tr class="text-white transition duration-400 hover:bg-gray-600/40 rounded-md"
+            <tr class="text-white transition duration-400 hover:bg-gray-600/40 rounded-md  cursor-pointer"
                 v-for="(item, index) in HomePageRecommendLatest" :key="index">
               <td @click="handlePlayNow(HomePageRecommendLatest[index].id);">
                 <div class="flex items-center gap-3">

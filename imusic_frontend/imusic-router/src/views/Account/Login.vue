@@ -40,7 +40,7 @@
         <span class="span" @click="ForgetPassword">忘记密码？</span>
       </div>
       <button class="button-submit" @click="show">登 录</button>
-      <p class="p">还没有账号？ <span class="span" @click="gotosignup">注册</span></p>
+      <p class="p cursor-default">还没有账号？ <span class="span" @click="gotosignup">注册</span></p>
     </div>
   </div>
 </template>

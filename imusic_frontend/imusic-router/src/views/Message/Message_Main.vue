@@ -20,23 +20,23 @@ const MessageType4 = defineModel('MessageType4');
 const MessageType5 = defineModel('MessageType5');
 const emits=defineEmits(['GetMessage']);
 const NaviClass1 = computed(() => ({
-  'text-base inline-block mx-3 w-30 text-center rounded-lg antialiased tracking-widest font-medium transition-colors duration-400 hover:bg-gray-600/40': true,
+  'text-base inline-block mx-3 w-30 text-center rounded-lg antialiased tracking-widest font-medium transition-colors duration-400 hover:bg-gray-600/40 cursor-pointer': true,
   'text-cyan-700 underline underline-offset-8 decoration-2': NaviMode.value === '1',
 }));
 const NaviClass2 = computed(() => ({
-  'text-base inline-block mx-3 w-30 text-center rounded-lg antialiased tracking-widest font-medium transition-colors duration-400 hover:bg-gray-600/40': true,
+  'text-base inline-block mx-3 w-30 text-center rounded-lg antialiased tracking-widest font-medium transition-colors duration-400 hover:bg-gray-600/40 cursor-pointer': true,
   'text-cyan-700 underline underline-offset-8 decoration-2': NaviMode.value === '2',
 }));
 const NaviClass3 = computed(() => ({
-  'text-base inline-block mx-3 w-30 text-center rounded-lg antialiased tracking-widest font-medium transition-colors duration-400 hover:bg-gray-600/40': true,
+  'text-base inline-block mx-3 w-30 text-center rounded-lg antialiased tracking-widest font-medium transition-colors duration-400 hover:bg-gray-600/40 cursor-pointer': true,
   'text-cyan-700 underline underline-offset-8 decoration-2': NaviMode.value === '3',
 }));
 const NaviClass4 = computed(() => ({
-  'text-base inline-block mx-3 w-30 text-center rounded-lg antialiased tracking-widest font-medium transition-colors duration-400 hover:bg-gray-600/40': true,
+  'text-base inline-block mx-3 w-30 text-center rounded-lg antialiased tracking-widest font-medium transition-colors duration-400 hover:bg-gray-600/40 cursor-pointer': true,
   'text-cyan-700 underline underline-offset-8 decoration-2': NaviMode.value === '4',
 }));
 const NaviClass5 = computed(() => ({
-  'text-base inline-block mx-3 w-30 text-center rounded-lg antialiased tracking-widest font-medium transition-colors duration-400 hover:bg-gray-600/40': true,
+  'text-base inline-block mx-3 w-30 text-center rounded-lg antialiased tracking-widest font-medium transition-colors duration-400 hover:bg-gray-600/40 cursor-pointer': true,
   'text-cyan-700 underline underline-offset-8 decoration-2': NaviMode.value === '5',
 }));
 

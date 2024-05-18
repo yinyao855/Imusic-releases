@@ -625,7 +625,7 @@ onMounted(autoLogin);
 </script>
 
 <template>
-  <div class="w-full absolute top-0 left-1/2 transform -translate-x-1/2" v-if="WarningShow">
+  <div class="w-full absolute top-0 left-1/2 transform -translate-x-1/2 cursor-default" v-if="WarningShow">
     <Warning :message="message" @CloseWarning="CloseWarning" class="mx-auto" v-model:token="token"
              v-model:Warningshow="WarningShow"></Warning>
   </div>

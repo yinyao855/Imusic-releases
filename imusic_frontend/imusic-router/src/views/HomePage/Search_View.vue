@@ -90,11 +90,11 @@ const CloseSongPage=()=>{
                  v-model:username="username" v-model:token="token"></SongPage>
     </div>
   </transition>
-  <div class="text-2xl mx-auto my-6 w-full text-center text-white font-semibold" v-if="!NeedShowSongDetail">
+  <div class="text-2xl mx-auto my-6 w-full text-center text-white font-semibold cursor-default" v-if="!NeedShowSongDetail">
     <buttonchangesize class="absolute top-5 left-5" @fullsize="changesize" v-model:token="token"></buttonchangesize>
     搜索结果
   </div>
-  <div class="overflow-x-auto overflow-y-hidden mx-6 h-full" v-if="!NeedShowSongDetail">
+  <div class="overflow-x-auto overflow-y-hidden mx-6 h-full cursor-default" v-if="!NeedShowSongDetail">
     <table class="table mb-32">
       <thead>
       <tr>
@@ -108,7 +108,7 @@ const CloseSongPage=()=>{
       </thead>
       <tbody>
       <!-- row 1 -->
-      <tr class="text-white transition duration-400 hover:bg-gray-600/40 rounded-md"
+      <tr class="text-white transition duration-400 hover:bg-gray-600/40 rounded-md  cursor-pointer"
           v-for="(item, index) in songlistlast" :key="index">
         <td>
           <svg @click="addlike(index)" v-if="!item.user_like" class="icon fill-white mr-4 my-auto"

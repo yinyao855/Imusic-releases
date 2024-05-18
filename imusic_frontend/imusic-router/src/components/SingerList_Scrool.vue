@@ -4,7 +4,7 @@
     <div class="flex w-full h-full" :style="wrapperStyle">
       <div class="flex-gro-0 flex-shrink-0  h-3/4 mx-8" v-for="(SongList, index) in SongLists" :key="index"
            @click="HandleIndex(index)">
-        <div class="relative h-full">
+        <div class="relative h-full cursor-pointer">
           <img :src="SongList.cover" :alt="`Slide ${index}`" class="h-full rounded-full aspect-square"/>
           <div class="absolute inset-0 bg-gray-500 opacity-0 hover:opacity-50 transition-opacity rounded-full"></div>
         </div>

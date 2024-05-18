@@ -107,12 +107,10 @@
                           v-model:audioPlayer="audioPlayer"></Lyrics_Show_View>
       </div>
     </div>
-    <div v-if="showComment" class="col2 w-1/2 flex">
+    <div v-if="showComment" class="col2 w-1/2 flex transition:ease-in duration-300">
       <div class="w-full overflow-hidden mx-auto my-auto pr-20" style="height:90%">
-        <transition name="all transition-duration: 300ms">
         <Comment :token="token" :id="songID" v-model:showComment="showComment" v-model:songID="songID"
                  v-model:WarningShow="WarningShow" v-model:message="message" v-model:username="username"></Comment>
-        </transition>
       </div>
     </div>
   </div>
@@ -283,6 +281,4 @@ const message = ref('');
   transform: translateX(10px);
   opacity: 0;
 }
-
-
 </style>

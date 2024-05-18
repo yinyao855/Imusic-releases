@@ -184,7 +184,7 @@ onMounted(initMessage)
   <div class="overflow-x-auto px-10 w-full" v-if="!ShowMessageDetail">
     <table class="table w-full">
       <tbody>
-      <tr class="text-white w-full transition duration-400 hover:bg-gray-600/40 rounded-md"
+      <tr class="text-white w-full transition duration-400 hover:bg-gray-600/40 rounded-md cursor-pointer"
           v-for="(item, index) in Message" :key="index" @click="ActiveMessageDetail(index)">
         <td class="w-24">
           <img :src="item.friend_avatar" alt="头像" class="h-14 rounded-xl aspect-square">
@@ -197,7 +197,7 @@ onMounted(initMessage)
           {{ item.last_message.send_date }}
         </td>
       </tr>
-      <tr class="text-white transition duration-400 hover:bg-gray-600/40 rounded-md"
+      <tr class="text-white transition duration-400 hover:bg-gray-600/40 rounded-md cursor-pointer"
           v-for="(item, index) in Message_null" :key="index" @click="ActiveMessageDetail(index+Message.length)">
         <td class="w-24">
           <img :src="item.friend_avatar" alt="头像" class="h-14 rounded-xl aspect-square">

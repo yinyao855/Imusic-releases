@@ -238,7 +238,7 @@ onMounted(() => {
     </div>
   </transition>
   <div class="w-full h-full flex divide-dashed" v-if="!ShowMessage">
-    <div class="h-full w-2/5 border-r border-e border-gray-400 pl-4">
+    <div class="h-full w-full border-r border-e border-gray-400 pl-4">
   <table class="table w-full h-20 text-center overflow-auto">
     <thead>
     <tr>
@@ -248,49 +248,22 @@ onMounted(() => {
     </tr>
     </thead>
     <tbody>
-    <tr v-for="(message, index) in followMessage" class="text-white hover:bg-gray-700 h-full border-b-gray-500"
-        :style="{ 'background-color': index === detailVisible ? '#4c4f56' : '' }" @click="showMessageDetail(index);getMyAvatar()">
+    <tr v-for="(message, index) in followMessage" class="text-white hover:bg-gray-700 h-full border-b-gray-500 cursor-default">
       <td><button>
         <img :src="userImage[index]" alt="" class="w-16 h-16 rounded-full">
       </button></td>
       <td><p class="text-xl inline-block align-middle text-gray-100">{{ message.sender }}</p></td>
       <td class="text-gray-300 opacity-50 text-lg">{{ message.send_date }}</td>
+      <td>
+        <div class="btn btn-md ml-4 text-white tracking-widest bg-orange-700 hover:bg-orange-800 transition:ease-in duration-300"
+             @click="addFollow(detailVisible);">
+        <p v-if="followMutual[detailVisible]!==true">互相关注</p>
+        <p v-if="followMutual[detailVisible]===true">进入聊天</p>
+      </div></td>
     </tr>
     </tbody>
   </table>
       </div>
-  <div class="w-3/5 h-full">
-    <div class="w-full h-full px-4">
-      <div class="w-full h-1/2 overflow-auto">
-        <div :class="['chat', item.direction === 0 ? 'chat-start' : 'chat-end']" v-for="(item, index) in messageDetail"
-             :key="index">
-          <div class="chat-image avatar">
-            <div class="w-10 rounded-full">
-              <img alt="头像" :src="item.direction===0?userImage[detailVisible]:MyAvatar"/>
-            </div>
-          </div>
-          <div class="chat-header">
-            {{ item.sender }}
-            <time class="text-xs opacity-50">{{ item.send_date }}</time>
-          </div>
-          <div class="chat-bubble">{{ item.content}}</div>
-        </div>
-      </div>
-      <div class="text-xl text-gray-300 text-center bg-gray-800 my-10 w-2/3 mx-auto rounded-l">互相关注后可以发送消息</div>
-      <div class="h-12 w-full mb-20">
-        <div class="flex">
-          <div class="group mx-auto">
-            <div class="btn btn-md ml-4 text-white tracking-widest bg-orange-700 hover:bg-orange-800 transition:ease-in duration-300"
-                @click="addFollow(detailVisible);">
-              <p v-if="followMutual[detailVisible]!==true">关 注</p>
-              <p v-if="followMutual[detailVisible]===true">进入聊天</p>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="h-32"></div>
-    </div>
-  </div>
   </div>
 </template>
 

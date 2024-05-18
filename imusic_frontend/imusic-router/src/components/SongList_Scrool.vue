@@ -1,10 +1,10 @@
 <template>
-  <div class="swiper-container mt-3 mr-4 ml-5" style="height:27%" @mouseenter="stopAutoSwitch"
+  <div class="swiper-container mt-3 mr-4 ml-5 cursor-default" style="height:27%" @mouseenter="stopAutoSwitch"
        @mouseleave="startAutoSwitch">
     <div class="swiper-wrapper w-full h-full" :style="wrapperStyle">
       <div class="swiper-slide h-3/4 mx-8" v-for="(SongList, index) in songlists" :key="index"
            @click="handleindex(index)">
-        <div class="relative h-full">
+        <div class="relative h-full cursor-pointer">
           <img :src="SongList.cover" :alt="`Slide ${index}`" class="h-full rounded-2xl aspect-square"/>
           <div class="absolute inset-0 bg-gray-500 opacity-0 hover:opacity-50 transition-opacity rounded-2xl"></div>
         </div>

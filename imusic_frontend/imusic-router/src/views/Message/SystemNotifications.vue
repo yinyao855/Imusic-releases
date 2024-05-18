@@ -64,7 +64,7 @@ function readMessage(id) {
 <template>
 
   <transition name="slide" appear>
-    <div class="transition-container-2" v-if="showSystemMessage">
+    <div class="transition-container-2 cursor-default" v-if="showSystemMessage">
       <SystemMessages :currentMessage="currentMessage"
                       @closeShowSystemMessage="closeShowSystemMessage"
                       v-model:token="token"></SystemMessages>
@@ -73,7 +73,7 @@ function readMessage(id) {
   <div class="overflow-x-auto px-10" v-if="!showSystemMessage">
     <table class="table">
       <tbody>
-      <tr class="text-white transition duration-400 hover:bg-gray-600/40 rounded-md"
+      <tr class="text-white transition duration-400 hover:bg-gray-600/40 rounded-md cursor-pointer"
           v-for="(item, index) in Message" :key="index" @click="activeShowSystemMessage(index)">
         <td class="w-24">
           <svg v-if="item.title === '听歌周报'" class="h-10 w-10 align-middle text-cyan-400 inline-block"

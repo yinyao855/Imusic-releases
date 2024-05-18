@@ -217,8 +217,9 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="duration-300 h-full w-full overflow-visible transition ease-in-out delay-150">
-    <div class="text-center text-3xl  font-bold text-white p-3 w-full h-1/10">评论</div>
+  <transition name="fade">
+  <div class="comment h-full w-full overflow-visible" :class="{show:showComment}">
+    <div class="text-center text-3xl  font-bold text-white p-3 w-full h-1/10 cursor-default">评论</div>
     <div class="formx2 w-5/6 flexible h-5/6">
       <div class="h-full overflow-auto w-5/6">
         <div
@@ -226,7 +227,7 @@ onMounted(() => {
               (showDetail[index] === true) ? '80px' : '60px'
             }" style="position:relative"
             :class="index % 2 === 0 ? 'bg-even' : 'bg-odd'"
-            class="w-full rounded-lg text-white transition ease-in-out delay-100 hover:bg-transparent/20 grid grid-cols-12 grid-rows-8 gap-2"
+            class="w-full rounded-lg text-white transition ease-in-out delay-100 hover:bg-transparent/20 grid grid-cols-12 grid-rows-8 gap-2 cursor-default"
             v-for="(item, index) in Comment" :key="index">
           <div class="icon aspect-square fill-white ml-1 mr-1 mt-1 row-start-1 col-start-1 w-10 h-10">
             <button class="rounded-full w-10 h-10"><img class="rounded-full w-10 h-10" :src="userImage[index]" alt=""></button>
@@ -296,13 +297,14 @@ onMounted(() => {
                  v-model="addCommentInfo">
         </div>
         <button
-            class="text-white btn transition col-span-1 bg-blue-600 hover:bg-blue-800 transition:ease-in duration-300 w-28 border-none cursor-pointer"
+            class="text-white btn col-span-1 bg-blue-600 hover:bg-blue-800 transition:ease-in duration-300 w-28 border-none cursor-pointer"
             @click="addComment">
           确认
         </button>
       </div>
     </div>
   </div>
+  </transition>
 
 </template>
 
@@ -327,5 +329,10 @@ onMounted(() => {
   background: transparent;
   border-radius: 8px;
 }
-
+.bg-even {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+.bg-odd {
+  background-color: rgba(0, 0, 0, 0.05);
+}
 </style>
