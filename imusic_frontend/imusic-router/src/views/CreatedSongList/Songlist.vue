@@ -7,6 +7,7 @@ import SongPage from "@/components/SongPage.vue";
 import Buttonchangesize from "@/components/ButtonChangeSizeRight.vue";
 import EditSonglist from "@/views/EditSonglist.vue";
 import Other_User_Data from "@/views/Explore/Other_User_Data.vue";
+import Complaint from "@/components/Complaint.vue";
 
 // global variables
 const token = defineModel('token')
@@ -34,6 +35,9 @@ const isFavoriteSonglist = ref(false);
 const showUser = ref(false);
 
 const showSelect = ref(false);
+
+const showComplaint = ref(false);
+const complaintType = ref("songlists")
 
 // emits
 const PlaySongList = (id) => {
@@ -241,6 +245,14 @@ function cancelSelect() {
   needtoaddSongid.value = [];
 }
 
+function activeShowComplaint() {
+  showComplaint.value = true;
+}
+
+function closeComplaint() {
+  showComplaint.value = false;
+}
+
 onMounted(getFavoriteSonglists);
 onMounted(getCreatedSonglists);
 onMounted(getSonglistData);
@@ -274,7 +286,17 @@ onMounted(getSonglistData);
     </div>
   </transition>
 
-  <div v-if="showCurrentSonglist&&!ShowCreatedSongList&&!ShowSong">
+  <transition name="slide" appear>
+    <div class="transition-container-2" v-if="showComplaint">
+      <Complaint v-model:complaintType="complaintType"
+                 v-model:id="currentUserSongList.id" v-model:title="currentUserSongList.title"
+                 @closeComplaint="closeComplaint"
+                 v-model:token="token" v-model:username="username"></Complaint>
+    </div>
+  </transition>
+
+
+  <div v-if="showCurrentSonglist&&!ShowCreatedSongList&&!ShowSong&&!showComplaint">
     <!--      展示歌单信息-->
     <div class="h-80 relative">
       <div class="bg-center bg-cover bg-blur w-full h-full absolute top-0 left-0"
@@ -284,6 +306,34 @@ onMounted(getSonglistData);
       <div class="px-8 py-3 absolute top-0 w-full">
         <!--    回到选择歌单界面-->
         <buttonchangesize class="" @fullsize="fullsize" v-model:token="token"></buttonchangesize>
+        <div
+            class="float-right dropdown dropdown-bottom tooltip transition duration-400 border-none z-50"
+            data-tip="歌单操作">
+          <svg class="icon" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg"
+               width="32" height="32" tabindex="0" role="button">
+            <path
+                d="M170.666667 213.333333h682.666666v85.333334H170.666667V213.333333z m0 512h682.666666v85.333334H170.666667v-85.333334z m0-256h682.666666v85.333334H170.666667v-85.333334z"
+                fill="white"></path>
+          </svg>
+          <ul tabindex="0"
+              class="dropdown-content z-50 text-white text-sm"
+              style="width:50px">
+            <li class="py-2">
+              <!--          投诉歌单-->
+              <div class="cursor-pointer h-8 w-8 p-1 bg-gray-300 hover:bg-yellow-500 rounded-lg">
+                <svg @click="activeShowComplaint"
+                     class="h-6 w-6 align-top text-yellow-600 hover:text-yellow-800" width="24" height="24"
+                     viewBox="0 0 24 24" stroke-width="2"
+                     stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                  <path stroke="none" d="M0 0h24v24H0z"/>
+                  <circle cx="12" cy="12" r="9"/>
+                  <line x1="12" y1="8" x2="12" y2="12"/>
+                  <line x1="12" y1="16" x2="12.01" y2="16"/>
+                </svg>
+              </div>
+            </li>
+          </ul>
+        </div>
         <div class="inline-block">
           <img :src="currentUserSongList.cover" class="img_songlist shadow-2xl">
         </div>
@@ -465,7 +515,8 @@ onMounted(getSonglistData);
                   <li>
                     <div class="text-sm font-semibold z-50" @click="activeAddToSongList(song.id)">
                       <svg class="icon" viewBox="0 0 24 24" stroke="currentColor"
-                           stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="22" height="22" fill="white">
+                           stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="22" height="22"
+                           fill="white">
                         <line x1="12" y1="5" x2="12" y2="19"/>
                         <line x1="5" y1="12" x2="19" y2="12"/>
                       </svg>

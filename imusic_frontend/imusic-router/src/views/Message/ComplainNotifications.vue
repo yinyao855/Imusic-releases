@@ -2,26 +2,45 @@
 import {defineEmits, defineModel, onMounted, ref} from "vue";
 import axios from "axios";
 import SongPage from "@/components/SongPage.vue";
+import CreatedSonglist from "@/views/CreatedSongList/CreatedSonglist.vue";
+import Songlist from "@/views/CreatedSongList/Songlist.vue";
 
 const token = defineModel("token");
 const username = defineModel("username");
 const Message = defineModel("Message");
 const title = ref("");
 const currentMessage = ref([]);
-const songData = ref([]);
 const image = ref([]);
-const songId = ref(0);
+const allId = ref([]);
+const id = ref(0);
 const ShowSong = ref(false);
+const ShowSongList = ref(false);
 const emits = defineEmits(["GetMessage", "readMessage"]);
 
-function activeComplaintMessage(index, content) {
-  // 获取歌曲名
+function getTitle(index) {
   const s1 = ref([]);
   const s2 = ref([]);
-  s1.value = content.split("《");
-  s2.value = s1.value[1].split("》");
-  title.value = s2.value[0];
-  getSongId(index);
+  s1.value = Message.value[index].content.split("《");
+  if (s1.value.length === 1) { // 歌单
+    s1.value = Message.value[index].content.split("\"");
+    title.value = s1.value[1];
+  } else if (s1.value.length === 2) { // 歌曲
+    s2.value = s1.value[1].split("》");
+    title.value = s2.value[0];
+  }
+  return title.value;
+}
+
+function activeComplaintMessage(index, content) {
+  const s = ref([]);
+  s.value = Message.value[index].content.split("《");
+  if (s.value.length === 1) { // 歌单
+    title.value = getTitle(index);
+    getSongListId(index);
+  } else if (s.value.length === 2) { // 歌曲
+    title.value = getTitle(index);
+    getSongId(index);
+  }
   // 已读
   currentMessage.value = Message.value[index];
   if (currentMessage.value.is_read === false) {
@@ -35,64 +54,113 @@ function readMessage(id) {
 }
 
 function getSongId(index) {
-  songId.value = songData.value[index].id;
+  id.value = allId.value[index];
   // 打开歌曲详细界面
   ShowSong.value = true;
 }
 
-function getSongData() {
+function getSongListId(index) {
+  id.value = allId.value[index];
+  // 打开歌单详细界面
+  ShowSongList.value = true;
+}
+
+function getData() {
   const length = ref(0);
   length.value = Message.value.length;
   for (let index in Message.value) {
-    const s1 = ref([]);
-    const s2 = ref([]);
-    s1.value = Message.value[index].content.split("《");
-    s2.value = s1.value[1].split("》");
-    title.value = s2.value[0];
-    const instance = axios.create({
-      baseURL: 'http://182.92.100.66:5000',
-      timeout: 5000,
-      headers: {
-        'Authorization': `Bearer ${token.value}`,
-      }
-    });
-    axios.defaults.withCredentials = true;
-    instance.get('/users/songs?username=' + username.value)
-        .then(response => {
-          const length = ref(0);
-          length.value = response.data.data.length;
-          for (let i = 0; i < length.value; i++) {
-            if (response.data.data[i].title === title.value) {
-              songData.value.push(response.data.data[i]);
-              image.value[index] = response.data.data[i].cover;
-            }
-          }
-        })
-        .catch(error => {
-          console.log(error);
-        })
+    const s = ref([]);
+    s.value = Message.value[index].content.split("《");
+    if (s.value.length === 1) { // 歌单
+      title.value = getTitle(index);
+      getSonglistData(index, title.value);
+    } else if (s.value.length === 2) { // 歌曲
+      title.value = getTitle(index);
+      getSongData(index, title.value);
+    }
   }
 }
 
-const CloseSong = () => {
-  ShowSong.value = false;
+function getSongData(index, title) {
+  const instance = axios.create({
+    baseURL: 'http://182.92.100.66:5000',
+    timeout: 5000,
+    headers: {
+      'Authorization': `Bearer ${token.value}`,
+    }
+  });
+  axios.defaults.withCredentials = true;
+  instance.get('/users/songs?username=' + username.value)
+      .then(response => {
+        const length = ref(0);
+        length.value = response.data.data.length;
+        for (let i = 0; i < length.value; i++) {
+          if (response.data.data[i].title === title) {
+            allId.value[index] = response.data.data[i].id;
+            image.value[index] = response.data.data[i].cover;
+          }
+        }
+      })
+      .catch(error => {
+        console.log(error);
+      })
 }
 
-onMounted(getSongData)
+function getSonglistData(index, title) {
+  const instance = axios.create({
+    baseURL: 'http://182.92.100.66:5000',
+    timeout: 5000,
+    headers: {
+      'Authorization': `Bearer ${token.value}`,
+    }
+  });
+  axios.defaults.withCredentials = true;
+  instance.get('/users/songlists?username=' + username.value)
+      .then(response => {
+        const length = ref(0);
+        length.value = response.data.data.length;
+        for (let i = 0; i < length.value; i++) {
+          if (response.data.data[i].title === title) {
+            allId.value[index] = response.data.data[i].id;
+            image.value[index] = response.data.data[i].cover;
+          }
+        }
+      })
+      .catch(error => {
+        console.log(error);
+      })
+}
+
+const close = () => {
+  ShowSong.value = false;
+  ShowSongList.value = false;
+}
+
+onMounted(getData)
 </script>
 
 <template>
   <!--  展示歌曲详细信息界面（当ShowSong为true）-->
   <transition name="slide" appear>
     <div class="transition-container-2" v-if="ShowSong">
-      <SongPage v-model:currentSongId="songId"
-                @handlePlayNow="handlePlayNow" @CloseSong="CloseSong"
+      <SongPage v-model:currentSongId="id"
+                @handlePlayNow="handlePlayNow" @CloseSong="close"
                 v-model:username="username" v-model:token="token"></SongPage>
     </div>
   </transition>
 
+  <!--    展示选中的歌单信息页面（当showCurrentSongList==true）-->
+  <transition name="slide" appear>
+    <div class="transition-container z-50 ml-8" v-if="ShowSongList">
+      <Songlist v-model:currentSonglistId="id"
+                @PlaySongList="PlaySongList" @handlePlayAfter="handlePlayAfter"
+                @handlePlayNow="handlePlayNow" @closeSonglist="close"
+                v-model:token="token" v-model:username="username"></Songlist>
+    </div>
+  </transition>
 
-  <div class="overflow-x-auto px-10" v-if="!ShowSong">
+
+  <div class="overflow-x-auto px-10" v-if="!ShowSong&&!ShowSongList">
     <table class="table">
       <tbody>
       <tr class="text-white hover:bg-gray-600/40 rounded-md"
