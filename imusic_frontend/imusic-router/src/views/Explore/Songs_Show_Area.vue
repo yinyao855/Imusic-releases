@@ -5,6 +5,7 @@ import CurrentUser_SongList from "@/components/CurrentUser_SongList.vue";
 import SongPage from "@/components/SongPage.vue";
 import Complain from "@/views/Complain/Complain.vue";
 import Warning from "@/components/Warning.vue";
+import Complaint from "@/components/Complaint.vue";
 
 const emits = defineEmits(['handlePlayNow', 'handlePlayAfter', 'addToSongList'])
 const token = defineModel('token')
@@ -343,7 +344,6 @@ const CloseCurrentUser_SongList = () => {
 const SongId=ref(0);
 const NeedShowSongDetail=ref(false);
 const NeedShowComplain=ref(false);
-const ComplainId=ref(0);
 const ShowSongDetail=(index)=>{
   SongId.value=Songs.value[index].id;
   NeedShowSongDetail.value=true;
@@ -352,20 +352,7 @@ const ShowSongDetail=(index)=>{
 const CloseSongPage=()=>{
   NeedShowSongDetail.value=false;
 }
-const ShowComplain=(index)=>{
-  ComplainId.value=Songs.value[index].id;
-  console.log(ComplainId.value);
-  NeedShowComplain.value=true;
-}
-const CloseComplain=()=>{
-  NeedShowComplain.value=false;
-  console.log(WarningShow.value);
-}
 const WarningShow = ref(false);
-const message = ref('');
-const CloseWarning=()=>{
-  WarningShow.value=false;
-}
 onMounted(GetInitSongs);
 </script>
 
@@ -374,17 +361,11 @@ onMounted(GetInitSongs);
   <transition name="slide" appear>
     <div class="transition-container-2" v-if="NeedShowSongDetail">
       <SongPage  v-model:currentSongId="SongId"
-                 @handlePlayNow="handlePlayNow" @CloseSong="CloseComplain"
+                 @handlePlayNow="handlePlayNow" @CloseSong="CloseSongPage"
                  v-model:username="username" v-model:token="token"></SongPage>
     </div>
   </transition>
-  <transition name="slide" appear>
-    <div class="transition-container-2 h-full" v-if="NeedShowComplain">
-      <Complain  v-model:currentSongId="ComplainId"
-                  @CloseComplain="CloseComplain"
-                 v-model:username="username" v-model:token="token" v-model:message="message" v-model:WarningShow="WarningShow"></Complain>
-    </div>
-  </transition>
+
 
   <transition name="slide" appear>
     <div class="transition-container-2" v-if="ShowCurrentUser_SongList&&!NeedShowSongDetail">
@@ -554,12 +535,6 @@ onMounted(GetInitSongs);
                   详细信息
                 </div>
               </li>
-              <li>
-              <div class="text-sm font-semibold" @click="ShowComplain(index)">
-                <svg t="1716029024084" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="5177" width="22" height="22"><path d="M511.008928 662.062737c-28.225855 0-51.121308 23.271006-51.121308 52.052516 0 28.741601 22.895453 52.046377 51.121308 52.046377 28.259624 0 51.081399-23.344684 51.081399-52.046377C562.090327 685.333744 539.194874 662.062737 511.008928 662.062737L511.008928 662.062737zM510.969019 221.286895c-28.217668 0-51.120284 23.345708-51.120284 52.05354l0 267.296789c0 28.748764 22.902616 52.052516 51.120284 52.052516 28.260647 0 51.121308-23.342638 51.121308-52.052516L562.090327 273.379321C562.090327 244.597811 539.155988 221.286895 510.969019 221.286895L510.969019 221.286895zM901.737934 309.081451c-0.559748-42.332131-1.228991-88.539522-1.302669-139.210575-0.039909-15.3455-9.976212-28.856211-24.425296-33.254382C759.05835 101.358479 654.691351 80.69588 515.809257 65.315588c-1.781576-0.187265-3.573385-0.222057-5.396917-0.187265-70.523193 3.686972-136.494721 12.475126-196.110493 26.213012-59.722196 13.778818-116.724445 29.0445-169.299871 45.316092-14.334473 4.430916-24.162306 17.907858-24.162306 33.214473 0 45.684482-0.48914 87.680968-0.899486 126.625956-3.64604 334.206688-5.022387 459.319174 321.403081 640.533398 27.107381 14.96483 48.963155 21.708418 70.892607 21.708418 21.742187 0 43.490513-6.517437 70.450539-21.152762C907.882887 760.617357 906.470725 655.913691 901.737934 309.081451L901.737934 309.081451zM550.585295 876.342032c-16.491603 8.971325-28.373211 13.026688-38.310537 13.026688-10.089799 0-21.560038-3.983731-38.312584-13.288654-290.422486-161.221892-289.457508-249.692852-285.884123-578.759473 0.336668-31.723515 0.751107-65.459874 0.824785-101.503788 44.229341-13.100366 91.367941-25.429159 140.477428-36.707017 55.035454-12.697183 116.207675-20.931728 181.778066-24.431435 123.468033 13.777795 218.74398 31.872918 321.213769 61.366649 0.223081 40.915875 0.744967 78.783321 1.226944 114.007567C838.292949 648.842645 839.223135 719.284997 550.585295 876.342032L550.585295 876.342032zM550.585295 876.342032" fill="#ffffff" p-id="5178"></path></svg>
-                投诉
-              </div>
-            </li>
             </ul>
           </div>
         </th>
