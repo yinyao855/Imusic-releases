@@ -22,8 +22,6 @@ const CloseSong = () => {
 }
 
 function getCommentMessage() {
-  const length = ref(0);
-  length.value = Message.value.length;
   for (let index in Message.value) {
     let username = Message.value[index].sender;
     const instance = axios.create({

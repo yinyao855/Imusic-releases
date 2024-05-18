@@ -2,7 +2,6 @@
 import {computed, defineEmits, defineModel, onMounted, ref} from "vue";
 import axios from "axios";
 import SongPage from "@/components/SongPage.vue";
-import CreatedSonglist from "@/views/CreatedSongList/CreatedSonglist.vue";
 import Songlist from "@/views/CreatedSongList/Songlist.vue";
 
 import {useMessageStore} from "@/stores/message.js";
@@ -10,7 +9,7 @@ const messageStore = useMessageStore();
 
 const token = defineModel("token");
 const username = defineModel("username");
-const Message = ref(computed(() => messageStore.MessageType7));
+const Message = ref(computed(() => messageStore.MessageType6));
 const title = ref("");
 const currentMessage = ref([]);
 const image = ref([]);
@@ -69,8 +68,6 @@ function getSongListId(index) {
 }
 
 function getData() {
-  const length = ref(0);
-  length.value = Message.value.length;
   for (let index in Message.value) {
     const s = ref([]);
     s.value = Message.value[index].content.split("《");

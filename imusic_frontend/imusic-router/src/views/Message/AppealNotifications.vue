@@ -5,7 +5,7 @@ const messageStore = useMessageStore();
 
 const token = defineModel("token");
 const username = defineModel("username");
-const Message = ref(computed(() => messageStore.MessageType6));
+const Message = ref(computed(() => messageStore.MessageType7));
 </script>
 
 <template>

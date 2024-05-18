@@ -23,12 +23,12 @@
 
     <input type="radio" name="my_tabs_2" role="tab" class="tab" aria-label="投诉通知"/>
     <div role="tabpanel" class="tab-content bg-zinc-900 border-base-300 rounded-box p-6">
-      <AppealNotifications v-model:token="token" v-model:username="username"/>
+      <ComplainNotifications v-model:token="token" v-model:username="username"/>
     </div>
 
     <input type="radio" name="my_tabs_2" role="tab" class="tab" aria-label="申诉通知"/>
     <div role="tabpanel" class="tab-content bg-zinc-900 border-base-300 rounded-box p-6">
-      <ComplainNotifications v-model:token="token" v-model:username="username"/>
+      <AppealNotifications v-model:token="token" v-model:username="username"/>
     </div>
   </div>
 </template>
