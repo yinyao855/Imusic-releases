@@ -11,6 +11,7 @@ import Admin_Update_SongList_Page from "@/views/Admin/Admin_Update_SongList_Page
 import Admin_User_View from "@/views/Admin/Admin_User_View.vue";
 import Admin_Search_User_View from "@/views/Admin/Admin_Search_User_View.vue";
 import Admin_Show_User_Information from "@/views/Admin/Admin_Show_User_Information.vue";
+import Admin_Complaint_View from "@/views/Admin/Admin_Complaint_View.vue";
 const NaviClass1 = computed(() => ({
   'text-base inline-block mx-5 w-30 rounded-lg antialiased tracking-widest font-medium transition-colors duration-400 hover:bg-gray-600/40': true,
   'text-cyan-700 underline underline-offset-8 decoration-2': NaviMode.value === '1',
@@ -169,9 +170,8 @@ const SearchOperation = () => {
       <Admin_Search_Songlist_View v-if="NaviMode==='1'" :SearchContent="SearchContent"
                                   @changesize="ChangeShowSearchView" @refresh="Get_Admin_Songs_Data"
                                   v-model:token="token" @UpdateSongList="UpdateSongList"></Admin_Search_Songlist_View>
-      <Admin_Search_User_View v-if="NaviMode==='3'" :SearchContent="SearchContent"
-                              @changesize="ChangeShowSearchView" @refresh="Get_Admin_Users_Data"
-                              v-model:token="token" @UpdateUser="UpdateUser"></Admin_Search_User_View>
+      <Admin_Search_User_View v-if="NaviMode==='3'"
+                              v-model:token="token" ></Admin_Search_User_View>
     </div>
   </transition>
 
@@ -207,6 +207,8 @@ const SearchOperation = () => {
                      v-model:SearchContent="SearchContent"></Admin_Song_View>
     <Admin_User_View v-if="NaviMode==='3'" v-model:token="token" v-model:Users="Users" @refresh="Get_Admin_Users_Data"
                      v-model:SearchContent="SearchContent"></Admin_User_View>
+    <Admin_Complaint_View v-if="NaviMode==='4'" v-model:token="token">
+    </Admin_Complaint_View>
   </div>
 </template>
 

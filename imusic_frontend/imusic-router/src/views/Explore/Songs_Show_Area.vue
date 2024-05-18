@@ -3,9 +3,7 @@ import {computed, onMounted, ref, watch} from "vue";
 import axios from "axios";
 import CurrentUser_SongList from "@/components/CurrentUser_SongList.vue";
 import SongPage from "@/components/SongPage.vue";
-import Complain from "@/views/Complain/Complain.vue";
-import Warning from "@/components/Warning.vue";
-import Complaint from "@/components/Complaint.vue";
+
 
 const emits = defineEmits(['handlePlayNow', 'handlePlayAfter', 'addToSongList'])
 const token = defineModel('token')
