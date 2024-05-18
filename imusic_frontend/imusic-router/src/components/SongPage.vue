@@ -226,7 +226,7 @@ function getSubscribeUser() {
       })
 }
 
-// 收藏此歌单
+// 关注用户/取消关注
 function handleSubscribeUser() {
   const instance = axios.create({
     baseURL: 'http://182.92.100.66:5000',

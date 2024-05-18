@@ -2,7 +2,6 @@
 import axios from "axios";
 import {onMounted, defineModel, defineEmits, ref} from "vue";
 import SongPage from "@/components/SongPage.vue";
-import Comment from "@/components/Comment.vue";
 
 const token = defineModel("token");
 const username = defineModel("username");
