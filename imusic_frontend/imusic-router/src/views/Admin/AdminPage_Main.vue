@@ -23,6 +23,10 @@ const NaviClass3 = computed(() => ({
   'text-base inline-block mx-5 w-30 rounded-lg antialiased tracking-widest font-medium transition-colors duration-400 hover:bg-gray-600/40': true,
   'text-cyan-700 underline underline-offset-8 decoration-2': NaviMode.value === '3',
 }));
+const NaviClass4 = computed(() => ({
+  'text-base inline-block mx-5 w-30 rounded-lg antialiased tracking-widest font-medium transition-colors duration-400 hover:bg-gray-600/40': true,
+  'text-cyan-700 underline underline-offset-8 decoration-2': NaviMode.value === '4',
+}));
 const Songs = ref([]);
 const NaviMode = ref('1');
 const changeNaviMode = (NewMode) => {
@@ -190,6 +194,9 @@ const SearchOperation = () => {
     </div>
     <div :class="[NaviClass3, 'text-transition']" @click="changeNaviMode(3);" style="line-height: 56px">
       用 户
+    </div>
+    <div :class="[NaviClass4, 'text-transition']" @click="changeNaviMode(4);" style="line-height: 56px">
+      投 诉
     </div>
     <Search v-model:SearchContent="SearchContent" @SearchOperation="SearchOperation" v-model:token="token"></Search>
   </div>

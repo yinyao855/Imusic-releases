@@ -3,6 +3,9 @@ import {computed, onMounted, ref, watch} from "vue";
 import axios from "axios";
 import CurrentUser_SongList from "@/components/CurrentUser_SongList.vue";
 import SongPage from "@/components/SongPage.vue";
+import Complain from "@/views/Complain/Complain.vue";
+import Warning from "@/components/Warning.vue";
+import Complaint from "@/components/Complaint.vue";
 
 const emits = defineEmits(['handlePlayNow', 'handlePlayAfter', 'addToSongList'])
 const token = defineModel('token')
@@ -340,7 +343,7 @@ const CloseCurrentUser_SongList = () => {
 
 const SongId=ref(0);
 const NeedShowSongDetail=ref(false);
-
+const NeedShowComplain=ref(false);
 const ShowSongDetail=(index)=>{
   SongId.value=Songs.value[index].id;
   NeedShowSongDetail.value=true;
@@ -349,11 +352,12 @@ const ShowSongDetail=(index)=>{
 const CloseSongPage=()=>{
   NeedShowSongDetail.value=false;
 }
-
+const WarningShow = ref(false);
 onMounted(GetInitSongs);
 </script>
 
 <template>
+
   <transition name="slide" appear>
     <div class="transition-container-2" v-if="NeedShowSongDetail">
       <SongPage  v-model:currentSongId="SongId"
@@ -370,7 +374,7 @@ onMounted(GetInitSongs);
                             @CloseCurrentUser_SongList="CloseCurrentUser_SongList"></CurrentUser_SongList>
     </div>
   </transition>
-  <div class="flex w-full h-full px-10" v-if="!ShowCurrentUser_SongList&&!NeedShowSongDetail">
+  <div class="flex w-full h-full px-10" v-if="!ShowCurrentUser_SongList&&!NeedShowSongDetail&&!NeedShowComplain">
     <div class="w-1/5 border-r border-gray-400 px-4 pb-6">
       <div class="text-sm pb-4">语言</div>
       <div class="flex flex-wrap ml-6">
@@ -428,7 +432,7 @@ onMounted(GetInitSongs);
     </div>
   </div>
 <!--  <hr class="w-full border border-gray-500 my-2" v-if="!ShowCurrentUser_SongList">-->
-  <div class="mx-6" v-if="!ShowCurrentUser_SongList&&!NeedShowSongDetail">
+  <div class="mx-6" v-if="!ShowCurrentUser_SongList&&!NeedShowSongDetail&&!NeedShowComplain">
     <div class="text-2xl text-white my-5">推荐歌曲</div>
     <table class="table mb-32">
       <thead>
