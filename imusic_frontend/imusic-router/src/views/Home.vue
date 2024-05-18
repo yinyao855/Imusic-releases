@@ -587,7 +587,7 @@ const GetMessage = () => {
           if (Message.value[i].is_read === false) {
             CountNotRead.value = CountNotRead.value + 1;
           }
-          if (Message.value[i].type === 1 || Message.value[i].type === 6 || Message.value[i].type === 7) {
+          if (Message.value[i].type === 1) {
             MessageType1.value.push(Message.value[i]);
           } else if (Message.value[i].type === 2 && Message.value[i].sender !== username.value) {
             MessageType2.value.push(Message.value[i]);
