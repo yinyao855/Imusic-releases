@@ -1,13 +1,16 @@
 <script setup>
-import {defineEmits, defineModel, onMounted, ref} from "vue";
+import {computed, defineEmits, defineModel, onMounted, ref} from "vue";
 import axios from "axios";
 import SongPage from "@/components/SongPage.vue";
 import CreatedSonglist from "@/views/CreatedSongList/CreatedSonglist.vue";
 import Songlist from "@/views/CreatedSongList/Songlist.vue";
 
+import {useMessageStore} from "@/stores/message.js";
+const messageStore = useMessageStore();
+
 const token = defineModel("token");
 const username = defineModel("username");
-const Message = defineModel("Message");
+const Message = ref(computed(() => messageStore.MessageType7));
 const title = ref("");
 const currentMessage = ref([]);
 const image = ref([]);
@@ -50,7 +53,7 @@ function activeComplaintMessage(index, content) {
 }
 
 function readMessage(id) {
-  emits("readMessage", id);
+  messageStore.readMessage(id, token.value);
 }
 
 function getSongId(index) {

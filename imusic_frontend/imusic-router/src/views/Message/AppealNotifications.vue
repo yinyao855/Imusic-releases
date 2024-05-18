@@ -1,9 +1,11 @@
 <script setup>
-import {defineModel} from "vue";
+import {computed, defineModel, ref} from "vue";
+import {useMessageStore} from "@/stores/message.js";
+const messageStore = useMessageStore();
 
 const token = defineModel("token");
 const username = defineModel("username");
-const Message = defineModel("Message");
+const Message = ref(computed(() => messageStore.MessageType6));
 </script>
 
 <template>

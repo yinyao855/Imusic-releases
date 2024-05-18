@@ -16,6 +16,7 @@ import CreatedSonglist_Main from "@/views/CreatedSongList/CreatedSonglist_Main.v
 import FavoriteSonglist_Main from "@/views/FavoriteSongList/FavoriteSonglist_Main.vue";
 import Forget_Password from "@/views/Account/Forget_Password.vue";
 import Message_main from "@/views/Message/Message_Main.vue";
+import Message_Main from "@/views/Messages/Message_Main.vue";
 
 const token = ref('');
 const needshowsonglistpage = ref(false);
@@ -123,6 +124,7 @@ const refreshNewest_Songs_Page = () => {
 }
 
 function getsonglistinit() {
+  // 登录时获取用户消息
   GetMessage();
   const instance = axios.create({
     baseURL: 'http://182.92.100.66:5000',
@@ -553,18 +555,10 @@ const ChangeForgetMode = () => {
   console.log(ShowForget.value);
 }
 
-
-const MessageType1 = ref([]);
-const MessageType2 = ref([]);
-const MessageType3 = ref([]);
-const MessageType4 = ref([]);
-const MessageType5 = ref([]);
-const MessageType6 = ref([]);
-const MessageType7 = ref([]);
-const Message = ref([]);
-
-let intervalId = null;
-
+/*----------------------------------------*/
+import {useMessageStore} from "@/stores/message.js";
+const messageStore = useMessageStore();
+// 获取消息
 const GetMessage = () => {
   const instance = axios.create({
     baseURL: 'http://182.92.100.66:5000',
@@ -577,47 +571,16 @@ const GetMessage = () => {
   const web = '/messages/';
   instance.get(web)
       .then(response => {
-        Message.value = response.data.data;
-        console.log(Message.value);
-        let length = Message.value.length;
-        MessageType1.value = [];
-        MessageType2.value = [];
-        MessageType3.value = [];
-        MessageType4.value = [];
-        MessageType5.value = [];
-        MessageType6.value = [];
-        MessageType7.value = [];
-        for (let i = 0; i < length; ++i) {
-          if (Message.value[i].is_read === false) {
-            CountNotRead.value = CountNotRead.value + 1;
-          }
-          if (Message.value[i].type === 1) {
-            MessageType1.value.push(Message.value[i]);
-          } else if (Message.value[i].type === 2 && Message.value[i].sender !== username.value) {
-            MessageType2.value.push(Message.value[i]);
-          } else if (Message.value[i].type === 3) {
-            MessageType3.value.push(Message.value[i]);
-          } else if (Message.value[i].type === 4) {
-            MessageType4.value.push(Message.value[i]);
-          } else if (Message.value[i].type === 5) {
-            MessageType5.value.push(Message.value[i]);
-          } else if (Message.value[i].type === 6) {
-            MessageType6.value.push(Message.value[i]);
-          } else if (Message.value[i].type === 7) {
-            MessageType7.value.push(Message.value[i]);
-          }
-        }
-        console.log(CountNotRead.value);
+        const msg = response.data.data;
+        messageStore.setMessage(msg);
       })
       .catch(error => {
         console.log(error.response.data);
       })
 };
+/*----------------------------------------*/
 
-const CountNotRead = ref(0);
-const ShowRedPoint = computed(() => {
-  return CountNotRead.value !== 0;
-});
+let intervalId = null;
 
 onMounted(() => {
   intervalId = setInterval(GetMessage, 10000); // 10000 毫秒即 10 秒
@@ -689,13 +652,17 @@ onMounted(autoLogin);
                                @handlePlayNow="handlePlayNow"
                                v-model:token="token" v-model:username="username"
                                v-model:HasLogin="HasLogin"></FavoriteSonglist_Main>
-        <Message_main v-if="mode==='9'" v-model:Message="Message" v-model:MessageType1="MessageType1"
-                      v-model:MessageType2="MessageType2" v-model:MessageType3="MessageType3"
-                      v-model:MessageType4="MessageType4"
-                      v-model:MessageType5="MessageType5" v-model:MessageType6="MessageType6"
-                      v-model:MessageType7="MessageType7"
+<!--        <Message_main v-if="mode==='9'" v-model:Message="Message" v-model:MessageType1="MessageType1"-->
+<!--                      v-model:MessageType2="MessageType2" v-model:MessageType3="MessageType3"-->
+<!--                      v-model:MessageType4="MessageType4"-->
+<!--                      v-model:MessageType5="MessageType5" v-model:MessageType6="MessageType6"-->
+<!--                      v-model:MessageType7="MessageType7"-->
+<!--                      v-model:token="token" v-model:username="username"-->
+<!--                      v-model:HasLogin="HasLogin" @GetMessage="GetMessage" v-model:UserRole="UserRole"></Message_main>-->
+        <Message_Main v-if="mode==='9'"
                       v-model:token="token" v-model:username="username"
-                      v-model:HasLogin="HasLogin" @GetMessage="GetMessage" v-model:UserRole="UserRole"></Message_main>
+                      v-model:HasLogin="HasLogin" v-model:UserRole="UserRole"
+        ></Message_Main>
         <AdminPage_Main v-model:token="token" v-if="mode==='7'"></AdminPage_Main>
       </div>
     </div>

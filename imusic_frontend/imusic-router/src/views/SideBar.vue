@@ -1,5 +1,5 @@
 <script setup>
-import {computed, onMounted, onUnmounted, ref} from "vue";
+import {computed, ref} from "vue";
 import axios from "axios";
 import Warning from "@/components/Warning.vue";
 
@@ -42,8 +42,13 @@ const containerClass9 = computed(() => ({
   'antialiased text-sm block h-10 my-1 text-white leading-10 transition ease-in duration-400 px-4 ml-2 mr-2 rounded-md bg-blue-500 hover:bg-blue-500 cursor-pointer': mode.value === '9',
 }));
 
-const Message = ref([]);
-const unread = ref(false);
+/*---------------------------------------*/
+import {useMessageStore} from "@/stores/message.js";
+
+const messageStore = useMessageStore();
+const unReads = computed(() => messageStore.unReads);
+/*---------------------------------------*/
+
 const emits = defineEmits(['checkLogin']);
 const userUploadedSongs = defineModel('userUploadedSongs');
 const mode = defineModel('mode');
@@ -52,7 +57,6 @@ const changeMode = (newMode) => {
   mode.value = newMode.toString();
 };
 
-const ShowRedPoint = defineModel('ShowRedPoint');
 
 const LoginArea = () => {
   if (props.HasLogin === true) {
@@ -256,11 +260,15 @@ const CloseWarning = () => {
             d="M508.2 961.6c-41 0-79.7-16.8-109-47.4-28.7-30-44.4-69-44.4-110 0-17.7 14.3-32 32-32s32 14.3 32 32c0 50.6 40.9 93.4 89.4 93.4 50.4 0 89.4-50.2 89.4-93.4 0-17.7 14.3-32 32-32s32 14.3 32 32c0 38.5-16.1 77.9-44.2 108-29.7 31.9-68.5 49.4-109.2 49.4z"
             p-id="2759" fill="#ffffff"></path>
       </svg>
-      <span class="px-4 font-medium">消息中心
-        <svg v-if="ShowRedPoint" class="icon inline text-white my-auto" viewBox="0 0 1024 1024"
-             xmlns="http://www.w3.org/2000/svg" width="4" height="4"><path
-            d="M512 512m-512 0a512 512 0 1 0 1024 0 512 512 0 1 0-1024 0Z" fill="#FC3227"
-            ></path></svg></span>
+      <!--      <span class="px-4 font-medium">消息中心-->
+      <!--        <svg v-if="ShowRedPoint" class="icon inline text-white my-auto" viewBox="0 0 1024 1024"-->
+      <!--             xmlns="http://www.w3.org/2000/svg" width="4" height="4"><path-->
+      <!--            d="M512 512m-512 0a512 512 0 1 0 1024 0 512 512 0 1 0-1024 0Z" fill="#FC3227"-->
+      <!--            ></path></svg></span>-->
+      <div class="indicator">
+        <span class="px-4 font-medium mr-4">消息中心</span>
+        <span class="indicator-item indicator-middle badge badge-secondary" v-if="unReads>0">{{ unReads }}+</span>
+      </div>
     </div>
   </div>
 </template>

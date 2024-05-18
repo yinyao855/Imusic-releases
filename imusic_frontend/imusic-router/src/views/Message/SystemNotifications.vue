@@ -1,18 +1,21 @@
 <script setup>
 import axios from "axios";
-import {onMounted, defineModel, defineEmits, ref} from "vue";
+import {onMounted, defineModel, defineEmits, ref, computed} from "vue";
 import SystemMessages from "@/views/Message/SystemMessages.vue";
 
 const token = defineModel("token");
 const username = defineModel("username");
 
-const Message = defineModel("Message");
+// 处理消息
+import {useMessageStore} from "@/stores/message.js";
+const messageStore = useMessageStore();
+const Message = ref(computed(() => messageStore.MessageType1));
 const currentMessage = ref([]);
 // const systemMessage = defineModel("systemMessage");
 // const playSongMessage = defineModel("playSongMessage");
 // const createMessage = defineModel("createMessage");
 const showSystemMessage = ref(false);
-const emits = defineEmits(["GetMessage", "readMessage"]);
+// const emits = defineEmits(["GetMessage", "readMessage"]);
 
 function formatDateTime(dateTimeStr) {
   const date = new Date(dateTimeStr);
@@ -33,7 +36,7 @@ function activeShowSystemMessage(index) {
     readMessage(currentMessage.value.id);
     currentMessage.value.is_read = true;
   }
-  console.log(currentMessage.value.id);
+  // console.log(currentMessage.value.id);
   showSystemMessage.value = true;
 }
 
@@ -42,7 +45,7 @@ function closeShowSystemMessage() {
 }
 
 function readMessage(id) {
-  emits('readMessage', id);
+  messageStore.readMessage(id, token.value);
 }
 </script>
 

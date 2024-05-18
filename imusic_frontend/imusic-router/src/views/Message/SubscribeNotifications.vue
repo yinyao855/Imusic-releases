@@ -1,13 +1,15 @@
 <script setup>
 import axios from "axios";
-import {onMounted, defineModel, defineEmits, ref, withModifiers} from "vue";
+import {onMounted, defineModel, defineEmits, ref, withModifiers, computed} from "vue";
 import Message_Detail from "@/views/Message/Message_Detail.vue";
 import ButtonChangeSizeRight from "@/components/ButtonChangeSizeRight.vue";
-import Input from "@/components/Input.vue";
+
+import {useMessageStore} from "@/stores/message.js";
+const messageStore = useMessageStore();
 
 const token = defineModel("token");
 const username = defineModel("username");
-const Message = defineModel("Message");
+const Message = ref(computed(() => messageStore.MessageType4));
 const followMessage = ref([])
 const userImage = ref([])
 const MyAvatar = ref();

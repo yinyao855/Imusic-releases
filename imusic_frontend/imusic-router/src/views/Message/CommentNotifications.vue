@@ -1,11 +1,15 @@
 <script setup>
 import axios from "axios";
-import {onMounted, defineModel, defineEmits, ref} from "vue";
+import {onMounted, defineModel, defineEmits, ref, computed} from "vue";
 import SongPage from "@/components/SongPage.vue";
+
+// 从store中获取数据
+import {useMessageStore} from "@/stores/message.js";
+const messageStore = useMessageStore();
 
 const token = defineModel("token");
 const username = defineModel("username");
-const Message = defineModel("Message");
+const Message = ref(computed(() => messageStore.MessageType2));
 const userImage = ref([]);
 const songId = ref(0);
 const title = ref("");
@@ -58,7 +62,7 @@ function activeCommentMessage(index, content) {
 }
 
 function readMessage(messageId) {
-  emits('readMessage', messageId);
+  messageStore.readMessage(messageId, token.value);
 }
 
 function getSongId() {
@@ -92,6 +96,7 @@ onMounted(getCommentMessage)
 </script>
 <template>
   <!--  展示歌曲详细信息界面（当ShowSong为true）-->
+  <!--TODO: handlePlayNow找不到声明-->
   <transition name="slide" appear>
     <div class="transition-container-2" v-if="ShowSong">
       <SongPage v-model:currentSongId="songId"
