@@ -280,7 +280,7 @@ onMounted(getSubscribeUser);
   <buttonchangesize v-if="showCurrentSong&&!showComplaint" class="left-4 top-4" @fullsize="fullsize"
                     v-model:token="token"></buttonchangesize>
   <!--  歌曲详细信息新界面-->
-  <div v-if="showCurrentSong&&!showComplaint" class="w-2/3 m-auto">
+  <div v-if="showCurrentSong&&!showComplaint" class="mx-20">
     <div class="inline-block mt-10">
       <img :src="songData.cover" alt="歌曲封面"
            class="mr-10 h-72 w-72 aspect-square rounded-xl border-gray-300 border-e-2 border-b-2">
@@ -419,9 +419,9 @@ onMounted(getSubscribeUser);
         <p>{{ lyric.text }}</p>
       </div>
     </div>
-    <hr class="my-5">
-    <div v-if="showComment" class="w-5/6 m-auto">
-      <div class="w-full overflow-hidden mx-auto my-auto pr-20" style="height:500px">
+    <hr class="my-20">
+    <div v-if="showComment" class="">
+      <div class="w-full overflow-hidden mx-auto my-auto pr-20" style="height:400px">
         <transition name="all transition-duration: 300ms">
           <Comment :token="token" :id="currentSongId" v-model:showComment="showComment" v-model:songID="currentSongId"
                    v-model:WarningShow="WarningShow" v-model:message="message" v-model:username="username"></Comment>
