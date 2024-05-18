@@ -23,6 +23,8 @@ const showCurrentSong = ref(false);
 const isFavoriteSong = ref(false);
 const likes = ref(0);
 
+const isSubscribe = ref(false);
+
 // emits
 function handlePlayNow(id) {
   emits('handlePlayNow', id)
@@ -196,8 +198,59 @@ function show_tag(tag) {
   return true;
 }
 
+function getSubscribeUser() {
+  const instance = axios.create({
+    baseURL: 'http://182.92.100.66:5000',
+    timeout: 5000, // 设置请求超时时间
+    headers: {
+      'Authorization': `Bearer ${token.value}`,
+    }
+  });
+  axios.defaults.withCredentials = true;
+  instance.get('/users/followings', {
+    params: {
+      'username': username.value
+    }
+  })
+      .then(response => {
+        let length = response.data.data.length;
+        for (let i = 0; i < length; ++i) {
+          if (response.data.data[i].username === songData.uploader) {
+            isSubscribe.value = true;
+            break;
+          }
+        }
+      })
+      .catch(error => {
+        console.log(error.response.data);
+      })
+}
+
+// 收藏此歌单
+function handleSubscribeUser() {
+  const instance = axios.create({
+    baseURL: 'http://182.92.100.66:5000',
+    timeout: 5000, // 设置请求超时时间
+    headers: {
+      'Authorization': `Bearer ${token.value}`,
+    }
+  });
+  axios.defaults.withCredentials = true;
+  const formData = new FormData();
+  formData.append('username', songData.uploader)
+  instance.post('/users/follow', formData)
+      .then(response => {
+        console.log(response.data);
+      })
+      .catch(error => {
+        console.log(error.response.data);
+      });
+  isSubscribe.value = !isSubscribe.value;
+}
+
 onMounted(getSongData)
 onMounted(getFavoriteSongs);
+onMounted(getSubscribeUser);
 </script>
 
 <template>
@@ -238,16 +291,27 @@ onMounted(getFavoriteSongs);
         <h1 class="text-4xl text-white ">{{ songData.title }}</h1>
         <p class="text-gray-500 ml-1 mt-1">歌手：{{ songData.singer }}</p>
       </div>
-      <div class="inline-block tooltip-left tooltip" data-tip="用户详情">
-        <svg @click="activeShowUser" class="cursor-pointer h-4 w-4 text-gray-300 inline-block mr-1" width="24"
-             height="24" viewBox="0 0 24 24"
-             stroke-width="2"
+      <div v-if="!isSubscribe" class="inline-block tooltip-left tooltip" data-tip="关注用户">
+        <svg @click="handleSubscribeUser" class="cursor-pointer h-4 w-4 text-blue-400 inline-block mr-1" width="24"
+             height="24" viewBox="0 0 24 24" stroke-width="2"
              stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
           <path stroke="none" d="M0 0h24v24H0z"/>
-          <circle cx="12" cy="7" r="4"/>
-          <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2"/>
+          <circle cx="9" cy="7" r="4"/>
+          <path d="M3 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2"/>
+          <path d="M16 11h6m-3 -3v6"/>
         </svg>
-        <p @click="activeShowUser" class="cursor-pointer mt-2 text-gray-300 inline-block">
+        <p @click="handleSubscribeUser" class="cursor-pointer mt-2 text-gray-300 inline-block">
+          {{ songData.uploader }} ·</p>
+      </div>
+      <div v-if="isSubscribe" class="inline-block tooltip-left tooltip" data-tip="取消关注">
+        <svg @click="handleSubscribeUser" class="cursor-pointer h-4 w-4 text-green-400 inline-block mr-1"
+             viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+             stroke-linecap="round" stroke-linejoin="round">
+          <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+          <circle cx="8.5" cy="7" r="4"/>
+          <polyline points="17 11 19 13 23 9"/>
+        </svg>
+        <p @click="handleSubscribeUser" class="cursor-pointer mt-2 text-gray-300 inline-block">
           {{ songData.uploader }} ·</p>
       </div>
       <p class="ml-2 text-gray-300 inline-block">{{ extractDate(songData.upload_date) }} </p>
