@@ -2,7 +2,6 @@
 import axios from "axios";
 import {onMounted, defineModel, defineEmits, ref} from "vue";
 import SongPage from "@/components/SongPage.vue";
-import Comment from "@/components/Comment.vue";
 
 const token = defineModel("token");
 const username = defineModel("username");
@@ -11,6 +10,11 @@ const userImage = ref([]);
 const songId = ref(0);
 const title = ref("");
 const currentMessage = ref([]);
+const ShowSong = ref(false);
+
+const CloseSong = () => {
+  ShowSong.value = false;
+}
 
 function getCommentMessage() {
   const length = ref(0);
@@ -37,17 +41,19 @@ function getCommentMessage() {
 }
 
 function activeCommentMessage(index, content) {
-  currentMessage.value = Message.value[index];
-  if(currentMessage.value.is_read === false) {
-    readMessage(currentMessage.value.id);
-    currentMessage.value.is_read = true;
-  }
+  // 获取歌曲名
   const s1 = ref([]);
   const s2 = ref([]);
   s1.value = content.split("《");
   s2.value = s1.value[1].split("》");
   title.value = s2.value[0];
   getSongId();
+  // 已读
+  currentMessage.value = Message.value[index];
+  if(currentMessage.value.is_read === false) {
+    readMessage(currentMessage.value.id);
+    currentMessage.value.is_read = true;
+  }
 }
 
 function readMessage(messageId) {
@@ -79,13 +85,15 @@ function getSongId() {
     }
   });
   axios.defaults.withCredentials = true;
-  instance.get('/songs/alldata')
+  instance.get('/users/songs?username=' + username.value)
       .then(response => {
         const length = ref(0);
         length.value = response.data.data.length;
         for (let i = 0; i < length.value; i++) {
-          if (response.data.data[i].title === title.value && response.data.data[i].uploader === username.value) {
+          if (response.data.data[i].title === title.value) {
             songId.value = response.data.data[i].id;
+            // 打开歌曲详细界面
+            ShowSong.value = true;
           }
         }
       })
@@ -98,13 +106,23 @@ onMounted(getCommentMessage)
 
 </script>
 <template>
-  <div class="overflow-x-auto px-10">
+  <!--  展示歌曲详细信息界面（当ShowSong为true）-->
+  <transition name="slide" appear>
+    <div class="transition-container-2" v-if="ShowSong">
+      <SongPage v-model:currentSongId="songId"
+                @handlePlayNow="handlePlayNow" @CloseSong="CloseSong"
+                v-model:username="username" v-model:token="token"></SongPage>
+    </div>
+  </transition>
+
+
+  <div class="overflow-x-auto px-10" v-if="!ShowSong">
     <table class="table">
       <tbody>
       <tr class="text-white hover:bg-gray-600/40 rounded-md"
           v-for="(item, index) in Message" @click="activeCommentMessage(index, item.content)">
         <td class="w-28">
-          <img src="http://182.92.100.66:5000/media/avatars/imgPlaylist.jpeg" alt="头像"
+          <img :src="userImage[index]" alt="头像"
                class="h-14 rounded-xl aspect-square inline-block"/>
           <div v-if="!item.is_read" class="text-red-500 inline-block" style="font-size: 50px">.</div>
         </td>
@@ -122,5 +140,59 @@ onMounted(getCommentMessage)
 </template>
 
 <style scoped>
+.img_songlist {
+  width: 200px;
+  height: 200px;
+  border-radius: 20px;
+}
 
+.img_song {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+}
+
+.bg-blur {
+  position: relative;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  -webkit-filter: blur(19px);
+  -moz-filter: blur(19px);
+  -o-filter: blur(19px);
+  -ms-filter: blur(19px);
+  filter: blur(19px);
+}
+
+
+.slide-leave-active {
+  transition: transform 0.5s ease;
+}
+
+.slide-enter-active {
+  transition: transform 0.5s ease;
+}
+
+.slide-enter-from,
+.slide-leave-to {
+  transform: translateX(100%);
+}
+
+.slide-enter-to,
+.slide-leave-from {
+  transform: translateX(0);
+}
+
+.transition-container {
+  right: 0;
+  top: 0;
+  height: 100%
+}
+
+
+.transition-container-2 {
+  right: 0;
+  top: 0;
+  height: 100%;
+}
 </style>
