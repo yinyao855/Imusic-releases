@@ -15,7 +15,9 @@ const isWarningVisible = defineModel('Warningshow');
 let timer = null;
 
 onMounted(() => {
-  // 设置一个定时器，在15秒后隐藏Warning组件
+  // 设置一个定时器，在7秒后隐藏Warning组件
+  console.log(isWarningVisible.value);
+  console.log(props.message);
   timer = setTimeout(() => {
     isWarningVisible.value = false;
   }, 7000);
