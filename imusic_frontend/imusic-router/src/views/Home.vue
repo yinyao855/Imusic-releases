@@ -15,8 +15,7 @@ import AdminPage_Main from "@/views/Admin/AdminPage_Main.vue";
 import CreatedSonglist_Main from "@/views/CreatedSongList/CreatedSonglist_Main.vue";
 import FavoriteSonglist_Main from "@/views/FavoriteSongList/FavoriteSonglist_Main.vue";
 import Forget_Password from "@/views/Account/Forget_Password.vue";
-import Message_main from "@/views/Message/Message_Main.vue";
-import Message_Main from "@/views/Messages/Message_Main.vue";
+import Message_Main from "@/views/Message/Message_Main.vue";
 
 const token = ref('');
 const needshowsonglistpage = ref(false);
@@ -652,13 +651,6 @@ onMounted(autoLogin);
                                @handlePlayNow="handlePlayNow"
                                v-model:token="token" v-model:username="username"
                                v-model:HasLogin="HasLogin"></FavoriteSonglist_Main>
-<!--        <Message_main v-if="mode==='9'" v-model:Message="Message" v-model:MessageType1="MessageType1"-->
-<!--                      v-model:MessageType2="MessageType2" v-model:MessageType3="MessageType3"-->
-<!--                      v-model:MessageType4="MessageType4"-->
-<!--                      v-model:MessageType5="MessageType5" v-model:MessageType6="MessageType6"-->
-<!--                      v-model:MessageType7="MessageType7"-->
-<!--                      v-model:token="token" v-model:username="username"-->
-<!--                      v-model:HasLogin="HasLogin" @GetMessage="GetMessage" v-model:UserRole="UserRole"></Message_main>-->
         <Message_Main v-if="mode==='9'"
                       v-model:token="token" v-model:username="username"
                       v-model:HasLogin="HasLogin" v-model:UserRole="UserRole"
