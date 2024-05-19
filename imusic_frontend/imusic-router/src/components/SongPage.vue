@@ -452,8 +452,8 @@ onMounted(getSubscribeUser);
         </button>
       </div>
     </div>
-    <hr class="my-20">
-    <div class="mt-10 ml-5">
+    <hr class="my-10 opacity-10">
+    <div class="ml-5">
       <div class="text-gray-700 my-5" style="font-size:25px">歌词：</div>
       <div v-if="lyrics.length === 0" class="text-gray-300 mt-1">
         <p>[ 无歌词 ]</p>

@@ -18,6 +18,7 @@ const title = ref("");
 const currentMessage = ref([]);
 const image = ref([]); // 若是歌曲就存歌曲图片，歌单就是歌单图片，审查结果则为空
 const allId = ref([]); // 若是歌曲就存歌曲songId，歌单就是歌单songlistId，审查结果就是messageId
+const allContents = ref([]); // 若是歌曲就存歌曲内容，歌单就是歌单内容，审查结果就是审查内容（存储处理后的内容）
 const id = ref(0);
 const complaintResult = ref("");
 const ShowSong = ref(false);
@@ -77,8 +78,9 @@ function getData() {
     hasMessage.value = false;
   }
   for (let index in Message.value) {
+    // 审查结果
     if (Message.value[index].title === "审查结果") {
-      allId.value[index] = Message.value[index].id;
+      getComplaintResultData(index);
       continue;
     }
     const s = ref([]);
@@ -93,7 +95,19 @@ function getData() {
   }
 }
 
+function getComplaintResultData(index) {
+  allId.value[index] = Message.value[index].id;
+  const complaintId = ref(0);
+  complaintId.value = parseInt(Message.value[index].content);
+  if (!isNaN(complaintId.value)){
+    allContents.value[index] = Message.value[index].content.split(' ')[1];
+  } else {
+    allContents.value[index] = Message.value[index].content;
+  }
+}
+
 function getSongData(index, title) {
+  allContents.value[index] = Message.value[index].content;
   const instance = axios.create({
     baseURL: 'http://182.92.100.66:5000',
     timeout: 5000,
@@ -119,6 +133,7 @@ function getSongData(index, title) {
 }
 
 function getSonglistData(index, title) {
+  allContents.value[index] = Message.value[index].content;
   const instance = axios.create({
     baseURL: 'http://182.92.100.66:5000',
     timeout: 5000,
@@ -203,7 +218,7 @@ onMounted(getData)
         </td>
         <td class="">
           <div class="font-bold text-xl mb-2">{{ item.title }}</div>
-          <div class="text-sm text-left opacity-50 truncate w-96">{{ item.content }}</div>
+          <div class="text-sm text-left opacity-50 truncate w-96">{{ allContents[index] }}</div>
         </td>
         <td class="w-40 text-sm opacity-50">
           {{ item.send_date }}
