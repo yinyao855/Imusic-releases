@@ -7,6 +7,7 @@ import Songlist from "@/views/CreatedSongList/Songlist.vue";
 import {useMessageStore} from "@/stores/message.js";
 import Complaint from "@/components/Complaint.vue";
 import Appeal from "@/components/Appeal.vue";
+import Complain_Detail from "@/views/Message/Complain_Detail.vue";
 
 const messageStore = useMessageStore();
 
@@ -18,14 +19,14 @@ const title = ref("");
 const currentMessage = ref([]);
 const image = ref([]); // 若是歌曲就存歌曲图片，歌单就是歌单图片，审查结果则为空
 const allId = ref([]); // 若是歌曲就存歌曲songId，歌单就是歌单songlistId，审查结果就是messageId
-const allContents = ref([]); // 若是歌曲就存歌曲内容，歌单就是歌单内容，审查结果就是审查内容（存储处理后的内容）
 const id = ref(0);
 const complaintResult = ref("");
 const ShowSong = ref(false);
 const ShowSongList = ref(false);
 const ShowAppeal = ref(false);
+const ShowComplaintDetail = ref(false);
 const emits = defineEmits(["GetMessage", "readMessage"]);
-
+const trueContent = ref([]);
 function getTitle(index) {
   const s1 = ref([]);
   const s2 = ref([]);
@@ -42,8 +43,16 @@ function getTitle(index) {
 
 function activeComplaintMessage(index) {
   id.value = allId.value[index];
+  // 处理投诉，content为数字+' '+有新的投诉消息待处理
+  //console.log(Message.value[index].content);
+  if (Message.value[index].title === "投诉消息"&&Message.value[index].content.match(/\d+\s+有新的投诉消息待处理。/)) {
+    id.value = Message.value[index].content.split(' ')[0];
+    //console.log(id.value);
+    ShowComplaintDetail.value = true;
+    //console.log('showComplaintDetail')
+  }
   // 审查结果
-  if (Message.value[index].title === "审查结果") {
+  else if (Message.value[index].title === "审查结果") {
     complaintResult.value = Message.value[index].content;
     ShowAppeal.value = true;
   }
@@ -65,6 +74,7 @@ function activeComplaintMessage(index) {
     readMessage(currentMessage.value.id);
     currentMessage.value.is_read = true;
   }
+  console.log(currentMessage.value);
 }
 
 function readMessage(id) {
@@ -78,9 +88,14 @@ function getData() {
     hasMessage.value = false;
   }
   for (let index in Message.value) {
-    // 审查结果
+    if(Message.value[index].title === "投诉消息"&&Message.value[index].content.match(/\d+\s+有新的投诉消息待处理。/)){
+      trueContent.value.push(Message.value[index].content.split(' ')[1]);
+    }
+    else {
+      trueContent.value.push(Message.value[index].content);
+    }
     if (Message.value[index].title === "审查结果") {
-      getComplaintResultData(index);
+      allId.value[index] = Message.value[index].id;
       continue;
     }
     const s = ref([]);
@@ -95,19 +110,7 @@ function getData() {
   }
 }
 
-function getComplaintResultData(index) {
-  allId.value[index] = Message.value[index].id;
-  const complaintId = ref(0);
-  complaintId.value = parseInt(Message.value[index].content);
-  if (!isNaN(complaintId.value)){
-    allContents.value[index] = Message.value[index].content.split(' ')[1];
-  } else {
-    allContents.value[index] = Message.value[index].content;
-  }
-}
-
 function getSongData(index, title) {
-  allContents.value[index] = Message.value[index].content;
   const instance = axios.create({
     baseURL: 'http://182.92.100.66:5000',
     timeout: 5000,
@@ -133,7 +136,6 @@ function getSongData(index, title) {
 }
 
 function getSonglistData(index, title) {
-  allContents.value[index] = Message.value[index].content;
   const instance = axios.create({
     baseURL: 'http://182.92.100.66:5000',
     timeout: 5000,
@@ -162,6 +164,7 @@ const close = () => {
   ShowSong.value = false;
   ShowSongList.value = false;
   ShowAppeal.value = false;
+  ShowComplaintDetail.value = false;
 }
 
 onMounted(getData)
@@ -194,11 +197,15 @@ onMounted(getData)
               v-model:token="token" v-model:username="username"></Appeal>
     </div>
   </transition>
+  <!--  处理投诉-->
+  <transition name="slide" appear>
+    <div class="transition-container-2" v-if="ShowComplaintDetail">
+      <Complain_Detail v-model:id="id" @closeComplaint="close"
+              v-model:token="token" v-model:username="username"></Complain_Detail>
+    </div>
+  </transition>
 
-
-
-
-  <div class="overflow-x-auto px-10" v-if="!ShowSong&&!ShowSongList&&!ShowAppeal">
+  <div class="overflow-x-auto px-10" v-if="!ShowSong&&!ShowSongList&&!ShowAppeal&&!ShowComplaintDetail">
     <div class="w-full h-32 flex" v-if="!hasMessage">
       <div class="text-4xl text-white text-center m-auto">暂无消息</div>
     </div>
@@ -215,15 +222,12 @@ onMounted(getData)
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
                   d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
           </svg>
-          <svg v-if="!item.is_read" class="h-2 w-2 text-red-500 inline-block rounded-full align-top" width="24" height="24" viewBox="0 0 24 24" stroke-width="1"
-               stroke="currentColor" fill="red" stroke-linecap="round" stroke-linejoin="round">
-            <path stroke="none" d="M0 0h24v24H0z"/>
-            <circle cx="12" cy="12" r="4"/>
-          </svg>
+
+          <div v-if="!item.is_read" class="text-red-500 inline-block" style="font-size: 50px">.</div>
         </td>
         <td class="">
           <div class="font-bold text-xl mb-2">{{ item.title }}</div>
-          <div class="text-sm text-left opacity-50 truncate w-96">{{ allContents[index] }}</div>
+          <div class="text-sm text-left opacity-50 truncate w-96">{{ trueContent[index] }}</div>
         </td>
         <td class="w-40 text-sm opacity-50">
           {{ item.send_date }}
@@ -231,6 +235,7 @@ onMounted(getData)
       </tr>
       </tbody>
     </table>
+    <div class="h-32"></div>
   </div>
 </template>
 
