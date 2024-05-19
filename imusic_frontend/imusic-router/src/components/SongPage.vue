@@ -414,22 +414,27 @@ onMounted(getSubscribeUser);
         </button>
       </div>
     </div>
+    <hr class="my-20">
     <div class="mt-10 ml-5">
+      <div class="text-gray-700 my-5" style="font-size:25px">歌词：</div>
+      <div v-if="lyrics.length === 0" class="text-gray-300 mt-1">
+        <p>[ 无歌词 ]</p>
+      </div>
       <div v-for="lyric in lyrics" class="text-gray-300 mt-1">
         <p>{{ lyric.text }}</p>
       </div>
     </div>
-    <hr class="my-20">
-    <div v-if="showComment" class="">
-      <div class="w-full overflow-hidden mx-auto my-auto pr-20" style="height:400px">
-        <transition name="all transition-duration: 300ms">
-          <Comment :token="token" :id="currentSongId" v-model:showComment="showComment" v-model:songID="currentSongId"
-                   v-model:WarningShow="WarningShow" v-model:message="message" v-model:username="username"></Comment>
-        </transition>
-      </div>
-    </div>
+<!--    <hr class="my-20">-->
+<!--    <div v-if="showComment" class="">-->
+<!--      <div class="w-full overflow-hidden mx-auto my-auto pr-20" style="height:600px">-->
+<!--        <transition name="all transition-duration: 300ms">-->
+<!--          <Comment :token="token" :id="currentSongId" v-model:showComment="showComment" v-model:songID="currentSongId"-->
+<!--                   v-model:WarningShow="WarningShow" v-model:message="message" v-model:username="username"></Comment>-->
+<!--        </transition>-->
+<!--      </div>-->
+<!--    </div>-->
   </div>
-  <div class="h-32"></div>
+  <div class="h-40"></div>
 </template>
 
 <style scoped>

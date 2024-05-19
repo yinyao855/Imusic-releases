@@ -361,8 +361,7 @@ onMounted(getSonglistData);
         <!--    回到选择歌单界面-->
         <buttonchangesize class="absolute" @fullsize="changesize" v-model:token="token"></buttonchangesize>
         <div
-            class="float-right dropdown dropdown-bottom tooltip transition duration-400 border-none z-50"
-            data-tip="歌单操作">
+            class="float-right dropdown dropdown-bottom transition duration-400 border-none z-50">
           <svg class="icon" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg"
                width="32" height="32" tabindex="0" role="button">
             <path
@@ -373,8 +372,25 @@ onMounted(getSonglistData);
               class="dropdown-content z-50 text-white text-sm"
               style="width:50px">
             <li class="py-2">
+              <!--          分享歌单-->
+              <div class="cursor-pointer h-8 w-8 p-1 bg-gray-300 hover:bg-green-500 rounded-lg tooltip tooltip-left"
+                   data-tip="分享歌单">
+                <svg class="h-6 w-6 align-top text-green-600 hover:text-green-800" width="24" height="24"
+                     viewBox="0 0 24 24" stroke-width="2"
+                     stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                  <path stroke="none" d="M0 0h24v24H0z"/>
+                  <circle cx="6" cy="12" r="3"/>
+                  <circle cx="18" cy="6" r="3"/>
+                  <circle cx="18" cy="18" r="3"/>
+                  <line x1="8.7" y1="10.7" x2="15.3" y2="7.3"/>
+                  <line x1="8.7" y1="13.3" x2="15.3" y2="16.7"/>
+                </svg>
+              </div>
+            </li>
+            <li class="pb-2">
               <!--          修改歌单-->
-              <div class="cursor-pointer h-8 w-8 p-1 bg-gray-300 hover:bg-blue-500 rounded-lg">
+              <div class="cursor-pointer h-8 w-8 p-1 bg-gray-300 hover:bg-blue-500 rounded-lg tooltip tooltip-left"
+                   data-tip="修改歌单">
                 <svg @click="activeShowEditSonglist(currentUserSongList.cover)"
                      class="inline-block h-6 w-6 align-top text-blue-600 hover:text-blue-800" width="24"
                      height="24"
@@ -387,7 +403,8 @@ onMounted(getSonglistData);
             </li>
             <li>
               <!--          删除歌单-->
-              <div class="cursor-pointer h-8 w-8 p-1 bg-gray-300 hover:bg-red-500 rounded-lg">
+              <div class="cursor-pointer h-8 w-8 p-1 bg-gray-300 hover:bg-red-500 rounded-lg tooltip tooltip-left"
+                   data-tip="移除歌单">
                 <svg @click="deleteSonglist"
                      class="h-6 w-6 align-top text-red-600 hover:text-red-800" width="24"
                      height="24"
