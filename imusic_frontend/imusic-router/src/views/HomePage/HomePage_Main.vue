@@ -84,6 +84,7 @@ const GetCurrentUser_SongListdata = () => {
       .then(response => {
         CurrentUser_SongListdata.value = response.data.data;
         console.log(response.data.data);
+        console.log(token.value);
       })
       .catch(error => {
         console.log(error.response.data);

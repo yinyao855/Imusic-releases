@@ -7,6 +7,7 @@ import Songlist from "@/views/CreatedSongList/Songlist.vue";
 import {useMessageStore} from "@/stores/message.js";
 import Complaint from "@/components/Complaint.vue";
 import Appeal from "@/components/Appeal.vue";
+import Complain_Detail from "@/views/Message/Complain_Detail.vue";
 
 const messageStore = useMessageStore();
 
@@ -23,6 +24,7 @@ const complaintResult = ref("");
 const ShowSong = ref(false);
 const ShowSongList = ref(false);
 const ShowAppeal = ref(false);
+const ShowComplaintDetail = ref(false);
 const emits = defineEmits(["GetMessage", "readMessage"]);
 
 function getTitle(index) {
@@ -41,8 +43,16 @@ function getTitle(index) {
 
 function activeComplaintMessage(index) {
   id.value = allId.value[index];
+  // 处理投诉，content为数字+' '+有新的投诉消息待处理
+  //console.log(Message.value[index].content);
+  if (Message.value[index].title === "投诉消息"&&Message.value[index].content.match(/\d+\s+有新的投诉消息待处理。/)) {
+    id.value = Message.value[index].content.split(' ')[0];
+    //console.log(id.value);
+    ShowComplaintDetail.value = true;
+    //console.log('showComplaintDetail')
+  }
   // 审查结果
-  if (Message.value[index].title === "审查结果") {
+  else if (Message.value[index].title === "审查结果") {
     complaintResult.value = Message.value[index].content;
     ShowAppeal.value = true;
   }
@@ -64,6 +74,7 @@ function activeComplaintMessage(index) {
     readMessage(currentMessage.value.id);
     currentMessage.value.is_read = true;
   }
+  console.log(currentMessage.value);
 }
 
 function readMessage(id) {
@@ -147,6 +158,7 @@ const close = () => {
   ShowSong.value = false;
   ShowSongList.value = false;
   ShowAppeal.value = false;
+  ShowComplaintDetail.value = false;
 }
 
 onMounted(getData)
@@ -179,9 +191,15 @@ onMounted(getData)
               v-model:token="token" v-model:username="username"></Appeal>
     </div>
   </transition>
+  <!--  处理投诉-->
+  <transition name="slide" appear>
+    <div class="transition-container-2" v-if="ShowComplaintDetail">
+      <Complain_Detail v-model:id="id" @closeComplaint="close"
+              v-model:token="token" v-model:username="username"></Complain_Detail>
+    </div>
+  </transition>
 
-
-  <div class="overflow-x-auto px-10" v-if="!ShowSong&&!ShowSongList&&!ShowAppeal">
+  <div class="overflow-x-auto px-10" v-if="!ShowSong&&!ShowSongList&&!ShowAppeal&&!ShowComplaintDetail">
     <div class="w-full h-32 flex" v-if="!hasMessage">
       <div class="text-4xl text-white text-center m-auto">暂无消息</div>
     </div>
@@ -211,6 +229,7 @@ onMounted(getData)
       </tr>
       </tbody>
     </table>
+    <div class="h-32"></div>
   </div>
 </template>
 

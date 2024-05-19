@@ -195,9 +195,6 @@ const SearchOperation = () => {
     <div :class="[NaviClass3, 'text-transition']" @click="changeNaviMode(3);" style="line-height: 56px">
       用 户
     </div>
-    <div :class="[NaviClass4, 'text-transition']" @click="changeNaviMode(4);" style="line-height: 56px">
-      投 诉
-    </div>
     <Search v-model:SearchContent="SearchContent" @SearchOperation="SearchOperation" v-model:token="token"></Search>
   </div>
   <div class="w-full mt-16" v-if="!ShowSearchView">

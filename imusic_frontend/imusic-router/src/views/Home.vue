@@ -382,13 +382,17 @@ const getPageinit = () => {
   instance.get('/recommend/latest')
       .then(response => {
         songlistlast.value = response.data.data;
+        //console.log(response.data.data)
+        //console.log(songlistlast.value);
         let length = songlistlast.value.length;
         for (let i = 0; i < length; ++i) {
+          //console.log(i);
           songlistlast.value[i].duration = gettime(songlistlast.value[i].duration);
         }
       })
       .catch(error => {
         console.log("getpageinit2error");
+        console.log(error);
       })
   GetHomePageRecommendLatest();
 }
@@ -572,6 +576,7 @@ const GetMessage = () => {
       .then(response => {
         const msg = response.data.data;
         messageStore.setMessage(msg);
+        console.log(msg);
       })
       .catch(error => {
         console.log(error.response.data);
