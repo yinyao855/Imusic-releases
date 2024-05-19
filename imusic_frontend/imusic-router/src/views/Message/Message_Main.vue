@@ -9,6 +9,7 @@ import PrivateNotifications from "@/views/Message/PrivateNotifications.vue";
 import Warning from "@/components/Warning.vue";
 import AppealNotifications from "@/views/Message/AppealNotifications.vue";
 import ComplainNotifications from "@/views/Message/ComplainNotifications.vue";
+import SongPage from "@/components/SongPage.vue";
 
 const NaviMode = ref('1');
 const upload = ref('0');
@@ -189,6 +190,7 @@ function readMessage(messageId) {
                          v-model:Message="MessageType1" @readMessage="readMessage"
     ></SystemNotifications>
     <CommentNotifications v-if="NaviMode==='2'" v-model:token="token" v-model:username="username"
+                          v-model:HasLogin="HasLogin"
                           v-model:Message="MessageType2" @readMessage="readMessage"
     ></CommentNotifications>
     <SubscribeNotifications v-if="NaviMode==='4'" v-model:token="token" v-model:username="username"
@@ -197,7 +199,7 @@ function readMessage(messageId) {
     <PrivateNotifications class="w-full" v-model:token="token" v-model:username="username"
                           v-model:Message="MessageType5" v-if="NaviMode==='5'" @GetMessage="GetMessage"
     ></PrivateNotifications>
-    <ComplainNotifications class="w-full" v-model:token="token" v-model:username="username"
+    <ComplainNotifications class="w-full" v-model:token="token" v-model:username="username" v-model:HasLogin="HasLogin"
                            v-model:Message="MessageType6" v-if="NaviMode==='6'" @GetMessage="GetMessage"
                            @readMessage="readMessage"
     ></ComplainNotifications>

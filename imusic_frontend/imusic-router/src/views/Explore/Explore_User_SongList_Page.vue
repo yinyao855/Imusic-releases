@@ -6,10 +6,12 @@ import CurrentUser_SongList from "@/components/CurrentUser_SongList.vue";
 import SongPage from "@/components/SongPage.vue";
 import Buttonchangesize from "@/components/ButtonChangeSizeRight.vue";
 import EditSonglist from "@/views/EditSonglist.vue";
+import CreatedSonglist from "@/views/CreatedSongList/CreatedSonglist.vue";
 
 // global variables
 const token = defineModel('token')
 const username = defineModel('username')
+const HasLogin = defineModel('HasLogin')
 
 // defineEmits(播放歌单全部歌曲，加入播放列表，立即播放，关闭当前页面/回到上一个页面展示创建的歌单)
 const emits = defineEmits(['PlaySongList', 'handlePlayAfter', 'handlePlayNow', 'closeSonglist'])
@@ -479,7 +481,7 @@ onMounted(getSonglistData);
     <div class="transition-container-2" v-if="ShowSong">
       <SongPage v-if="ShowSong" v-model:currentSongId="currentSongId"
                 @handlePlayNow="handlePlayNow" @CloseSong="CloseSong"
-                v-model:username="username" v-model:token="token"></SongPage>
+                v-model:username="username" v-model:token="token" v-model:HasLogin="HasLogin"></SongPage>
     </div>
   </transition>
   <!--  展示修改歌单信息界面（当showEditSonglist为true）-->

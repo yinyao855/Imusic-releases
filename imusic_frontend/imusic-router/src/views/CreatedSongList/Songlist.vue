@@ -10,6 +10,7 @@ import Other_User_Data from "@/views/Explore/Other_User_Data.vue";
 import Complaint from "@/components/Complaint.vue";
 
 // global variables
+const HasLogin = defineModel('HasLogin');
 const token = defineModel('token')
 const username = defineModel('username')
 
@@ -273,7 +274,7 @@ onMounted(getSonglistData);
     <div class="transition-container-2" v-if="ShowSong">
       <SongPage v-model:currentSongId="currentSongId"
                 @handlePlayNow="handlePlayNow" @CloseSong="CloseSong"
-                v-model:username="username" v-model:token="token"></SongPage>
+                v-model:username="username" v-model:token="token" v-model:HasLogin="HasLogin"></SongPage>
     </div>
   </transition>
   <!--  展示用户信息界面-->

@@ -7,6 +7,7 @@ import Search_View from "@/views/HomePage/Search_View.vue";
 
 const songlistlast = defineModel('songlist');
 const token = defineModel('token')
+const HasLogin = defineModel('HasLogin')
 const emits = defineEmits(['handlePlayNow', 'handlePlayAfter', 'changesize', 'ChangeSongList', 'addToSongList']);
 const SongListId = defineModel('SongListId');
 
@@ -145,7 +146,7 @@ onMounted(GetUserLike)
     <div class="transition-container-2" v-if="NeedShowSongDetail">
       <SongPage  v-model:currentSongId="SongId"
                 @handlePlayNow="handlePlayNow" @CloseSong="CloseSongPage"
-                v-model:username="username" v-model:token="token"></SongPage>
+                v-model:username="username" v-model:token="token" v-model:HasLogin="HasLogin"></SongPage>
     </div>
   </transition>
 

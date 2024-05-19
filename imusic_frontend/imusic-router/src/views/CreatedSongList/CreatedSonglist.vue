@@ -11,6 +11,7 @@ import Other_User_Data from "@/views/Explore/Other_User_Data.vue";
 // global variables
 const token = defineModel('token')
 const username = defineModel('username')
+const HasLogin = defineModel('HasLogin')
 
 // defineEmits(播放歌单全部歌曲，加入播放列表，立即播放，关闭当前页面/回到上一个页面展示创建的歌单)
 const emits = defineEmits(['PlaySongList', 'handlePlayAfter', 'handlePlayNow', 'changesize'])
@@ -324,9 +325,9 @@ onMounted(getSonglistData);
   <!--  展示歌曲详细信息界面（当ShowSong为true）-->
   <transition name="slide" appear>
     <div class="transition-container" v-if="ShowSong">
-      <SongPage class="w-screen mb-32" v-model:currentSongId="currentSongId" v-model:username="username"
-                @CloseSong="CloseSong" @handlePlayNow="handlePlayNow"
-                v-model:token="token"></SongPage>
+      <SongPage v-model:currentSongId="currentSongId"
+                @handlePlayNow="handlePlayNow" @CloseSong="CloseSong"
+                v-model:username="username" v-model:token="token" v-model:HasLogin="HasLogin"></SongPage>
     </div>
   </transition>
   <!--  展示修改歌单信息界面（当showEditSonglist为true）-->

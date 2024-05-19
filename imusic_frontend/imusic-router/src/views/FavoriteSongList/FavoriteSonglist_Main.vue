@@ -88,7 +88,7 @@ onMounted(getFavoriteSonglists);
       <Songlist v-model:currentSonglistId="currentSonglistId"
                 @PlaySongList="PlaySongList" @handlePlayAfter="handlePlayAfter"
                 @handlePlayNow="handlePlayNow" @closeSonglist="closeSonglist"
-                v-model:token="token" v-model:username="username"></Songlist>
+                v-model:token="token" v-model:username="username" v-model:HasLogin="HasLogin"></Songlist>
     </div>
   </transition>
 

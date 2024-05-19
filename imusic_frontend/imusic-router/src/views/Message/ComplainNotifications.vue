@@ -9,6 +9,7 @@ const messageStore = useMessageStore();
 
 const token = defineModel("token");
 const username = defineModel("username");
+const HasLogin = defineModel('HasLogin')
 const Message = ref(computed(() => messageStore.MessageType6));
 const title = ref("");
 const currentMessage = ref([]);
@@ -147,7 +148,7 @@ onMounted(getData)
   <!--  展示歌曲详细信息界面（当ShowSong为true）-->
   <transition name="slide" appear>
     <div class="transition-container-2" v-if="ShowSong">
-      <SongPage v-model:currentSongId="id"
+      <SongPage v-model:currentSongId="id" v-model:HasLogin="HasLogin"
                 @handlePlayNow="handlePlayNow" @CloseSong="close"
                 v-model:username="username" v-model:token="token"></SongPage>
     </div>

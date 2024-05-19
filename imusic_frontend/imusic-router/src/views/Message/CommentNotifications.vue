@@ -9,6 +9,7 @@ const messageStore = useMessageStore();
 
 const token = defineModel("token");
 const username = defineModel("username");
+const HasLogin = defineModel('HasLogin')
 const Message = ref(computed(() => messageStore.MessageType2));
 const userImage = ref([]);
 const songId = ref(0);
@@ -103,7 +104,7 @@ onMounted(getUserImage)
     <div class="transition-container-2" v-if="ShowSong">
       <SongPage v-model:currentSongId="songId"
                 @handlePlayNow="handlePlayNow" @CloseSong="CloseSong"
-                v-model:username="username" v-model:token="token"></SongPage>
+                v-model:username="username" v-model:token="token" v-model:HasLogin="HasLogin"></SongPage>
     </div>
   </transition>
 

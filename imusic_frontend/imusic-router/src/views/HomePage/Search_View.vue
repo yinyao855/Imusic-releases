@@ -6,6 +6,7 @@ import SongPage from "@/components/SongPage.vue";
 
 const songlistlast = defineModel('songlistlast');
 const emits = defineEmits(['handlePlayNow', 'handlePlayAfter', 'changesize', 'addToSongList']);
+const HasLogin = defineModel('HasLogin')
 const username = defineModel('username');
 const token=defineModel('token')
 function handlePlayNow(index) {
@@ -87,7 +88,7 @@ const CloseSongPage=()=>{
     <div class="transition-container-2" v-if="NeedShowSongDetail">
       <SongPage  v-model:currentSongId="SongId"
                  @handlePlayNow="handlePlayNow" @CloseSong="CloseSongPage"
-                 v-model:username="username" v-model:token="token"></SongPage>
+                 v-model:username="username" v-model:token="token" v-model:HasLogin="HasLogin"></SongPage>
     </div>
   </transition>
   <div class="text-2xl mx-auto my-6 w-full text-center text-white font-semibold cursor-default" v-if="!NeedShowSongDetail">

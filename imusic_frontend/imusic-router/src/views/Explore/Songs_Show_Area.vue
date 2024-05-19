@@ -8,6 +8,7 @@ import Complaint from "@/components/Complaint.vue";
 
 const emits = defineEmits(['handlePlayNow', 'handlePlayAfter', 'addToSongList'])
 const token = defineModel('token')
+const HasLogin = defineModel('HasLogin')
 const tag_language = ref('默认');
 const tag_theme = ref('默认')
 const tag_scene = ref('默认');
@@ -361,7 +362,7 @@ onMounted(GetInitSongs);
     <div class="transition-container-2" v-if="NeedShowSongDetail">
       <SongPage  v-model:currentSongId="SongId"
                  @handlePlayNow="handlePlayNow" @CloseSong="CloseSongPage"
-                 v-model:username="username" v-model:token="token"></SongPage>
+                 v-model:username="username" v-model:token="token" v-model:HasLogin="HasLogin"></SongPage>
     </div>
   </transition>
 
