@@ -5,6 +5,7 @@ import Songlist from "@/views/CreatedSongList/Songlist.vue";
 
 const emits = defineEmits(['handlePlayNow', 'handlePlayAfter', 'addToSongList', 'PlaySongList'])
 const token = defineModel('token')
+const HasLogin = defineModel('HasLogin')
 const tag_language = ref('默认');
 const tag_theme = ref('默认')
 const tag_scene = ref('默认');
@@ -327,7 +328,7 @@ onMounted(GetInitSongLists);
       <Songlist v-model:currentSonglistId="SongListId"
                 @PlaySongList="PlaySongList" @handlePlayAfter="handlePlayAfter"
                 @handlePlayNow="handlePlayNow" @closeSonglist="closeSonglist"
-                v-model:token="token" v-model:username="username"></Songlist>
+                v-model:token="token" v-model:username="username" v-model:HasLogin="HasLogin"></Songlist>
     </div>
   </transition>
   <div class="flex w-full h-full px-10" v-if="!ShowCurrentUser_SongList&&!NeedShowSongList">

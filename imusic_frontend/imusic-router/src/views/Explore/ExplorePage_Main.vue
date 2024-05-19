@@ -51,7 +51,7 @@ const handlePlayNow = (index) => {
   <div class="w-full mt-16">
     <Singer_Show_Area v-model:username="username" v-if="NaviMode==='1'" v-model:token="token"
                       @handlePlayAfter="handlePlayAfter" @handlePlayNow="handlePlayNow" v-model:HasLogin="HasLogin"></Singer_Show_Area>
-    <List_Show_Area v-if="NaviMode==='2'" v-model:token="token" v-model:username="username"
+    <List_Show_Area v-if="NaviMode==='2'" v-model:token="token" v-model:username="username" v-model:HasLogin="HasLogin"
                     @handlePlayAfter="handlePlayAfter" @handlePlayNow="handlePlayNow"></List_Show_Area>
     <User_Show_Area v-if="NaviMode==='3'" v-model:username="username" v-model:token="token"
                     @handlePlayNow="handlePlayNow" @handlePlayAfter="handlePlayAfter"
