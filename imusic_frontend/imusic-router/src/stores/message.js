@@ -9,6 +9,21 @@ export const useMessageStore = defineStore('message', () => {
     let unReads = computed(() => {
         return Message.value.filter(item => !item.is_read).length
     })
+    let unReads1 = computed(() => {
+        return MessageType1.value.filter(item => !item.is_read).length
+    })
+    let unReads2 = computed(() => {
+        return MessageType2.value.filter(item => !item.is_read).length
+    })
+    let unReads4 = computed(() => {
+        return MessageType4.value.filter(item => !item.is_read).length
+    })
+    let unReads6 = computed(() => {
+        return MessageType6.value.filter(item => !item.is_read).length
+    })
+    let unReads7 = computed(() => {
+        return MessageType7.value.filter(item => !item.is_read).length
+    })
 
     // 处理消息类型
     const MessageType1 = ref([]);
@@ -110,6 +125,11 @@ export const useMessageStore = defineStore('message', () => {
         readMessage,
         refreshMessage,
         unReads,
+        unReads1,
+        unReads2,
+        unReads4,
+        unReads6,
+        unReads7,
         MessageType1,
         MessageType2,
         MessageType4,

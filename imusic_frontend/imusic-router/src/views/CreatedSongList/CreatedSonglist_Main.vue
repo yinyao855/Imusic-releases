@@ -105,7 +105,7 @@ onMounted(getCreatedSonglists);
   </transition>
   <!--  展示选中的歌单信息页面（当showCurrentSongList==true）-->
   <transition name="slide" appear>
-    <div class="transition-container-2 z-50 ml-8" v-if="showCurrentSongList">
+    <div class="transition-container-2 z-50" v-if="showCurrentSongList">
       <CreatedSonglist class="w-screen mb-32" v-model:currentSonglistId="currentSonglistId"
                        @refresh="getCreatedSonglists"
                        @PlaySongList="PlaySongList" @handlePlayAfter="handlePlayAfter"

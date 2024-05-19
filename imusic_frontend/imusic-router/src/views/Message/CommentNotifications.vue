@@ -21,7 +21,11 @@ const CloseSong = () => {
   ShowSong.value = false;
 }
 
-function getCommentMessage() {
+const hasMessage = ref(true);
+function getUserImage() {
+  if (Message.value.length === 0) {
+    hasMessage.value = false;
+  }
   for (let index in Message.value) {
     let username = Message.value[index].sender;
     const instance = axios.create({
@@ -89,7 +93,7 @@ function getSongId() {
       })
 }
 
-onMounted(getCommentMessage)
+onMounted(getUserImage)
 
 </script>
 <template>
@@ -105,6 +109,9 @@ onMounted(getCommentMessage)
 
 
   <div class="overflow-x-auto px-10" v-if="!ShowSong">
+    <div class="w-full h-32 flex" v-if="!hasMessage">
+      <div class="text-4xl text-white text-center m-auto">暂无消息</div>
+    </div>
     <table class="table">
       <tbody>
       <tr class="text-white hover:bg-gray-600/40 rounded-md"
