@@ -53,10 +53,17 @@ const emits = defineEmits(['checkLogin']);
 const userUploadedSongs = defineModel('userUploadedSongs');
 const mode = defineModel('mode');
 const UserRole = defineModel('UserRole');
+
+function checkLogin() {
+  emits('checkLogin');
+}
 const changeMode = (newMode) => {
+  if (newMode === 9 || newMode === 3 || newMode === 4 || newMode === 6 || newMode === 8) {
+    checkLogin();
+    return;
+  }
   mode.value = newMode.toString();
 };
-
 
 const LoginArea = () => {
   if (props.HasLogin === true) {
