@@ -213,8 +213,11 @@ onMounted(getData)
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
                   d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
           </svg>
-
-          <div v-if="!item.is_read" class="text-red-500 inline-block" style="font-size: 50px">.</div>
+          <svg v-if="!item.is_read" class="h-2 w-2 text-red-500 inline-block rounded-full align-top" width="24" height="24" viewBox="0 0 24 24" stroke-width="1"
+               stroke="currentColor" fill="red" stroke-linecap="round" stroke-linejoin="round">
+            <path stroke="none" d="M0 0h24v24H0z"/>
+            <circle cx="12" cy="12" r="4"/>
+          </svg>
         </td>
         <td class="">
           <div class="font-bold text-xl mb-2">{{ item.title }}</div>
