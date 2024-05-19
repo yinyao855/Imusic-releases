@@ -15,8 +15,7 @@ import AdminPage_Main from "@/views/Admin/AdminPage_Main.vue";
 import CreatedSonglist_Main from "@/views/CreatedSongList/CreatedSonglist_Main.vue";
 import FavoriteSonglist_Main from "@/views/FavoriteSongList/FavoriteSonglist_Main.vue";
 import Forget_Password from "@/views/Account/Forget_Password.vue";
-import Message_main from "@/views/Message/Message_Main.vue";
-import Message_Main from "@/views/Messages/Message_Main.vue";
+import Message_Main from "@/views/Message/Message_Main.vue";
 
 const token = ref('');
 const needshowsonglistpage = ref(false);
