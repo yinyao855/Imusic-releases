@@ -91,12 +91,22 @@ function getData() {
     if(Message.value[index].title === "投诉消息"&&Message.value[index].content.match(/\d+\s+有新的投诉消息待处理。/)){
       trueContent.value.push(Message.value[index].content.split(' ')[1]);
     }
+    else if (Message.value[index].title === "审查结果") {
+      allId.value[index] = Message.value[index].id;
+      const complaintId = ref(0);
+      complaintId.value = parseInt(Message.value[index].content);
+      if (!isNaN(complaintId.value)) {
+        const complaintContent = ref("");
+        complaintContent.value = Message.value[index].content.split(' ')[1];
+        trueContent.value.push(complaintContent.value);
+      }
+      else {
+        trueContent.value.push(Message.value[index].content);
+      }
+      continue;
+    }
     else {
       trueContent.value.push(Message.value[index].content);
-    }
-    if (Message.value[index].title === "审查结果") {
-      allId.value[index] = Message.value[index].id;
-      continue;
     }
     const s = ref([]);
     s.value = Message.value[index].content.split("《");
