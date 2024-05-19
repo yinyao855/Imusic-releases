@@ -82,7 +82,6 @@ onMounted(getFavoriteSonglists);
   <div class="w-full absolute top-0 left-1/2 transform -translate-x-1/2" v-if="WarningShow">
     <Warning :message="message" @CloseWarning="CloseWarning" class="mx-auto" v-model:token="token"></Warning>
   </div>
-  <!--    展示选中的歌单信息页面（当showCurrentSongList==true）-->
   <transition name="slide" appear>
     <div class="transition-container z-50" v-if="showCurrentSongList">
       <Songlist v-model:currentSonglistId="currentSonglistId"
@@ -92,26 +91,27 @@ onMounted(getFavoriteSonglists);
     </div>
   </transition>
 
-
   <!--  展示用户收藏的歌单主界面-->
-  <div class="bg-gray-95000 w-full h-full mb-48" v-if="!showCurrentSongList">
+  <div class="w-full h-full mb-48 flex flex-col" v-if="!showCurrentSongList">
     <!--    标题-->
     <div class="w-full h-32 flex">
       <div class="text-4xl text-white text-center m-auto">我收藏的歌单</div>
     </div>
-    <!--    内容：创建的歌单（v-for依次输出创建的歌单）-->
-    <div v-for="(songlist, index) in favoriteSonglists" class="all inline-block px-8 pb-6">
-      <div @click="activeSonglist(index)" class="card bg-gray-300 cursor-pointer">
-        <div class="content">
-          <img src="../../assets/cd.png" alt="Avatar" class="cd">
-          <img :src="songlist.cover" alt="Avatar" class="cover">
-        </div>
-        <div class="text m-4 relative top-3/4 text-center">
-          <h1>{{ songlist.title }}</h1>
-        </div>
-        <div class="overlay">
-          <div class="overlay-text">
+    <div class="flex-1">
+      <!--    内容：创建的歌单（v-for依次输出创建的歌单）-->
+      <div v-for="(songlist, index) in favoriteSonglists" class="all inline-block px-8 pb-6">
+        <div @click="activeSonglist(index)" class="card bg-gray-300 cursor-pointer">
+          <div class="content">
+            <img src="../../assets/cd.png" alt="Avatar" class="cd">
+            <img :src="songlist.cover" alt="Avatar" class="cover">
+          </div>
+          <div class="text m-4 relative top-3/4 text-center">
             <h1>{{ songlist.title }}</h1>
+          </div>
+          <div class="overlay">
+            <div class="overlay-text">
+              <h1>{{ songlist.title }}</h1>
+            </div>
           </div>
         </div>
       </div>

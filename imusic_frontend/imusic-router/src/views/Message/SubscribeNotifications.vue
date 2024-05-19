@@ -239,7 +239,7 @@ onMounted(() => {
                       v-model:OtherAvatar="userImage[detailVisible]" @GetMessage="GetMessage" @ChangeSize="ChangeSize"></Message_Detail>
     </div>
   </transition>
-  <div class="w-full h-full flex divide-dashed" v-if="!ShowMessage">
+  <div class="w-full flex divide-dashed" v-if="!ShowMessage">
     <div class="h-full w-full border-r border-e border-gray-400 pl-4">
   <table class="table w-full h-20 text-center overflow-auto">
     <thead>

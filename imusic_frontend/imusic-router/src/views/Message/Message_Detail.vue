@@ -2,6 +2,7 @@
 import {onMounted, ref, watch} from "vue";
 import Input from "@/components/Input.vue"
 import axios from "axios";
+import {useMessageStore} from "@/stores/message.js";
 
 const username = defineModel('username');
 const token = defineModel('token');
@@ -11,6 +12,7 @@ const MyAvatar = defineModel('MyAvatar');
 const OtherAvatar = defineModel('OtherAvatar');
 const emits = defineEmits(['ChangeSize']);
 const CanChat=defineModel('CanChat');
+const messageStore = useMessageStore();
 
 const GetInitData = () => {
   const instance = axios.create({
@@ -31,6 +33,7 @@ const GetInitData = () => {
         ShowMessage.value = response.data.data;
         length = ShowMessage.value.length;
         for (let i = 0; i < length; ++i) {
+          ShowMessage.value[i].send_date=messageStore.ChangeTime(ShowMessage.value[i].send_date);
           if (ShowMessage.value[i]['sender'] === username.value)
             ShowMessage.value[i]['direction'] = 1;
           else
@@ -52,7 +55,7 @@ watch(ForeignUser,GetInitData);
 
 <template>
   <div class="w-full h-dvh px-4">
-    <div class="w-full h-4/5 overflow-auto">
+    <div class="w-full overflow-y-auto h-3/4 mb-4">
       <div :class="['chat', item.direction === 0 ? 'chat-start' : 'chat-end']" v-for="(item, index) in ShowMessage"
            :key="index">
         <div class="chat-image avatar">
@@ -70,7 +73,7 @@ watch(ForeignUser,GetInitData);
         </div>
       </div>
     </div>
-    <div class="h-12 w-full mb-4">
+    <div class="h-12 w-full">
       <Input v-model:username="ForeignUser" v-model:token="token" @GetMessage="GetInitData" v-model:CanChat="CanChat"></Input>
     </div>
   </div>

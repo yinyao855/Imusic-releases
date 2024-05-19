@@ -13,13 +13,13 @@ import NavTab from "@/components/NavTab.vue";
 import {computed, ref} from "vue";
 
 import {useUserStore} from "@/stores/user.js";
+import Private_Message from "@/views/Message/Private_Message.vue";
 
 const userStore = useUserStore();
 
 const tabs = [
   '系统通知',
   '评论通知',
-  '关注通知',
   '私信',
   '投诉通知',
   '申诉通知'
@@ -28,8 +28,7 @@ const tabs = [
 const components = [
     SystemNotifications,
     CommentNotifications,
-    SubscribeNotifications,
-    PrivateNotifications,
+    Private_Message,
     ComplainNotifications,
     AppealNotifications,
 ]

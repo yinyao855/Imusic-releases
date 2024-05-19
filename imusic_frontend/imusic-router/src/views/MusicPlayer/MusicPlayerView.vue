@@ -8,7 +8,7 @@
   </Transition>
 
   <Transition name="slide-fade">
-    <div class="fixed bottom-0 w-full h-32 bg-opacity-0 mb-0" v-if="!isMinimized">
+    <div class="fixed bottom-0 w-full h-32 bg-opacity-0 mb-0 z-50" v-if="!isMinimized">
       <div class="music-player-container h-28 mr-5 rounded-md shadow-lg flex bg-opacity-100 mb-0">
         <!-- 专辑封面 -->
         <div class="rounded-md h-24 w-24 my-auto ml-4">
