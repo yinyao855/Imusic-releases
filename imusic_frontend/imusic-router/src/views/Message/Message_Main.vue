@@ -128,7 +128,7 @@ function readMessage(messageId) {
       })
 }
 
-onMounted(GetHasRead)
+// onMounted(GetHasRead)
 </script>
 
 <template>
@@ -151,14 +151,6 @@ onMounted(GetHasRead)
           ></path>
         </svg>
       </div>
-      <!--    <div :class="[NaviClass3, 'text-transition']" @click="changeNaviMode(3)" style="line-height: 56px">喜欢通知-->
-      <!--      <svg v-if="Count3!==0" class="icon inline text-white my-auto" viewBox="0 0 1024 1024"-->
-      <!--           xmlns="http://www.w3.org/2000/svg" width="4" height="4">-->
-      <!--        <path-->
-      <!--            d="M512 512m-512 0a512 512 0 1 0 1024 0 512 512 0 1 0-1024 0Z" fill="#FC3227"-->
-      <!--        ></path>-->
-      <!--      </svg>-->
-      <!--    </div>-->
       <div :class="[NaviClass4, 'text-transition']" @click="changeNaviMode(4)" style="line-height: 56px">关注通知
         <svg v-if="Count4!==0" class="icon inline text-white my-auto" viewBox="0 0 1024 1024"
              xmlns="http://www.w3.org/2000/svg" width="4" height="4">

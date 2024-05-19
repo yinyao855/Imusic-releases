@@ -47,6 +47,15 @@ function closeShowSystemMessage() {
 function readMessage(id) {
   messageStore.readMessage(id, token.value);
 }
+
+const hasMessage = ref(true);
+function getSystemMessages() {
+  if (Message.value.length === 0) {
+    hasMessage.value = false;
+  }
+}
+
+onMounted(getSystemMessages)
 </script>
 
 <template>
@@ -59,6 +68,9 @@ function readMessage(id) {
     </div>
   </transition>
   <div class="overflow-x-auto px-10" v-if="!showSystemMessage">
+    <div class="w-full h-32 flex" v-if="!hasMessage">
+      <div class="text-4xl text-white text-center m-auto">暂无消息</div>
+    </div>
     <table class="table">
       <tbody>
       <tr class="text-white transition duration-400 hover:bg-gray-600/40 rounded-md cursor-pointer"
