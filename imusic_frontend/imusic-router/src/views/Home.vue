@@ -638,7 +638,7 @@ onMounted(autoLogin);
                        v-model:HotSongs="HotSongs"></HomePage_Main>
         <ExplorePage_Main v-model:username="username" v-if="mode==='2'" v-model:token="token"
                           @handlePlayNow="handlePlayNow" @handlePlayAfter="handlePlayAfter"></ExplorePage_Main>
-        <SettingPage_Main v-if="mode==='3'" v-model:token="token"></SettingPage_Main>
+        <SettingPage_Main v-if="mode==='3'" v-model:token="token" v-model:username="username"></SettingPage_Main>
         <CreateCenter v-if="mode==='4'" :userUploadedSongs="userUploadedSongs" @handlePlayNow="handlePlayNow"
                       v-model:HasLogin="HasLogin" v-model:username="username" @handlePlayAfter="handlePlayAfter"
                       v-model:token="token"></CreateCenter>
@@ -652,13 +652,6 @@ onMounted(autoLogin);
                                @handlePlayNow="handlePlayNow"
                                v-model:token="token" v-model:username="username"
                                v-model:HasLogin="HasLogin"></FavoriteSonglist_Main>
-<!--        <Message_main v-if="mode==='9'" v-model:Message="Message" v-model:MessageType1="MessageType1"-->
-<!--                      v-model:MessageType2="MessageType2" v-model:MessageType3="MessageType3"-->
-<!--                      v-model:MessageType4="MessageType4"-->
-<!--                      v-model:MessageType5="MessageType5" v-model:MessageType6="MessageType6"-->
-<!--                      v-model:MessageType7="MessageType7"-->
-<!--                      v-model:token="token" v-model:username="username"-->
-<!--                      v-model:HasLogin="HasLogin" @GetMessage="GetMessage" v-model:UserRole="UserRole"></Message_main>-->
         <Message_Main v-if="mode==='9'"
                       v-model:token="token" v-model:username="username"
                       v-model:HasLogin="HasLogin" v-model:UserRole="UserRole"
