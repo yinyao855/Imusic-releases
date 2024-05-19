@@ -1,11 +1,12 @@
 <script setup>
-import {defineModel, defineEmits, ref} from "vue"
+import {defineModel, defineEmits, ref, watch} from "vue"
 import axios from "axios";
 
 const username = defineModel('username')
 const SendContent = ref('');
 const token = defineModel('token')
 const emits=defineEmits(['GetMessage']);
+const CanChat=defineModel('CanChat')
 const SendOperation = () => {
   if(SendContent.value===''){
     alert('发送内容不能为空');
@@ -32,6 +33,9 @@ const SendOperation = () => {
         console.log(error.response.data);
       })
 }
+watch(username,()=>{
+  SendContent.value='';
+})
 </script>
 
 <template>
@@ -57,6 +61,7 @@ const SendOperation = () => {
           placeholder=""
           name="searchbar"
           v-model="SendContent"
+          :disabled="!CanChat"
       />
       <div
           class="btn btn-md ml-4 text-white tracking-widest bg-blue-500 hover:bg-blue-600 transition:ease-in duration-300"
@@ -75,7 +80,7 @@ const SendOperation = () => {
   line-height: 28px;
   align-items: center;
   position: relative;
-  width: 60%;
+  width: 90%;
 }
 
 .input {

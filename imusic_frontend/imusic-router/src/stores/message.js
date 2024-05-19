@@ -39,6 +39,41 @@ export const useMessageStore = defineStore('message', () => {
     const Count6 = ref(0);
     const Count7 = ref(0);
 
+
+    const ChangeTime=(InputDate)=> {
+        const date = new Date(InputDate);
+        const now = new Date();
+        //当天
+        if (date.getFullYear() === now.getFullYear() && date.getMonth() === now.getMonth() && date.getDate() === now.getDate()) {
+            //超过5h显示xx小时前
+            if (now.getHours() - date.getHours() >= 5) {
+                return (now.getHours() - date.getHours()) + '小时前';
+            }
+            //分钟相同显示刚刚
+            else if (now.getMinutes() === date.getMinutes() && now.getHours() === date.getHours()&&now.getDate() - date.getDate()===0&&now.getMonth() - date.getMonth()===0&&now.getFullYear() - date.getFullYear()===0) {
+                return '刚刚';
+            }
+            //10min内显示x分钟前
+            else if ((now.getMinutes() - date.getMinutes() < 10&&now.getHours() - date.getHours()===0&&now.getDate() - date.getDate()===0&&now.getMonth() - date.getMonth()===0&&now.getFullYear() - date.getFullYear()===0)) {
+                return (now.getMinutes() - date.getMinutes()) + '分钟前';
+            }
+            else if (now.getMinutes() + 60 - date.getMinutes() < 10&&now.getHours() - date.getHours()===1&&now.getDate() - date.getDate()===0&&now.getMonth() - date.getMonth()===0&&now.getFullYear() - date.getFullYear()===0){
+                return (now.getMinutes() + 60 - date.getMinutes()) + '分钟前';
+            }
+            else{
+                return date.getMinutes()<10?date.getHours() + ':0' + date.getMinutes():date.getHours() + ':' + date.getMinutes();
+            }
+        }
+        //前一天
+        else if (date.getFullYear() === now.getFullYear() && date.getMonth() === now.getMonth() && date.getDate() === now.getDate() - 1) {
+            return date.getMinutes()<10?'昨天'+date.getHours() + ':0' + date.getMinutes():'昨天'+date.getHours() + ':' + date.getMinutes();
+        }
+        else
+        {
+            return date.getMinutes()<10?date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate():date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
+        }
+    }
+
     const processMessage = () => {
         console.log("处理消息")
         // console.log(Message.value);
@@ -124,6 +159,7 @@ export const useMessageStore = defineStore('message', () => {
         setMessage,
         readMessage,
         refreshMessage,
+        ChangeTime,
         unReads,
         unReads1,
         unReads2,

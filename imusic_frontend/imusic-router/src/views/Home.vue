@@ -556,7 +556,6 @@ const ChangeForgetMode = () => {
 
 /*----------------------------------------*/
 import {useMessageStore} from "@/stores/message.js";
-import SongPage from "@/components/SongPage.vue";
 const messageStore = useMessageStore();
 // 获取消息
 const GetMessage = () => {
@@ -635,10 +634,10 @@ onMounted(autoLogin);
                        v-model:songlistlast="songlistlast" v-model:HomePageRecommendLatest="HomePageRecommendLatest"
                        v-model:token="token" v-model:SongListId="SongListId"
                        @changesonglist="changesonglist" @PlaySongList="PlaySongList"
-                       v-model:HotSongs="HotSongs" v-model:HasLogin="HasLogin"></HomePage_Main>
+                       v-model:HotSongs="HotSongs"></HomePage_Main>
         <ExplorePage_Main v-model:username="username" v-if="mode==='2'" v-model:token="token"
-                          @handlePlayNow="handlePlayNow" @handlePlayAfter="handlePlayAfter" v-model:HasLogin="HasLogin"></ExplorePage_Main>
-        <SettingPage_Main v-if="mode==='3'" v-model:token="token"></SettingPage_Main>
+                          @handlePlayNow="handlePlayNow" @handlePlayAfter="handlePlayAfter"></ExplorePage_Main>
+        <SettingPage_Main v-if="mode==='3'" v-model:token="token" v-model:username="username"></SettingPage_Main>
         <CreateCenter v-if="mode==='4'" :userUploadedSongs="userUploadedSongs" @handlePlayNow="handlePlayNow"
                       v-model:HasLogin="HasLogin" v-model:username="username" @handlePlayAfter="handlePlayAfter"
                       v-model:token="token"></CreateCenter>
