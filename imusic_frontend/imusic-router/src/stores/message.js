@@ -31,6 +31,7 @@ export const useMessageStore = defineStore('message', () => {
     const MessageType4 = ref([]);
     const MessageType6 = ref([]);
     const MessageType7 = ref([]);
+    const tmp=ref([]);
 
     // 处理消息数量
     const Count1 = ref(0);
@@ -74,14 +75,16 @@ export const useMessageStore = defineStore('message', () => {
         }
     }
 
+
+
     const processMessage = () => {
-        console.log("处理消息")
         // console.log(Message.value);
         MessageType1.value = [];
         MessageType2.value = [];
         MessageType4.value = [];
         MessageType6.value = [];
         MessageType7.value = [];
+        tmp.value=[];
         Count1.value = 0;
         Count2.value = 0;
         Count4.value = 0;
@@ -89,8 +92,7 @@ export const useMessageStore = defineStore('message', () => {
         Count7.value = 0;
         for (let i = 0; i < Message.value.length; i++) {
             if (Message.value[i].type === 1) {
-                MessageType1.value.push(Message.value[i]);
-                Count1.value++;
+                tmp.value.push(Message.value[i]);
             } else if (Message.value[i].type === 2) {
                 MessageType2.value.push(Message.value[i]);
                 Count2.value++;
@@ -103,6 +105,18 @@ export const useMessageStore = defineStore('message', () => {
             } else if (Message.value[i].type === 7) {
                 MessageType7.value.push(Message.value[i]);
                 Count7.value++;
+            }
+        }
+        for(let i=0;i<tmp.value.length;++i){
+            let flag=false;
+            for(let j=0;j<MessageType1.value.length;++j){
+                if(tmp.value[i].title===MessageType1.value[j].title&&tmp.value[i].send_date===MessageType1.value[j].send_date){
+                    flag=true;
+                    break;
+                }
+            }
+            if(flag===false){
+                MessageType1.value.push(tmp.value[i]);
             }
         }
     }

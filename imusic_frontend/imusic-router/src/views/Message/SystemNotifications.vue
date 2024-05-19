@@ -36,8 +36,6 @@ function activeShowSystemMessage(index) {
     readMessage(currentMessage.value.id);
     currentMessage.value.is_read = true;
   }
-  // console.log(currentMessage.value.id);
-  // showSystemMessage.value = true;
 }
 
 function closeShowSystemMessage() {
@@ -96,14 +94,14 @@ onMounted(getSystemMessages)
             </svg>
           </div>
           <div class="stat-title my-2">最常听的歌曲</div>
-          <div class="stat-value text-secondary">红玫瑰</div>
-          <div class="stat-desc my-2">共播放8次</div>
+          <div class="stat-value text-secondary">无条件为你</div>
+          <div class="stat-desc my-2">共播放28次</div>
         </div>
 
         <div class="stat">
           <div class="stat-title my-2">喜欢听的风格</div>
           <div class="stat-value text-warning">国语, 流行, 安静</div>
-          <div class="stat-desc my-2">共播放7次</div>
+          <div class="stat-desc my-2">共播放37次</div>
         </div>
 
         <div class="stat">
@@ -111,9 +109,9 @@ onMounted(getSystemMessages)
             <div class="avatar online">
             </div>
           </div>
-          <div class="stat-value">陈奕迅</div>
+          <div class="stat-value">梁静茹</div>
           <div class="stat-title">最喜爱的歌手</div>
-          <div class="stat-desc text-secondary">听了他的2首歌曲</div>
+          <div class="stat-desc text-secondary">听了他的79首歌曲</div>
         </div>
 
       </div>

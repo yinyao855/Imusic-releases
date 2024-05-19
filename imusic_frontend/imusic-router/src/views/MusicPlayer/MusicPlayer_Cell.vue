@@ -250,7 +250,6 @@ defineExpose({handlePlayNow,handlePlayAfter,initCurrentMusic})
       @ended="handleModeChange"
       controls
       autoplay
-      v-if="HasLogin"
   ></audio>
   <MusicPlayerView
       :key="1"
@@ -271,7 +270,7 @@ defineExpose({handlePlayNow,handlePlayAfter,initCurrentMusic})
       v-model:curIndex="curIndex"
       v-model:token="token"
       @togglePlay="togglePlay"
-      v-if="!isFull&&HasLogin"
+      v-if="!isFull"
       :datax="datax"
   >
   </MusicPlayerView>
