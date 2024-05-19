@@ -60,9 +60,13 @@ function checkLogin() {
 const changeMode = (newMode) => {
   if (newMode === 9 || newMode === 3 || newMode === 4 || newMode === 6 || newMode === 8) {
     checkLogin();
-    return;
+    if (props.HasLogin === true) {
+      mode.value = newMode.toString();
+    }
   }
-  mode.value = newMode.toString();
+  else {
+    mode.value = newMode.toString();
+  }
 };
 
 const LoginArea = () => {
