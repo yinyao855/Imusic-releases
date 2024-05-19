@@ -26,7 +26,7 @@ const ShowSongList = ref(false);
 const ShowAppeal = ref(false);
 const ShowComplaintDetail = ref(false);
 const emits = defineEmits(["GetMessage", "readMessage"]);
-
+const trueContent = ref([]);
 function getTitle(index) {
   const s1 = ref([]);
   const s2 = ref([]);
@@ -88,6 +88,12 @@ function getData() {
     hasMessage.value = false;
   }
   for (let index in Message.value) {
+    if(Message.value[index].title === "投诉消息"&&Message.value[index].content.match(/\d+\s+有新的投诉消息待处理。/)){
+      trueContent.value.push(Message.value[index].content.split(' ')[1]);
+    }
+    else {
+      trueContent.value.push(Message.value[index].content);
+    }
     if (Message.value[index].title === "审查结果") {
       allId.value[index] = Message.value[index].id;
       continue;
@@ -221,7 +227,7 @@ onMounted(getData)
         </td>
         <td class="">
           <div class="font-bold text-xl mb-2">{{ item.title }}</div>
-          <div class="text-sm text-left opacity-50 truncate w-96">{{ item.content }}</div>
+          <div class="text-sm text-left opacity-50 truncate w-96">{{ trueContent[index] }}</div>
         </td>
         <td class="w-40 text-sm opacity-50">
           {{ item.send_date }}

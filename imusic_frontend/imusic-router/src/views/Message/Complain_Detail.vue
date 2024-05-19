@@ -88,7 +88,7 @@ onMounted(() => {
       </div>
     </div>
   </div>
-  <div class="card w-2/3 text-neutral-content mx-auto my-0 bg-transparent/30">
+  <div class="card w-4/5 text-neutral-content mx-auto my-0 bg-zinc-800 hover:bg-zinc-700">
 
     <div class="card-body items-center text-center text-xl">
       <p v-if="ComplaintDetail.object_type==='song'">是否删除歌曲</p>
