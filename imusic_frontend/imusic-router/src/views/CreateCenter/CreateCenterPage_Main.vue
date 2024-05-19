@@ -141,9 +141,9 @@ const CloseSongPage=()=>{
 <template>
   <transition name="slide" appear>
     <div class="transition-container-2" v-if="NeedShowSongDetail">
-      <SongPage  v-model:currentSongId="SongId"
-                 @handlePlayNow="handlePlayNow" @CloseSong="CloseSongPage"
-                 v-model:username="username" v-model:token="token"></SongPage>
+      <SongPage v-model:currentSongId="SongId"
+                @handlePlayNow="handlePlayNow" @CloseSong="CloseSongPage"
+                v-model:username="username" v-model:token="token" v-model:HasLogin="HasLogin"></SongPage>
     </div>
   </transition>
 

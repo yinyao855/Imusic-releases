@@ -11,6 +11,7 @@ import CurrentUser_SongList from "@/components/CurrentUser_SongList.vue";
 import SongPage from "@/components/SongPage.vue";
 
 const emits = defineEmits(['changesonglist', 'handlePlayNow', 'handlePlayAfter', 'PlaySongList', 'refreshNewest_Songs_Page', 'SearchOperation']);
+const HasLogin = defineModel('HasLogin')
 const songlistlast = defineModel('songlistlast')
 const username = defineModel('username')
 const userlike = defineModel('userlike')
@@ -136,7 +137,7 @@ const CloseSongPage=()=>{
     <div class="transition-container-2" v-if="NeedShowSongDetail">
       <SongPage  v-model:currentSongId="SongId"
                  @handlePlayNow="handlePlayNow" @CloseSong="CloseSongPage"
-                 v-model:username="username" v-model:token="token"></SongPage>
+                 v-model:username="username" v-model:token="token" v-model:HasLogin="HasLogin"></SongPage>
     </div>
   </transition>
 
@@ -147,7 +148,7 @@ const CloseSongPage=()=>{
                    v-model:username="username"
                    @handlePlayNow="handlePlayNow" v-model:userlike="userlike"
                    @handlePlayAfter="handlePlayAfter" @changesize="ChangeSearchViewMode" class="w-full"
-                   @addToSongList="addToSongList" v-model:token="token"></Search_View>
+                   @addToSongList="addToSongList" v-model:token="token" v-model:HasLogin="HasLogin"></Search_View>
     </div>
   </transition>
 
@@ -165,7 +166,7 @@ const CloseSongPage=()=>{
       <SongList_Page class="w-screen mb-32" v-model:songlist="songlist" v-model:username="username"
                      v-model:userlike="userlike"
                      @changesize="changesize" @handlePlayAfter="handlePlayAfter" @handlePlayNow="handlePlayNow"
-                     @addToSongList="addToSongList" v-model:index="index"
+                     @addToSongList="addToSongList" v-model:index="index" v-model:HasLogin="HasLogin"
                      @ChangeSongList="PlaySongList" v-model:token="token" v-model:SongListId="SongListId"></SongList_Page>
     </div>
   </transition>

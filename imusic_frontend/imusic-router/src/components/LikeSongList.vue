@@ -5,6 +5,7 @@ import axios from "axios";
 // global variables
 const token = defineModel('token')
 const username = defineModel('username')
+const HasLogin = defineModel('HasLogin')
 
 // defineEmits(播放歌单全部歌曲，加入播放列表，立即播放)
 const emits = defineEmits(['PlaySongList', 'handlePlayAfter', 'handlePlayNow'])
@@ -89,7 +90,7 @@ function getLikeSongList() {
   <CreatedSonglist :currentUserSongList="currentUserSongList" v-if="showCurrentSongList"
                    @PlaySongList="PlaySongList" @handlePlayAfter="handlePlayAfter" @handlePlayNow="handlePlayNow"
                    @closeSonglist="closeSonglist" v-model:LikeSongList="LikeSongList"
-                   v-model:token="token" v-model:username="username"></CreatedSonglist>
+                   v-model:token="token" v-model:username="username" v-model:HasLogin="HasLogin"></CreatedSonglist>
 </template>
 
 <style scoped>

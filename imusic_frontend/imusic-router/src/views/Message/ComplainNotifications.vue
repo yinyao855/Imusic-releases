@@ -9,6 +9,7 @@ const messageStore = useMessageStore();
 
 const token = defineModel("token");
 const username = defineModel("username");
+const HasLogin = defineModel('HasLogin')
 const Message = ref(computed(() => messageStore.MessageType6));
 const title = ref("");
 const currentMessage = ref([]);
@@ -67,7 +68,11 @@ function getSongListId(index) {
   ShowSongList.value = true;
 }
 
+const hasMessage = ref(true);
 function getData() {
+  if (Message.value.length === 0) {
+    hasMessage.value = false;
+  }
   for (let index in Message.value) {
     const s = ref([]);
     s.value = Message.value[index].content.split("《");
@@ -143,7 +148,7 @@ onMounted(getData)
   <!--  展示歌曲详细信息界面（当ShowSong为true）-->
   <transition name="slide" appear>
     <div class="transition-container-2" v-if="ShowSong">
-      <SongPage v-model:currentSongId="id"
+      <SongPage v-model:currentSongId="id" v-model:HasLogin="HasLogin"
                 @handlePlayNow="handlePlayNow" @CloseSong="close"
                 v-model:username="username" v-model:token="token"></SongPage>
     </div>
@@ -161,6 +166,9 @@ onMounted(getData)
 
 
   <div class="overflow-x-auto px-10" v-if="!ShowSong&&!ShowSongList">
+    <div class="w-full h-32 flex" v-if="!hasMessage">
+      <div class="text-4xl text-white text-center m-auto">暂无消息</div>
+    </div>
     <table class="table">
       <tbody>
       <tr class="text-white hover:bg-gray-600/40 rounded-md"

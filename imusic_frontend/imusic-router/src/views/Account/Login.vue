@@ -71,6 +71,11 @@ const emits = defineEmits(['ChangerRegisterMode', 'changeMode', 'getsonglistinit
 const token=defineModel('token');
 const UserRole=defineModel('UserRole');
 
+/*----------------------------------*/
+import {useUserStore} from "@/stores/user.js";
+const userStore = useUserStore();
+/*----------------------------------*/
+
 const ForgetPassword=()=>{
   emits('ChangeForgetMode');
 }
@@ -131,6 +136,10 @@ const show = () => {
             disableForReducedMotion: false,
             scalar: 1
           });
+          // 在store里存储用户数据
+          userStore.setUsername(username.value);
+          userStore.setToken(response.data.token);
+          //
           HasLogin.value = true;
           getsonglistinit(username.value);
           changeMode();

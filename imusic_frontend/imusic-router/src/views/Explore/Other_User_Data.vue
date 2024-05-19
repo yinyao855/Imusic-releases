@@ -10,6 +10,7 @@ import CreatedSonglist from "@/views/CreatedSongList/CreatedSonglist.vue";
 
 const ShowUsername = defineModel('ShowUsername');
 const username = defineModel('username');
+const HasLogin = defineModel('HasLogin');
 const token = defineModel('token');
 const emits = defineEmits(['changesize', 'handlePlayNow', 'handlePlayAfter', 'PlaySongList']);
 const User = ref([]);
@@ -163,7 +164,7 @@ onMounted(GetUserData);
       <CreatedSonglist v-model:currentSonglistId="SongListId"
                        @PlaySongList="PlaySongList" @handlePlayAfter="handlePlayAfter"
                        @handlePlayNow="handlePlayNow" @changesize="CloseSongList"
-                       v-model:token="token" v-model:username="username"></CreatedSonglist>
+                       v-model:token="token" v-model:username="username" v-model:HasLogin="HasLogin"></CreatedSonglist>
     </div>
   </transition>
 
@@ -172,7 +173,7 @@ onMounted(GetUserData);
     <div class="transition-container-2" v-if="ShowSongDetail&&!ShowAddSong&&!ShowSongList">
       <SongPage v-model:currentSongId="SongId"
                 @handlePlayNow="handlePlayNow" @CloseSong="CloseShowSongDetail"
-                v-model:username="username" v-model:token="token"></SongPage>
+                v-model:username="username" v-model:token="token" v-model:HasLogin="HasLogin"></SongPage>
     </div>
   </transition>
 

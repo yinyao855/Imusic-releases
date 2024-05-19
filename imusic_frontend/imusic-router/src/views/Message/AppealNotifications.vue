@@ -1,15 +1,28 @@
 <script setup>
-import {computed, defineModel, ref} from "vue";
+import {computed, defineModel, onMounted, ref} from "vue";
 import {useMessageStore} from "@/stores/message.js";
+
 const messageStore = useMessageStore();
 
 const token = defineModel("token");
 const username = defineModel("username");
 const Message = ref(computed(() => messageStore.MessageType7));
+const hasMessage = ref(true);
+
+function getAppealMessages() {
+  if (Message.value.length === 0) {
+    hasMessage.value = false;
+  }
+}
+
+onMounted(getAppealMessages)
 </script>
 
 <template>
   <div class="overflow-x-auto px-10">
+    <div class="w-full h-32 flex" v-if="!hasMessage">
+      <div class="text-4xl text-white text-center m-auto">暂无消息</div>
+    </div>
     <table class="table">
       <tbody>
       <tr class="text-white hover:bg-gray-600/40 rounded-md"

@@ -100,17 +100,17 @@ onMounted(getCreatedSonglists);
     <div class="transition-container z-50 ml-8" v-if="ShowLikeSongs">
       <LikeSongs_Area class="w-screen mb-32" v-model:LikeSongsCover="LikeSongCover" v-model:username="username"
                       @changesize="CloseLikeSongs" @handlePlayAfter="handlePlayAfter" @handlePlayNow="handlePlayNow"
-                      v-model:token="token" @PlayLikeSongs="PlayLikeSongs"></LikeSongs_Area>
+                      v-model:token="token" @PlayLikeSongs="PlayLikeSongs" v-model:HasLogin="HasLogin"></LikeSongs_Area>
     </div>
   </transition>
   <!--  展示选中的歌单信息页面（当showCurrentSongList==true）-->
   <transition name="slide" appear>
-    <div class="transition-container-2 z-50 ml-8" v-if="showCurrentSongList">
+    <div class="transition-container-2 z-50" v-if="showCurrentSongList">
       <CreatedSonglist class="w-screen mb-32" v-model:currentSonglistId="currentSonglistId"
                        @refresh="getCreatedSonglists"
                        @PlaySongList="PlaySongList" @handlePlayAfter="handlePlayAfter"
                        @handlePlayNow="handlePlayNow" @changesize="closeSonglist"
-                       v-model:token="token" v-model:username="username"></CreatedSonglist>
+                       v-model:token="token" v-model:username="username" v-model:HasLogin="HasLogin"></CreatedSonglist>
     </div>
   </transition>
 

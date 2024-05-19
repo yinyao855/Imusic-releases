@@ -4,9 +4,11 @@ import buttonchangesize from '../../components/ButtonChangeSizeForLikeArea.vue'
 import CreateSongList from "@/views/CreatedSongList/CreateSongList.vue";
 import axios from "axios";
 import SongPage from "@/components/SongPage.vue";
+import CreatedSonglist from "@/views/CreatedSongList/CreatedSonglist.vue";
 
 const LikeSongs = ref([]);
 const token = defineModel('token')
+const HasLogin = defineModel('HasLogin')
 const emits = defineEmits(['handlePlayNow', 'handlePlayAfter', 'changesize', 'PlayLikeSongs']);
 const LikeSongsCover = defineModel('LikeSongsCover');
 const SongId = ref(0);
@@ -119,7 +121,7 @@ onMounted(GetUserLike)
     <div class="transition-container-2" v-if="NeedShowSongDetail&&!ShowUpdate">
       <SongPage v-model:currentSongId="SongId"
                 @handlePlayNow="handlePlayNow" @CloseSong="CloseSongPage"
-                v-model:username="username" v-model:token="token"></SongPage>
+                v-model:username="username" v-model:token="token" v-model:HasLogin="HasLogin"></SongPage>
     </div>
   </transition>
   <transition name="slide" appear>

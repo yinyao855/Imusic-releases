@@ -4,10 +4,12 @@ import Singer_Show_Area from "@/views/Explore/Songs_Show_Area.vue";
 import Search from "@/components/Search.vue";
 import List_Show_Area from "@/views/Explore/List_Show_Area.vue";
 import User_Show_Area from "@/views/Explore/User_Show_Area.vue";
+import SongPage from "@/components/SongPage.vue";
 
 const token = defineModel('token')
 const emits = defineEmits(['handlePlayAfter', 'handlePlayNow']);
 const NaviMode = ref('1');
+const HasLogin = defineModel('HasLogin')
 const username = defineModel('username');
 const NaviClass1 = computed(() => ({
   'text-base inline-block mx-5 w-30 rounded-lg antialiased tracking-widest font-medium transition-colors duration-400 hover:bg-gray-600/40': true,
@@ -48,7 +50,7 @@ const handlePlayNow = (index) => {
   </div>
   <div class="w-full mt-16">
     <Singer_Show_Area v-model:username="username" v-if="NaviMode==='1'" v-model:token="token"
-                      @handlePlayAfter="handlePlayAfter" @handlePlayNow="handlePlayNow"></Singer_Show_Area>
+                      @handlePlayAfter="handlePlayAfter" @handlePlayNow="handlePlayNow" v-model:HasLogin="HasLogin"></Singer_Show_Area>
     <List_Show_Area v-if="NaviMode==='2'" v-model:token="token" v-model:username="username"
                     @handlePlayAfter="handlePlayAfter" @handlePlayNow="handlePlayNow"></List_Show_Area>
     <User_Show_Area v-if="NaviMode==='3'" v-model:username="username" v-model:token="token"

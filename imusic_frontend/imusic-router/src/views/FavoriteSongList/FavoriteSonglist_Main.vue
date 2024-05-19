@@ -84,11 +84,11 @@ onMounted(getFavoriteSonglists);
   </div>
   <!--    展示选中的歌单信息页面（当showCurrentSongList==true）-->
   <transition name="slide" appear>
-    <div class="transition-container z-50 ml-8" v-if="showCurrentSongList">
+    <div class="transition-container z-50" v-if="showCurrentSongList">
       <Songlist v-model:currentSonglistId="currentSonglistId"
                 @PlaySongList="PlaySongList" @handlePlayAfter="handlePlayAfter"
                 @handlePlayNow="handlePlayNow" @closeSonglist="closeSonglist"
-                v-model:token="token" v-model:username="username"></Songlist>
+                v-model:token="token" v-model:username="username" v-model:HasLogin="HasLogin"></Songlist>
     </div>
   </transition>
 
