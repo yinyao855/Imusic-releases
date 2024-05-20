@@ -3,7 +3,7 @@
     <div class="w-full h-14 pl-6">
       <div v-for="(tab, index) in tabs" :key="index" :class="[getNaviClass(index), 'text-transition']"
            @click="changeNaviMode(index)" style="line-height: 56px">{{ tab }}
-        <span v-if="unReads[index]" class="indicator-item badge badge-info badge-sm">{{unReads[index]}}+</span>
+        <span v-if="unReads[index].value>0" class="indicator-item badge badge-info badge-sm">{{unReads[index]}}+</span>
       </div>
     </div>
     <div class="flex-1">
