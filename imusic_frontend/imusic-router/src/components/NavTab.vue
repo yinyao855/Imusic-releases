@@ -3,21 +3,25 @@
     <div class="w-full h-14 pl-6">
       <div v-for="(tab, index) in tabs" :key="index" :class="[getNaviClass(index), 'text-transition']"
            @click="changeNaviMode(index)" style="line-height: 56px">{{ tab }}
-        <span v-if="unReads[index].value>0" class="indicator-item badge badge-info badge-sm">{{unReads[index]}}+</span>
+        <span v-if="unReads[index].value>0"
+              class="indicator-item badge badge-info badge-sm">{{ unReads[index] }}+</span>
       </div>
     </div>
     <div class="flex-1">
-    <!-- 根据索引显示对应的组件 -->
-    <component :is="components[state.activeTab]" v-model:username="username" v-model:token="token"/>
+      <!-- 根据索引显示对应的组件 -->
+      <component :is="components[state.activeTab]" v-model:username="username" v-model:token="token"
+                 @PlaySongList="PlaySongList" @handlePlayAfter="handlePlayAfter"
+                 @handlePlayNow="handlePlayNow"/>
     </div>
   </div>
 </template>
 
 <script setup>
-import {reactive} from "vue";
+import {defineEmits, reactive} from "vue";
+import Message_Main from "@/views/Message/Message_Main.vue";
 
 // tabs和components从外部传入
-const { tabs, components, unReads } = defineProps(['tabs', 'components', 'unReads']);
+const {tabs, components, unReads} = defineProps(['tabs', 'components', 'unReads']);
 
 const username = defineModel('username')
 const token = defineModel('token')
@@ -38,6 +42,21 @@ const getNaviClass = (index) => {
 const changeNaviMode = (index) => {
   state.activeTab = index;
 };
+
+const emits = defineEmits(["PlaySongList", "handlePlayAfter", "handlePlayNow"]);
+
+// emits
+const PlaySongList = (id) => {
+  emits('PlaySongList', id);
+}
+
+function handlePlayAfter(id) {
+  emits('handlePlayAfter', id)
+}
+
+function handlePlayNow(id) {
+  emits('handlePlayNow', id)
+}
 </script>
 
 <style>

@@ -16,7 +16,11 @@ const songId = ref(0);
 const title = ref("");
 const currentMessage = ref([]);
 const ShowSong = ref(false);
-const emits = defineEmits(["GetMessage", "readMessage"]);
+const emits = defineEmits(["GetMessage", "readMessage", "handlePlayNow"]);
+
+function handlePlayNow(id) {
+  emits("handlePlayNow", id)
+}
 
 const CloseSong = () => {
   ShowSong.value = false;

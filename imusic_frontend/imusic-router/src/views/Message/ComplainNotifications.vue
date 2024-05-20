@@ -25,8 +25,22 @@ const ShowSong = ref(false);
 const ShowSongList = ref(false);
 const ShowAppeal = ref(false);
 const ShowComplaintDetail = ref(false);
-const emits = defineEmits(["GetMessage", "readMessage"]);
+const emits = defineEmits(["GetMessage", "readMessage", "PlaySongList", "handlePlayAfter", "handlePlayNow"]);
 const trueContent = ref([]);
+
+// emits
+const PlaySongList = (id) => {
+  emits('PlaySongList', id);
+}
+
+function handlePlayAfter(id) {
+  emits('handlePlayAfter', id)
+}
+
+function handlePlayNow(id) {
+  emits('handlePlayNow', id)
+}
+
 function getTitle(index) {
   const s1 = ref([]);
   const s2 = ref([]);

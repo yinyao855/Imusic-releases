@@ -1,5 +1,7 @@
 <template>
-  <NavTab :tabs="tabs" :components="components" :unReads="unReads" v-model:username="username" v-model:token="token"></NavTab>
+  <NavTab :tabs="tabs" :components="components" :unReads="unReads" v-model:username="username" v-model:token="token"
+          @PlaySongList="PlaySongList" @handlePlayAfter="handlePlayAfter"
+          @handlePlayNow="handlePlayNow"></NavTab>
 </template>
 
 <script setup>
@@ -10,7 +12,7 @@ import PrivateNotifications from "@/views/Message/PrivateNotifications.vue";
 import AppealNotifications from "@/views/Message/AppealNotifications.vue";
 import ComplainNotifications from "@/views/Message/ComplainNotifications.vue";
 import NavTab from "@/components/NavTab.vue";
-import {computed, ref} from "vue";
+import {computed, defineEmits, ref} from "vue";
 
 import {useUserStore} from "@/stores/user.js";
 import Private_Message from "@/views/Message/Private_Message.vue";
@@ -18,6 +20,21 @@ import {useMessageStore} from "@/stores/message.js";
 
 const userStore = useUserStore();
 const messageStore = useMessageStore();
+
+const emits = defineEmits(["PlaySongList", "handlePlayAfter", "handlePlayNow"]);
+
+// emits
+const PlaySongList = (id) => {
+  emits('PlaySongList', id);
+}
+
+function handlePlayAfter(id) {
+  emits('handlePlayAfter', id)
+}
+
+function handlePlayNow(id) {
+  emits('handlePlayNow', id)
+}
 
 const tabs = [
   '系统通知',
@@ -28,11 +45,11 @@ const tabs = [
 ];
 
 const components = [
-    SystemNotifications,
-    CommentNotifications,
-    Private_Message,
-    ComplainNotifications,
-    AppealNotifications,
+  SystemNotifications,
+  CommentNotifications,
+  Private_Message,
+  ComplainNotifications,
+  AppealNotifications,
 ];
 
 const unReads1 = computed(() => messageStore.unReads1);

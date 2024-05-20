@@ -656,7 +656,8 @@ onMounted(autoLogin);
                                @handlePlayNow="handlePlayNow"
                                v-model:token="token" v-model:username="username"
                                v-model:HasLogin="HasLogin"></FavoriteSonglist_Main>
-        <Message_Main v-if="mode==='9'"
+        <Message_Main v-if="mode==='9'" @PlaySongList="PlaySongList" @handlePlayAfter="handlePlayAfter"
+                      @handlePlayNow="handlePlayNow"
                       v-model:token="token" v-model:username="username"
                       v-model:HasLogin="HasLogin" v-model:UserRole="UserRole"
         ></Message_Main>
