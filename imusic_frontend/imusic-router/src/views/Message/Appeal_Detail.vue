@@ -24,9 +24,9 @@ const HandleAppeal = () => {
     alert('请输入处理理由');
     return;
   }
-  formData.append('is_remove', is_recover.value);
+  formData.append('is_recover', is_recover.value);
   formData.append('reason', reason.value);
-  formData.append('message_id', id.value);
+  formData.append('complaint_id', Appeal.value.complaint.id);
   console.log(id.value)
   const instance = axios.create({
     baseURL: 'http://182.92.100.66:5000',
@@ -57,11 +57,8 @@ onMounted(() => {
   <buttonchangesize class="left-4 top-4" @fullsize="closeAppeal"
                     v-model:token="token"></buttonchangesize>
   <div class="card w-4/5 m-auto">
-    <div class="w-full h-18 flex cursor-default">
-      <div class="text-3xl text-gray-400 text-center mx-auto my-2">处理申诉</div>
-    </div>
     <div class="w-full flex mt-1 cursor-default">
-      <div class="card w-full shadow m-0 border-solid border-2 border-sky-500">
+      <div class="card w-full shadow m-0 border-solid border-2 border-error">
         <div class="card-body">
           <h2 class="card-title">投诉原因</h2>
           <p class="max-h-40 overflow-y-auto">{{Appeal.complaint.content}}</p>
@@ -71,15 +68,17 @@ onMounted(() => {
       </div>
     </div>
   </div>
-  <div class="card w-4/5 text-neutral-content mx-auto mt-2 bg-zinc-800 hover:bg-zinc-700">
-
+  <div class="card w-4/5 text-neutral-content mx-auto mt-2 border-solid border-2 border-sky-500">
+    <div class="w-full h-18 flex cursor-default">
+      <div class="text-3xl text-gray-400 text-center mx-auto my-2">处理申诉</div>
+    </div>
     <div class="card-body items-center text-center text-xl">
       <p v-if="Appeal.complaint.object_type==='song'">是否恢复歌曲</p>
       <p v-if="Appeal.complaint.object_type==='songlist'">是否恢复歌单</p>
       <div class="card-actions justify-end">
         <div class="join">
-          <input class="join-item btn" type="radio" name="options" aria-label="恢复" value="true" v-model="is_recover"/>
-          <input class="join-item btn" type="radio" name="options" aria-label="下架" value="false" v-model="is_recover"/>
+          <input class="join-item btn" type="radio" name="options" aria-label="重新上架" value="true" v-model="is_recover"/>
+          <input class="join-item btn" type="radio" name="options" aria-label="保持下架" value="false" v-model="is_recover"/>
         </div>
       </div>
     </div>

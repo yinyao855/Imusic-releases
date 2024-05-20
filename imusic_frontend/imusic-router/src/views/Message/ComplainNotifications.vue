@@ -61,9 +61,21 @@ function activeComplaintMessage(index) {
     const s = ref([]);
     s.value = Message.value[index].content.split("《");
     if (s.value.length === 1) { // 投诉歌单
+      if(getSonglistInformation(allId.value[index]))
+      {
+        alert("歌单已被下架，暂时无法查看");
+        return;
+      }
       title.value = getTitle(index);
       ShowSongList.value = true;
     } else if (s.value.length === 2) { // 投诉歌曲
+      if(getSongInformation(allId.value[index]))
+      {
+        alert("歌曲已被下架，暂时无法查看");
+        return;
+      }
+      console.log(image.value[index]);
+      console.log(allId.value[index]);
       title.value = getTitle(index);
       ShowSong.value = true;
     }
@@ -176,7 +188,40 @@ const close = () => {
   ShowAppeal.value = false;
   ShowComplaintDetail.value = false;
 }
-
+async function getSongInformation(id) {
+  const instance = axios.create({
+    baseURL: 'http://182.92.100.66:5000',
+    timeout: 5000, // 设置请求超时时间
+    headers: {
+      'Authorization': `Bearer ${token.value}`,
+    }
+  });
+  axios.defaults.withCredentials = true;
+  instance.get("/songs/info/" + id)
+      .then(function (response) {
+        return response.data.success === true;
+      })
+      .catch(function (error) {
+        return false;
+      })
+}
+async function getSonglistInformation(id) {
+  const instance = axios.create({
+    baseURL: 'http://182.92.100.66:5000',
+    timeout: 5000, // 设置请求超时时间
+    headers: {
+      'Authorization': `Bearer ${token.value}`,
+    }
+  });
+  axios.defaults.withCredentials = true;
+  instance.get("/songlists/info/" + id)
+      .then(function (response) {
+        return response.data.success === true;
+      })
+      .catch(function (error) {
+        return false;
+      })
+}
 onMounted(getData)
 </script>
 

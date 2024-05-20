@@ -78,11 +78,8 @@ onMounted(() => {
   <buttonchangesize class="left-4 top-4" @fullsize="closeComplaint"
                     v-model:token="token"></buttonchangesize>
   <div class="card w-4/5 m-auto">
-    <div class="w-full h-18 flex cursor-default">
-      <div class="text-3xl text-gray-400 text-center mx-auto my-2">处理投诉</div>
-    </div>
     <div class="w-full flex mt-1 cursor-default">
-      <div class="card w-full shadow m-0 border-solid border-2 border-sky-500">
+      <div class="card w-full shadow m-0 border-solid border-2 border-error">
         <div class="card-body">
           <h2 class="card-title">投诉原因</h2>
           <p class="max-h-40 overflow-y-auto">{{ComplaintDetail.content}}</p>
@@ -90,8 +87,10 @@ onMounted(() => {
       </div>
     </div>
   </div>
-  <div class="card w-4/5 text-neutral-content mx-auto mt-2 bg-zinc-800 hover:bg-zinc-700">
-
+  <div class="card w-4/5 text-neutral-content mx-auto mt-2 border-2 border-sky-500">
+    <div class="w-full h-18 flex cursor-default">
+      <div class="text-3xl text-gray-400 text-center mx-auto my-2">处理投诉</div>
+    </div>
     <div class="card-body items-center text-center text-xl">
       <p v-if="ComplaintDetail.object_type==='song'">是否下架歌曲</p>
       <p v-if="ComplaintDetail.object_type==='songlist'">是否下架歌单</p>
