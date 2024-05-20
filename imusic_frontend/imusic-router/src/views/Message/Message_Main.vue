@@ -1,5 +1,5 @@
 <template>
-  <NavTab :tabs="tabs" :components="components" v-model:username="username" v-model:token="token"></NavTab>
+  <NavTab :tabs="tabs" :components="components" :unReads="unReads" v-model:username="username" v-model:token="token"></NavTab>
 </template>
 
 <script setup>
@@ -14,8 +14,10 @@ import {computed, ref} from "vue";
 
 import {useUserStore} from "@/stores/user.js";
 import Private_Message from "@/views/Message/Private_Message.vue";
+import {useMessageStore} from "@/stores/message.js";
 
 const userStore = useUserStore();
+const messageStore = useMessageStore();
 
 const tabs = [
   '系统通知',
@@ -31,6 +33,19 @@ const components = [
     Private_Message,
     ComplainNotifications,
     AppealNotifications,
+];
+
+const unReads1 = computed(() => messageStore.unReads1);
+const unReads2 = computed(() => messageStore.unReads2);
+const unReads4 = computed(() => messageStore.unReads4);
+const unReads6 = computed(() => messageStore.unReads6);
+const unReads7 = computed(() => messageStore.unReads7);
+const unReads = [
+  unReads1,
+  unReads2,
+  unReads4,
+  unReads6,
+  unReads7,
 ]
 
 // 一些基本信息

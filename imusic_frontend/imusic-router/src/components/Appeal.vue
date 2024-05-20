@@ -6,7 +6,7 @@ import axios from "axios";
 const token = defineModel('token')
 const username = defineModel('username')
 const messageId = defineModel('id')
-const emits = defineEmits(["closeComplaint"])
+const emits = defineEmits(["closeAppeal"])
 
 const showForm = ref(false);
 
@@ -56,11 +56,23 @@ onMounted(getComplaintResult)
 <template>
   <buttonchangesize class="left-4 top-4" @fullsize="closeAppeal"
                     v-model:token="token"></buttonchangesize>
-  <div class="w-2/3 m-auto">
-    <div class="w-full h-28 flex">
-      <div class="text-4xl text-gray-400 m-auto inline-block">
-        <svg class="h-10 w-10 text-blue-500 align-sub inline-block" width="24" height="24" viewBox="0 0 24 24"
-             stroke-width="2"
+  <div class="w-2/3 m-auto p-8 rounded-md">
+    <div class="w-full h-16 flex">
+      <div v-if="showForm" class="text-4xl text-cyan-600 inline-block m-auto">
+        <svg class="h-10 w-10 text-cyan-600 align-sub inline-block" width="24" height="24" viewBox="0 0 24 24"
+             stroke-width="1"
+             stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+          <path stroke="none" d="M0 0h24v24H0z"/>
+          <polyline points="3 9 12 15 21 9 12 3 3 9"/>
+          <path d="M21 9v10a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-10"/>
+          <line x1="3" y1="19" x2="9" y2="13"/>
+          <line x1="15" y1="13" x2="21" y2="19"/>
+        </svg>
+        审查结果：下架
+      </div>
+      <div v-if="!showForm" class="text-4xl text-cyan-600 m-auto inline-block">
+        <svg class="h-10 w-10 text-cyan-600 align-sub inline-block" width="24" height="24" viewBox="0 0 24 24"
+             stroke-width="1"
              stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
           <path stroke="none" d="M0 0h24v24H0z"/>
           <polyline points="3 9 12 15 21 9 12 3 3 9"/>
@@ -71,9 +83,10 @@ onMounted(getComplaintResult)
         审查结果
       </div>
     </div>
-    <div class="text-white border border-blue-900 rounded-lg p-3" style="height:260px; font-size: 18px">
+    <div class="text-gray-400 border border-cyan-400 rounded-lg p-3" style="height:260px; font-size: 18px">
       {{ complaintResult }}
     </div>
+    <span v-if="showForm" class="text-cyan-900 p-2">若不满意此结果，您可以申诉</span>
   </div>
   <hr v-if="showForm" class="mt-10 opacity-20">
   <div class="w-2/3 m-auto">

@@ -3,9 +3,10 @@
     <div class="w-full h-14 pl-6">
       <div v-for="(tab, index) in tabs" :key="index" :class="[getNaviClass(index), 'text-transition']"
            @click="changeNaviMode(index)" style="line-height: 56px">{{ tab }}
+        <span v-if="unReads[index]" class="indicator-item badge badge-info badge-sm">{{unReads[index]}}+</span>
       </div>
     </div>
-    <div  class="flex-1">
+    <div class="flex-1">
     <!-- 根据索引显示对应的组件 -->
     <component :is="components[state.activeTab]" v-model:username="username" v-model:token="token"/>
     </div>
@@ -16,7 +17,7 @@
 import {reactive} from "vue";
 
 // tabs和components从外部传入
-const { tabs, components } = defineProps(['tabs', 'components']);
+const { tabs, components, unReads } = defineProps(['tabs', 'components', 'unReads']);
 
 const username = defineModel('username')
 const token = defineModel('token')
