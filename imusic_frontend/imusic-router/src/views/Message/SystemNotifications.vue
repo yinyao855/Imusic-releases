@@ -11,6 +11,8 @@ import {useMessageStore} from "@/stores/message.js";
 const messageStore = useMessageStore();
 const Message = ref(computed(() => messageStore.MessageType1));
 const currentMessage = ref([]);
+const contents = ref([]);
+const report = ref("");
 // const systemMessage = defineModel("systemMessage");
 // const playSongMessage = defineModel("playSongMessage");
 // const createMessage = defineModel("createMessage");
@@ -36,10 +38,51 @@ function activeShowSystemMessage(index) {
     readMessage(currentMessage.value.id);
     currentMessage.value.is_read = true;
   }
-}
-
-function closeShowSystemMessage() {
-  showSystemMessage.value = false;
+  // 分析
+  const s1 = ref([]);
+  const s2 = ref([]);
+  const s = ref("");
+  contents.value = [];
+  // 听歌周报
+  if (currentMessage.value.title === "听歌周报") {
+    report.value = "listenReport";
+    // 累计听歌时长s。
+    s1.value = currentMessage.value.content.split("累计听歌时长");
+    s2.value = s1.value[1].split("。");
+    s.value = s2.value[0];
+    contents.value.push(s.value);
+    // 共听歌s首
+    s1.value = currentMessage.value.content.split("共听歌");
+    s2.value = s1.value[1].split("首");
+    s.value = s2.value[0];
+    contents.value.push(s.value);
+    // 您最常听的歌曲是s，
+    s1.value = currentMessage.value.content.split("您最常听的歌曲是");
+    s2.value = s1.value[1].split("，");
+    s.value = s2.value[0];
+    contents.value.push(s.value);
+    // 共播放s次
+    s1.value = currentMessage.value.content.split("共播放");
+    s2.value = s1.value[1].split("次");
+    s.value = s2.value[0];
+    contents.value.push(s.value);
+    // 风格为s。
+    s1.value = currentMessage.value.content.split("风格为");
+    s2.value = s1.value[1].split("。");
+    s.value = s2.value[0];
+    contents.value.push(s.value);
+    // 您最常听的歌手是s，
+    s1.value = currentMessage.value.content.split("您最常听的歌手是");
+    s2.value = s1.value[1].split("，");
+    s.value = s2.value[0];
+    contents.value.push(s.value);
+    // 共听过他/她的s首歌曲
+    s1.value = currentMessage.value.content.split("共听过他/她的");
+    s2.value = s1.value[1].split("首歌曲");
+    s.value = s2.value[0];
+    contents.value.push(s.value);
+  }
+  console.log(contents.value)
 }
 
 function readMessage(id) {
@@ -57,15 +100,16 @@ onMounted(getSystemMessages)
 </script>
 
 <template>
-  <transition name="slide" appear>
-    <div class="transition-container-2 cursor-default" v-if="showSystemMessage">
-      <SystemMessages :currentMessage="currentMessage"
-                      @closeShowSystemMessage="closeShowSystemMessage"
-                      v-model:token="token"></SystemMessages>
-    </div>
-  </transition>
+<!--  <transition name="slide" appear>-->
+<!--    <div class="transition-container-2 cursor-default" v-if="showSystemMessage">-->
+<!--      <SystemMessages :currentMessage="currentMessage"-->
+<!--                      @closeShowSystemMessage="closeShowSystemMessage"-->
+<!--                      v-model:token="token"></SystemMessages>-->
+<!--    </div>-->
+<!--  </transition>-->
 
-  <dialog id="my_modal_3" class="modal">
+<!--  听歌周报-->
+  <dialog id="modal" class="modal">
     <div class="modal-box" style="max-width: 72rem;">
       <form method="dialog">
         <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
@@ -81,8 +125,8 @@ onMounted(getSystemMessages)
             </svg>
           </div>
           <div class="stat-title my-2">听歌统计</div>
-          <div class="stat-value text-primary">4小时26分钟</div>
-          <div class="stat-desc my-2">共听了97首</div>
+          <div class="stat-value text-primary">{{contents[0]}}</div>
+          <div class="stat-desc my-2">共听了{{contents[1]}}首</div>
         </div>
 
         <div class="stat">
@@ -94,13 +138,13 @@ onMounted(getSystemMessages)
             </svg>
           </div>
           <div class="stat-title my-2">最常听的歌曲</div>
-          <div class="stat-value text-secondary">无条件为你</div>
-          <div class="stat-desc my-2">共播放28次</div>
+          <div class="stat-value text-secondary">{{contents[2]}}</div>
+          <div class="stat-desc my-2">共播放{{contents[3]}}次</div>
         </div>
 
         <div class="stat">
           <div class="stat-title my-2">喜欢听的风格</div>
-          <div class="stat-value text-warning">国语, 流行, 安静</div>
+          <div class="stat-value text-warning">{{contents[4]}}</div>
           <div class="stat-desc my-2">共播放37次</div>
         </div>
 
@@ -109,9 +153,9 @@ onMounted(getSystemMessages)
             <div class="avatar online">
             </div>
           </div>
-          <div class="stat-value">梁静茹</div>
+          <div class="stat-value">{{contents[5]}}</div>
           <div class="stat-title">最喜爱的歌手</div>
-          <div class="stat-desc text-secondary">听了他的79首歌曲</div>
+          <div class="stat-desc text-secondary">听了他的{{contents[6]}}首歌曲</div>
         </div>
 
       </div>
@@ -125,7 +169,7 @@ onMounted(getSystemMessages)
     <table class="table">
       <tbody>
       <tr class="text-white transition duration-400 hover:bg-gray-600/40 rounded-md cursor-pointer"
-          v-for="(item, index) in Message" :key="index" onclick="my_modal_3.showModal()" @click="activeShowSystemMessage(index)">
+          v-for="(item, index) in Message" :key="index" onclick="modal.showModal()" @click="activeShowSystemMessage(index)">
         <td class="w-24">
           <svg v-if="item.title === '听歌周报'" class="h-10 w-10 align-middle text-cyan-400 inline-block"
                viewBox="0 0 24 24"
