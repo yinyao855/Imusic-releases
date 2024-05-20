@@ -110,7 +110,6 @@ const ChangeSubscribeState=(index)=>{
       })
 }
 
-
 onMounted(GetInitMessage);
 onMounted(GetMyAvatar);
 </script>

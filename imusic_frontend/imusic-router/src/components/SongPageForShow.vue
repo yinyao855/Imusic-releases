@@ -13,8 +13,6 @@ const token = defineModel('token')
 const username = defineModel('username')
 const WarningShow = ref(false);
 const message = ref('');
-const HasLogin = defineModel('HasLogin');
-const showComment = ref(true);
 const showComplaint = ref(false);
 const complaintType = ref("songs")
 // defineEmits(关闭当前页面/回到上一个页面展示歌单)
@@ -30,74 +28,12 @@ const currentSongId = defineModel("currentSongId")
 const lyrics = ref([]) // 存储歌词（字符串数组）
 const showCurrentSong = ref(false);
 
-const isFavoriteSong = ref(false);
-const likes = ref(0);
-
-const isSubscribe = ref(false);
-
 const extractDate = (dateTimeString) => {
   const date = new Date(dateTimeString);
   return date.toISOString().slice(0, 10);
 }
 
 
-// 收藏此歌单
-function addFavoriteSong() {
-  if (HasLogin.value === false) {
-    message.value = '请先登录';
-    WarningShow.value = true;
-    return;
-  }
-  const instance = axios.create({
-    baseURL: 'http://182.92.100.66:5000',
-    timeout: 5000, // 设置请求超时时间
-    headers: {
-      'Authorization': `Bearer ${token.value}`,
-    }
-  });
-  axios.defaults.withCredentials = true;
-  const formData = new FormData();
-  formData.append('song_id', currentSongId.value);
-  instance.post('/like/songs/add', formData)
-      .then(function (response) {
-        if (response.data.success === true) {
-          isFavoriteSong.value = true;
-          songData.like++;
-        }
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-}
-
-// 取消收藏此歌单
-function deleteFavoriteSong() {
-  if (HasLogin.value === false) {
-    message.value = '请先登录';
-    WarningShow.value = true;
-    return;
-  }
-  const instance = axios.create({
-    baseURL: 'http://182.92.100.66:5000',
-    timeout: 5000, // 设置请求超时时间
-    headers: {
-      'Authorization': `Bearer ${token.value}`,
-    }
-  });
-  axios.defaults.withCredentials = true;
-  const formData = new FormData();
-  formData.append('song_id', currentSongId.value);
-  instance.post('/like/songs/delete', formData)
-      .then(function (response) {
-        if (response.data.success === true) {
-          isFavoriteSong.value = false;
-          songData.like--;
-        }
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-}
 
 // 获取歌曲详细信息
 function getSongData() {
@@ -152,33 +88,7 @@ function show_tag(tag) {
   return true;
 }
 
-function getSubscribeUser() {
-  const instance = axios.create({
-    baseURL: 'http://182.92.100.66:5000',
-    timeout: 5000, // 设置请求超时时间
-    headers: {
-      'Authorization': `Bearer ${token.value}`,
-    }
-  });
-  axios.defaults.withCredentials = true;
-  instance.get('/users/followings', {
-    params: {
-      'username': username.value
-    }
-  })
-      .then(response => {
-        let length = response.data.data.length;
-        for (let i = 0; i < length; ++i) {
-          if (response.data.data[i].username === songData.uploader) {
-            isSubscribe.value = true;
-            break;
-          }
-        }
-      })
-      .catch(error => {
-        console.log(error.response.data);
-      })
-}
+
 const showUser = ref(false);
 function activeShowUser() {
   showUser.value = true;
@@ -191,7 +101,6 @@ function closeComplaint() {
 }
 
 onMounted(getSongData)
-onMounted(getSubscribeUser);
 </script>
 
 <template>

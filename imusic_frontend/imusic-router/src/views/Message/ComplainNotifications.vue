@@ -42,22 +42,22 @@ function getTitle(index) {
 }
 
 function activeComplaintMessage(index) {
-  id.value = allId.value[index];
+
   // 处理投诉，content为数字+' '+有新的投诉消息待处理
   //console.log(Message.value[index].content);
   if (Message.value[index].title === "投诉消息"&&Message.value[index].content.match(/\d+\s+有新的投诉消息待处理。/)) {
     id.value = Message.value[index].content.split(' ')[0];
-    //console.log(id.value);
     ShowComplaintDetail.value = true;
-    //console.log('showComplaintDetail')
   }
   // 审查结果
   else if (Message.value[index].title === "审查结果") {
+    id.value = allId.value[index];
     complaintResult.value = Message.value[index].content;
     ShowAppeal.value = true;
   }
   // 投诉消息
   else {
+    id.value = allId.value[index];
     const s = ref([]);
     s.value = Message.value[index].content.split("《");
     if (s.value.length === 1) { // 投诉歌单
@@ -221,7 +221,7 @@ onMounted(getData)
     </div>
     <table class="table">
       <tbody>
-      <tr class="text-white hover:bg-gray-600/40 rounded-md"
+      <tr class="text-white hover:bg-gray-600/40 rounded-md cursor-pointer"
           v-for="(item, index) in Message" @click="activeComplaintMessage(index)">
         <td class="w-28">
           <img :src="image[index]" alt="头像" v-if="item.title === '投诉消息'"

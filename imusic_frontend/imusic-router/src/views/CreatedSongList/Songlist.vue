@@ -561,7 +561,6 @@ onMounted(getSonglistData);
         </table>
       </div>
     </div>
-    、
   </div>
 </template>
 

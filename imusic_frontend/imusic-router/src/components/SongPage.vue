@@ -151,6 +151,7 @@ function getSongData() {
     }
   });
   axios.defaults.withCredentials = true;
+  console.log(currentSongId.value)
   instance.get("/songs/info/" + currentSongId.value)
       .then(function (response) {
         if (response.data.success === true) {
