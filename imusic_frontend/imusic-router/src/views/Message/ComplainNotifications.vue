@@ -80,6 +80,11 @@ async function activeComplaintMessage(index) {
         alert("歌单已被下架，暂时无法查看");
         return;
       }
+      if(image.value[index] === undefined)
+      {
+        alert("歌单已被下架，暂时无法查看");
+        return;
+      }
       title.value = getTitle(index);
       ShowSongList.value = true;
     } else if (s.value.length === 2) { // 投诉歌曲
@@ -88,8 +93,11 @@ async function activeComplaintMessage(index) {
         alert("歌曲已被下架，暂时无法查看");
         return;
       }
-      console.log(image.value[index]);
-      console.log(allId.value[index]);
+      if(image.value[index] === undefined)
+      {
+        alert("歌曲已被下架，暂时无法查看");
+        return;
+      }
       title.value = getTitle(index);
       ShowSong.value = true;
     }
@@ -214,11 +222,11 @@ async function getSongInformation(id) {
   instance.get("/songs/info/" + id)
       .then(response => {
         console.log(response.data);
-        return true;
+        return false;
       })
       .catch(error => {
         console.log(error.response.data)
-        return false;
+        return true;
       })
 }
 async function getSonglistInformation(id) {
@@ -232,10 +240,10 @@ async function getSonglistInformation(id) {
   axios.defaults.withCredentials = true;
   instance.get("/songlists/info/" + id)
       .then(function (response) {
-        return true;
+        return false;
       })
       .catch(function (error) {
-        return false;
+        return true;
       })
 }
 onMounted(getData)
