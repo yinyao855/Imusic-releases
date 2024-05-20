@@ -157,7 +157,7 @@ const parseLrcFile = () => {
 function convertLyricsToLRC(lyricsArray) {
   let lrcContent = '';
   for (const lyric of lyricsArray) {
-    lrcContent += `[${lyric.time}]${lyric.text}\n`;
+    lrcContent += `[${lyric.timestamp}]${lyric.text}\n`;
   }
   return lrcContent;
 }
@@ -169,11 +169,11 @@ const parseLrcContent = (lrcContent) => {
     const match = line.match(pattern);
     if (match) {
       return {
-        time: `${match[1]}:${match[2]}.${match[3]}`,
+        timestamp: `${match[1]}:${match[2]}.${match[3]}`,
         text: match[4].trim()
       };
     }
-    return {time: '', text: ''};
+    return {timestamp: '', text: ''};
   }).filter(line => line.text !== '');
 };
 const flag = ref(false);
