@@ -129,7 +129,7 @@ function getSonglistData() {
     }
   });
   axios.defaults.withCredentials = true;
-  instance.get("/songlists/info/" + currentSonglistId.value)
+  instance.get("/songlists/info/" + currentSonglistId.value + "?username=" + username.value)
       .then(function (response) {
         if (response.data.success === true) {
           currentUserSongList = response.data.data;
@@ -322,7 +322,8 @@ onMounted(getSonglistData);
               <!--          分享歌单-->
               <div class="cursor-pointer h-8 w-8 p-1 bg-gray-300 hover:bg-green-500 rounded-lg tooltip tooltip-left"
                    data-tip="分享">
-                <svg class="h-6 w-6 align-top text-green-600 hover:text-green-800" width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
+                <svg class="h-6 w-6 align-top text-green-600 hover:text-green-800" width="24" height="24"
+                     viewBox="0 0 24 24" stroke-width="2"
                      stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                   <path stroke="none" d="M0 0h24v24H0z"/>
                   <circle cx="6" cy="12" r="3"/>
