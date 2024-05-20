@@ -46,17 +46,19 @@ function activeShowSystemMessage(index) {
   // 听歌周报
   if (currentMessage.value.title === "听歌周报") {
     report.value = "listenReport";
+    contents.value.push("听歌统计");
     // 累计听歌时长s。
     s1.value = currentMessage.value.content.split("累计听歌时长");
-    s2.value = s1.value[1].split("。");
+    s2.value = s1.value[1].split("分钟");
     s.value = s2.value[0];
-    contents.value.push(s.value);
+    contents.value.push(s.value + "分钟");
     // 共听歌s首
     s1.value = currentMessage.value.content.split("共听歌");
     s2.value = s1.value[1].split("首");
     s.value = s2.value[0];
-    contents.value.push(s.value);
+    contents.value.push("共听了" + s.value + "首");
     // 您最常听的歌曲是s，
+    contents.value.push("最常听的歌曲");
     s1.value = currentMessage.value.content.split("您最常听的歌曲是");
     s2.value = s1.value[1].split("，");
     s.value = s2.value[0];
@@ -65,8 +67,9 @@ function activeShowSystemMessage(index) {
     s1.value = currentMessage.value.content.split("共播放");
     s2.value = s1.value[1].split("次");
     s.value = s2.value[0];
-    contents.value.push(s.value);
+    contents.value.push("共播放" + s.value + "次");
     // 风格为s。
+    contents.value.push("喜欢听的风格");
     s1.value = currentMessage.value.content.split("风格为");
     s2.value = s1.value[1].split("。");
     s.value = s2.value[0];
@@ -76,11 +79,12 @@ function activeShowSystemMessage(index) {
     s2.value = s1.value[1].split("，");
     s.value = s2.value[0];
     contents.value.push(s.value);
+    contents.value.push("最喜爱的歌手");
     // 共听过他/她的s首歌曲
     s1.value = currentMessage.value.content.split("共听过他/她的");
     s2.value = s1.value[1].split("首歌曲");
     s.value = s2.value[0];
-    contents.value.push(s.value);
+    contents.value.push("听过他/她的" + s.value + "首歌曲");
   }
   console.log(contents.value)
 }
@@ -124,9 +128,9 @@ onMounted(getSystemMessages)
                     d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
             </svg>
           </div>
-          <div class="stat-title my-2">听歌统计</div>
-          <div class="stat-value text-primary">{{contents[0]}}</div>
-          <div class="stat-desc my-2">共听了{{contents[1]}}首</div>
+          <div class="stat-title my-2">{{contents[0]}}</div>
+          <div class="stat-value text-primary">{{contents[1]}}</div>
+          <div class="stat-desc my-2">{{contents[2]}}</div>
         </div>
 
         <div class="stat">
@@ -137,15 +141,15 @@ onMounted(getSystemMessages)
                     d="M13 10V3L4 14h7v7l9-11h-7z"></path>
             </svg>
           </div>
-          <div class="stat-title my-2">最常听的歌曲</div>
-          <div class="stat-value text-secondary">{{contents[2]}}</div>
-          <div class="stat-desc my-2">共播放{{contents[3]}}次</div>
+          <div class="stat-title my-2">{{contents[3]}}</div>
+          <div class="stat-value text-secondary">{{contents[4]}}</div>
+          <div class="stat-desc my-2">{{contents[5]}}</div>
         </div>
 
         <div class="stat">
-          <div class="stat-title my-2">喜欢听的风格</div>
-          <div class="stat-value text-warning">{{contents[4]}}</div>
-          <div class="stat-desc my-2">共播放37次</div>
+          <div class="stat-title my-2">{{contents[6]}}</div>
+          <div class="stat-value text-warning">{{contents[7]}}</div>
+<!--          <div class="stat-desc my-2">共播放37次</div>-->
         </div>
 
         <div class="stat">
@@ -153,9 +157,9 @@ onMounted(getSystemMessages)
             <div class="avatar online">
             </div>
           </div>
-          <div class="stat-value">{{contents[5]}}</div>
-          <div class="stat-title">最喜爱的歌手</div>
-          <div class="stat-desc text-secondary">听了他的{{contents[6]}}首歌曲</div>
+          <div class="stat-value">{{contents[8]}}</div>
+          <div class="stat-title">{{contents[9]}}</div>
+          <div class="stat-desc text-secondary">{{contents[10]}}</div>
         </div>
 
       </div>
