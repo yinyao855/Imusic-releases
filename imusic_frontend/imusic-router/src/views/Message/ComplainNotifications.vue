@@ -41,7 +41,7 @@ function getTitle(index) {
   return title.value;
 }
 
-function activeComplaintMessage(index) {
+async function activeComplaintMessage(index) {
 
   // 处理投诉，content为数字+' '+有新的投诉消息待处理
   //console.log(Message.value[index].content);
@@ -61,7 +61,7 @@ function activeComplaintMessage(index) {
     const s = ref([]);
     s.value = Message.value[index].content.split("《");
     if (s.value.length === 1) { // 投诉歌单
-      if(getSonglistInformation(allId.value[index]))
+      if(await getSonglistInformation(allId.value[index]))
       {
         alert("歌单已被下架，暂时无法查看");
         return;
@@ -69,7 +69,7 @@ function activeComplaintMessage(index) {
       title.value = getTitle(index);
       ShowSongList.value = true;
     } else if (s.value.length === 2) { // 投诉歌曲
-      if(getSongInformation(allId.value[index]))
+      if(await getSongInformation(allId.value[index]))
       {
         alert("歌曲已被下架，暂时无法查看");
         return;
@@ -198,10 +198,12 @@ async function getSongInformation(id) {
   });
   axios.defaults.withCredentials = true;
   instance.get("/songs/info/" + id)
-      .then(function (response) {
-        return response.data.success === true;
+      .then(response => {
+        console.log(response.data);
+        return true;
       })
-      .catch(function (error) {
+      .catch(error => {
+        console.log(error.response.data)
         return false;
       })
 }
@@ -216,7 +218,7 @@ async function getSonglistInformation(id) {
   axios.defaults.withCredentials = true;
   instance.get("/songlists/info/" + id)
       .then(function (response) {
-        return response.data.success === true;
+        return true;
       })
       .catch(function (error) {
         return false;
