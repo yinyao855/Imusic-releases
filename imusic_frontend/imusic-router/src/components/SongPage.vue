@@ -7,7 +7,6 @@ import Comment from "@/components/Comment.vue";
 import CurrentUser_SongList from "@/components/CurrentUser_SongList.vue";
 import Complaint from "@/components/Complaint.vue";
 import Warning from "@/components/Warning.vue";
-import SharePage from "@/components/SharePage.vue";
 
 // global variables
 const token = defineModel('token')
@@ -18,8 +17,6 @@ const HasLogin = defineModel('HasLogin');
 const showComment = ref(true);
 const showComplaint = ref(false);
 const complaintType = ref("songs")
-const showSharePage = ref(false);
-const shareType = ref("likesongs")
 
 // defineEmits(关闭当前页面/回到上一个页面展示歌单)
 const emits = defineEmits(['handlePlayNow', 'CloseSong'])
@@ -302,19 +299,6 @@ function closeComplaint() {
   showComplaint.value = false;
 }
 
-function activeSharePage() {
-  if (HasLogin.value === false) {
-    message.value = '请先登录';
-    WarningShow.value = true;
-    return;
-  }
-  showSharePage.value = true;
-}
-
-function closeSharePage() {
-  showSharePage.value = false;
-}
-
 onMounted(getSongData)
 onMounted(getFavoriteSongs);
 onMounted(getSubscribeUser);
@@ -335,21 +319,12 @@ onMounted(getSubscribeUser);
     </div>
   </transition>
 
-  <transition name="slide" appear>
-    <div class="transition-container-2" v-if="showSharePage">
-      <SharePage v-model:shareType="shareType"
-                 v-model:id="songData.id" v-model:title="songData.title"
-                 @closeSharePage="closeSharePage"
-                 v-model:token="token" v-model:username="username"></SharePage>
-    </div>
-  </transition>
-
 
   <!--  回到歌单界面-->
-  <buttonchangesize v-if="showCurrentSong&&!showComplaint&&!showSharePage" class="left-4 top-4" @fullsize="fullsize"
+  <buttonchangesize v-if="showCurrentSong&&!showComplaint" class="left-4 top-4" @fullsize="fullsize"
                     v-model:token="token"></buttonchangesize>
   <!--  歌曲详细信息新界面-->
-  <div v-if="showCurrentSong&&!showComplaint&&!showSharePage" class="mx-20">
+  <div v-if="showCurrentSong&&!showComplaint" class="mx-20">
     <div
         class="float-right dropdown dropdown-bottom transition duration-400 border-none z-50">
       <svg class="icon" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg"
@@ -361,23 +336,6 @@ onMounted(getSubscribeUser);
       <ul tabindex="0"
           class="dropdown-content z-50 text-white text-sm"
           style="width:50px">
-        <li class="py-2">
-          <!--          分享歌单-->
-          <div class="cursor-pointer h-8 w-8 p-1 bg-gray-300 hover:bg-green-500 rounded-lg tooltip tooltip-left"
-               data-tip="分享">
-            <svg @click="activeSharePage" class="h-6 w-6 align-top text-green-600 hover:text-green-800" width="24"
-                 height="24"
-                 viewBox="0 0 24 24" stroke-width="2"
-                 stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-              <path stroke="none" d="M0 0h24v24H0z"/>
-              <circle cx="6" cy="12" r="3"/>
-              <circle cx="18" cy="6" r="3"/>
-              <circle cx="18" cy="18" r="3"/>
-              <line x1="8.7" y1="10.7" x2="15.3" y2="7.3"/>
-              <line x1="8.7" y1="13.3" x2="15.3" y2="16.7"/>
-            </svg>
-          </div>
-        </li>
         <li class="">
           <!--          投诉歌单-->
           <div class="cursor-pointer h-8 w-8 p-1 bg-gray-300 hover:bg-yellow-500 rounded-lg tooltip tooltip-left"
@@ -525,7 +483,7 @@ onMounted(getSubscribeUser);
         </button>
       </div>
     </div>
-    <hr class="my-20">
+    <hr class="my-10">
     <div class="mt-10 ml-5">
       <div class="text-gray-700 my-5" style="font-size:25px">歌词：</div>
       <div v-if="lyrics.length === 0" class="text-gray-300 mt-1">
