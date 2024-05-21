@@ -330,7 +330,7 @@ const CloseSongPage=()=>{
             </thead>
             <tbody>
             <!-- row 1 -->
-            <tr class="text-white transition duration-400 hover:bg-gray-600/40 rounded-md  cursor-pointer"
+            <tr class="text-white transition duration-400 hover:bg-gray-600/40 rounded-md cursor-pointer"
                 v-for="(item, index) in HomePageRecommendLatest" :key="index">
               <td @click="handlePlayNow(HomePageRecommendLatest[index].id);">
                 <div class="flex items-center gap-3">

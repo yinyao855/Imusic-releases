@@ -157,6 +157,31 @@ export const useMessageStore = defineStore('message', () => {
                 console.log(error.response.data);
             })
     }
+    function deleteMessage(messageId, token) {
+        const instance = axios.create({
+            baseURL: 'http://182.92.100.66:5000',
+            timeout: 5000,
+            headers: {
+                'Authorization': `Bearer ${token}`,
+            }
+        });
+        axios.defaults.withCredentials = true;
+        instance.delete('/messages/delete', {
+            params: {
+                'message_id': messageId
+            }
+        })
+            .then(response => {
+                console.log(response.data);
+                refreshMessage(token);
+                console.log(token);
+            })
+            .catch(error => {
+                console.log(error.response.data);
+                console.log("删除失败");
+                console.log(token);
+            })
+    }
 
     return {
         Message,
@@ -164,6 +189,7 @@ export const useMessageStore = defineStore('message', () => {
         readMessage,
         refreshMessage,
         ChangeTime,
+        deleteMessage,
         unReads,
         unReads1,
         unReads2,
