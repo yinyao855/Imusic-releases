@@ -175,8 +175,14 @@ export const useMessageStore = defineStore('message', () => {
             }
         })
             .then(response => {
-                refreshMessage(token);
-                return true;
+                if(response.data.message==="删除成功") {
+                    refreshMessage(token);
+                    return true;
+                }
+                else{
+                    throw new Error("删除消息失败");
+                    return false;
+                }
             })
             .catch(error => {
                 console.log(error.response.data);
