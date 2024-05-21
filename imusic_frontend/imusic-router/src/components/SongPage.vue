@@ -38,6 +38,7 @@ const isFavoriteSong = ref(false);
 const likes = ref(0);
 
 const isSubscribe = ref(false);
+const isMe = ref(false);
 
 // emits
 function handlePlayNow(id) {
@@ -162,6 +163,9 @@ function getSongData() {
           songData = response.data.data;
           fetchAndFormatLyrics(songData.lyric)
           showCurrentSong.value = true;
+          if (response.data.data.uploader === username.value) {
+            isMe.value = true;
+          }
         }
       })
       .catch(function (error) {
@@ -261,9 +265,8 @@ function handleSubscribeUser() {
     WarningShow.value = true;
     return;
   }
-  if (HasLogin.value === false) {
-    message.value = '请先登录';
-    WarningShow.value = true;
+  if (isMe.value === true) {
+    alert("不能关注自己");
     return;
   }
   const instance = axios.create({
@@ -425,7 +428,7 @@ onMounted(getSubscribeUser);
         <h1 class="text-4xl text-white ">{{ songData.title }}</h1>
         <p class="text-gray-500 ml-1 mt-1">歌手：{{ songData.singer }}</p>
       </div>
-      <div v-if="!isSubscribe" class="inline-block tooltip-left tooltip" data-tip="关注用户">
+      <div v-if="!isSubscribe&&!isMe" class="inline-block tooltip-left tooltip" data-tip="关注用户">
         <svg @click="handleSubscribeUser" class="cursor-pointer h-4 w-4 text-blue-400 inline-block mr-1" width="24"
              height="24" viewBox="0 0 24 24" stroke-width="2"
              stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -437,7 +440,7 @@ onMounted(getSubscribeUser);
         <p @click="handleSubscribeUser" class="cursor-pointer mt-2 text-gray-300 inline-block">
           {{ songData.uploader }} ·</p>
       </div>
-      <div v-if="isSubscribe" class="inline-block tooltip-left tooltip" data-tip="取消关注">
+      <div v-if="isSubscribe&&!isMe" class="inline-block tooltip-left tooltip" data-tip="取消关注">
         <svg @click="handleSubscribeUser" class="cursor-pointer h-4 w-4 text-green-400 inline-block mr-1"
              viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
              stroke-linecap="round" stroke-linejoin="round">
@@ -446,6 +449,16 @@ onMounted(getSubscribeUser);
           <polyline points="17 11 19 13 23 9"/>
         </svg>
         <p @click="handleSubscribeUser" class="cursor-pointer mt-2 text-gray-300 inline-block">
+          {{ songData.uploader }} ·</p>
+      </div>
+      <div v-if="isMe" class="inline-block">
+        <svg class="h-4 w-4 text-blue-400 inline-block mr-1" width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
+             stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+          <path stroke="none" d="M0 0h24v24H0z"/>
+          <circle cx="12" cy="7" r="4"/>
+          <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2"/>
+        </svg>
+        <p class="mt-2 text-gray-300 inline-block">
           {{ songData.uploader }} ·</p>
       </div>
       <p class="ml-2 text-gray-300 inline-block">{{ extractDate(songData.upload_date) }} </p>
