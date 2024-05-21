@@ -1,6 +1,6 @@
 <script setup>
 import buttonchangesize from "@/components/ButtonChangeSizeRight.vue";
-import {defineModel, ref} from "vue";
+import {defineModel, onMounted, ref} from "vue";
 import axios from "axios";
 
 const token = defineModel('token')
@@ -11,9 +11,46 @@ const title = defineModel('title')
 const emits = defineEmits(["closeComplaint"])
 
 const content = ref("");
+const owner = ref("");
 
 function closeComplaint() {
   emits('closeComplaint');
+}
+
+function getSongOwner() {
+  const instance = axios.create({
+    baseURL: 'http://182.92.100.66:5000',
+    timeout: 5000, // 设置请求超时时间
+    headers: {
+      'Authorization': `Bearer ${token.value}`,
+    }
+  });
+  axios.defaults.withCredentials = true;
+  instance.get("/songs/info/" + id.value)
+      .then(response => {
+        owner.value = response.data.data.uploader;
+      })
+      .catch(error => {
+        console.log(error.response.data)
+      })
+}
+
+function getSongListOwner() {
+  const instance = axios.create({
+    baseURL: 'http://182.92.100.66:5000',
+    timeout: 5000, // 设置请求超时时间
+    headers: {
+      'Authorization': `Bearer ${token.value}`,
+    }
+  });
+  axios.defaults.withCredentials = true;
+  instance.get("/songlists/info/" + id.value)
+      .then(function (response) {
+        owner.value = response.data.data.owner;
+      })
+      .catch(error => {
+        console.log(error.response.data)
+      })
 }
 
 function sendPostComplaint() {
@@ -23,6 +60,10 @@ function sendPostComplaint() {
     idType.value = 'song_id';
   } else if (complaintType.value==='songlists') {
     idType.value = 'songlist_id';
+  }
+  if (owner.value === username.value) {
+    alert("不允许投诉自己");
+    return;
   }
   const formData = new FormData();
   formData.append(idType.value, id.value);
@@ -46,6 +87,16 @@ function sendPostComplaint() {
         console.log(error.response.data);
       });
 }
+
+function getOwner() {
+  if (complaintType.value==='songs') {
+    getSongOwner();
+  } else if (complaintType.value==='songlists') {
+    getSongListOwner();
+  }
+}
+
+onMounted(getOwner)
 </script>
 
 <template>
