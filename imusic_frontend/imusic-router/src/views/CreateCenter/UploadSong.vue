@@ -90,7 +90,7 @@
                     fill="#1296db">
                 </path>
               </svg>
-              <div class="flex flex-auto max-h-48 w-2/5 mx-auto -mt-10">
+              <div class="flex flex-auto max-h-20 w-2/5 mx-auto -mt-10">
               </div>
               <p v-if="true" class="pointer-none text-gray-500 "><span class="text-sm"></span> 拖拽文件至此处
                 <br/> 或点击此处上传</p>
