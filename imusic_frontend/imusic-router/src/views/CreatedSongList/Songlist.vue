@@ -8,6 +8,7 @@ import Buttonchangesize from "@/components/ButtonChangeSizeRight.vue";
 import EditSonglist from "@/views/EditSonglist.vue";
 import Other_User_Data from "@/views/Explore/Other_User_Data.vue";
 import Complaint from "@/components/Complaint.vue";
+import SharePage from "@/components/SharePage.vue";
 
 // global variables
 const HasLogin = defineModel('HasLogin');
@@ -39,6 +40,8 @@ const showSelect = ref(false);
 
 const showComplaint = ref(false);
 const complaintType = ref("songlists")
+const showSharePage = ref(false);
+const shareType = ref("songlist")
 
 // emits
 const PlaySongList = (id) => {
@@ -247,11 +250,29 @@ function cancelSelect() {
 }
 
 function activeShowComplaint() {
+  if (HasLogin.value === false) {
+    message.value = '请先登录';
+    WarningShow.value = true;
+    return;
+  }
   showComplaint.value = true;
 }
 
 function closeComplaint() {
   showComplaint.value = false;
+}
+
+function activeSharePage() {
+  if (HasLogin.value === false) {
+    message.value = '请先登录';
+    WarningShow.value = true;
+    return;
+  }
+  showSharePage.value = true;
+}
+
+function closeSharePage() {
+  showSharePage.value = false;
 }
 
 onMounted(getFavoriteSonglists);
@@ -296,8 +317,17 @@ onMounted(getSonglistData);
     </div>
   </transition>
 
+  <transition name="slide" appear>
+    <div class="transition-container-2" v-if="showSharePage">
+      <SharePage v-model:shareType="shareType"
+                 v-model:id="currentUserSongList.id" v-model:title="currentUserSongList.title"
+                 @closeSharePage="closeSharePage"
+                 v-model:token="token" v-model:username="username"></SharePage>
+    </div>
+  </transition>
 
-  <div v-if="showCurrentSonglist&&!ShowCreatedSongList&&!ShowSong&&!showComplaint">
+
+  <div v-if="showCurrentSonglist&&!ShowCreatedSongList&&!ShowSong&&!showComplaint&&!showSharePage">
     <!--      展示歌单信息-->
     <div class="h-80 relative">
       <div class="bg-center bg-cover bg-blur w-full h-full absolute top-0 left-0"
@@ -322,7 +352,7 @@ onMounted(getSonglistData);
               <!--          分享歌单-->
               <div class="cursor-pointer h-8 w-8 p-1 bg-gray-300 hover:bg-green-500 rounded-lg tooltip tooltip-left"
                    data-tip="分享">
-                <svg class="h-6 w-6 align-top text-green-600 hover:text-green-800" width="24" height="24"
+                <svg @click="activeSharePage" class="h-6 w-6 align-top text-green-600 hover:text-green-800" width="24" height="24"
                      viewBox="0 0 24 24" stroke-width="2"
                      stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                   <path stroke="none" d="M0 0h24v24H0z"/>
