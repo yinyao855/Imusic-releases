@@ -4,7 +4,7 @@
       <Warning :message="message" @CloseWarning="CloseWarning" class="mx-auto" v-model:token="token" v-model:Warningshow="WarningShow"></Warning>
     </div>
   </transition>
-  <div class="h-full w-full flex items-center" @keypress.enter="submitSong">
+  <div class="h-full w-full flex items-center cursor-default" @keypress.enter="submitSong">
     <div class="formx2 my-auto mx-auto width:800px flexible bg-zinc-900 w-full">
       <div class="flex-column text-2xl">
         <div class="text-white">*歌曲名</div>
@@ -42,7 +42,7 @@
       </div>
       <div class="grid grid-cols-1 space-y-2">
         <div class="flex items-center justify-center w-full">
-          <label class="flex flex-col rounded-lg border-4 border-dashed w-full h-60 p-10 group text-center">
+          <label class="flex flex-col rounded-lg border-4 border-dashed w-full h-60 p-10 group text-center cursor-pointer">
             <div class="h-full w-full text-center flex flex-col items-center justify-center  ">
               <svg class="icon fill-white transition hover:fill-blue-600" viewBox="0 0 1194 1024"
                    xmlns="http://www.w3.org/2000/svg" width="80" height="80">
@@ -74,7 +74,7 @@
       </div>
       <div class="grid grid-cols-1 space-y-2">
         <div class="flex items-center justify-center w-full">
-          <label class="flex flex-col rounded-lg border-4 border-dashed w-full h-60 group text-center p-0"
+          <label class="flex flex-col rounded-lg border-4 border-dashed w-full h-60 group text-center p-0 cursor-pointer"
                  for="CoverUpLoad">
             <div class="h-4/5 content-center m-auto" v-if="coverImageFile!==null">
               <img :src="coverImageFileUrl" class="w-full h-full object-cover rounded-lg content-center" alt="封面">
@@ -187,7 +187,7 @@
         <div class="text-white">歌词</div>
       </div>
       <div>
-        <input type="file" @change="onLrcFileChange">
+        <input type="file" class="file-input w-1/3 max-w-xs mr-5" @change="onLrcFileChange">
         <button @click="parseLrcFile" class="btn btn-xl text-white tracking-widest">上传并解析歌词文件</button>
       </div>
       <div class="grid grid-cols-10 gap-4">
@@ -220,7 +220,7 @@
           <input type="text" class="input bg-zinc-900" placeholder="请输入单句歌词" v-model="lyric.text">
         </div>
         <div type="button"
-             class="h-[31px] col-span-1 m-auto border-radius rounded-full mx-auto focus:outline-none focus:shadow-outline hover:bg-gray-300 transition"
+             class="h-[31px] col-span-1 m-auto border-radius rounded-full mx-auto focus:outline-none focus:shadow-outline hover:bg-gray-300 transition cursor-pointer"
              @click="deleteline(index)">
           <svg class="icon" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg"
                width="32" height="32">
@@ -231,7 +231,7 @@
         </div>
       </div>
       <div type="button"
-           class="h-[31px] border-radius rounded-full mx-auto focus:outline-none focus:shadow-outline fill-blue-500 hover:bg-gray-500 hover:fill-white transition"
+           class="h-[31px] border-radius rounded-full mx-auto focus:outline-none focus:shadow-outline fill-blue-500 hover:bg-gray-500 hover:fill-white transition cursor-pointer"
            @click="addline">
         <svg class="icon" viewBox="0 0 1025 1024" xmlns="http://www.w3.org/2000/svg"
              width="32" height="32">
