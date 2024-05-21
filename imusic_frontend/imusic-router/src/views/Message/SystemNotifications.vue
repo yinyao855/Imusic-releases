@@ -48,8 +48,6 @@ function activeShowSystemMessage(index) {
 
   // 听歌周报
   if (currentMessage.value.title === "听歌周报") {
-    report.value = "listenReport";
-
     sen.value = currentMessage.value.content.split("。");
 
     // 您在_至_这段时间内，共听歌_首，累计听歌时长_
@@ -57,42 +55,70 @@ function activeShowSystemMessage(index) {
     s1.value = s.value[0].split("您在")
     s2.value = s1.value[1].split("这段时间内")
     s3.value = s2.value[0];
-    contents.value.push("听歌统计：" + s3.value);
+    contents.value[0] = "听歌统计：" + s3.value;
     s1.value = s.value[2].split("累计听歌时长");
     s2.value = s1.value[1].split("分钟");
     s3.value = s2.value[0];
-    contents.value.push(s3.value + "分钟");
-    contents.value.push(s.value[1]);
+    contents.value[1] = s3.value + "分钟";
+    contents.value[2] = s.value[1];
 
     // 您最常听的歌曲是_，共播放_次
     s.value = sen.value[1].split("，");
-    contents.value.push("最常听的歌曲");
+    contents.value[3] = "最常听的歌曲";
     s1.value = s.value[0].split("您最常听的歌曲是");
-    contents.value.push(s1.value[1]);
-    contents.value.push(s.value[1]);
+    contents.value[4] = s1.value[1];
+    contents.value[5] = s.value[1];
 
     // 您最常听的歌手是_，共听过他/她的_首歌曲，分别是_
     s.value = sen.value[2].split("，");
-    contents.value.push("最喜爱的歌手");
+    contents.value[6] = "最喜爱的歌手";
     s1.value = s.value[0].split("您最常听的歌手是");
-    contents.value.push(s1.value[1]);
-    contents.value.push(s.value[1]);
+    contents.value[7] = s1.value[1];
+    contents.value[8] = s.value[1];
     s1.value = s.value[2].split("分别是");
-    contents.value.push(s1.value[1]);
+    contents.value[9] = s1.value[1];
 
-    // 您喜欢听的歌曲风格为流行, 国语, 安静
+    // 您喜欢听的歌曲风格为_
     s.value = sen.value[3].split("，");
-    contents.value.push("喜欢听的风格");
+    contents.value[10] = "喜欢听的风格";
     s1.value = s.value[0].split("您喜欢听的歌曲风格为");
-    contents.value.push(s1.value[1]);
+    contents.value[11] = s1.value[1];
 
     // 祝您生活愉快！
-    contents.value.push(sen.value[4]);
+    contents.value[12] = sen.value[4];
   }
   // 您在2024-05-05至2024-05-12这段时间内，共上传歌曲2首，创建歌单1个。您上传的歌曲有Blueming, 梅香如故。您创建的歌单有修改。您上传的歌曲共获得4个喜欢，创建的歌单共获得0个收藏。祝您创作愉快！
-      // 创作周报
+  // 创作周报
   else if (currentMessage.value.title === "创作周报") {
+    sen.value = currentMessage.value.content.split("。");
 
+    // 您在2024-05-05至2024-05-12这段时间内，共上传歌曲2首，创建歌单1个
+    s.value = sen.value[0].split("，");
+    s1.value = s.value[0].split("您在")
+    s2.value = s1.value[1].split("这段时间内")
+    s3.value = s2.value[0];
+    contents.value[1] = "创作周报";
+    contents.value[2] = s3.value;
+    s1.value = s.value[1].split("共")
+    contents.value[3] = s1.value[1];
+    contents.value[7] = s.value[2];
+
+    // 您上传的歌曲有Blueming, 梅香如故
+    s1.value = sen.value[1].split("您上传的歌曲有")
+    contents.value[4] = s1.value[1];
+
+    // 您创建的歌单有修改。
+    contents.value[9] = sen.value[2];
+
+    // 您上传的歌曲共获得4个喜欢，创建的歌单共获得0个收藏
+    s.value = sen.value[3].split("，");
+    s1.value = s.value[0].split("您上传的歌曲")
+    contents.value[5] = s1.value[1];
+    s1.value = s.value[1].split("创建的歌单")
+    contents.value[6] = s1.value[1];
+
+    // 祝您创作愉快！
+    contents.value[0] = sen.value[4];
   }
 }
 
