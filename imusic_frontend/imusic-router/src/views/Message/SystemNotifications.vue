@@ -147,7 +147,7 @@ onMounted(getSystemMessages)
 
 <!--  听歌周报-->
   <dialog id="modal" class="modal">
-    <div class="modal-box" style="max-width: 72rem;">
+    <div class="modal-box" style="max-width: 100rem;">
       <form method="dialog">
         <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
       </form>

@@ -44,34 +44,24 @@ export const useMessageStore = defineStore('message', () => {
     const ChangeTime=(InputDate)=> {
         const date = new Date(InputDate);
         const now = new Date();
-        //当天
-        if (date.getFullYear() === now.getFullYear() && date.getMonth() === now.getMonth() && date.getDate() === now.getDate()) {
-            //超过5h显示xx小时前
-            if (now.getHours() - date.getHours() >= 5) {
-                return (now.getHours() - date.getHours()) + '小时前';
-            }
-            //分钟相同显示刚刚
-            else if (now.getMinutes() === date.getMinutes() && now.getHours() === date.getHours()&&now.getDate() - date.getDate()===0&&now.getMonth() - date.getMonth()===0&&now.getFullYear() - date.getFullYear()===0) {
+        const diff = now - date;
+
+        if (diff < 5 * 60 * 60 * 1000) { // 不超过5小时
+            if (diff < 10 * 60 * 1000) { // 不超过10分钟
                 return '刚刚';
+            } else {
+                const minutesDiff = Math.floor(diff / (60 * 1000));
+                return `${minutesDiff}分钟前`;
             }
-            //10min内显示x分钟前
-            else if ((now.getMinutes() - date.getMinutes() < 10&&now.getHours() - date.getHours()===0&&now.getDate() - date.getDate()===0&&now.getMonth() - date.getMonth()===0&&now.getFullYear() - date.getFullYear()===0)) {
-                return (now.getMinutes() - date.getMinutes()) + '分钟前';
-            }
-            else if (now.getMinutes() + 60 - date.getMinutes() < 10&&now.getHours() - date.getHours()===1&&now.getDate() - date.getDate()===0&&now.getMonth() - date.getMonth()===0&&now.getFullYear() - date.getFullYear()===0){
-                return (now.getMinutes() + 60 - date.getMinutes()) + '分钟前';
-            }
-            else{
-                return date.getMinutes()<10?date.getHours() + ':0' + date.getMinutes():date.getHours() + ':' + date.getMinutes();
-            }
-        }
-        //前一天
-        else if (date.getFullYear() === now.getFullYear() && date.getMonth() === now.getMonth() && date.getDate() === now.getDate() - 1) {
-            return date.getMinutes()<10?'昨天'+date.getHours() + ':0' + date.getMinutes():'昨天'+date.getHours() + ':' + date.getMinutes();
-        }
-        else
-        {
-            return date.getMinutes()<10?date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate():date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
+        } else if (diff < 24 * 60 * 60 * 1000) { // 前一天
+            const hours = date.getHours().toString().padStart(2, '0');
+            const minutes = date.getMinutes().toString().padStart(2, '0');
+            return `昨天${hours}:${minutes}`;
+        } else {
+            const year = date.getFullYear();
+            const month = (date.getMonth() + 1).toString().padStart(2, '0');
+            const day = date.getDate().toString().padStart(2, '0');
+            return `${year}-${month}-${day}`;
         }
     }
 
