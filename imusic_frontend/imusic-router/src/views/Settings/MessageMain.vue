@@ -2,7 +2,7 @@
   <div class="w-full bg-zinc-900 flex h-full">
 
     <!-- component -->
-    <div class="w-11/12 rounded-2xl my-6 mx-auto overflow-hidden flex">
+    <div class="w-full mx-auto overflow-hidden flex">
       <!-- Sidebar -->
       <div class="w-1/4 h-full bg-zinc-800">
 
@@ -38,11 +38,11 @@
       <div class="w-3/4">
         <!-- Chat Header -->
         <header class="bg-zinc-700 p-4 text-gray-700 h-14 flex items-center">
-          <h1 class="text-2xl font-semibold text-white">{{ friend }}</h1>
+          <h1 class="text-xl text-white mx-auto">{{ friend }}</h1>
         </header>
 
         <!-- Chat Messages -->
-        <div class="overflow-y-auto p-4 pb-8 no-scrollbar flex flex-col" style="height: 530px">
+        <div class="overflow-y-auto p-4 pb-8 no-scrollbar flex flex-col" style="height: 580px">
           <!-- 私聊消息 -->
           <div v-for="(message, index) in DetailMessage" :key="index">
             <!-- Incoming Message -->
@@ -80,29 +80,38 @@
             </div>
           </div>
 
+          <div v-if="DetailMessage.length === 0" class="mx-auto">
+            快来开始聊天吧
+          </div>
+
           <!-- 无消息时 -->
           <div class="m-auto" v-if="!ShowMessageDetail&&!loading">
             <svg class="icon m-auto fill-gray-600" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg"
                  width="200" height="200">
               <path
-                  d="M794.69 954.76H508.8c-247.03 0-448-200.98-448-448s200.97-448 448-448 448 200.98 448 448c0 116.76-44.19 226.24-124.77 310.06v100.61c0 20.61-16.72 37.33-37.34 37.33zM508.8 133.42c-205.86 0-373.33 167.47-373.33 373.33S302.94 880.09 508.8 880.09h248.56v-78.68c0-10.1 4.09-19.76 11.33-26.8 73.15-70.98 113.44-166.1 113.44-267.86 0-205.85-167.47-373.33-373.33-373.33z"
+                  d="M794.69 954.76H508.8c-247.03 0-448-200.98-448-448s200.97-448 448-448 448 200.98 448 448c0
+                  116.76-44.19 226.24-124.77 310.06v100.61c0 20.61-16.72 37.33-37.34 37.33zM508.8 133.42c-205.86
+                  0-373.33 167.47-373.33 373.33S302.94 880.09 508.8 880.09h248.56v-78.68c0-10.1 4.09-19.76
+                  11.33-26.8 73.15-70.98 113.44-166.1 113.44-267.86 0-205.85-167.47-373.33-373.33-373.33z"
               ></path>
               <path d="M308.17 506.76m-62.49 0a62.49 62.49 0 1 0 124.98 0 62.49 62.49 0 1 0-124.98 0Z"></path>
               <path d="M508.8 506.76m-62.49 0a62.49 62.49 0 1 0 124.98 0 62.49 62.49 0 1 0-124.98 0Z"></path>
               <path d="M709.42 506.76m-62.49 0a62.49 62.49 0 1 0 124.98 0 62.49 62.49 0 1 0-124.98 0Z"></path>
             </svg>
           </div>
-
+          <!-- 加载中 -->
           <span class="loading loading-dots loading-lg m-auto" v-if="loading"></span>
 
         </div>
 
         <!-- Chat Input -->
-        <footer class="bg-white border-t border-gray-300 p-4 bottom-0 h-full">
-          <div class="flex items-center">
-            <input type="text" placeholder="Type a message..."
+        <footer class="p-4 bg-zinc-900 flex" v-if="ShowMessageDetail">
+          <div class="flex items-center my-auto w-full">
+            <input type="text" placeholder="Type a message..." v-model="SendContent"
                    class="w-full p-2 rounded-md border border-gray-400 focus:outline-none focus:border-blue-500">
-            <button class="bg-indigo-500 text-white px-4 py-2 rounded-md ml-2">Send</button>
+            <!--            <button class="bg-indigo-500 text-white px-4 py-2 rounded-md ml-2" @click="sendMsg">Send</button>-->
+            <button class="btn btn-outline btn-success px-4 py-2 ml-2" @click="sendMsg" @keydown.enter="sendMsg">发送
+            </button>
           </div>
         </footer>
 
@@ -125,13 +134,14 @@ const Chats = ref([]);
 // 聊天详细信息
 const DetailMessage = ref([]);
 
-const MyAvatar = ref('');
-const OtherAvatar = ref('');
 const friend = ref('');
 
 const ShowMessageDetail = ref(false);
 const loading = ref(false);
 const loading1 = ref(false);
+
+// 发送内容
+const SendContent = ref('');
 
 const GetChats = () => {
   const instance = axios.create({
@@ -154,6 +164,11 @@ const GetChats = () => {
 }
 
 const GetDetailMessage = (index) => {
+  const friend_name = Chats.value[index].friend;
+  getMsg(friend_name);
+}
+
+const getMsg = (friend_in) => {
   const instance = axios.create({
     baseURL: 'http://182.92.100.66:5000',
     timeout: 5000,
@@ -167,13 +182,13 @@ const GetDetailMessage = (index) => {
     method: 'get',
     url: '/messages/private',
     params: {
-      friend: Chats.value[index].friend
+      friend: friend_in
     }
   })
       .then(response => {
         DetailMessage.value = response.data.data;
         ShowMessageDetail.value = true;
-        friend.value = Chats.value[index].friend;
+        friend.value = friend_in;
         loading.value = false;
       })
       .catch(error => {
@@ -181,25 +196,32 @@ const GetDetailMessage = (index) => {
       })
 }
 
-const GetMyAvatar = () => {
+const sendMsg = () => {
+  if (SendContent.value === '') {
+    alert('发送内容不能为空');
+    return;
+  }
   const instance = axios.create({
     baseURL: 'http://182.92.100.66:5000',
-    timeout: 5000,
+    timeout: 5000, // 设置请求超时时间
     headers: {
       'Authorization': `Bearer ${token.value}`,
     }
   });
   axios.defaults.withCredentials = true;
-  instance.get('/users/info/' + username.value)
-      .then((response) => {
-        MyAvatar.value = response.data.data.avatar;
+  const formData = new FormData();
+  formData.append('receiver', friend.value);
+  formData.append('content', SendContent.value);
+  instance.post('/messages/send', formData)
+      .then(response => {
+        console.log(response.data.success);
+        SendContent.value = '';
+        getMsg(friend.value);
       })
-      .catch((error) => {
-        console.log(error);
-      });
+      .catch(error => {
+        console.log(error.response.data);
+      })
 }
-
-const CanChat = ref(false);
 
 const userFollow = (index) => {
   const formData = new FormData();
@@ -222,7 +244,6 @@ const userFollow = (index) => {
 }
 
 onMounted(GetChats);
-onMounted(GetMyAvatar);
 </script>
 
 <style>
