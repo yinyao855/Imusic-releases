@@ -190,6 +190,7 @@ const getMsg = (friend_in) => {
         ShowMessageDetail.value = true;
         friend.value = friend_in;
         loading.value = false;
+        readMsg();
       })
       .catch(error => {
         console.log(error.response.data);
@@ -242,7 +243,17 @@ const userFollow = (index) => {
         console.log(error.response.data);
       })
 }
-
+const readMsg = () => {
+  //全部设为已读
+  for (let i = 0; i < DetailMessage.value.length; ++i) {
+    if (DetailMessage.value[i].sender !== username.value) {
+      if (!DetailMessage.value[i].is_read) {
+        messageStore.readMessage(DetailMessage.value[i].id, token.value);
+        DetailMessage.value[i].is_read = true;
+      }
+    }
+  }
+}
 onMounted(GetChats);
 </script>
 

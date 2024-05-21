@@ -28,6 +28,7 @@ const CloseSong = () => {
 
 const hasMessage = ref(true);
 function getUserImage() {
+  Message.value = messageStore.MessageType2;
   if (Message.value.length === 0) {
     hasMessage.value = false;
   }
@@ -97,10 +98,16 @@ function getSongId() {
         console.log(error);
       })
 }
-function DeleteMessage(index) {
+async function DeleteMessage(index) {
   console.log(Message.value[index].id);
   console.log(token.value);
-  messageStore.deleteMessage(Message.value[index].id, token.value);
+  try {
+    await messageStore.deleteMessage(Message.value[index].id, token.value);
+    alert("删除成功");
+
+  } catch (error) {
+    alert("删除失败");
+  }
 }
 
 onMounted(getUserImage)
@@ -122,15 +129,6 @@ watch(Message, getUserImage)
       <div class="text-4xl text-white text-center m-auto">暂无消息</div>
     </div>
     <table class="table">
-      <thead>
-      <tr>
-        <th class="text-left text-sm font-semibold">头像</th>
-        <th class="text-left text-sm font-semibold">用户</th>
-        <th class="text-left text-sm font-semibold">时间</th>
-        <th class="text-left text-sm font-semibold">操作</th>
-      </tr>
-      </thead>
-
       <tbody>
       <tr class="text-white hover:bg-gray-600/40 rounded-md"
           v-for="(item, index) in Message" @click="activeCommentMessage(index, item.content)">
@@ -150,9 +148,9 @@ watch(Message, getUserImage)
         <td class="w-40 text-sm opacity-50">
           {{ messageStore.ChangeTime(item.send_date) }}
         </td>
-        <td class="">
+        <td class="w-20">
           <div class="inline pr-4">
-            <svg class="icon fill-red-600 inline hover:fill-red-800" viewBox="0 0 1024 1024"
+            <svg class="icon fill-red-500 inline hover:fill-red-800" viewBox="0 0 1024 1024"
                  xmlns="http://www.w3.org/2000/svg"
                  width="24" height="24" @click.stop="DeleteMessage(index)">
               <path
@@ -173,6 +171,7 @@ watch(Message, getUserImage)
       </tr>
       </tbody>
     </table>
+    <div class="w-full h-32"></div>
   </div>
 </template>
 
