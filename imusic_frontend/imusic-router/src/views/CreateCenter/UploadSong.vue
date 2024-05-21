@@ -42,7 +42,7 @@
       </div>
       <div class="grid grid-cols-1 space-y-2">
         <div class="flex items-center justify-center w-full">
-          <label class="flex flex-col rounded-lg border-4 border-dashed w-full h-60 p-10 group text-center cursor-pointer">
+          <label class="flex flex-col rounded-lg border-4 border-dashed w-full h-60 p-10 group text-center cursor-pointer hover:bg-zinc-800 transition ease-in duration-300">
             <div class="h-full w-full text-center flex flex-col items-center justify-center  ">
               <svg class="icon fill-white transition hover:fill-blue-600" viewBox="0 0 1194 1024"
                    xmlns="http://www.w3.org/2000/svg" width="80" height="80">
@@ -74,7 +74,7 @@
       </div>
       <div class="grid grid-cols-1 space-y-2">
         <div class="flex items-center justify-center w-full">
-          <label class="flex flex-col rounded-lg border-4 border-dashed w-full h-60 group text-center p-0 cursor-pointer"
+          <label class="flex flex-col rounded-lg border-4 border-dashed w-full h-60 group text-center p-0 cursor-pointer hover:bg-zinc-800 transition ease-in duration-300"
                  for="CoverUpLoad">
             <div class="h-4/5 content-center m-auto" v-if="coverImageFile!==null">
               <img :src="coverImageFileUrl" class="w-full h-full object-cover rounded-lg content-center" alt="封面">
@@ -109,8 +109,7 @@
       <div class="flex-column text-2xl">
         <div class="text-white">标签</div>
       </div>
-
-      主题
+      <p class="text-l my-1">主题</p>
       <div class="join w-full">
         <input class="join-item btn w-1/6" type="radio" name="options1" aria-label="默认" value="默认" v-model="theme"/>
         <input class="join-item btn w-1/6" type="radio" name="options1" aria-label="背景音乐" value="背景音乐"
@@ -124,7 +123,7 @@
         <input class="join-item btn w-1/6" type="radio" name="options1" aria-label="电影配乐" value="电影配乐"
                v-model="theme"/>
       </div>
-      场景
+      <p class="text-l my-1">场景</p>
       <div class="join w-full">
         <input class="join-item btn w-1/6" type="radio" name="options2" aria-label="默认" value="默认" v-model="scene"/>
         <input class="join-item btn w-1/6" type="radio" name="options2" aria-label="咖啡馆" value="咖啡馆"
@@ -134,7 +133,7 @@
         <input class="join-item btn w-1/6" type="radio" name="options2" aria-label="旅行" value="旅行" v-model="scene"/>
         <input class="join-item btn w-1/6" type="radio" name="options2" aria-label="派对" value="派对" v-model="scene"/>
       </div>
-      心情
+      <p class="text-l my-1">心情</p>
       <div class="join w-full">
         <input class="join-item btn w-1/6" type="radio" name="options3" aria-label="默认" value="默认" v-model="mood"/>
         <input class="join-item btn w-1/6" type="radio" name="options3" aria-label="伤感" value="伤感" v-model="mood"/>
@@ -143,7 +142,7 @@
         <input class="join-item btn w-1/6" type="radio" name="options3" aria-label="宣泄" value="宣泄" v-model="mood"/>
         <input class="join-item btn w-1/6" type="radio" name="options3" aria-label="开心" value="开心" v-model="mood"/>
       </div>
-      风格
+      <p class="text-l my-1">风格</p>
       <div class="join w-full">
         <input class="join-item btn w-1/6" type="radio" name="options4" aria-label="默认" value="默认" v-model="style"/>
         <input class="join-item btn w-1/6" type="radio" name="options4" aria-label="摇滚" value="摇滚" v-model="style"/>
@@ -153,7 +152,7 @@
         <input class="join-item btn w-1/6" type="radio" name="options4" aria-label="电音" value="电音" v-model="style"/>
         <input class="join-item btn w-1/6" type="radio" name="options4" aria-label="流行" value="流行" v-model="style"/>
       </div>
-      语言
+      <p class="text-l my-1">语言</p>
       <div class="join w-full">
         <input class="join-item btn w-1/6" type="radio" name="options5" aria-label="默认" value="默认"
                v-model="language"/>
@@ -170,7 +169,7 @@
       </div>
 
 
-      <div class="flex-column text-2xl">
+      <div class="flex-column text-2xl mt-3">
         <div class="text-white">介绍</div>
       </div>
       <div class="inputForm bg-zinc-900">
@@ -288,7 +287,6 @@
 </style>
 
 <script setup>
-import confetti from 'canvas-confetti';
 import {ref, defineModel} from "vue";
 import axios from "axios";
 import Warning from "@/components/Warning.vue";

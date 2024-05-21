@@ -1,6 +1,8 @@
 <script setup>
 import {defineModel, ref} from "vue";
 import axios from "axios";
+import P from "particles.vue3";
+import Warning from "@/components/Warning.vue";
 
 const title = ref("");
 const introduction = ref("");
@@ -95,11 +97,18 @@ function sendPostCreateSonglist() {
         console.log(error.response.data);
       });
 }
-
+const CloseWarning = () => {
+  WarningShow.value = false;
+}
 </script>
 
 <template>
-  <div class="form_create_container bg-zinc-900 w-full">
+  <div class="form_create_container bg-zinc-900 w-full cursor-default">
+    <transition name="vx">
+      <div class="w-full absolute top-0 left-1/2 transform -translate-x-1/2" v-if="WarningShow">
+        <Warning :message="message" @CloseWarning="CloseWarning" class="mx-auto" v-model:token="token" v-model:Warningshow="WarningShow"></Warning>
+      </div>
+    </transition>
     <div class="w-3/5 m-auto mt-4 bg-zinc-900 p-3 rounded-2xl">
       <div class="text-2xl text-white mb-2">
         <p class="">*歌单标题</p>
@@ -168,7 +177,7 @@ function sendPostCreateSonglist() {
       <div class="text-2xl text-white my-2">
         <p class="">标签</p>
       </div>
-      主题
+      <p class="text-l my-1">主题</p>
       <div class="join w-full">
         <input class="join-item btn w-1/6" type="radio" name="options1" aria-label="默认" value="默认" v-model="theme"/>
         <input class="join-item btn w-1/6" type="radio" name="options1" aria-label="背景音乐" value="背景音乐"
@@ -182,7 +191,7 @@ function sendPostCreateSonglist() {
         <input class="join-item btn w-1/6" type="radio" name="options1" aria-label="电影配乐" value="电影配乐"
                v-model="theme"/>
       </div>
-      场景
+      <p class="text-l my-1">场景</p>
       <div class="join w-full">
         <input class="join-item btn w-1/6" type="radio" name="options2" aria-label="默认" value="默认" v-model="scene"/>
         <input class="join-item btn w-1/6" type="radio" name="options2" aria-label="咖啡馆" value="咖啡馆"
@@ -192,7 +201,7 @@ function sendPostCreateSonglist() {
         <input class="join-item btn w-1/6" type="radio" name="options2" aria-label="旅行" value="旅行" v-model="scene"/>
         <input class="join-item btn w-1/6" type="radio" name="options2" aria-label="派对" value="派对" v-model="scene"/>
       </div>
-      心情
+      <p class="text-l my-1">心情</p>
       <div class="join w-full">
         <input class="join-item btn w-1/6" type="radio" name="options3" aria-label="默认" value="默认" v-model="mood"/>
         <input class="join-item btn w-1/6" type="radio" name="options3" aria-label="伤感" value="伤感" v-model="mood"/>
@@ -201,7 +210,7 @@ function sendPostCreateSonglist() {
         <input class="join-item btn w-1/6" type="radio" name="options3" aria-label="宣泄" value="宣泄" v-model="mood"/>
         <input class="join-item btn w-1/6" type="radio" name="options3" aria-label="开心" value="开心" v-model="mood"/>
       </div>
-      风格
+      <p class="text-l my-1">风格</p>
       <div class="join w-full">
         <input class="join-item btn w-1/6" type="radio" name="options4" aria-label="默认" value="默认" v-model="style"/>
         <input class="join-item btn w-1/6" type="radio" name="options4" aria-label="摇滚" value="摇滚" v-model="style"/>
@@ -211,7 +220,7 @@ function sendPostCreateSonglist() {
         <input class="join-item btn w-1/6" type="radio" name="options4" aria-label="电音" value="电音" v-model="style"/>
         <input class="join-item btn w-1/6" type="radio" name="options4" aria-label="流行" value="流行" v-model="style"/>
       </div>
-      语言
+      <p class="text-l my-1">语言</p>
       <div class="join w-full">
         <input class="join-item btn w-1/6" type="radio" name="options5" aria-label="默认" value="默认"
                v-model="language"/>

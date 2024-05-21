@@ -156,7 +156,7 @@ const CloseSongPage=()=>{
     </div>
   </transition>
 
-  <div v-if="!showEditSong&&!ShowSong&&!NeedShowSongDetail">
+  <div v-if="!showEditSong&&!ShowSong&&!NeedShowSongDetail" class="cursor-default">
     <div class="w-full h-14 pl-6">
       <div :class="[NaviClass1, 'text-transition']" @click="changeNaviMode(1)" style="line-height: 56px">我的创作</div>
       <div :class="[NaviClass2, 'text-transition']" @click="changeNaviMode(2)" style="line-height: 56px">创作歌曲</div>
@@ -180,7 +180,7 @@ const CloseSongPage=()=>{
             </thead>
             <tbody>
             <!-- row 1 -->
-            <tr class="text-white transition duration-400 hover:bg-gray-600/40 rounded-md"
+            <tr class="text-white transition duration-400 hover:bg-gray-600/40 rounded-md cursor-pointer"
                 v-for="(item, index) in props.userUploadedSongs" :key="index">
               <td @click="handlePlayNow(index);">
                 <div class="flex items-center gap-3">
