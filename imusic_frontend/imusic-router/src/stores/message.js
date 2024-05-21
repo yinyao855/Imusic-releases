@@ -152,9 +152,12 @@ export const useMessageStore = defineStore('message', () => {
         instance.get(web)
             .then(response => {
                 Message.value = response.data.data;
+                processMessage();
             })
             .catch(error => {
                 console.log(error.response.data);
+                console.log("获取消息失败");
+                console.log(token);
             })
     }
     function deleteMessage(messageId, token) {
@@ -172,14 +175,13 @@ export const useMessageStore = defineStore('message', () => {
             }
         })
             .then(response => {
-                console.log(response.data);
                 refreshMessage(token);
-                console.log(token);
+                return true;
             })
             .catch(error => {
                 console.log(error.response.data);
-                console.log("删除失败");
-                console.log(token);
+                throw new Error("删除消息失败");
+                return false;
             })
     }
 
