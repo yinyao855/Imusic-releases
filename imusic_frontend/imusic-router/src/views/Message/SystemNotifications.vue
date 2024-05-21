@@ -87,12 +87,11 @@ function activeShowSystemMessage(index) {
     // 祝您生活愉快！
     contents.value[12] = sen.value[4];
   }
-  // 您在2024-05-05至2024-05-12这段时间内，共上传歌曲2首，创建歌单1个。您上传的歌曲有Blueming, 梅香如故。您创建的歌单有修改。您上传的歌曲共获得4个喜欢，创建的歌单共获得0个收藏。祝您创作愉快！
   // 创作周报
   else if (currentMessage.value.title === "创作周报") {
     sen.value = currentMessage.value.content.split("。");
 
-    // 您在2024-05-05至2024-05-12这段时间内，共上传歌曲2首，创建歌单1个
+    // 您在_这段时间内，共上传歌曲_首，创建歌单_个
     s.value = sen.value[0].split("，");
     s1.value = s.value[0].split("您在")
     s2.value = s1.value[1].split("这段时间内")
@@ -103,14 +102,15 @@ function activeShowSystemMessage(index) {
     contents.value[4] = s1.value[1];
     contents.value[7] = s.value[2];
 
-    // 您上传的歌曲有Blueming, 梅香如故
+    // 您上传的歌曲有_
     s1.value = sen.value[1].split("您上传的歌曲有")
     contents.value[5] = s1.value[1];
 
     // 您创建的歌单有修改。
-    contents.value[9] = sen.value[2];
+    s1.value = sen.value[2].split("您创建的")
+    contents.value[9] = s1.value[1];
 
-    // 您上传的歌曲共获得4个喜欢，创建的歌单共获得0个收藏
+    // 您上传的歌曲共获得_个喜欢，创建的歌单共获得0个收藏
     s.value = sen.value[3].split("，");
     s1.value = s.value[0].split("您上传的歌曲")
     contents.value[3] = s1.value[1];

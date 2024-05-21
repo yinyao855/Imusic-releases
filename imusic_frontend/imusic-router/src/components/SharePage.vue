@@ -33,10 +33,13 @@ function sendPostShare(user) {
   formData.append('friend', user);
   instance.post('/share/' + shareType.value, formData)
       .then(response => {
-        shareCode.value = response.data.data;
+        if(response.data.success === true) {
+          alert("分享成功")
+        }
       })
       .catch(error => {
         console.log(error.response.data);
+        alert("分享失败")
       })
 }
 
