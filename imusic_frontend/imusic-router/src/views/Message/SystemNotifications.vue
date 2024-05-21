@@ -41,52 +41,59 @@ function activeShowSystemMessage(index) {
   // 分析
   const s1 = ref([]);
   const s2 = ref([]);
-  const s = ref("");
+  const s3 = ref([]);
+  const s = ref([]);
+  const sen = ref([]);
   contents.value = [];
+
   // 听歌周报
   if (currentMessage.value.title === "听歌周报") {
     report.value = "listenReport";
-    contents.value.push("听歌统计");
-    // 累计听歌时长s。
-    s1.value = currentMessage.value.content.split("累计听歌时长");
+
+    sen.value = currentMessage.value.content.split("。");
+
+    // 您在_至_这段时间内，共听歌_首，累计听歌时长_
+    s.value = sen.value[0].split("，");
+    s1.value = s.value[0].split("您在")
+    s2.value = s1.value[1].split("这段时间内")
+    s3.value = s2.value[0];
+    contents.value.push("听歌统计：" + s3.value);
+    s1.value = s.value[2].split("累计听歌时长");
     s2.value = s1.value[1].split("分钟");
-    s.value = s2.value[0];
-    contents.value.push(s.value + "分钟");
-    // 共听歌s首
-    s1.value = currentMessage.value.content.split("共听歌");
-    s2.value = s1.value[1].split("首");
-    s.value = s2.value[0];
-    contents.value.push("共听了" + s.value + "首");
-    // 您最常听的歌曲是s，
+    s3.value = s2.value[0];
+    contents.value.push(s3.value + "分钟");
+    contents.value.push(s.value[1]);
+
+    // 您最常听的歌曲是_，共播放_次
+    s.value = sen.value[1].split("，");
     contents.value.push("最常听的歌曲");
-    s1.value = currentMessage.value.content.split("您最常听的歌曲是");
-    s2.value = s1.value[1].split("，");
-    s.value = s2.value[0];
-    contents.value.push(s.value);
-    // 共播放s次
-    s1.value = currentMessage.value.content.split("共播放");
-    s2.value = s1.value[1].split("次");
-    s.value = s2.value[0];
-    contents.value.push("共播放" + s.value + "次");
-    // 风格为s。
-    contents.value.push("喜欢听的风格");
-    s1.value = currentMessage.value.content.split("风格为");
-    s2.value = s1.value[1].split("。");
-    s.value = s2.value[0];
-    contents.value.push(s.value);
-    // 您最常听的歌手是s，
-    s1.value = currentMessage.value.content.split("您最常听的歌手是");
-    s2.value = s1.value[1].split("，");
-    s.value = s2.value[0];
-    contents.value.push(s.value);
+    s1.value = s.value[0].split("您最常听的歌曲是");
+    contents.value.push(s1.value[1]);
+    contents.value.push(s.value[1]);
+
+    // 您最常听的歌手是_，共听过他/她的_首歌曲，分别是_
+    s.value = sen.value[2].split("，");
     contents.value.push("最喜爱的歌手");
-    // 共听过他/她的s首歌曲
-    s1.value = currentMessage.value.content.split("共听过他/她的");
-    s2.value = s1.value[1].split("首歌曲");
-    s.value = s2.value[0];
-    contents.value.push("听过他/她的" + s.value + "首歌曲");
+    s1.value = s.value[0].split("您最常听的歌手是");
+    contents.value.push(s1.value[1]);
+    contents.value.push(s.value[1]);
+    s1.value = s.value[2].split("分别是");
+    contents.value.push(s1.value[1]);
+
+    // 您喜欢听的歌曲风格为流行, 国语, 安静
+    s.value = sen.value[3].split("，");
+    contents.value.push("喜欢听的风格");
+    s1.value = s.value[0].split("您喜欢听的歌曲风格为");
+    contents.value.push(s1.value[1]);
+
+    // 祝您生活愉快！
+    contents.value.push(sen.value[4]);
   }
-  console.log(contents.value)
+  // 您在2024-05-05至2024-05-12这段时间内，共上传歌曲2首，创建歌单1个。您上传的歌曲有Blueming, 梅香如故。您创建的歌单有修改。您上传的歌曲共获得4个喜欢，创建的歌单共获得0个收藏。祝您创作愉快！
+      // 创作周报
+  else if (currentMessage.value.title === "创作周报") {
+
+  }
 }
 
 function readMessage(id) {
@@ -149,7 +156,8 @@ onMounted(getSystemMessages)
         <div class="stat">
           <div class="stat-title my-2">{{contents[6]}}</div>
           <div class="stat-value text-warning">{{contents[7]}}</div>
-<!--          <div class="stat-desc my-2">共播放37次</div>-->
+          <div class="stat-desc my-2">{{contents[8]}}</div>
+          <div class="stat-desc text-primary">{{contents[9]}}</div>
         </div>
 
         <div class="stat">
@@ -157,9 +165,9 @@ onMounted(getSystemMessages)
             <div class="avatar online">
             </div>
           </div>
-          <div class="stat-value">{{contents[8]}}</div>
-          <div class="stat-title">{{contents[9]}}</div>
-          <div class="stat-desc text-secondary">{{contents[10]}}</div>
+          <div class="stat-value">{{contents[10]}}</div>
+          <div class="stat-title">{{contents[11]}}</div>
+          <div class="stat-desc text-secondary">{{contents[12]}}</div>
         </div>
 
       </div>
