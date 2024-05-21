@@ -1,5 +1,13 @@
 <template>
   <div class="w-full bg-zinc-900 flex h-full">
+    <!-- 提示框 -->
+    <div role="alert" class="alert alert-info fixed top-10" v-if="showAlert">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="stroke-current shrink-0 w-6 h-6">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+      </svg>
+      <span>{{text}}</span>
+    </div>
 
     <!-- component -->
     <div class="w-full mx-auto overflow-hidden flex">
@@ -42,11 +50,11 @@
         </header>
 
         <!-- Chat Messages -->
-        <div class="overflow-y-auto p-4 pb-8 no-scrollbar flex flex-col" style="height: 580px">
+        <div class="overflow-y-auto p-4 pb-8 flex flex-col" style="height: 580px" ref="listContainer">
           <!-- 私聊消息 -->
           <div v-for="(message, index) in DetailMessage" :key="index">
             <!-- Incoming Message -->
-            <div class="chat chat-start" v-if="message.sender!==username" @mouseover="showDelete(index)" @mouseleave="removeDelete(index)">
+            <div class="chat chat-start" v-if="message.sender!==username">
               <div class="chat-image avatar">
                 <div class="w-10 rounded-full">
                   <img alt="User Avatar" :src="message.message_cover"/>
@@ -57,13 +65,13 @@
                 <time class="text-xs opacity-50">{{ messageStore.ChangeTime(message.send_date) }}</time>
               </div>
               <div class="chat-bubble">{{ message.content }}</div>
-              <div class="chat-footer opacity-50 flex">
-                <div class="my-0.5">{{ message.is_read ? '已读' : '未读' }}</div>
+              <div class="chat-footer opacity-50">
+                {{ message.is_read ? '已读' : '未读' }}
               </div>
             </div>
 
             <!-- Outgoing Message -->
-            <div class="chat chat-end" v-if="message.sender===username" @mouseover="showDelete(index)" @mouseleave="removeDelete(index)">
+            <div class="chat chat-end" v-if="message.sender===username">
               <div class="chat-image avatar">
                 <div class="w-10 rounded-full">
                   <img alt="My Avatar" :src="message.message_cover"/>
@@ -73,27 +81,9 @@
                 {{ message.sender }}
                 <time class="text-xs opacity-50">{{ messageStore.ChangeTime(message.send_date) }}</time>
               </div>
-              <div class="chat-bubble chat-bubble-accent dropdown dropdown-hover">{{ message.content }}</div>
-              <div class="chat-footer opacity-50 flex">
-                <div class="mx-2 mt-0.5">
-                  <svg class="icon fill-red-500" viewBox="0 0 1024 1024"
-                       xmlns="http://www.w3.org/2000/svg"
-                       width="18" height="18" @click.stop="DeleteMessage(index)" v-if="ShowDelete===index">
-                    <path
-                        d="M607.897867 768.043004c-17.717453 0-31.994625-14.277171-31.994625-31.994625L575.903242 383.935495c0-17.717453 14.277171-31.994625 31.994625-31.994625s31.994625 14.277171 31.994625 31.994625l0 351.94087C639.892491 753.593818 625.61532 768.043004 607.897867 768.043004z"
-                    ></path>
-                    <path
-                        d="M415.930119 768.043004c-17.717453 0-31.994625-14.277171-31.994625-31.994625L383.935495 383.935495c0-17.717453 14.277171-31.994625 31.994625-31.994625 17.717453 0 31.994625 14.277171 31.994625 31.994625l0 351.94087C447.924744 753.593818 433.647573 768.043004 415.930119 768.043004z"
-                    ></path>
-                    <path
-                        d="M928.016126 223.962372l-159.973123 0L768.043004 159.973123c0-52.980346-42.659499-95.983874-95.295817-95.983874L351.94087 63.989249c-52.980346 0-95.983874 43.003528-95.983874 95.983874l0 63.989249-159.973123 0c-17.717453 0-31.994625 14.277171-31.994625 31.994625s14.277171 31.994625 31.994625 31.994625l832.032253 0c17.717453 0 31.994625-14.277171 31.994625-31.994625S945.73358 223.962372 928.016126 223.962372zM319.946246 159.973123c0-17.545439 14.449185-31.994625 31.994625-31.994625l320.806316 0c17.545439 0 31.306568 14.105157 31.306568 31.994625l0 63.989249L319.946246 223.962372 319.946246 159.973123 319.946246 159.973123z"
-                    ></path>
-                    <path
-                        d="M736.048379 960.010751 288.123635 960.010751c-52.980346 0-95.983874-43.003528-95.983874-95.983874L192.139761 383.591466c0-17.717453 14.277171-31.994625 31.994625-31.994625s31.994625 14.277171 31.994625 31.994625l0 480.435411c0 17.717453 14.449185 31.994625 31.994625 31.994625l448.096758 0c17.717453 0 31.994625-14.277171 31.994625-31.994625L768.215018 384.795565c0-17.717453 14.277171-31.994625 31.994625-31.994625s31.994625 14.277171 31.994625 31.994625l0 479.231312C832.032253 916.835209 789.028725 960.010751 736.048379 960.010751z"
-                    ></path>
-                  </svg>
-                </div>
-                <div class="my-0.5">{{ message.is_read ? '已读' : '未读' }}</div>
+              <div class="chat-bubble chat-bubble-accent">{{ message.content }}</div>
+              <div class="chat-footer opacity-50">
+                {{ message.is_read ? '已读' : '未读' }}
               </div>
             </div>
           </div>
@@ -126,9 +116,10 @@
         <footer class="p-4 bg-zinc-900 flex" v-if="ShowMessageDetail">
           <div class="flex items-center my-auto w-full">
             <input type="text" placeholder="Type a message..." v-model="SendContent"
-                   class="w-full p-2 rounded-md border border-gray-400 focus:outline-none focus:border-blue-500">
+                   class="w-full p-2 rounded-md border border-gray-400 focus:outline-none focus:border-blue-500"
+                   @keydown.enter="sendMsg">
             <!--            <button class="bg-indigo-500 text-white px-4 py-2 rounded-md ml-2" @click="sendMsg">Send</button>-->
-            <button class="btn btn-outline btn-success px-4 py-2 ml-2" @click="sendMsg" @keydown.enter="sendMsg">发送
+            <button class="btn btn-outline btn-success px-4 py-2 ml-2" @click="sendMsg">发送(S)
             </button>
           </div>
         </footer>
@@ -139,7 +130,7 @@
 </template>
 
 <script setup>
-import {onMounted, defineModel, ref} from "vue";
+import {onMounted, defineModel, ref, onUpdated} from "vue";
 import axios from "axios";
 import {useMessageStore} from "@/stores/message.js";
 
@@ -151,6 +142,8 @@ const username = defineModel("username");
 const Chats = ref([]);
 // 聊天详细信息
 const DetailMessage = ref([]);
+// 当前聊天对象
+const chat_index = ref(-1);
 
 const friend = ref('');
 
@@ -161,8 +154,15 @@ const loading1 = ref(false);
 // 发送内容
 const SendContent = ref('');
 
-//控制显示删除
-const ShowDelete = ref(-1);
+// 显示提示框
+const showAlert = ref(false);
+const text = ref('');
+// onMounted(() => {
+//   setTimeout(() => {
+//     showAlert.value = false;
+//   }, 3000);
+// });
+
 const GetChats = () => {
   const instance = axios.create({
     baseURL: 'http://182.92.100.66:5000',
@@ -185,6 +185,7 @@ const GetChats = () => {
 
 const GetDetailMessage = (index) => {
   const friend_name = Chats.value[index].friend;
+  chat_index.value = index;
   getMsg(friend_name);
 }
 
@@ -211,6 +212,9 @@ const getMsg = (friend_in) => {
         friend.value = friend_in;
         loading.value = false;
         readMsg();
+        // 设置聊天框最近消息
+        Chats.value[chat_index.value].last_message =
+            DetailMessage.value[DetailMessage.value.length - 1];
       })
       .catch(error => {
         console.log(error.response.data);
@@ -220,6 +224,8 @@ const getMsg = (friend_in) => {
 const sendMsg = () => {
   if (SendContent.value === '') {
     alert('发送内容不能为空');
+    // text.value = '发送内容不能为空';
+    // showAlert.value = true;
     return;
   }
   const instance = axios.create({
@@ -246,7 +252,7 @@ const sendMsg = () => {
 
 const userFollow = (index) => {
   const formData = new FormData();
-  formData.append('username', ShowedMessage.value[index].sender);
+  formData.append('username', Chats.value[index].friend);
   const instance = axios.create({
     baseURL: 'http://182.92.100.66:5000',
     timeout: 5000,
@@ -274,30 +280,13 @@ const readMsg = () => {
     }
   }
 }
-const showDelete = (index) => {
-  ShowDelete.value = index;
-}
-const removeDelete = (index) => {
-  if(ShowDelete.value === index) {
-    ShowDelete.value = -1;
-  }
-}
-async function DeleteMessage(index) {
-  console.log(token.value);
-  try
-  {
-    console.log(DetailMessage.value);
-    if(await messageStore.deleteMessage(DetailMessage.value[index].id, token.value)) {
-      alert("删除成功");
-    }
-    else {
-      throw new Error("删除失败");
-    }
-  } catch (error) {
-    alert("删除失败");
-  }
-}
 onMounted(GetChats);
+// 实现自动滚动到底部
+const listContainer = ref(null);
+
+onUpdated(() => {
+  listContainer.value.scrollTop = listContainer.value.scrollHeight;
+});
 </script>
 
 <style>
