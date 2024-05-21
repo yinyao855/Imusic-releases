@@ -319,10 +319,9 @@ onMounted(getSonglistData);
 
   <transition name="slide" appear>
     <div class="transition-container-2" v-if="showSharePage">
-      <SharePage v-model:shareType="shareType"
-                 v-model:id="currentUserSongList.id" v-model:title="currentUserSongList.title"
-                 @closeSharePage="closeSharePage"
-                 v-model:token="token" v-model:username="username"></SharePage>
+      <SharePage v-model:id="currentUserSongList.id" v-model:title="currentUserSongList.title"
+          @closeSharePage="closeSharePage"
+          v-model:token="token" v-model:username="username"></SharePage>
     </div>
   </transition>
 
@@ -352,7 +351,8 @@ onMounted(getSonglistData);
               <!--          分享歌单-->
               <div class="cursor-pointer h-8 w-8 p-1 bg-gray-300 hover:bg-green-500 rounded-lg tooltip tooltip-left"
                    data-tip="分享">
-                <svg @click="activeSharePage" class="h-6 w-6 align-top text-green-600 hover:text-green-800" width="24" height="24"
+                <svg @click="activeSharePage" class="h-6 w-6 align-top text-green-600 hover:text-green-800" width="24"
+                     height="24"
                      viewBox="0 0 24 24" stroke-width="2"
                      stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
                   <path stroke="none" d="M0 0h24v24H0z"/>

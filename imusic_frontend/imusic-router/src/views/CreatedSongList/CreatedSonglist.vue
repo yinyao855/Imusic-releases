@@ -369,8 +369,7 @@ onMounted(getSonglistData);
 
   <transition name="slide" appear>
     <div class="transition-container-2" v-if="showSharePage">
-      <SharePage v-model:shareType="shareType"
-                 v-model:id="currentUserSongList.id" v-model:title="currentUserSongList.title"
+      <SharePage v-model:id="currentUserSongList.id" v-model:title="currentUserSongList.title"
                  @closeSharePage="closeSharePage"
                  v-model:token="token" v-model:username="username"></SharePage>
     </div>

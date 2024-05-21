@@ -338,7 +338,7 @@ onMounted(getSubscribeUser);
           style="width:50px">
         <li class="">
           <!--          投诉歌单-->
-          <div class="cursor-pointer h-8 w-8 p-1 bg-gray-300 hover:bg-yellow-500 rounded-lg tooltip tooltip-left"
+          <div class="mt-3 cursor-pointer h-8 w-8 p-1 bg-gray-300 hover:bg-yellow-500 rounded-lg tooltip tooltip-left"
                data-tip="投诉">
             <svg @click="activeShowComplaint"
                  class="h-6 w-6 align-top text-yellow-600 hover:text-yellow-800" width="24" height="24"

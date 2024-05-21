@@ -81,12 +81,13 @@ const Savemessage = () => {
 
 <template>
   <div class="w-full h-full">
-    <div class="h-1/3 flex bg-zinc-700">
-      <img :src="userdata.avatar" alt="用户头像" class="aspect-square my-auto mx-10 h-4/5 rounded-2xl">
-      <div class="h-4/5 my-auto">
+    <div class="h-1/3 bg-zinc-700">
+      <img :src="userdata.avatar" alt="用户头像" class="aspect-square my-auto mx-10 h-4/5 rounded-2xl inline-block mt-6">
+      <div class="h-4/5 my-auto inline-block">
         <p class="text-white text-4xl my-4">{{ userdata.username }}</p>
         <p class="text-base text-white my-6">注册时间：{{ userdata.registration_date }}</p>
       </div>
+      <button class="btn btn-info btn-md float-right mt-3 mx-3">使用分享码</button>
     </div>
     <div class="text-white text-xl w-3/5 mx-auto my-4">
       个人简介：

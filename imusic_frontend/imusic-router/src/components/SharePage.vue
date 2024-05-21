@@ -5,8 +5,7 @@ import axios from "axios";
 
 const token = defineModel('token')
 const username = defineModel('username')
-const shareType = defineModel('shareType')
-const id = defineModel('id')
+const songListId = defineModel('id')
 const title = defineModel('title')
 const userFriends = ref([]);
 const hasFriends = ref(false);
@@ -29,9 +28,10 @@ function sendPostShare(user) {
   });
   axios.defaults.withCredentials = true;
   const formData = new FormData();
-  formData.append('type', '0');
+  formData.append('type', '1');
   formData.append('friend', user);
-  instance.post('/share/' + shareType.value, formData)
+  formData.append('songlist_id', songListId.value);
+  instance.post('/share/songlist', formData)
       .then(response => {
         if(response.data.success === true) {
           alert("分享成功")
@@ -53,8 +53,9 @@ function getShareCode() {
   });
   axios.defaults.withCredentials = true;
   const formData = new FormData();
-  formData.append('type', '1');
-  instance.post('/share/' + shareType.value, formData)
+  formData.append('type', '2');
+  formData.append('songlist_id', songListId.value);
+  instance.post('/share/songlist', formData)
       .then(response => {
         shareCode.value = response.data.data;
       })
@@ -92,8 +93,7 @@ onMounted(getUserFriends)
                     v-model:token="token"></buttonchangesize>
   <div class="w-2/3 m-auto">
     <div class="w-full h-32 flex">
-      <div v-if="shareType==='likesongs'" class="text-4xl text-white text-center m-auto">分享歌曲： {{ title }}</div>
-      <div v-if="shareType==='songlist'" class="text-4xl text-white text-center m-auto">分享歌单： {{ title }}</div>
+      <div class="text-4xl text-white text-center m-auto">分享歌单： {{ title }}</div>
     </div>
     <div>
       <div class="w-full h-32 flex" v-if="!hasFriends">
