@@ -220,8 +220,8 @@
           <input type="text" class="input bg-zinc-900" placeholder="请输入单句歌词" v-model="lyric.text">
         </div>
         <div type="button"
-             class="h-[31px] col-span-1 m-auto border-radius rounded-full mx-auto focus:outline-none focus:shadow-outline hover:bg-gray-300 transition cursor-pointer"
-             @click="deleteline(index)">
+             class="h-[31px] col-span-1 m-auto border-radius rounded-full mx-auto focus:outline-none focus:shadow-outline hover:bg-gray-300 transition cursor-pointer tooltip tooltip-right"
+             @click="deleteline(index)" data-tip="删除本行">
           <svg class="icon" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg"
                width="32" height="32">
             <path
@@ -231,8 +231,8 @@
         </div>
       </div>
       <div type="button"
-           class="h-[31px] border-radius rounded-full mx-auto focus:outline-none focus:shadow-outline fill-blue-500 hover:bg-gray-500 hover:fill-white transition cursor-pointer"
-           @click="addline">
+           class="h-[31px] border-radius rounded-full mx-auto focus:outline-none focus:shadow-outline fill-blue-500 hover:bg-gray-500 hover:fill-white transition cursor-pointer tooltip tooltip-right"
+           @click="addline" data-tip="添加一行">
         <svg class="icon" viewBox="0 0 1025 1024" xmlns="http://www.w3.org/2000/svg"
              width="32" height="32">
           <path

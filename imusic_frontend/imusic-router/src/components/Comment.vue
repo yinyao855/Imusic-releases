@@ -1,9 +1,6 @@
 <script setup>
 import {defineEmits, defineModel, onMounted, ref, watch} from "vue";
 import axios from "axios";
-import Warning from "@/components/Warning.vue";
-
-const emit = defineEmits(['fullsize', 'togglePlay', 'update', 'back', 'next']);
 
 const token = defineModel('token')
 const showComment = defineModel('showComment');
@@ -24,7 +21,7 @@ const addComment = () => {
   formData.append('content', addCommentInfo.value);
   const instance = axios.create({
     baseURL: 'http://182.92.100.66:5000',
-    timeout: 5000, // 设置请求超时时间
+    timeout: 5000,
     headers: {
       'Authorization': `Bearer ${token.value}`,
     }
@@ -40,9 +37,6 @@ const addComment = () => {
         console.log(error.data);
       })
 }
-const props = defineProps({
-  id: String,
-});
 const getSongComment = () => {
   const instance = axios.create({
     baseURL: 'http://182.92.100.66:5000',
@@ -176,7 +170,7 @@ function followUser(index) {
 
   const instance = axios.create({
     baseURL: 'http://182.92.100.66:5000',
-    timeout: 5000, // 设置请求超时时间
+    timeout: 5000,
     headers: {
       'Authorization': `Bearer ${token.value}`,
     }
@@ -214,6 +208,9 @@ onMounted(() => {
   getSongComment();
   console.log(token.value);
 })
+watch(songID, () => {
+  getSongComment();
+})
 </script>
 
 <template>
@@ -231,7 +228,7 @@ onMounted(() => {
             v-for="(item, index) in Comment" :key="index">
           <div class="icon aspect-square fill-white ml-1 mr-1 mt-1 row-start-1 col-start-1 w-10 h-10">
             <button class="rounded-full w-10 h-10"><img class="rounded-full w-10 h-10" :src="userImage[index]" alt=""></button>
-          <div class="my-0 font-thin ml-7 -mt-2  relative" v-if="sameUser[index]===false">
+          <div class="my-0 font-thin ml-7 -mt-4  relative" v-if="sameUser[index]===false">
             <button class="hover:-translate-y-0.1 tooltip overflow-visible" @click="followUser(index)" :data-tip="tip(index)">
               <svg t="1715907551136" class="icon" v-if="addUser[index]===true" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2927"
                    width="14" height="14"><path d="M512 1024C229.238154 1024 0 794.761846 0 512S229.238154 0 512 0s512 229.238154 512 512-229.238154 512-512 512z m236.307692-551.384615H551.384615V275.692308a39.384615 39.384615 0 1 0-78.76923 0v196.923077H275.692308a39.384615 39.384615 0 1 0 0 78.76923h196.923077v196.923077a39.384615 39.384615 0 1 0 78.76923 0V551.384615h196.923077a39.384615 39.384615 0 0 0 0-78.76923z" fill="#13227a" p-id="2928"></path></svg>
