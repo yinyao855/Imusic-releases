@@ -100,12 +100,12 @@ function activeShowSystemMessage(index) {
     contents.value[1] = "创作周报";
     contents.value[2] = s3.value;
     s1.value = s.value[1].split("共")
-    contents.value[3] = s1.value[1];
+    contents.value[4] = s1.value[1];
     contents.value[7] = s.value[2];
 
     // 您上传的歌曲有Blueming, 梅香如故
     s1.value = sen.value[1].split("您上传的歌曲有")
-    contents.value[4] = s1.value[1];
+    contents.value[5] = s1.value[1];
 
     // 您创建的歌单有修改。
     contents.value[9] = sen.value[2];
@@ -113,7 +113,7 @@ function activeShowSystemMessage(index) {
     // 您上传的歌曲共获得4个喜欢，创建的歌单共获得0个收藏
     s.value = sen.value[3].split("，");
     s1.value = s.value[0].split("您上传的歌曲")
-    contents.value[5] = s1.value[1];
+    contents.value[3] = s1.value[1];
     s1.value = s.value[1].split("创建的歌单")
     contents.value[6] = s1.value[1];
 
