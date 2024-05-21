@@ -239,8 +239,8 @@ const CloseSongPage=()=>{
               <td @click="handlePlayNow(HotSongs[index].id);">{{ item.duration }}</td>
               <th>
                 <div
-                    class="dropdown dropdown-left dropdown-end my-auto tooltip transition duration-400 hover:bg-gray-600/40 bg-zinc-900 btn btn-sm border-none"
-                    data-tip="详细信息">
+                    class="dropdown dropdown-left my-auto tooltip transition duration-400 hover:bg-gray-600/40 bg-zinc-900 btn btn-sm border-none"
+                    data-tip="详细信息" :class="index>2 ? 'dropdown-end':''">
                   <svg class="icon" viewBox="0 0 1024 1024"
                        xmlns="http://www.w3.org/2000/svg"
                        width="32" height="32" tabindex="0" role="button">
@@ -352,8 +352,8 @@ const CloseSongPage=()=>{
               <td @click="handlePlayNow(HomePageRecommendLatest[index].id);">{{ item.duration }}</td>
               <th>
                 <div
-                    class="dropdown dropdown-left dropdown-end my-auto tooltip transition duration-400 hover:bg-gray-600/40 bg-zinc-900 btn btn-sm border-none"
-                    data-tip="详细信息">
+                    class="dropdown dropdown-left my-auto tooltip transition duration-400 hover:bg-gray-600/40 bg-zinc-900 btn btn-sm border-none"
+                    data-tip="详细信息" :class="index>2 ? 'dropdown-end':''">
                   <svg class="icon" viewBox="0 0 1024 1024"
                        xmlns="http://www.w3.org/2000/svg"
                        width="32" height="32" tabindex="0" role="button">
