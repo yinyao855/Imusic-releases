@@ -7,15 +7,13 @@
 <script setup>
 import SystemNotifications from "@/views/Message/SystemNotifications.vue";
 import CommentNotifications from "@/views/Message/CommentNotifications.vue";
-import SubscribeNotifications from "@/views/Message/SubscribeNotifications.vue";
-import PrivateNotifications from "@/views/Message/PrivateNotifications.vue";
 import AppealNotifications from "@/views/Message/AppealNotifications.vue";
 import ComplainNotifications from "@/views/Message/ComplainNotifications.vue";
 import NavTab from "@/components/NavTab.vue";
 import {computed, defineEmits, ref} from "vue";
 
 import {useUserStore} from "@/stores/user.js";
-import Private_Message from "@/views/Message/Private_Message.vue";
+import PrivateMessage from "@/views/Message/PrivateMessage.vue";
 import {useMessageStore} from "@/stores/message.js";
 
 const userStore = useUserStore();
@@ -39,7 +37,7 @@ function handlePlayNow(id) {
 const tabs = [
   '系统通知',
   '评论通知',
-  '私信',
+  '我的私信',
   '投诉通知',
   '申诉通知'
 ];
@@ -47,7 +45,7 @@ const tabs = [
 const components = [
   SystemNotifications,
   CommentNotifications,
-  Private_Message,
+  PrivateMessage,
   ComplainNotifications,
   AppealNotifications,
 ];

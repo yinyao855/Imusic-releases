@@ -1,13 +1,5 @@
 <template>
   <div class="w-full bg-zinc-900 flex h-full">
-    <!-- 提示框 -->
-    <div role="alert" class="alert alert-info fixed top-10" v-if="showAlert">
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="stroke-current shrink-0 w-6 h-6">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-              d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-      </svg>
-      <span>{{text}}</span>
-    </div>
 
     <!-- component -->
     <div class="w-full mx-auto overflow-hidden flex">
@@ -133,6 +125,7 @@
 import {onMounted, defineModel, ref, onUpdated} from "vue";
 import axios from "axios";
 import {useMessageStore} from "@/stores/message.js";
+import MyAlert from "@/js/MyAlert.js";
 
 const messageStore = useMessageStore();
 
@@ -153,15 +146,6 @@ const loading1 = ref(false);
 
 // 发送内容
 const SendContent = ref('');
-
-// 显示提示框
-const showAlert = ref(false);
-const text = ref('');
-// onMounted(() => {
-//   setTimeout(() => {
-//     showAlert.value = false;
-//   }, 3000);
-// });
 
 const GetChats = () => {
   const instance = axios.create({
@@ -223,9 +207,7 @@ const getMsg = (friend_in) => {
 
 const sendMsg = () => {
   if (SendContent.value === '') {
-    alert('发送内容不能为空');
-    // text.value = '发送内容不能为空';
-    // showAlert.value = true;
+    MyAlert({type: 'alert-warning', text: '发送内容不能为空'})
     return;
   }
   const instance = axios.create({
