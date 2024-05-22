@@ -8,6 +8,7 @@ import Buttonchangesize from "@/components/ButtonChangeSizeRight.vue";
 import EditSonglist from "@/views/EditSonglist.vue";
 import Other_User_Data from "@/views/Explore/Other_User_Data.vue";
 import SharePage from "@/components/SharePage.vue";
+import MyAlert from "@/js/MyAlert.js";
 
 // global variables
 const token = defineModel('token')
@@ -207,7 +208,7 @@ function deleteSonglist() {
   instance.delete('/songlists/delete/' + currentSonglistId.value)
       .then(function (response) {
         if (response.data.success === true) {
-          window.alert("歌单删除成功");
+          MyAlert({type: 'alert-info', text: '删除歌单成功'});
           changesize();
         }
       })
@@ -260,7 +261,7 @@ function deleteFromSongList(index) {
   instance.post('/songlists/delsong', formData)
       .then(response => {
         console.log(response.data);
-        alert('歌曲删除成功');
+        MyAlert({type: 'alert-info', text: '删除歌曲成功'});
       })
       .catch(error => {
         console.log(error.response.data);
@@ -298,7 +299,7 @@ function activeSelect() {
 
 function finishSelect() {
   if (needtoaddSongid.value.length === 0) {
-    alert("还未选择歌曲");
+    MyAlert({type: 'alert-warning', text: '还未选择歌曲'});
     return;
   }
   showSelect.value = false;

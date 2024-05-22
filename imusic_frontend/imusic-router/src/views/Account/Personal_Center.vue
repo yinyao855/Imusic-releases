@@ -2,6 +2,7 @@
 import {computed, defineModel, ref} from "vue"
 import axios from "axios";
 import Upload_Area from "@/components/Upload_Area.vue";
+import MyAlert from "@/js/MyAlert.js";
 
 const token = defineModel('token')
 const emits = defineEmits(['updateavatar'])
@@ -55,7 +56,7 @@ const Savemessage = () => {
         console.log(response.data.message);
         if (response.data.success === true) {
           updateavatar();
-          alert('保存成功');
+          MyAlert({type: 'alert-info', text: '保存成功'});
           const webx = '/users/info/' + username.value;
           const instance = axios.create({
             baseURL: 'http://182.92.100.66:5000',
@@ -93,7 +94,7 @@ function getShare() {
   instance.post("/share/handle", formData)
       .then(response => {
         if (response.data.success === true) {
-          alert("接受分享成功")
+          MyAlert({type: 'alert-info', text: '接受分享成功'});
         }
       })
       .catch(error => {

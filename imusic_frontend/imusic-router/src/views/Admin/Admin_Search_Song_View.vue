@@ -2,6 +2,7 @@
 import {defineEmits, onMounted, ref} from "vue";
 import axios from "axios";
 import buttonchangesize from "@/components/ButtonChangeSizeRight.vue"
+import MyAlert from "@/js/MyAlert.js";
 
 const Songs = ref([]);
 const token = defineModel('token');
@@ -22,7 +23,7 @@ const DeleteSong = (index) => {
       .then(response => {
         console.log(response.data);
         if (response.data.success === true) {
-          alert('删除成功');
+          MyAlert({type: 'alert-info', text: '删除成功'});
           refresh();
         }
       })

@@ -2,6 +2,7 @@
 // 修改歌单信息界面
 import {defineModel, ref} from "vue";
 import axios from "axios";
+import MyAlert from "@/js/MyAlert.js";
 
 // global variables
 const token = defineModel('token')
@@ -89,7 +90,7 @@ function sendEditSonglist(id) {
   instance.post('/songlists/update/' + id, formData)
       .then(function (response) {
         if (response.data.success === true) {
-          window.alert("修改成功");
+          MyAlert({type: 'alert-info', text: '修改成功'})
           CloseEditSongList();
         }
       })

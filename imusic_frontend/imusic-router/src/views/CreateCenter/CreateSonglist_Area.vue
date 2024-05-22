@@ -3,6 +3,7 @@ import {defineModel, ref} from "vue";
 import axios from "axios";
 import P from "particles.vue3";
 import Warning from "@/components/Warning.vue";
+import MyAlert from "@/js/MyAlert.js";
 
 const title = ref("");
 const introduction = ref("");
@@ -90,7 +91,7 @@ function sendPostCreateSonglist() {
       .then(function (response) {
         if (response.data.success === true) {
           console.log(response);
-          alert("创建成功");
+          MyAlert({type: 'alert-info', text: '创建成功'});
         }
       })
       .catch(function (error) {

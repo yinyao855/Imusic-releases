@@ -3,6 +3,7 @@ import {defineModel, onMounted, ref} from "vue"
 import axios from "axios";
 import buttonchangesize from './ButtonChangeSizeRight.vue'
 import CreateSongList from "@/views/CreatedSongList/CreateSongList.vue";
+import MyAlert from "@/js/MyAlert.js";
 
 const needtoaddSongid = defineModel('needtoaddSongid')
 const needtoaddSongs = ref([]);
@@ -18,7 +19,7 @@ function addtosonglist(index) {
   for (let i = 0; i < length.value; i++) {
     add(index, needtoaddSongid.value[i]);
   }
-  alert("歌曲添加成功")
+  MyAlert({type: 'alert-info', text: '歌曲添加成功'})
 }
 
 const add = (index, songid) => {

@@ -9,6 +9,7 @@ const SongId = defineModel('SongId');
 const token = defineModel('token');
 const Song = ref([]);
 import buttonchangesize from '@/components/ButtonChangeSizeRight.vue'
+import MyAlert from "@/js/MyAlert.js";
 
 const GetSongData = () => {
   console.log(SongId);
@@ -220,11 +221,11 @@ const submitSong = () => {
     },
   })
       .then(response => {
-        alert('上传成功');
+        MyAlert({type: 'alert-info', text: '上传成功'});
         console.log(response.data);
       })
       .catch(error => {
-        alert('上传失败');
+        MyAlert({type: 'alert-error', text: '上传失败'});
         console.error(error.response ? error.response : error);
       });
 }

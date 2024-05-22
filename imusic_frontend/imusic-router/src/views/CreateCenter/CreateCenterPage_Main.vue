@@ -6,6 +6,7 @@ import EditSong from "@/views/EditSong.vue";
 import SongPage from "@/components/SongPage.vue";
 import Search_View from "@/views/HomePage/Search_View.vue";
 import CreateSonglist_Area from "@/views/CreateCenter/CreateSonglist_Area.vue";
+import MyAlert from "@/js/MyAlert.js";
 
 const NaviMode = ref('1');
 const upload = ref('0');
@@ -87,7 +88,7 @@ function deleteSong(songid) {
   instance.delete('/songs/delete/' + songid)
       .then(function (response) {
         if (response.data.success === true) {
-          window.alert("delete success");
+          MyAlert({type: 'alert-info', text: '删除成功'});
         }
       })
       .catch(function (error) {

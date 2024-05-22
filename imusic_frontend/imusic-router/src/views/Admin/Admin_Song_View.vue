@@ -3,6 +3,7 @@ import axios from "axios";
 import Admin_Update_Song_Page from "@/views/Admin/Admin_Update_Song_Page.vue";
 import {defineEmits, ref} from "vue";
 import Personal_Center from "@/views/Account/Personal_Center.vue";
+import MyAlert from "@/js/MyAlert.js";
 
 const Songs = defineModel('Songs');
 const token = defineModel('token');
@@ -24,7 +25,7 @@ const DeleteSong = (index) => {
       .then(response => {
         console.log(response.data);
         if (response.data.success === true) {
-          alert('删除成功');
+          MyAlert({type: 'alert-info', text: '删除成功'});
           let length = Songs.value.length;
           for (let i = 0; i < length; ++i) {
             if (Songs.value[i].id === SongId) {

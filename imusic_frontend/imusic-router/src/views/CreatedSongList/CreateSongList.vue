@@ -2,6 +2,7 @@
 import {defineModel, ref} from "vue";
 import ButtonChangeSizeRight from "@/components/ButtonChangeSizeRight.vue";
 import axios from "axios";
+import MyAlert from "@/js/MyAlert.js";
 
 const title = ref("");
 const introduction = ref("");
@@ -85,7 +86,7 @@ function sendPostCreateSonglist() {
   instance.post('/songlists/create', formData)
       .then(function (response) {
         if (response.data.success === true) {
-          alert("创建成功");
+          MyAlert({type: 'alert-info', text: '创建成功'});
           SongListId.value=response.data.id;
           const instance = axios.create({
             baseURL: 'http://182.92.100.66:5000',

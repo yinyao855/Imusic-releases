@@ -2,6 +2,7 @@
 import buttonchangesize from "@/components/ButtonChangeSizeRight.vue";
 import {defineModel, onMounted, ref} from "vue";
 import axios from "axios";
+import MyAlert from "@/js/MyAlert.js";
 
 const token = defineModel('token')
 const username = defineModel('username')
@@ -41,7 +42,7 @@ function sendPostAppeal() {
   instance.post('/complaints/appeal', formData)
       .then(function (response) {
         if (response.data.success === true) {
-          alert("申述成功");
+          MyAlert({type: 'alert-info', text: '申述成功'})
           closeAppeal();
         }
       })

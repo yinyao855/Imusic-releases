@@ -1,6 +1,7 @@
 <script setup>
 import {defineEmits, defineModel, onMounted, ref, watch} from "vue";
 import axios from "axios";
+import MyAlert from "@/js/MyAlert.js";
 
 const token = defineModel('token')
 const showComment = defineModel('showComment');
@@ -13,8 +14,7 @@ const message = defineModel('message');
 const addComment = () => {
   const formData = new FormData();
   if (addCommentInfo.value === '') {
-    WarningShow.value = true;
-    message.value = '评论不能为空';
+    MyAlert({type: 'alert-warning', text: '评论不能为空'})
     return;
   }
   formData.append('songID', songID.value);
@@ -30,7 +30,7 @@ const addComment = () => {
   instance.post('/comments/add', formData)
       .then(response => {
         addCommentInfo.value = '';
-        alert('评论成功');
+        MyAlert({type: 'alert-info', text: '评论成功'})
         getSongComment();
       })
       .catch(error => {
@@ -113,8 +113,7 @@ const deleteComment = (index) => {
     }
   })
       .then((response) => {
-
-        alert('删除成功');
+        MyAlert({type: 'alert-info', text: '删除成功'});
         getSongComment();
       })
       .catch((error) => {
@@ -182,11 +181,11 @@ function followUser(index) {
         initCheckFollow();
         if(response.data.message==='加关注成功')
         {
-          alert('关注成功');
+          MyAlert({type: 'alert-info', text: '关注成功'})
           addUser[index]=false;
         }
         else {
-          alert('取消关注成功');
+          MyAlert({type: 'alert-info', text: '取消关注成功'})
           addUser[index]=true;
         }
 

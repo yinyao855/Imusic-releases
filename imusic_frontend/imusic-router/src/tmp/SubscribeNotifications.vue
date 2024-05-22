@@ -5,6 +5,7 @@ import Message_Detail from "@/views/Message/Message_Detail.vue";
 import ButtonChangeSizeRight from "@/components/ButtonChangeSizeRight.vue";
 
 import {useMessageStore} from "@/stores/message.js";
+import MyAlert from "@/js/MyAlert.js";
 const messageStore = useMessageStore();
 
 const token = defineModel("token");
@@ -204,7 +205,7 @@ function addFollow(index) {
         if(response.data.message==='加关注成功')
         {
           followMutual.value[index]=true;
-          alert('关注成功');
+          MyAlert({type: 'alert-info', text: '关注成功'})
 
           ShowMessage.value=true;
 
@@ -212,7 +213,7 @@ function addFollow(index) {
         }
         else {
           followMutual.value[index]=false;
-          alert('取消关注成功');
+          MyAlert({type: 'alert-info', text: '取消关注成功'});
         }
       })
       .catch(error => {

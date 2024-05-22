@@ -2,6 +2,7 @@
 import {onMounted, ref} from "vue";
 import axios from "axios";
 import buttonchangesize from '@/components/ButtonChangeSizeRight.vue'
+import MyAlert from "@/js/MyAlert.js";
 
 const token = defineModel('token');
 const UserId = defineModel('UserId');
@@ -33,10 +34,10 @@ const submitdata=()=>{
       .then(response=>{
         if(response.data.success===true){
           emits('UpdateUserData',role.value);
-          alert('用户权限修改成功');
+          MyAlert({type: 'alert-info', text: '用户权限修改成功'});
         }
         else{
-          alert('用户权限修改失败');
+          MyAlert({type: 'alert-error', text: '用户权限修改失败'});
         }
       })
       .catch(error=>{

@@ -1,6 +1,7 @@
 <script setup>
 import {defineModel, defineEmits, ref, watch} from "vue"
 import axios from "axios";
+import MyAlert from "@/js/MyAlert.js";
 
 const username = defineModel('username')
 const SendContent = ref('');
@@ -9,7 +10,7 @@ const emits=defineEmits(['GetMessage']);
 const CanChat=defineModel('CanChat')
 const SendOperation = () => {
   if(SendContent.value===''){
-    alert('发送内容不能为空');
+    MyAlert({type: 'alert-warning', text: '发送内容不能为空'})
     return;
   }
   const instance = axios.create({

@@ -4,6 +4,7 @@ import {defineEmits, ref} from "vue";
 import Admin_Update_SongList_Page from "@/views/Admin/Admin_Update_SongList_Page.vue";
 import P from "particles.vue3";
 import Search_View from "@/views/HomePage/Search_View.vue";
+import MyAlert from "@/js/MyAlert.js";
 
 const SongLists = defineModel('SongLists');
 const token = defineModel('token');
@@ -24,7 +25,7 @@ const DeleteSongList = (index) => {
       .then(response => {
         console.log(response.data);
         if (response.data.success === true) {
-          alert('删除成功');
+          MyAlert({type: 'alert-info', text: '删除成功'});
           refresh();
         }
       })

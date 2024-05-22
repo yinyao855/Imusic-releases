@@ -7,6 +7,7 @@ import Comment from "@/components/Comment.vue";
 import CurrentUser_SongList from "@/components/CurrentUser_SongList.vue";
 import Complaint from "@/components/Complaint.vue";
 import Warning from "@/components/Warning.vue";
+import MyAlert from "@/js/MyAlert.js";
 
 // global variables
 const token = defineModel('token')
@@ -263,7 +264,7 @@ function handleSubscribeUser() {
     return;
   }
   if (isMe.value === true) {
-    alert("不能关注自己");
+    MyAlert({type: 'alert-warning', text: '不允许关注自己'})
     return;
   }
   const instance = axios.create({

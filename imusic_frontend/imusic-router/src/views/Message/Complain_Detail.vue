@@ -6,6 +6,7 @@ import axios from "axios";
 import SongPageForShow from "@/components/SongPageForShow.vue";
 import SongListPageForShow from "@/components/SongListPageForShow.vue";
 import Input from "@/components/Input.vue";
+import MyAlert from "@/js/MyAlert.js";
 
 const token = defineModel('token')
 const username = defineModel('username')
@@ -41,7 +42,7 @@ const getComplaintDetail = () => {
 const HandleComplaint = () => {
   const formData = new FormData();
   if (reason.value === '') {
-    alert('请输入处理理由');
+    MyAlert({type: 'alert-warning', text: '请输入处理理由'});
     return;
   }
   formData.append('is_remove', is_remove.value);
@@ -61,7 +62,7 @@ const HandleComplaint = () => {
         console.log(is_remove.value)
         reason.value = '';
         console.log(response.data);
-        alert('处理成功');
+        MyAlert({type: 'alert-info', text: '处理成功'});
         closeComplaint();
       })
       .catch(error => {

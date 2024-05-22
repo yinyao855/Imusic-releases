@@ -5,6 +5,7 @@ import axios from "axios";
 import Complain_Detail from "@/views/Message/Complain_Detail.vue";
 import Appeal_Detail from "@/views/Message/Appeal_Detail.vue";
 import AppealNotice from "@/views/Message/AppealNotice.vue";
+import MyAlert from "@/js/MyAlert.js";
 
 const messageStore = useMessageStore();
 
@@ -94,10 +95,12 @@ async function DeleteMessage(index) {
   console.log(token.value);
   try {
     await messageStore.deleteMessage(Message.value[index].id, token.value);
-    alert("删除成功");
+    MyAlert({type: 'alert-info', text: '删除成功'});
 
   } catch (error) {
-    alert("删除失败");
+    MyAlert({type: 'alert-error', text: '删除失败'});
+    messageStore.getMessage(token.value);
+    getAppealMessages();
   }
 }
 onMounted(getAppealMessages)

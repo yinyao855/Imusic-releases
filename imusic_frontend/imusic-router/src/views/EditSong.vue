@@ -3,6 +3,7 @@ import P from "particles.vue3";
 import axios from "axios";
 import {defineEmits, onMounted, ref} from "vue";
 import Buttonchangesize from "@/components/ButtonChangeSizeRight.vue";
+import MyAlert from "@/js/MyAlert.js";
 
 // global variables
 const token = defineModel('token')
@@ -224,11 +225,11 @@ const editSong = () => {
     },
   })
       .then(response => {
-        alert('上传成功');
+        MyAlert({type: 'alert-info', text: '上传成功'});
         console.log(response.data);
       })
       .catch(error => {
-        alert('上传失败');
+        MyAlert({type: 'alert-info', text: '上传失败'});
         console.error(error.response ? error.response : error);
       });
 }

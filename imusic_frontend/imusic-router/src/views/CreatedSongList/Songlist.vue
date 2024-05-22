@@ -9,6 +9,7 @@ import EditSonglist from "@/views/EditSonglist.vue";
 import Other_User_Data from "@/views/Explore/Other_User_Data.vue";
 import Complaint from "@/components/Complaint.vue";
 import SharePage from "@/components/SharePage.vue";
+import MyAlert from "@/js/MyAlert.js";
 
 // global variables
 const HasLogin = defineModel('HasLogin');
@@ -237,7 +238,7 @@ function activeSelect() {
 
 function finishSelect() {
   if (needtoaddSongid.value.length === 0) {
-    alert("还未选择歌曲");
+    MyAlert({type: 'alert-warning', text: '还未选择歌曲'});
     return;
   }
   showSelect.value = false;

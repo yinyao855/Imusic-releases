@@ -8,6 +8,7 @@ import {useMessageStore} from "@/stores/message.js";
 import Complaint from "@/components/Complaint.vue";
 import Appeal from "@/components/Appeal.vue";
 import Complain_Detail from "@/views/Message/Complain_Detail.vue";
+import MyAlert from "@/js/MyAlert.js";
 
 const messageStore = useMessageStore();
 
@@ -77,12 +78,12 @@ async function activeComplaintMessage(index) {
     if (s.value.length === 1) { // 投诉歌单
       if(await getSonglistInformation(allId.value[index]))
       {
-        alert("歌单已被下架，暂时无法查看");
+        MyAlert({type: 'alert-warning', text: '歌曲已被下架，暂时无法查看'});
         return;
       }
       if(image.value[index] === undefined)
       {
-        alert("歌单已被下架，暂时无法查看");
+        MyAlert({type: 'alert-warning', text: '歌曲已被下架，暂时无法查看'});
         return;
       }
       title.value = getTitle(index);
@@ -90,12 +91,13 @@ async function activeComplaintMessage(index) {
     } else if (s.value.length === 2) { // 投诉歌曲
       if(await getSongInformation(allId.value[index]))
       {
-        alert("歌曲已被下架，暂时无法查看");
+        MyAlert({type: 'alert-warning', text: '歌曲已被下架，暂时无法查看'});
         return;
       }
       if(image.value[index] === undefined)
       {
-        alert("歌曲已被下架，暂时无法查看");
+        MyAlert({type: 'alert-warning', text: '歌曲已被下架，暂时无法查看'});
+
         return;
       }
       title.value = getTitle(index);
@@ -253,10 +255,12 @@ async function DeleteMessage(index) {
   console.log(token.value);
   try {
     await messageStore.deleteMessage(Message.value[index].id, token.value);
-    alert("删除成功");
+    MyAlert({type: 'alert-info', text: '删除成功'});
+    messageStore.getMessage(token.value);
 
   } catch (error) {
-    alert("删除失败");
+    MyAlert({type: 'alert-error', text: '删除失败'});
+    messageStore.getMessage(token.value);
   }
 }
 onMounted(getData)

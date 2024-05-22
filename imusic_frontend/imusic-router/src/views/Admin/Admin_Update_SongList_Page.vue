@@ -2,6 +2,7 @@
 import {defineEmits, defineModel, onMounted, ref} from "vue"
 import axios from "axios";
 import Buttonchangesize from "@/components/ButtonChangeSizeRight.vue";
+import MyAlert from "@/js/MyAlert.js";
 
 const SongList = ref([]);
 const token = defineModel('token');
@@ -72,10 +73,10 @@ const SubmitData = () => {
   instance.post('/songlists/update/' + SongListId.value, formData)
       .then(response => {
         if (response.data.success === true) {
-          alert('更新成功');
+          MyAlert({type: 'alert-info', text: '更新成功'});
           IsEditing.value = false;
         } else {
-          alert('更新失败');
+          MyAlert({type: 'alert-error', text: '更新失败'});
         }
       })
       .catch(error => {
@@ -163,7 +164,7 @@ const DeleteSongFromSongList = (index) => {
               break;
             }
           }
-          alert("删除完成");
+          MyAlert({type: 'alert-info', text: '删除成功'});
         }
       })
       .catch(error => {

@@ -7,6 +7,7 @@ import SongPage from "@/components/SongPage.vue";
 import Buttonchangesize from "@/components/ButtonChangeSizeRight.vue";
 import EditSonglist from "@/views/EditSonglist.vue";
 import CreatedSonglist from "@/views/CreatedSongList/CreatedSonglist.vue";
+import MyAlert from "@/js/MyAlert.js";
 
 // global variables
 const token = defineModel('token')
@@ -150,7 +151,7 @@ function addFavoriteSonglist() {
       .then(function (response) {
         if (response.data.success === true) {
           isFavoriteSonglist.value = true;
-          window.alert("success");
+          MyAlert({type: 'alert-info', text: '收藏成功'});
         }
       })
       .catch(function (error) {
@@ -174,7 +175,7 @@ function deleteFavoriteSonglist() {
       .then(function (response) {
         if (response.data.success === true) {
           isFavoriteSonglist.value = false;
-          window.alert("success");
+          MyAlert({type: 'alert-info', text: '取消收藏成功'});
         }
       })
       .catch(function (error) {
@@ -213,7 +214,7 @@ function deleteFromSongList(index) {
   instance.post('/songlists/delsong', formData)
       .then(response => {
         console.log(response.data);
-        alert('歌曲删除成功');
+        MyAlert({type: 'alert-info', text: '歌曲删除成功'});
       })
       .catch(error => {
         console.log(error.response.data);

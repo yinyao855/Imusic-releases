@@ -2,6 +2,7 @@
 import buttonchangesize from "@/components/ButtonChangeSizeRight.vue";
 import {defineModel, onMounted, ref} from "vue";
 import axios from "axios";
+import MyAlert from "@/js/MyAlert.js";
 
 const token = defineModel('token')
 const username = defineModel('username')
@@ -62,7 +63,7 @@ function sendPostComplaint() {
     idType.value = 'songlist_id';
   }
   if (owner.value === username.value) {
-    alert("不允许投诉自己");
+    MyAlert({type: 'alert-warning', text: '不允许投诉自己'})
     return;
   }
   const formData = new FormData();
@@ -79,7 +80,7 @@ function sendPostComplaint() {
   instance.post('/' + complaintType.value + '/complaint', formData)
       .then(function (response) {
         if (response.data.success === true) {
-          alert("投诉成功");
+          MyAlert({type: 'alert-info', text: '投诉成功'})
           closeComplaint();
         }
       })

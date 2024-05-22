@@ -190,12 +190,32 @@ export const useMessageStore = defineStore('message', () => {
                 return false;
             })
     }
-
+    function getMessage(token){
+        const instance = axios.create({
+            baseURL: 'http://182.92.100.66:5000',
+            timeout: 5000, // 设置请求超时时间
+            headers: {
+                'Authorization': `Bearer ${token}`,
+            }
+        });
+        axios.defaults.withCredentials = true;
+        const web = '/messages/';
+        instance.get(web)
+            .then(response => {
+                const msg = response.data.data;
+                setMessage(msg);
+                console.log(msg);
+            })
+            .catch(error => {
+                console.log(error.response.data);
+            })
+    };
     return {
         Message,
         setMessage,
         readMessage,
         refreshMessage,
+        getMessage,
         ChangeTime,
         deleteMessage,
         unReads,

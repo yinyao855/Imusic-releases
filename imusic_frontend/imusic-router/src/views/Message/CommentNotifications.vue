@@ -5,6 +5,7 @@ import SongPage from "@/components/SongPage.vue";
 
 // 从store中获取数据
 import {useMessageStore} from "@/stores/message.js";
+import MyAlert from "@/js/MyAlert.js";
 const messageStore = useMessageStore();
 
 const token = defineModel("token");
@@ -103,10 +104,12 @@ async function DeleteMessage(index) {
   console.log(token.value);
   try {
     await messageStore.deleteMessage(Message.value[index].id, token.value);
-    alert("删除成功");
+    MyAlert({type: 'alert-info', text: '删除成功'});
+    messageStore.getMessage(token.value);
 
   } catch (error) {
-    alert("删除失败");
+    MyAlert({type: 'alert-warning', text: '删除失败'});
+    messageStore.getMessage(token.value);
   }
 }
 

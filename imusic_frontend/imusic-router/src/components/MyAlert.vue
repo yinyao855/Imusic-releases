@@ -6,7 +6,7 @@ const props = defineProps({
 </script>
 
 <template>
-  <div class="fixed top-5 left-1/2" style="transform: translate(-50%)">
+  <div class="fixed top-5 left-1/2" style="transform: translate(-50%);z-index: 9999;">
     <div role="alert" :class="['alert', 'shadow-lg', type]">
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="stroke-current shrink-0 w-6 h-6">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"

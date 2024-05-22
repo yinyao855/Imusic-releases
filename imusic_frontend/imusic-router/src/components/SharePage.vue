@@ -2,6 +2,7 @@
 import buttonchangesize from "@/components/ButtonChangeSizeRight.vue";
 import {defineModel, onMounted, ref} from "vue";
 import axios from "axios";
+import MyAlert from "@/js/MyAlert.js";
 
 const token = defineModel('token')
 const username = defineModel('username')
@@ -34,12 +35,12 @@ function sendPostShare(user) {
     instance.post('/share/likesongs', formData)
         .then(response => {
           if (response.data.success === true) {
-            alert("分享成功")
+            MyAlert({type: 'alert-info', text: '分享成功'})
           }
         })
         .catch(error => {
           console.log(error.response.data);
-          alert("分享失败")
+          MyAlert({type: 'alert-error', text: '分享失败'})
         })
   }
   // 分享歌单
@@ -51,12 +52,12 @@ function sendPostShare(user) {
     instance.post('/share/songlist', formData)
         .then(response => {
           if (response.data.success === true) {
-            alert("分享成功")
+            MyAlert({type: 'alert-info', text: '分享成功'})
           }
         })
         .catch(error => {
           console.log(error.response.data);
-          alert("分享失败")
+          MyAlert({type: 'alert-error', text: '分享失败'})
         })
   }
 }
@@ -82,7 +83,7 @@ function getShareCode() {
         })
         .catch(error => {
           console.log(error.response.data);
-          alert("分享失败")
+          MyAlert({type: 'alert-error', text: '分享失败'})
         })
   }
   // 分享歌单

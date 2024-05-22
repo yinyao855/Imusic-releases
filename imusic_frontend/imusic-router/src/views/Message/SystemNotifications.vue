@@ -8,6 +8,7 @@ const username = defineModel("username");
 
 // 处理消息
 import {useMessageStore} from "@/stores/message.js";
+import MyAlert from "@/js/MyAlert.js";
 const messageStore = useMessageStore();
 const Message = ref(computed(() => messageStore.MessageType1));
 const currentMessage = ref([]);
@@ -137,10 +138,12 @@ async function DeleteMessage(index) {
   console.log(token.value);
   try {
     await messageStore.deleteMessage(Message.value[index].id, token.value);
-    alert("删除成功");
+    MyAlert({type: 'alert-info', text: '删除成功'});
+    messageStore.getMessage(token.value);
 
   } catch (error) {
-    alert("删除失败");
+    MyAlert({type: 'alert-error', text: '删除失败'});
+    messageStore.getMessage(token.value);
   }
 }
 onMounted(getSystemMessages)
