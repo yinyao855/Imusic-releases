@@ -103,7 +103,8 @@ onMounted(getUserFriends)
       <dialog id="my_modal_2" class="modal">
         <div class="modal-box bg-gray-300 text-center p-12">
           <h3 class="font-bold text-2xl text-gray-700 inline-block">分享码：</h3>
-          <p class="text-cyan-600 text-xl inline-block">{{shareCode}}</p>
+          <p class="text-cyan-600 text-xl inline-block" style="font-size: 30px">{{shareCode}}</p>
+          <div class="text-gray-400 mt-5 ml-1" style="font-size: 14px">分享码时效为一天，请在【个人主页】中使用分享码</div>
         </div>
         <form method="dialog" class="modal-backdrop">
           <button>close</button>

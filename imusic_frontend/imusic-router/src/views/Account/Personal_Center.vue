@@ -3,11 +3,12 @@ import {computed, defineModel, ref} from "vue"
 import axios from "axios";
 import Upload_Area from "@/components/Upload_Area.vue";
 
-const token=defineModel('token')
+const token = defineModel('token')
 const emits = defineEmits(['updateavatar'])
 const userdata = defineModel('userdata');
 const HasLogin = defineModel('HasLogin')
 const username = defineModel('username');
+const shareCode = ref("");
 const Avatar = ref(null);
 const AvatarHasChanged = ref(false);
 const userrole = computed(() => {
@@ -18,12 +19,12 @@ const userrole = computed(() => {
   }
 })
 
-const CountNotRead=defineModel('CountNotRead');
+const CountNotRead = defineModel('CountNotRead');
 
 const changeHasLogin = () => {
   username.value = '点击登录'
   HasLogin.value = !HasLogin.value;
-  CountNotRead.value=0;
+  CountNotRead.value = 0;
   localStorage.removeItem('user-info');
 }
 
@@ -77,18 +78,53 @@ const Savemessage = () => {
         console.log(error.response.data);
       })
 }
+
+function getShare() {
+  const instance = axios.create({
+    baseURL: 'http://182.92.100.66:5000',
+    timeout: 5000, // 设置请求超时时间
+    headers: {
+      'Authorization': `Bearer ${token.value}`,
+    }
+  });
+  const formData = new FormData();
+  formData.append('code', shareCode.value);
+  axios.defaults.withCredentials = true;
+  instance.post("/share/handle", formData)
+      .then(response => {
+        if (response.data.success === true) {
+          alert("接受分享成功")
+        }
+      })
+      .catch(error => {
+        console.log(error.response.data);
+      })
+}
 </script>
 
 <template>
   <div class="w-full h-full">
     <div class="h-1/3 bg-zinc-700">
-      <img :src="userdata.avatar" alt="用户头像" class="aspect-square my-auto mx-10 h-4/5 rounded-2xl inline-block mt-6">
+      <img :src="userdata.avatar" alt="用户头像"
+           class="aspect-square my-auto mx-10 h-4/5 rounded-2xl inline-block mt-6">
       <div class="h-4/5 my-auto inline-block">
         <p class="text-white text-4xl my-4">{{ userdata.username }}</p>
         <p class="text-base text-white my-6">注册时间：{{ userdata.registration_date }}</p>
       </div>
-      <button class="btn btn-info btn-md float-right mt-3 mx-3">使用分享码</button>
+      <button class="btn btn-info btn-md float-right mt-3 mx-3" onclick="my_modal_2.showModal()">使用分享码</button>
     </div>
+    <dialog id="my_modal_2" class="modal">
+      <div class="modal-box bg-gray-300">
+        <h3 class="font-bold text-2xl text-gray-700">分享码：</h3>
+        <input class="w-4/5 text-cyan-600 text-xl p-2 inline-block align-middle mr-5 rounded-md"
+               v-model="shareCode" placeholder="请输入分享码"/>
+        <button class="btn btn-info mt-5 inline-block" @click="getShare">获取</button>
+        <div class="text-cyan-600 mt-1 ml-1" style="font-size: 12px">分享码时效为一天，接受分享成功后，请在【收藏的歌单】中查看</div>
+      </div>
+      <form method="dialog" class="modal-backdrop">
+        <button>close</button>
+      </form>
+    </dialog>
     <div class="text-white text-xl w-3/5 mx-auto my-4">
       个人简介：
       <div class="inputForm bg-zinc-900 my-2">
@@ -125,7 +161,8 @@ const Savemessage = () => {
         <input type="text" class="input bg-zinc-900" placeholder="" v-model="userdata.email" readonly>
       </div>
     </div>
-    <Upload_Area v-model:avatar="Avatar" v-model:AvatarHasChanged="AvatarHasChanged" v-model:token="token"></Upload_Area>
+    <Upload_Area v-model:avatar="Avatar" v-model:AvatarHasChanged="AvatarHasChanged"
+                 v-model:token="token"></Upload_Area>
 
     <div
         class="w-1/5 bg-blue-600 hover:bg-blue-800 transition ease-in duration-300 my-6 mx-auto rounded-md h-10 text-white text-center tracking-widest items-center flex justify-center"
