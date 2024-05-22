@@ -27,6 +27,16 @@ const ChangeSongList = () => {
   emits('ChangeSongList', SingerData.value.id);
 }
 
+
+const gettime = (time) => {
+  const minute = Math.floor(time / 60);
+  const second = Math.floor(time - minute * 60);
+  if (second < 10) {
+    return `${minute}:0${second}`;
+  }
+  return `${minute}:${second}`;
+}
+
 const addToSongList = (index) => {
   emits('addToSongList', SingerData.value.songs[index].id);
 }
@@ -102,6 +112,9 @@ const GetInitData=()=>{
       .then(response=>{
         SingerData.value=response.data.data;
         console.log(response.data.data);
+        for(let i=0;i<SingerData.value.songs.length;++i){
+          SingerData.value.songs[i].duration=gettime(SingerData.value.songs[i].duration);
+        }
       })
       .catch(error=>{
         console.log(error.response.data);
