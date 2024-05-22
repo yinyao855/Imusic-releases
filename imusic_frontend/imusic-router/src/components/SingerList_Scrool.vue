@@ -5,10 +5,10 @@
       <div class="flex-gro-0 flex-shrink-0  h-3/4 mx-8" v-for="(SongList, index) in SongLists" :key="index"
            @click="HandleIndex(index)">
         <div class="relative h-full cursor-pointer">
-          <img :src="SongList.cover" :alt="`Slide ${index}`" class="h-full rounded-full aspect-square"/>
+          <img :src="SongList.singerImage" :alt="`Slide ${index}`" class="h-full rounded-full aspect-square"/>
           <div class="absolute inset-0 bg-gray-500 opacity-0 hover:opacity-50 transition-opacity rounded-full"></div>
         </div>
-        <div class="text-center text-white my-2">{{ SongList.title }}</div>
+        <div class="text-center text-white my-2">{{ SongList.singerName }}</div>
       </div>
     </div>
     <button class="swiper-button-prev btn left-2.5" @click="prevSlide">&lt;</button>
@@ -19,7 +19,8 @@
 <script setup>
 import {ref, computed, onMounted, onUnmounted, defineModel} from 'vue';
 
-const SongLists = defineModel('songlists')
+const SongLists = defineModel('singerlist')
+const emits=defineEmits(['ActiveSingerDetail'])
 const currentIndex = ref(0);
 const imgWidth = 230; // 轮播图图片宽度，根据实际调整
 const transitionTime = 500; // 动画过渡时间，毫秒
@@ -48,7 +49,7 @@ const index = defineModel('index');
 
 const HandleIndex = (CurrentIndex) => {
   index.value = SongLists.value[CurrentIndex].id;
-  console.log(index.value)
+  emits('ActiveSingerDetail',index.value)
 }
 
 let intervalId;

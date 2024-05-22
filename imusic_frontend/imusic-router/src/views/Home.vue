@@ -498,7 +498,6 @@ const CloseWarning = () => {
 }
 
 const PlayLikeSongs = () => {
-  console.log('ok');
   const instance = axios.create({
     baseURL: 'http://182.92.100.66:5000',
     timeout: 5000, // 设置请求超时时间
@@ -514,6 +513,7 @@ const PlayLikeSongs = () => {
   })
       .then(response => {
         musicList.value = response.data.data;
+        MusicPlayer_Cell_Ref.value.initCurrentMusic(musicList.value[0]);
         datax.value = response.data.data;
       })
       .catch(error => {
@@ -556,6 +556,27 @@ const ShowForget = ref(false);
 const ChangeForgetMode = () => {
   ShowForget.value = !ShowForget.value;
   console.log(ShowForget.value);
+}
+
+const PlaySingerSongs=(index)=>{
+  const instance = axios.create({
+    baseURL: 'http://182.92.100.66:5000',
+    timeout: 5000, // 设置请求超时时间
+    headers: {
+      'Authorization': `Bearer ${token.value}`,
+    }
+  });
+  axios.defaults.withCredentials = true;
+  const web = '/singer/getsongs/' + index;
+  instance.get(web)
+      .then(response => {
+        musicList.value = response.data.data.songs;
+        MusicPlayer_Cell_Ref.value.initCurrentMusic(musicList.value[0]);
+        datax.value = response.data.data.songs;
+      })
+      .catch(error => {
+        console.log(error.response.data);
+      })
 }
 
 /*----------------------------------------*/
@@ -639,7 +660,7 @@ onMounted(autoLogin);
                        v-model:songlistlast="songlistlast" v-model:HomePageRecommendLatest="HomePageRecommendLatest"
                        v-model:token="token" v-model:SongListId="SongListId"
                        @changesonglist="changesonglist" @PlaySongList="PlaySongList"
-                       v-model:HotSongs="HotSongs"></HomePage_Main>
+                       v-model:HotSongs="HotSongs" @PlaySingerSongs="PlaySingerSongs"></HomePage_Main>
         <ExplorePage_Main v-model:username="username" v-if="mode==='2'" v-model:token="token"
                           @handlePlayNow="handlePlayNow" @handlePlayAfter="handlePlayAfter"></ExplorePage_Main>
         <SettingPage_Main v-if="mode==='3'" v-model:token="token" v-model:username="username"></SettingPage_Main>

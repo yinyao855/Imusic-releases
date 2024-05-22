@@ -1,5 +1,5 @@
 <script setup>
-import {computed, ref, defineModel, defineEmits} from "vue";
+import {computed, ref, defineModel, defineEmits, onMounted} from "vue";
 import Search from "@/components/Search.vue";
 import Image_Scrool from "@/components/SongList_Scrool.vue";
 import SingerList_Scrool from "@/components/SingerList_Scrool.vue";
@@ -9,8 +9,9 @@ import axios from "axios";
 import Search_View from "@/views/HomePage/Search_View.vue";
 import CurrentUser_SongList from "@/components/CurrentUser_SongList.vue";
 import SongPage from "@/components/SongPage.vue";
+import Singer_View from "@/views/HomePage/Singer_View.vue";
 
-const emits = defineEmits(['changesonglist', 'handlePlayNow', 'handlePlayAfter', 'PlaySongList', 'refreshNewest_Songs_Page', 'SearchOperation']);
+const emits = defineEmits(['PlaySingerSongs','changesonglist', 'handlePlayNow', 'handlePlayAfter', 'PlaySongList', 'refreshNewest_Songs_Page', 'SearchOperation']);
 const HasLogin = defineModel('HasLogin')
 const songlistlast = defineModel('songlistlast')
 const username = defineModel('username')
@@ -128,14 +129,44 @@ const ShowSongDetail=(index)=>{
   NeedShowSongDetail.value=true;
 }
 
+const singerlist=ref([]);
+
 const CloseSongPage=()=>{
   NeedShowSongDetail.value=false;
 }
+
+const GetSingerList=()=>{
+  console.log("ok");
+  axios.get('http://182.92.100.66:5000/feature/hotsingers')
+      .then(response=>{
+        singerlist.value=response.data.data;
+      })
+      .catch(error=>{
+        console.log(error.response.data);
+      })
+}
+
+const ShowSingerDetail=ref(false);
+const SingerId=ref(0);
+
+const ActiveSingerDetail=(index)=>{
+  ShowSingerDetail.value=true;
+  SingerId.value=index;
+}
+
+const PlaySingerSongs=(index)=>{
+  emits('PlaySingerSongs',index);
+}
+
+const CloseSingerPage=()=>{
+  ShowSingerDetail.value=false;
+}
+onMounted(GetSingerList)
 </script>
 
 <template>
   <transition name="slide" appear>
-    <div class="transition-container-2" v-if="NeedShowSongDetail">
+    <div class="transition-container-2" v-if="!ShowSingerDetail&&NeedShowSongDetail">
       <SongPage  v-model:currentSongId="SongId"
                  @handlePlayNow="handlePlayNow" @CloseSong="CloseSongPage"
                  v-model:username="username" v-model:token="token" v-model:HasLogin="HasLogin"></SongPage>
@@ -144,7 +175,7 @@ const CloseSongPage=()=>{
 
 
   <transition name="slide" appear>
-    <div class="transition-container-2" v-if="ShowSearchView&&!ShowCurrentUser_SongList&&!NeedShowSongDetail">
+    <div class="transition-container-2" v-if="!ShowSingerDetail&&ShowSearchView&&!ShowCurrentUser_SongList&&!NeedShowSongDetail">
       <Search_View v-if="ShowSearchView&&!ShowCurrentUser_SongList" v-model:songlistlast="songlistsearch"
                    v-model:username="username"
                    @handlePlayNow="handlePlayNow" v-model:userlike="userlike"
@@ -155,7 +186,7 @@ const CloseSongPage=()=>{
 
 
   <transition name="slide" appear>
-    <div class="transition-container-2" v-if="ShowCurrentUser_SongList&&!NeedShowSongDetail">
+    <div class="transition-container-2" v-if="!ShowSingerDetail&&ShowCurrentUser_SongList&&!NeedShowSongDetail">
       <CurrentUser_SongList v-if="ShowCurrentUser_SongList" v-model:CurrentUser_SongListdata="CurrentUser_SongListdata"
                             v-model:needtoaddSongid="needtoaddSongid" v-model:username="username"
                             @CloseCurrentUser_SongList="CloseCurrentUser_SongList" v-model:token="token"></CurrentUser_SongList>
@@ -163,16 +194,27 @@ const CloseSongPage=()=>{
   </transition>
 
   <transition name="slide" appear>
-    <div class="transition-container z-50 ml-8" v-if="needshowsonglistpage&&!NeedShowSongDetail&&!ShowSearchView&&!ShowCurrentUser_SongList">
+    <div class="transition-container z-50 ml-8" v-if="!ShowSingerDetail&&needshowsonglistpage&&!NeedShowSongDetail&&!ShowSearchView&&!ShowCurrentUser_SongList">
       <SongList_Page class="w-screen mb-32" v-model:songlist="songlist" v-model:username="username"
                      v-model:userlike="userlike"
                      @changesize="changesize" @handlePlayAfter="handlePlayAfter" @handlePlayNow="handlePlayNow"
                      @addToSongList="addToSongList" v-model:index="index" v-model:HasLogin="HasLogin"
-                     @ChangeSongList="PlaySongList" v-model:token="token" v-model:SongListId="SongListId"></SongList_Page>
+                     @ChangeSongList="PlaySongList" v-model:token="token"></SongList_Page>
     </div>
   </transition>
+
+
+  <transition name="slide" appear>
+    <div class="transition-container z-50 ml-8" v-if="ShowSingerDetail&&!needshowsonglistpage&&!NeedShowSongDetail&&!ShowSearchView&&!ShowCurrentUser_SongList">
+      <Singer_View class="w-screen mb-32" v-model:SingerId="SingerId" v-model:username="username"
+                     @changesize="CloseSingerPage" @handlePlayAfter="handlePlayAfter" @handlePlayNow="handlePlayNow"
+                     @addToSongList="addToSongList" v-model:index="index" v-model:HasLogin="HasLogin"
+                     @ChangeSongList="PlaySingerSongs" v-model:token="token" v-model:SongListId="SongListId"></Singer_View>
+    </div>
+  </transition>
+
   <div class="w-full h-16 pl-6 fixed bg-zinc-900 z-50"
-       v-if="!needshowsonglistpage&&!ShowSearchView&&!ShowCurrentUser_SongList&&!NeedShowSongDetail">
+       v-if="!ShowSingerDetail&&!needshowsonglistpage&&!ShowSearchView&&!ShowCurrentUser_SongList&&!NeedShowSongDetail">
     <div :class="[NaviClass1, 'text-transition']" @click="changeNaviMode(1);" style="line-height: 56px">推 荐</div>
     <div :class="[NaviClass2, 'text-transition']" @click="changeNaviMode(2);refresh()" style="line-height: 56px">
       最新上传
@@ -182,25 +224,25 @@ const CloseSongPage=()=>{
   <Newest_Songs_Page @handlePlayNow="handlePlayNow" @handlePlayAfter="handlePlayAfter"
                      v-model:songlistlast="songlistlast"
                      v-model:username="username" v-model:userlike="userlike"
-                     v-if="NaviMode!=='1'&&!needshowsonglistpage&&!NeedShowSongDetail&&!ShowSearchView&&!ShowCurrentUser_SongList" @addToSongList="addToSongList"
+                     v-if="!ShowSingerDetail&&NaviMode!=='1'&&!needshowsonglistpage&&!NeedShowSongDetail&&!ShowSearchView&&!ShowCurrentUser_SongList" @addToSongList="addToSongList"
                      class="text-2xl mb-32 mx-4 text-white font-serif font-bold mt-16 ml-8 z-50" v-model:token="token"></Newest_Songs_Page>
   <div class="text-2xl mx-4 text-white font-serif font-bold mt-16 ml-8  cursor-default"
-       v-if="NaviMode==='1'&&!needshowsonglistpage&&!ShowSearchView&&!ShowCurrentUser_SongList&&!NeedShowSongDetail">
+       v-if="!ShowSingerDetail&&NaviMode==='1'&&!needshowsonglistpage&&!ShowSearchView&&!ShowCurrentUser_SongList&&!NeedShowSongDetail">
     歌单
   </div>
   <Image_Scrool v-model:songlists="songlists" v-model:index="index" @changesonglist="changesonglist"
-                v-if="NaviMode==='1'&&!NeedShowSongDetail&&!needshowsonglistpage&&!ShowSearchView&&!ShowCurrentUser_SongList" v-model:token="token"></Image_Scrool>
+                v-if="!ShowSingerDetail&&NaviMode==='1'&&!NeedShowSongDetail&&!needshowsonglistpage&&!ShowSearchView&&!ShowCurrentUser_SongList" v-model:token="token"></Image_Scrool>
   <hr class="m-5 border-gray-500"
-      v-if="NaviMode==='1'&&!NeedShowSongDetail&&!needshowsonglistpage&&!ShowSearchView&&!ShowCurrentUser_SongList">
+      v-if="!ShowSingerDetail&&NaviMode==='1'&&!NeedShowSongDetail&&!needshowsonglistpage&&!ShowSearchView&&!ShowCurrentUser_SongList">
   <div class="text-2xl mx-4 text-white font-serif font-bold ml-8  cursor-default"
-       v-if="NaviMode==='1'&&!needshowsonglistpage&&!NeedShowSongDetail&&!ShowSearchView&&!ShowCurrentUser_SongList">
+       v-if="!ShowSingerDetail&&NaviMode==='1'&&!needshowsonglistpage&&!NeedShowSongDetail&&!ShowSearchView&&!ShowCurrentUser_SongList">
     推荐艺人
   </div>
-  <SingerList_Scrool v-model:songlists="songlists"
-                     v-if="NaviMode==='1'&&!NeedShowSongDetail&&!needshowsonglistpage&&!ShowSearchView&&!ShowCurrentUser_SongList" v-model:token="token"></SingerList_Scrool>
+  <SingerList_Scrool v-model:singerlist="singerlist" @ActiveSingerDetail="ActiveSingerDetail"
+                     v-if="!ShowSingerDetail&&NaviMode==='1'&&!NeedShowSongDetail&&!needshowsonglistpage&&!ShowSearchView&&!ShowCurrentUser_SongList" v-model:token="token"></SingerList_Scrool>
   <hr class="m-5 border-gray-500"
-      v-if="NaviMode==='1'&&!NeedShowSongDetail&&!needshowsonglistpage&&!ShowSearchView&&!ShowCurrentUser_SongList">
-  <div class="mx-4 mb-32" v-if="NaviMode==='1'&&!NeedShowSongDetail&&!needshowsonglistpage&&!ShowSearchView&&!ShowCurrentUser_SongList">
+      v-if="!ShowSingerDetail&&NaviMode==='1'&&!NeedShowSongDetail&&!needshowsonglistpage&&!ShowSearchView&&!ShowCurrentUser_SongList">
+  <div class="mx-4 mb-32" v-if="!ShowSingerDetail&&NaviMode==='1'&&!NeedShowSongDetail&&!needshowsonglistpage&&!ShowSearchView&&!ShowCurrentUser_SongList">
     <div class="grid grid-cols-2 gap-4">
       <div class="grid-col-2">
         <div class="text-2xl mx-8 text-white font-serif font-bold my-4 cursor-default">热门单曲</div>

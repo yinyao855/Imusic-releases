@@ -32,9 +32,9 @@ const username = defineModel('username');
 
 const deletelike = (index) => {
   const formData = new FormData();
-  LikeSongs.value.splice(index, 1);
   formData.append('username', username.value);
   formData.append('song_id', LikeSongs.value[index].id);
+  LikeSongs.value.splice(index, 1);
   const instance = axios.create({
     baseURL: 'http://182.92.100.66:5000',
     timeout: 5000, // 设置请求超时时间
@@ -89,6 +89,7 @@ const GetUserLike = () => {
         for (let i = 0; i < length; ++i) {
           LikeSongs.value[i].duration = gettime(LikeSongs.value[i].duration)
         }
+        console.log(LikeSongs.value);
       })
       .catch(error => {
         console.log(error.response.data);
