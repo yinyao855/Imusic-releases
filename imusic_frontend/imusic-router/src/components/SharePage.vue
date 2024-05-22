@@ -7,12 +7,11 @@ const token = defineModel('token')
 const username = defineModel('username')
 const songListId = defineModel('id')
 const title = defineModel('title')
+const shareType = defineModel('shareType')
 const userFriends = ref([]);
 const hasFriends = ref(false);
 const shareCode = ref("");
 const emits = defineEmits(["closeComplaint"])
-
-const content = ref("");
 
 function closeSharePage() {
   emits('closeSharePage');
@@ -27,20 +26,39 @@ function sendPostShare(user) {
     }
   });
   axios.defaults.withCredentials = true;
-  const formData = new FormData();
-  formData.append('type', '1');
-  formData.append('friend', user);
-  formData.append('songlist_id', songListId.value);
-  instance.post('/share/songlist', formData)
-      .then(response => {
-        if(response.data.success === true) {
-          alert("分享成功")
-        }
-      })
-      .catch(error => {
-        console.log(error.response.data);
-        alert("分享失败")
-      })
+  // 喜欢的歌
+  if (shareType.value === 'likesongs') {
+    const formData = new FormData();
+    formData.append('type', '1');
+    formData.append('friend', user);
+    instance.post('/share/likesongs', formData)
+        .then(response => {
+          if (response.data.success === true) {
+            alert("分享成功")
+          }
+        })
+        .catch(error => {
+          console.log(error.response.data);
+          alert("分享失败")
+        })
+  }
+  // 分享歌单
+  else if (shareType.value === 'songlist') {
+    const formData = new FormData();
+    formData.append('type', '1');
+    formData.append('friend', user);
+    formData.append('songlist_id', songListId.value);
+    instance.post('/share/songlist', formData)
+        .then(response => {
+          if (response.data.success === true) {
+            alert("分享成功")
+          }
+        })
+        .catch(error => {
+          console.log(error.response.data);
+          alert("分享失败")
+        })
+  }
 }
 
 function getShareCode() {
@@ -52,16 +70,34 @@ function getShareCode() {
     }
   });
   axios.defaults.withCredentials = true;
-  const formData = new FormData();
-  formData.append('type', '2');
-  formData.append('songlist_id', songListId.value);
-  instance.post('/share/songlist', formData)
-      .then(response => {
-        shareCode.value = response.data.data;
-      })
-      .catch(error => {
-        console.log(error.response.data);
-      })
+  // 喜欢的歌
+  if (shareType.value === 'likesongs') {
+    const formData = new FormData();
+    formData.append('type', '2');
+    instance.post('/share/likesongs', formData)
+        .then(response => {
+          if (response.data.success === true) {
+            shareCode.value = response.data.data;
+          }
+        })
+        .catch(error => {
+          console.log(error.response.data);
+          alert("分享失败")
+        })
+  }
+  // 分享歌单
+  else if (shareType.value === 'songlist') {
+    const formData = new FormData();
+    formData.append('type', '2');
+    formData.append('songlist_id', songListId.value);
+    instance.post('/share/songlist', formData)
+        .then(response => {
+          shareCode.value = response.data.data;
+        })
+        .catch(error => {
+          console.log(error.response.data);
+        })
+  }
 }
 
 function getUserFriends() {
@@ -93,17 +129,20 @@ onMounted(getUserFriends)
                     v-model:token="token"></buttonchangesize>
   <div class="w-2/3 m-auto">
     <div class="w-full h-32 flex">
-      <div class="text-4xl text-white text-center m-auto">分享歌单： {{ title }}</div>
+      <div v-if="shareType==='songlist'" class="text-4xl text-white text-center m-auto">分享歌单： {{ title }}</div>
+      <div v-if="shareType==='likesongs'" class="text-4xl text-white text-center m-auto">分享喜欢的歌</div>
     </div>
     <div>
       <div class="w-full h-32 flex" v-if="!hasFriends">
         <div class="text-4xl text-white text-center m-auto">暂无互关的朋友</div>
       </div>
-      <button class="btn btn-info" style="font-size: 20px" onclick="my_modal_2.showModal()" @click="getShareCode">获取分享码</button>
+      <button class="btn btn-info" style="font-size: 20px" onclick="my_modal_2.showModal()" @click="getShareCode">
+        获取分享码
+      </button>
       <dialog id="my_modal_2" class="modal">
         <div class="modal-box bg-gray-300 text-center p-12">
           <h3 class="font-bold text-2xl text-gray-700 inline-block">分享码：</h3>
-          <p class="text-cyan-600 text-xl inline-block" style="font-size: 30px">{{shareCode}}</p>
+          <p class="text-cyan-600 text-xl inline-block" style="font-size: 30px">{{ shareCode }}</p>
           <div class="text-gray-400 mt-5 ml-1" style="font-size: 14px">分享码时效为一天，请在【个人主页】中使用分享码</div>
         </div>
         <form method="dialog" class="modal-backdrop">

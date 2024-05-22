@@ -5,6 +5,7 @@ import CreateSongList from "@/views/CreatedSongList/CreateSongList.vue";
 import axios from "axios";
 import SongPage from "@/components/SongPage.vue";
 import CreatedSonglist from "@/views/CreatedSongList/CreatedSonglist.vue";
+import SharePage from "@/components/SharePage.vue";
 
 const LikeSongs = ref([]);
 const token = defineModel('token')
@@ -13,6 +14,7 @@ const emits = defineEmits(['handlePlayNow', 'handlePlayAfter', 'changesize', 'Pl
 const LikeSongsCover = defineModel('LikeSongsCover');
 const SongId = ref(0);
 const NeedShowSongDetail = ref(false);
+const shareType = ref("likesongs")
 
 function handlePlayNow(index) {
   emits('handlePlayNow', LikeSongs.value[index].id)
@@ -102,14 +104,13 @@ const PlayLikeSongs = () => {
   emits('PlayLikeSongs');
 }
 
-const ShowUpdate = ref(false);
-const ActiveShowUpdate = () => {
-  ShowUpdate.value = true;
+const ShowSharePage = ref(false);
+const ActiveShowSharePage = () => {
+  ShowSharePage.value = true;
 }
 
-const CloseShowUpdate = () => {
-  console.log('ok')
-  ShowUpdate.value = false;
+const CloseShowSharePage = () => {
+  ShowSharePage.value = false;
 }
 
 
@@ -118,20 +119,20 @@ onMounted(GetUserLike)
 
 <template>
   <transition name="slide" appear>
-    <div class="transition-container-2" v-if="NeedShowSongDetail&&!ShowUpdate">
+    <div class="transition-container-2" v-if="NeedShowSongDetail&&!ShowSharePage">
       <SongPage v-model:currentSongId="SongId"
                 @handlePlayNow="handlePlayNow" @CloseSong="CloseSongPage"
                 v-model:username="username" v-model:token="token" v-model:HasLogin="HasLogin"></SongPage>
     </div>
   </transition>
   <transition name="slide" appear>
-    <div class="transition-container-2" v-if="!NeedShowSongDetail&&ShowUpdate">
-      <CreateSongList v-model:token="token" v-model:username="username" v-model:Songs="LikeSongs"
-                      @changesize="CloseShowUpdate"></CreateSongList>
+    <div class="transition-container-2" v-if="ShowSharePage">
+      <SharePage v-model:shareType="shareType" @closeSharePage="CloseShowSharePage"
+          v-model:token="token" v-model:username="username"></SharePage>
     </div>
   </transition>
 
-  <div class="bgx bg-cover bg-center h-2/5 relative" v-if="!NeedShowSongDetail&&!ShowUpdate">
+  <div class="bgx bg-cover bg-center h-2/5 relative" v-if="!NeedShowSongDetail&&!ShowSharePage">
     <div class="bg-blur w-full h-full absolute top-0 left-0"
          :style="{backgroundImage: `url(${LikeSongsCover})`}"></div>
     <buttonchangesize class="absolute top-5 left-5" @fullsize="changesize" v-model:token="token"></buttonchangesize>
@@ -150,7 +151,7 @@ onMounted(GetUserLike)
         </svg>
       </div>
       <div class="btn btn-xl my-8 bg-green-600 border-none rounded-2xl hover:bg-green-800 text-white fill-white"
-           @click="ActiveShowUpdate">分享为歌单
+           @click="ActiveShowSharePage">分享为歌单
         <svg class="icon fill-white" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"
              width="22" height="22">
           <path
@@ -162,7 +163,7 @@ onMounted(GetUserLike)
 
   </div>
 
-  <div class="mt-6" v-if="!NeedShowSongDetail&&!ShowUpdate">
+  <div class="mt-6" v-if="!NeedShowSongDetail&&!ShowSharePage">
     <table class="table">
       <!-- head -->
       <thead>
