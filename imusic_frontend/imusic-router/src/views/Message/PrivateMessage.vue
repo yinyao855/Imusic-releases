@@ -56,7 +56,14 @@
                 {{ message.sender }}
                 <time class="text-xs opacity-50">{{ messageStore.ChangeTime(message.send_date) }}</time>
               </div>
-              <div class="chat-bubble">{{ message.content }}</div>
+              <div class="chat-bubble">
+                {{ message.content }}
+                <br>
+                <button @click="getShare(message.id)"
+                    v-if="message.content.includes('分享了')&&message.content.includes('给您')&&message.content.includes('快来听听吧！')"
+                    class="btn btn-sm btn-info mt-3 inline-block">获取
+                </button>
+              </div>
               <div class="chat-footer opacity-50">
                 {{ message.is_read ? '已读' : '未读' }}
               </div>
@@ -262,6 +269,33 @@ const readMsg = () => {
     }
   }
 }
+
+// 获取分享歌单
+function getShare(messageId) {
+  const formData = new FormData();
+  formData.append('message_id', messageId);
+  const instance = axios.create({
+    baseURL: 'http://182.92.100.66:5000',
+    timeout: 5000,
+    headers: {
+      'Authorization': `Bearer ${token.value}`,
+    }
+  });
+  axios.defaults.withCredentials = true;
+  instance.post('/share/handle', formData)
+      .then(response => {
+        console.log(response.data);
+        if (response.data.success === true) {
+          MyAlert({type: 'alert-info', text: '接受分享成功，请在【收藏的歌单】中查看'});
+        } else {
+          MyAlert({type: 'alert-warning', text: '此分享入口不存在或已失效，请重新分享'});
+        }
+        })
+      .catch(error => {
+        console.log(error.response.data);
+      })
+}
+
 onMounted(GetChats);
 // 实现自动滚动到底部
 const listContainer = ref(null);
