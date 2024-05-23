@@ -16,6 +16,8 @@ const CloseWarning = () => {
   WarningShow.value = false;
 }
 
+const loading = ref(true);
+
 // defineEmits(播放歌单全部歌曲，加入播放列表，立即播放)
 const emits = defineEmits(['PlaySongList', 'handlePlayAfter', 'handlePlayNow', 'PlayLikeSongs'])
 
@@ -82,6 +84,7 @@ function getCreatedSonglists() {
       .then(function (response) {
         if (response.data.success === true) {
           createdSonglists.value = response.data.data;
+          loading.value = false;
         }
       })
       .catch(function (error) {
@@ -121,7 +124,10 @@ onMounted(getCreatedSonglists);
     <div class="w-full h-32 flex">
       <div class="text-4xl text-white text-center m-auto">我创建的歌单</div>
     </div>
-    <div class="all inline-block px-8 pb-6">
+    <div class="w-1 m-auto my-40" v-if="loading">
+      <span class="loading loading-dots loading-lg"></span>
+    </div>
+    <div class="all inline-block px-8 pb-6" v-if="!loading">
       <div @click="ActiveLikeSongs" class="card bg-gray-300 cursor-pointer">
         <div class="content">
           <img src="../../assets/cd.png" alt="Avatar" class="cd">
@@ -138,7 +144,7 @@ onMounted(getCreatedSonglists);
       </div>
     </div>
     <!--    内容：创建的歌单（v-for依次输出创建的歌单）-->
-    <div v-for="(songlist, index) in createdSonglists" class="all inline-block px-8 pb-6">
+    <div v-for="(songlist, index) in createdSonglists" class="all inline-block px-8 pb-6" v-if="!loading">
       <div @click="activeSonglist(index)" class="card bg-gray-300 cursor-pointer">
         <div class="content">
           <img src="../../assets/cd.png" alt="Avatar" class="cd">
