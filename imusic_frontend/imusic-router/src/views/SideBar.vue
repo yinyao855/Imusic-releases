@@ -1,5 +1,5 @@
 <script setup>
-import {computed, ref} from "vue";
+import {computed} from "vue";
 import axios from "axios";
 import {useUserStore} from "@/stores/user.js";
 import MyAlert from "@/js/MyAlert.js";
@@ -92,7 +92,7 @@ function getUserUploadedSongs() {
     }
   });
   axios.defaults.withCredentials = true;
-  instance.get("/users/songs?username=" + username)
+  instance.get("/users/songs?username=" + username.value)
       .then(function (response) {
         if (response.data.success === true) {
           userUploadedSongs.value = response.data.data;

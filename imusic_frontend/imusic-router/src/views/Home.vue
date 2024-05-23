@@ -17,18 +17,58 @@ import Forget_Password from "@/views/Account/Forget_Password.vue";
 import Message_Main from "@/views/Message/Message_Main.vue";
 
 import {useUserStore} from "@/stores/user.js";
+import {useMessageStore} from "@/stores/message.js";
+import {storeToRefs} from "pinia";
 
 const userStore = useUserStore();
-console.log("测试持久化" + userStore.username);
+// console.log("测试持久化" + userStore.username);
 
-const token = ref('');
+const {username, token} = storeToRefs(userStore); // 解析出来的是ref对象
+const HasLogin = ref(computed(() => userStore.isLogin))
+const avatar = ref(computed(() => userStore.userAvatar))
+const UserRole = ref(computed(() => userStore.userRole))
+
+/*---------------------------------------------------*/
+// 处理自动登录
+const autoLogin = () => {
+  const tmp = userStore.token
+  if (tmp === '') {
+    return;
+  }
+  const instance = axios.create({
+    baseURL: 'http://182.92.100.66:5000',
+    timeout: 5000, // 设置请求超时时间
+    headers: {
+      'Authorization': `Bearer ${tmp}`,
+    }
+  });
+  axios.defaults.withCredentials = true;
+  instance.get('/check-token/')
+      .then(response => {
+        if (response.data.success) {
+          console.log("auto login success!");
+          // GetMessage();
+          getsonglistinit();
+          intervalId = setInterval(GetMessage, 10000); // 10000 毫秒即 10 秒
+        }
+        else{
+          console.log("auto login failed!");
+          mode.value = '0'; // 跳转到登录页面
+          userStore.flush();
+        }
+      })
+      .catch(error => {
+        console.log(error)
+      })
+}
+/*---------------------------------------------------*/
+
 const needshowsonglistpage = ref(false);
 const cantransformtofull = ref(false);
 const userlike = ref([]);
-const avatar = ref('');
+
 const index = ref(1);
 const datax = ref([]);
-const UserRole = ref('');
 const musicList = ref([
   {
     "id": null,
@@ -49,8 +89,7 @@ const musicList = ref([
     "like": 0,
     "upload_date": ""
   }]);
-const username = ref('点击登录');
-const HasLogin = ref(false);
+
 const songlists = ref([]);
 const userdata = ref([]);
 const songlistsearch = ref([]);
@@ -463,10 +502,10 @@ const updateavatar = () => {
 }
 
 const userUploadedSongs = ref([]);
-const createdSonglists = ref([]);
-const favoriteSonglists = ref([]);
-const currentUserSongList = ref([]);
-const showUserSongList = ref(false);
+// const createdSonglists = ref([]);
+// const favoriteSonglists = ref([]);
+// const currentUserSongList = ref([]);
+// const showUserSongList = ref(false);
 
 const PlaySongList = (id) => {
   const instance = axios.create({
@@ -489,13 +528,13 @@ const PlaySongList = (id) => {
       })
 }
 
-const checkLogin = () => {
-  if (HasLogin.value === false) {
-    WarningShow.value = true;
-    message.value = '请先登录';
-    changeMode(0);
-  }
-}
+// const checkLogin = () => {
+//   if (HasLogin.value === false) {
+//     WarningShow.value = true;
+//     message.value = '请先登录';
+//     changeMode(0);
+//   }
+// }
 
 const PlayLikeSongs = () => {
   const instance = axios.create({
@@ -521,37 +560,6 @@ const PlayLikeSongs = () => {
       })
 }
 
-const autoLogin = () => {
-  localStorage.removeItem('user-info');
-  const userinfo = localStorage.getItem('user-info');
-  if (userinfo != null) {
-    const user_object = JSON.parse(localStorage.getItem('user-info'));
-    const instance = axios.create({
-      baseURL: 'http://182.92.100.66:5000',
-      timeout: 5000, // 设置请求超时时间
-      headers: {
-        'Authorization': `Bearer ${user_object.token}`,
-      }
-    });
-    axios.defaults.withCredentials = true;
-    instance.get('/check-token/')
-        .then(response => {
-          if (response.data.success) {
-            HasLogin.value = true;
-            username.value = user_object.username;
-            avatar.value = user_object.avatar;
-            token.value = user_object.token;
-            UserRole.value = user_object.UserRole;
-            getsonglistinit(user_object.username);
-            GetMessage();
-            intervalId = setInterval(GetMessage, 10000); // 10000 毫秒即 10 秒
-          }
-        })
-        .catch(error => {
-          console.log(error.response.data);
-        })
-  }
-}
 
 const ShowForget = ref(false);
 const ChangeForgetMode = () => {
@@ -581,8 +589,6 @@ const PlaySingerSongs = (index) => {
 }
 
 /*----------------------------------------*/
-import {useMessageStore} from "@/stores/message.js";
-
 const messageStore = useMessageStore();
 // 获取消息
 const GetMessage = () => {
@@ -630,8 +636,7 @@ onMounted(autoLogin);
         <div v-if="mode==='0'&&!HasLogin" class="w-full h-full z-50">
           <Login v-if="!RegisterMode&&!ShowForget" @ChangerRegisterMode="ChangerRegisterMode"
                  v-model:username="username"
-                 @changeMode="changeMode" v-model:HasLogin="HasLogin" @getsonglistinit="getsonglistinit"
-                 v-model:avatar="avatar" v-model:token="token" v-model:UserRole="UserRole"
+                 @changeMode="changeMode" @getsonglistinit="getsonglistinit"
                  @ChangeForgetMode="ChangeForgetMode"></Login>
           <Sign_up v-if="RegisterMode&&!ShowForget" @ChangerRegisterMode="ChangerRegisterMode"
                    v-model:username="username"
@@ -640,9 +645,7 @@ onMounted(autoLogin);
                            v-model:username="username"
                            v-model:token="token"></Forget_Password>
         </div>
-        <Personal_Center v-model:userdata="userdata" v-model:HasLogin="HasLogin" v-model:username="username"
-                         v-if="HasLogin&&mode==='0'" @updateavatar="updateavatar"
-                         v-model:token="token"></Personal_Center>
+        <Personal_Center v-if="HasLogin&&mode==='0'"></Personal_Center>
         <HomePage_Main v-model:songlist="songlist" v-model:needshowsonglistpage="needshowsonglistpage"
                        @handlePlayAfter="handlePlayAfter" @handlePlayNow="handlePlayNow" v-if="mode==='1'"
                        v-model:SearchContent="SearchContent" v-model:ShowSearchView="ShowSearchView"
