@@ -13,6 +13,7 @@ const messageStore = useMessageStore();
 const Message = ref(computed(() => messageStore.MessageType1));
 const currentMessage = ref([]);
 const contents = ref([]);
+const Loading = ref(true);
 const report = ref("");
 // const systemMessage = defineModel("systemMessage");
 // const playSongMessage = defineModel("playSongMessage");
@@ -132,6 +133,7 @@ function getSystemMessages() {
   if (Message.value.length === 0) {
     hasMessage.value = false;
   }
+  Loading.value = false;
 }
 async function DeleteMessage(index) {
   console.log(Message.value[index].id);
@@ -139,15 +141,12 @@ async function DeleteMessage(index) {
   try {
     await messageStore.deleteMessage(Message.value[index].id, token.value);
     MyAlert({type: 'alert-info', text: '删除成功'});
-    await messageStore.getMessage(token.value);
-    for(let i = index;i<Message.value.length-1;i++) {
-      Message.value[i] = Message.value[i+1];
-    }
-    Message.value.pop();
+    Loading.value = true;
+    //messageStore.refreshMessage(token.value);
 
   } catch (error) {
     MyAlert({type: 'alert-error', text: '删除失败'});
-    messageStore.getMessage(token.value);
+    messageStore.refreshMessage(token.value);
   }
 }
 onMounted(getSystemMessages)
@@ -219,10 +218,13 @@ watch(Message, getSystemMessages)
   </dialog>
 
   <div class="overflow-x-auto px-10" v-if="!showSystemMessage">
-    <div class="w-full h-32 flex" v-if="!hasMessage">
+    <div class="w-full h-32 flex" v-if="!hasMessage&&!Loading">
       <div class="text-4xl text-white text-center m-auto">暂无消息</div>
     </div>
-    <table class="table">
+    <div class="w-full flex h-60" v-if="Loading">
+      <span class="loading loading-spinner loading-lg m-auto"></span>
+    </div>
+    <table class="table" v-if="!Loading">
       <tbody>
       <tr class="text-white transition duration-400 hover:bg-gray-600/40 rounded-md cursor-pointer"
           v-for="(item, index) in Message" :key="index" onclick="modal.showModal()" @click="activeShowSystemMessage(index)">

@@ -160,7 +160,7 @@ export const useMessageStore = defineStore('message', () => {
                 console.log(token);
             })
     }
-    function deleteMessage(messageId, token) {
+    async function deleteMessage(messageId, token) {
         const instance = axios.create({
             baseURL: 'http://182.92.100.66:5000',
             timeout: 5000,

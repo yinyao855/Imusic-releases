@@ -104,10 +104,10 @@ async function DeleteMessage(index) {
     //删除Message.value[index];
     console.log(Message.value);
     Loading.value = true;
-
+    //messageStore.refreshMessage(token.value);
   } catch (error) {
     MyAlert({type: 'alert-error', text: '删除失败'});
-    getAppealMessages();
+    messageStore.refreshMessage(token.value);
   }
 }
 onMounted(getAppealMessages)

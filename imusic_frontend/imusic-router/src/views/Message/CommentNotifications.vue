@@ -108,6 +108,7 @@ async function DeleteMessage(index) {
     await messageStore.deleteMessage(Message.value[index].id, token.value);
     MyAlert({type: 'alert-info', text: '删除成功'});
     Loading.value = true;
+    //messageStore.refreshMessage(token.value);
   } catch (error) {
     MyAlert({type: 'alert-warning', text: '删除失败'});
     messageStore.refreshMessage(token.value);
