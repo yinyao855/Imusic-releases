@@ -49,7 +49,7 @@ const autoLogin = () => {
           console.log("auto login success!");
           // GetMessage();
           getsonglistinit();
-          intervalId = setInterval(GetMessage, 10000); // 10000 毫秒即 10 秒
+          intervalId = setInterval(GetMessage, 5000); // 10000 毫秒即 10 秒
         }
         else{
           console.log("auto login failed!");
