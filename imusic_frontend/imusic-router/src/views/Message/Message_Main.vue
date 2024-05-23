@@ -64,10 +64,10 @@ const unReads = [
 ]
 
 // 一些基本信息
-// const token = ref(computed(() => userStore.token));
-// const username = ref(computed(() => userStore.username));
-const token = defineModel('token');
-const username = defineModel('username')
+const token = ref(computed(() => userStore.token));
+const username = ref(computed(() => userStore.username));
+// const token = defineModel('token');
+// const username = defineModel('username')
 const HasLogin = defineModel('HasLogin');
 const UserRole = defineModel('UserRole');
 

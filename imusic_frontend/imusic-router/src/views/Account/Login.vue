@@ -64,12 +64,9 @@ import confetti from 'canvas-confetti';
 import {ref} from "vue";
 import axios from "axios";
 import Warning from "@/components/Warning.vue";
-import {defineEmits, defineModel} from "vue"
-import Forget_Password from "@/views/Account/Forget_Password.vue";
+import {defineEmits} from "vue"
 
 const emits = defineEmits(['ChangerRegisterMode', 'changeMode', 'getsonglistinit','ChangeForgetMode']);
-const token=defineModel('token');
-const UserRole=defineModel('UserRole');
 
 /*----------------------------------*/
 import {useUserStore} from "@/stores/user.js";
@@ -97,21 +94,15 @@ const show = () => {
   const formData = new FormData();
   formData.append('username', username.value);
   formData.append('password', password.value);
-  console.log(formData);
+  // console.log(formData);
   const instance = axios.create({
     baseURL: 'http://182.92.100.66:5000',
     timeout: 5000, // 设置请求超时时间
-    headers: {
-      'Authorization': `Bearer ${token.value}`,
-    }
   });
   axios.defaults.withCredentials = true;
   instance.post('/users/login', formData)
       .then(response => {
         if (response.data.success === true) {
-          HasLogin.value = true;
-          usernametofather.value = username.value;
-          token.value=response.data.token;
           confetti({
             particleCount: 500,
             angle: 90,
@@ -139,25 +130,10 @@ const show = () => {
           // 在store里存储用户数据
           userStore.setUsername(username.value);
           userStore.setToken(response.data.token);
-          //
-          HasLogin.value = true;
+          userStore.login(response.data.data);
+          // 获取用户历史播放
           getsonglistinit(username.value);
           changeMode();
-          avatar.value = response.data.data.avatar;
-          UserRole.value=response.data.data.role;
-          const User={
-            'UserRole':response.data.data.role,
-            'avatar':response.data.data.avatar,
-            'HasLogin':true,
-            'username':username.value,
-            'password':password.value,
-            'token':response.data.token,
-          }
-          localStorage.setItem("user-info", JSON.stringify(User));
-          if (response.data.data.avatar === null) {
-            avatar.value = '';
-          }
-          console.log(avatar.value)
         } else {
           WarningShow.value = true;
           message.value = "用户名或密码错误";
@@ -175,13 +151,11 @@ const getsonglistinit = (s) => {
 const CloseWarning = () => {
   WarningShow.value = false;
 }
-const HasLogin = defineModel('HasLogin');
+
 const username = ref('');
 const password = ref('');
 const message = ref('');
 const WarningShow = ref(false);
-const usernametofather = defineModel('username');
-const avatar = defineModel('avatar');
 
 const gotosignup = () => {
   emits('ChangerRegisterMode');
