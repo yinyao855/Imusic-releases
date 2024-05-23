@@ -248,7 +248,7 @@ async function getSonglistInformation(id) {
     }
   });
   axios.defaults.withCredentials = true;
-  instance.get("/songlists/info/" + id)
+  instance.get("/songlists/info/" + id + "?username=" + username.value)
       .then(function (response) {
         return false;
       })

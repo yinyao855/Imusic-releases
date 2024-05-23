@@ -275,7 +275,7 @@ const changesonglist = () => {
   });
   axios.defaults.withCredentials = true;
   SongListId.value = index.value;
-  const web = '/songlists/info/' + index.value;
+  const web = '/songlists/info/' + index.value + "?username=" + username.value;
   instance.get(web)
       .then(response => {
         songlist.value = response.data.data;
@@ -519,7 +519,7 @@ const PlaySongList = (id) => {
     }
   });
   axios.defaults.withCredentials = true;
-  const web = '/songlists/info/' + id;
+  const web = '/songlists/info/' + id + "?username=" + username.value;
   instance.get(web)
       .then(response => {
         musicList.value = response.data.data.songs;

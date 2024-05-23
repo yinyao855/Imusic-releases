@@ -123,7 +123,7 @@ function getSonglistData() {
     }
   });
   axios.defaults.withCredentials = true;
-  instance.get("/songlists/info/" + currentSonglistId.value)
+  instance.get("/songlists/info/" + currentSonglistId.value + "?username=" + username.value)
       .then(function (response) {
         if (response.data.success === true) {
           currentUserSongList = response.data.data;

@@ -45,7 +45,7 @@ function getSongListOwner() {
     }
   });
   axios.defaults.withCredentials = true;
-  instance.get("/songlists/info/" + id.value)
+  instance.get("/songlists/info/" + id.value + "?username=" + username.value)
       .then(function (response) {
         owner.value = response.data.data.owner;
       })

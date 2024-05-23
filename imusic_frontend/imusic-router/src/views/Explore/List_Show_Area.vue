@@ -285,7 +285,7 @@ const GetSongList = () => {
     }
   });
   axios.defaults.withCredentials = true;
-  instance.get('/songlists/info/' + SongListId.value)
+  instance.get('/songlists/info/' + SongListId.value + "?username=" + username.value)
       .then(response => {
         SongList.value = response.data.data;
       })
