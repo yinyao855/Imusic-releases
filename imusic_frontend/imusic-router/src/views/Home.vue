@@ -9,7 +9,7 @@ import Personal_Center from "@/views/Account/Personal_Center.vue";
 import Sign_up from "./Account/Sign_up.vue";
 import axios from "axios";
 import SideBar from "@/views/SideBar.vue";
-import MusicPlayer_Cell from "@/views/MusicPlayer/MusicPlayer_Cell.vue";
+import MusicPlayer_Cell from "@/views/MusicPlayer/MusicPlayer.vue";
 import AdminPage_Main from "@/views/Admin/AdminPage_Main.vue";
 import CreatedSonglist_Main from "@/views/CreatedSongList/CreatedSonglist_Main.vue";
 import FavoriteSonglist_Main from "@/views/FavoriteSongList/FavoriteSonglist_Main.vue";
