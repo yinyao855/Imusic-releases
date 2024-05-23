@@ -116,7 +116,7 @@ onMounted(getCreatedSonglists);
 
 
   <!--  展示用户创建的歌单主界面-->
-  <div class="w-full h-full mb-32" v-if="!showCurrentSongList&&!ShowLikeSongs">
+  <div class="w-full h-full mb-48" v-if="!showCurrentSongList&&!ShowLikeSongs">
     <!--    标题-->
     <div class="w-full h-32 flex">
       <div class="text-4xl text-white text-center m-auto">我创建的歌单</div>

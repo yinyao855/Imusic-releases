@@ -30,7 +30,7 @@ const CloseWarning = () => {
 let songData;
 const currentSongId = defineModel("currentSongId")
 const lyrics = ref([]) // 存储歌词（字符串数组）
-const showCurrentSong = ref(false);
+const loading = ref(true);
 
 const isFavoriteSong = ref(false);
 const likes = ref(0);
@@ -160,7 +160,7 @@ function getSongData() {
         if (response.data.success === true) {
           songData = response.data.data;
           fetchAndFormatLyrics(songData.lyric)
-          showCurrentSong.value = true;
+          loading.value = false;
           if (response.data.data.uploader === username.value) {
             isMe.value = true;
           }
@@ -320,12 +320,15 @@ onMounted(getSubscribeUser);
     </div>
   </transition>
 
+  <div class="w-1 m-auto my-40" v-if="loading">
+    <span class="loading loading-dots loading-lg"></span>
+  </div>
 
   <!--  回到歌单界面-->
-  <buttonchangesize v-if="showCurrentSong&&!showComplaint" class="left-4 top-4" @fullsize="fullsize"
+  <buttonchangesize v-if="!loading&&!showComplaint" class="left-4 top-4" @fullsize="fullsize"
                     v-model:token="token"></buttonchangesize>
   <!--  歌曲详细信息新界面-->
-  <div v-if="showCurrentSong&&!showComplaint" class="mx-20">
+  <div v-if="!loading&&!showComplaint" class="mx-20">
     <div
         class="float-right dropdown dropdown-bottom transition duration-400 border-none z-50">
       <svg class="icon" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg"

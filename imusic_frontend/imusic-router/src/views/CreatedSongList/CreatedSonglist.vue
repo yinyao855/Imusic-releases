@@ -31,7 +31,7 @@ const coverImageFileUrl = ref(''); // 存储当前歌单图片url，若修改了
 const ShowSong = ref(false); // 是否展示歌曲信息页面（默认：否），点击查看歌曲详细信息后为true
 
 // CurrentUser_SongList需要的属性（用于选择将歌曲加入哪个歌单）
-const showCurrentSonglist = ref(false); // 当前歌单界面
+const loading = ref(true); // 当前歌单界面
 let currentUserSongList;
 const createdSongLists = ref([])
 const ShowCreatedSongList = ref(false); // 是否展示选择歌单页面（默认：否），点击加入歌单后为true
@@ -138,7 +138,7 @@ function getSonglistData() {
       .then(function (response) {
         if (response.data.success === true) {
           currentUserSongList = response.data.data;
-          showCurrentSonglist.value = true;
+          loading.value = false;
         }
       })
       .catch(function (error) {
@@ -225,7 +225,7 @@ function activeShowEditSonglist(imgUrl) {
 }
 
 function CloseEditSongList() {
-  showCurrentSonglist.value = false;
+  loading.value = true;
   getSonglistData();
   showEditSonglist.value = false;
 }
@@ -376,7 +376,11 @@ onMounted(getSonglistData);
     </div>
   </transition>
 
-  <div v-if="showCurrentSonglist&&!ShowCreatedSongList&&!ShowSong&&!showEditSonglist&&!showUser&&!showSharePage" class="z-50 h-full">
+  <div class="w-1 m-auto my-40" v-if="loading">
+    <span class="loading loading-dots loading-lg"></span>
+  </div>
+
+  <div v-if="!loading&&!ShowCreatedSongList&&!ShowSong&&!showEditSonglist&&!showUser&&!showSharePage" class="z-50 h-full">
     <!--      展示歌单信息-->
     <div class="h-80 relative">
       <div class="bg-center bg-cover bg-blur w-full h-full absolute top-0 left-0"
@@ -544,7 +548,7 @@ onMounted(getSonglistData);
     <div class="mt-6">
       <hr class="mx-5 border-gray-500">
       <div class="mt-3 m-5">
-        <table class="w-full mb-32">
+        <table class="w-full">
           <thead>
           <tr class="h-10 text-white">
             <th class="text-left p-3 text-sm font-semibold">歌名</th>
@@ -671,6 +675,7 @@ onMounted(getSonglistData);
         </table>
       </div>
     </div>
+    <div class="h-32"></div>
   </div>
 </template>
 

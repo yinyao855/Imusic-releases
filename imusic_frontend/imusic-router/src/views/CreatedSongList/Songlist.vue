@@ -27,7 +27,7 @@ const currentSongId = ref(0);
 const ShowSong = ref(false); // 是否展示歌曲信息页面（默认：否），点击查看歌曲详细信息后为true
 
 // CurrentUser_SongList需要的属性（用于选择将歌曲加入哪个歌单）
-const showCurrentSonglist = ref(false);
+const loading = ref(true);
 let currentUserSongList;
 const createdSongLists = ref([])
 const ShowCreatedSongList = ref(false); // 是否展示选择歌单页面（默认：否），点击加入歌单后为true
@@ -137,7 +137,7 @@ function getSonglistData() {
       .then(function (response) {
         if (response.data.success === true) {
           currentUserSongList = response.data.data;
-          showCurrentSonglist.value = true;
+          loading.value = false;
         }
       })
       .catch(function (error) {
@@ -326,8 +326,11 @@ onMounted(getSonglistData);
     </div>
   </transition>
 
+  <div class="w-1 m-auto my-40" v-if="loading">
+    <span class="loading loading-dots loading-lg"></span>
+  </div>
 
-  <div v-if="showCurrentSonglist&&!ShowCreatedSongList&&!ShowSong&&!showComplaint&&!showSharePage">
+  <div v-if="!loading&&!ShowCreatedSongList&&!ShowSong&&!showComplaint&&!showSharePage">
     <!--      展示歌单信息-->
     <div class="h-80 relative">
       <div class="bg-center bg-cover bg-blur w-full h-full absolute top-0 left-0"
@@ -593,6 +596,7 @@ onMounted(getSonglistData);
         </table>
       </div>
     </div>
+    <div class="h-1"></div>
   </div>
 </template>
 
