@@ -275,8 +275,14 @@ const changesonglist = () => {
   });
   axios.defaults.withCredentials = true;
   SongListId.value = index.value;
-  const web = '/songlists/info/' + index.value + "?username=" + username.value;
-  instance.get(web)
+  const web = ref("");
+  let str = SongListId.value + "";
+  if(str.includes("sh")) {
+    web.value = '/songlists/info/' + SongListId.value + "?username=" + username.value;
+  } else {
+    web.value = '/songlists/info/' + SongListId.value;
+  }
+  instance.get(web.value)
       .then(response => {
         songlist.value = response.data.data;
         songlist.value.create_date = extractDate(songlist.value.create_date)
