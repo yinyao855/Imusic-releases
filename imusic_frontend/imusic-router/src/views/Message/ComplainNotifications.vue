@@ -182,6 +182,8 @@ function getSongData(index, title) {
       })
       .catch(error => {
         console.log(error);
+        allId.value[index] = undefined;
+        image.value[index] = undefined;
       })
 }
 
@@ -206,6 +208,8 @@ function getSonglistData(index, title) {
         }
       })
       .catch(error => {
+        allId.value[index] = undefined;
+        image.value[index] = undefined;
         console.log(error);
       })
 }

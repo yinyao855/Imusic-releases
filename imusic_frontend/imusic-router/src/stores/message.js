@@ -151,6 +151,7 @@ export const useMessageStore = defineStore('message', () => {
         const web = '/messages/';
         instance.get(web)
             .then(response => {
+                console.log("refreshMessage");
                 Message.value = response.data.data;
                 processMessage();
             })
@@ -175,18 +176,20 @@ export const useMessageStore = defineStore('message', () => {
             }
         })
             .then(response => {
-                if(response.data.message==="删除成功") {
+                if (response.data!==null&&response.data.message === "删除成功") {
+                    new Promise(resolve => setTimeout(resolve, 500));
                     refreshMessage(token);
                     console.log(Message.value)
                     return true;
-                }
-                else{
-                    throw new Error("删除消息失败");
+                } else {
+                    throw new Error("删除消息失败1");
                     return false;
                 }
             })
             .catch(error => {
-                throw new Error("删除消息失败");
+                refreshMessage(token);
+                console.log(error.response.data);
+                throw new Error("删除消息失败2");
                 return false;
             })
     }
