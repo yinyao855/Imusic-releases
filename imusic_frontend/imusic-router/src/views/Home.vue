@@ -18,9 +18,11 @@ import Message_Main from "@/views/Message/Message_Main.vue";
 
 import {useUserStore} from "@/stores/user.js";
 import {useMessageStore} from "@/stores/message.js";
+import {useTmpStore} from "@/stores/usertmp.js";
 import {storeToRefs} from "pinia";
 
 const userStore = useUserStore();
+const tmpStore = useTmpStore();
 // console.log("测试持久化" + userStore.username);
 
 const {username, token} = storeToRefs(userStore); // 解析出来的是ref对象
@@ -50,6 +52,7 @@ const autoLogin = () => {
           // GetMessage();
           getsonglistinit();
           intervalId = setInterval(GetMessage, 6000); //目前设置为6s
+          tmpStore.init();
         }
         else{
           console.log("auto login failed!");
