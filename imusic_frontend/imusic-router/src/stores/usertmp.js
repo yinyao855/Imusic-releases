@@ -1,9 +1,13 @@
 import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
 import axios from "axios";
+import {useUserStore} from "@/stores/user.js";
 
 // 临时保存的用户数据
 export const useTmpStore = defineStore('temp', () => {
+    const username = ref('');
+    const token = ref('');
+
     // 用户播放记录
     const playHistory = ref([]);
     // 用户喜欢的音乐
@@ -13,6 +17,9 @@ export const useTmpStore = defineStore('temp', () => {
     // 获取用户播放记录
 
     function init(){
+        const userStore = useUserStore();
+        token.value = userStore.token;
+        username.value = userStore.username;
         getUserPlayHistory();
     }
     function getUserPlayHistory() {

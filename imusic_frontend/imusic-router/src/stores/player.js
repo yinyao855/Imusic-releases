@@ -20,4 +20,12 @@ export const usePlayerStore = defineStore('player', () => {
 
     // 播放列表
     const playList = ref([])
+
+    function setPlayList(list){
+        playList.value = list;
+    }
+
+    function setPlayListByID(id){
+        currentIndex.value = id;
+    }
 })
