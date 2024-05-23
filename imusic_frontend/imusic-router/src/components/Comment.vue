@@ -228,12 +228,6 @@ watch(songID, () => {
           <div class="icon aspect-square fill-white ml-1 mr-1 mt-1 row-start-1 col-start-1 w-10 h-10">
             <button class="rounded-full w-10 h-10"><img class="rounded-full w-10 h-10" :src="userImage[index]" alt=""></button>
           <div class="my-0 font-thin ml-7 -mt-4  relative" v-if="sameUser[index]===false">
-            <button class="hover:-translate-y-0.1 tooltip overflow-visible" @click="followUser(index)" :data-tip="tip(index)">
-              <svg t="1715907551136" class="icon" v-if="addUser[index]===true" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2927"
-                   width="14" height="14"><path d="M512 1024C229.238154 1024 0 794.761846 0 512S229.238154 0 512 0s512 229.238154 512 512-229.238154 512-512 512z m236.307692-551.384615H551.384615V275.692308a39.384615 39.384615 0 1 0-78.76923 0v196.923077H275.692308a39.384615 39.384615 0 1 0 0 78.76923h196.923077v196.923077a39.384615 39.384615 0 1 0 78.76923 0V551.384615h196.923077a39.384615 39.384615 0 0 0 0-78.76923z" fill="#13227a" p-id="2928"></path></svg>
-              <svg t="1715908677501" class="icon" v-if="addUser[index]===false" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="4054"
-                   width="14" height="14"><path d="M511.658216 52.364625c-254.320243 0-460.487789 206.167546-460.487789 460.487789s206.167546 460.487789 460.487789 460.487789 460.487789-206.167546 460.487789-460.487789S765.978459 52.364625 511.658216 52.364625zM837.041958 570.014298 186.274474 570.014298c-23.931039 0-43.51098-19.579941-43.51098-43.51098l0-29.006637c0-23.931039 19.579941-43.51098 43.51098-43.51098l650.767484 0c23.931039 0 43.51098 19.579941 43.51098 43.51098l0 29.006637C880.552937 550.434358 860.972996 570.014298 837.041958 570.014298z" fill="#d81e06" p-id="4055"></path></svg>
-            </button>
             </div>
             </div>
           <div class="row-start-1 row-span-1 col-start-2 col-span-2 my-auto font-thin">

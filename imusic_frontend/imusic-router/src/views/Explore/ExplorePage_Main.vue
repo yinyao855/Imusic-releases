@@ -44,9 +44,9 @@ const handlePlayNow = (index) => {
 
 <template>
   <div class="w-full h-16 pl-6 fixed z-50 bg-zinc-900">
-    <div :class="[NaviClass1, 'text-transition']" @click="changeNaviMode(1)" style="line-height: 56px">歌曲</div>
-    <div :class="[NaviClass2, 'text-transition']" @click="changeNaviMode(2)" style="line-height: 56px">歌单</div>
-    <div :class="[NaviClass3, 'text-transition']" @click="changeNaviMode(3)" style="line-height: 56px">用户</div>
+    <div :class="[NaviClass1, 'text-transition']" @click="changeNaviMode(1)" style="line-height: 56px">  歌 曲  </div>
+    <div :class="[NaviClass2, 'text-transition']" @click="changeNaviMode(2)" style="line-height: 56px">  歌 单  </div>
+    <div :class="[NaviClass3, 'text-transition']" @click="changeNaviMode(3)" style="line-height: 56px">  用 户  </div>
   </div>
   <div class="w-full mt-16">
     <Singer_Show_Area v-model:username="username" v-if="NaviMode==='1'" v-model:token="token"

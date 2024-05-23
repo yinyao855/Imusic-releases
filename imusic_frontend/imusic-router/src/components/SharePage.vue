@@ -152,7 +152,7 @@ onMounted(getUserFriends)
       </dialog>
       <table class="table mt-5">
         <tbody>
-        <tr class="text-white hover:bg-gray-600/40 rounded-md"
+        <tr class="text-white hover:bg-gray-600/40 rounded-md cursor-pointer"
             v-for="(item, index) in userFriends" @click="sendPostShare(item.username)">
           <td class="w-32">
             <img :src="item.avatar" alt="头像"
