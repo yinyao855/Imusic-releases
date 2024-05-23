@@ -7,7 +7,7 @@ import User_Show_Area from "@/views/Explore/User_Show_Area.vue";
 import SongPage from "@/components/SongPage.vue";
 
 const token = defineModel('token')
-const emits = defineEmits(['handlePlayAfter', 'handlePlayNow']);
+const emits = defineEmits(['handlePlayAfter', 'handlePlayNow', 'PlaySongList']);
 const NaviMode = ref('1');
 const HasLogin = defineModel('HasLogin')
 const username = defineModel('username');
@@ -49,10 +49,10 @@ const handlePlayNow = (index) => {
     <div :class="[NaviClass3, 'text-transition']" @click="changeNaviMode(3)" style="line-height: 56px">  用 户  </div>
   </div>
   <div class="w-full mt-16">
-    <Singer_Show_Area v-model:username="username" v-if="NaviMode==='1'" v-model:token="token"
+    <Singer_Show_Area v-model:username="username" v-if="NaviMode==='1'" v-model:token="token" @PlaySongList="PlaySongList"
                       @handlePlayAfter="handlePlayAfter" @handlePlayNow="handlePlayNow" v-model:HasLogin="HasLogin"></Singer_Show_Area>
     <List_Show_Area v-if="NaviMode==='2'" v-model:token="token" v-model:username="username" v-model:HasLogin="HasLogin"
-                    @handlePlayAfter="handlePlayAfter" @handlePlayNow="handlePlayNow"></List_Show_Area>
+                    @handlePlayAfter="handlePlayAfter" @handlePlayNow="handlePlayNow" @PlaySongList="PlaySongList"></List_Show_Area>
     <User_Show_Area v-if="NaviMode==='3'" v-model:username="username" v-model:token="token"
                     @handlePlayNow="handlePlayNow" @handlePlayAfter="handlePlayAfter"
                     @PlaySongList="PlaySongList"></User_Show_Area>

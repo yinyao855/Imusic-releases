@@ -665,7 +665,7 @@ onMounted(autoLogin);
                        v-model:token="token" v-model:SongListId="SongListId"
                        @changesonglist="changesonglist" @PlaySongList="PlaySongList"
                        v-model:HotSongs="HotSongs" @PlaySingerSongs="PlaySingerSongs"></HomePage_Main>
-        <ExplorePage_Main v-model:username="username" v-if="mode==='2'" v-model:token="token"
+        <ExplorePage_Main v-model:username="username" v-if="mode==='2'" v-model:token="token" @PlaySongList="PlaySongList"
                           @handlePlayNow="handlePlayNow" @handlePlayAfter="handlePlayAfter"></ExplorePage_Main>
         <SettingPage_Main v-if="mode==='3'" v-model:token="token" v-model:username="username"></SettingPage_Main>
         <CreateCenter v-if="mode==='4'" :userUploadedSongs="userUploadedSongs" @handlePlayNow="handlePlayNow"
