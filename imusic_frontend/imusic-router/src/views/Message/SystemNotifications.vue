@@ -139,7 +139,11 @@ async function DeleteMessage(index) {
   try {
     await messageStore.deleteMessage(Message.value[index].id, token.value);
     MyAlert({type: 'alert-info', text: '删除成功'});
-    messageStore.getMessage(token.value);
+    await messageStore.getMessage(token.value);
+    for(let i = index;i<Message.value.length-1;i++) {
+      Message.value[i] = Message.value[i+1];
+    }
+    Message.value.pop();
 
   } catch (error) {
     MyAlert({type: 'alert-error', text: '删除失败'});

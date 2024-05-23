@@ -28,6 +28,7 @@ const ShowAppeal = ref(false);
 const ShowComplaintDetail = ref(false);
 const emits = defineEmits(["GetMessage", "readMessage", "PlaySongList", "handlePlayAfter", "handlePlayNow"]);
 const trueContent = ref([]);
+const Loading= ref(true);
 
 // emits
 const PlaySongList = (id) => {
@@ -156,6 +157,7 @@ function getData() {
       getSongData(index, title.value);
     }
   }
+  Loading.value = false;
 }
 
 function getSongData(index, title) {
@@ -256,8 +258,7 @@ async function DeleteMessage(index) {
   try {
     await messageStore.deleteMessage(Message.value[index].id, token.value);
     MyAlert({type: 'alert-info', text: '删除成功'});
-    messageStore.getMessage(token.value);
-
+    Loading.value = true;
   } catch (error) {
     MyAlert({type: 'alert-error', text: '删除失败'});
     messageStore.getMessage(token.value);
@@ -310,7 +311,10 @@ watch(Message, () => {
     <div class="w-full h-32 flex" v-if="!hasMessage">
       <div class="text-4xl text-white text-center m-auto">暂无消息</div>
     </div>
-    <table class="table">
+    <div class="w-full flex h-60" v-if="Loading">
+      <span class="loading loading-spinner loading-lg m-auto"></span>
+    </div>
+    <table class="table" v-if="!Loading">
       <tbody>
       <tr class="text-white hover:bg-gray-600/40 rounded-md cursor-pointer"
           v-for="(item, index) in Message" @click="activeComplaintMessage(index)">

@@ -608,7 +608,7 @@ const GetMessage = () => {
 let intervalId = null;
 
 onMounted(() => {
-  intervalId = setInterval(GetMessage, 10000); // 10000 毫秒即 10 秒
+  intervalId = setInterval(GetMessage, 5000);
 });
 
 onBeforeUnmount(() => {

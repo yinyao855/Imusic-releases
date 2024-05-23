@@ -48,6 +48,8 @@ function sendPostAppeal() {
       })
       .catch(function (error) {
         console.log(error.response.data);
+        MyAlert({type: 'alert-info', text: '投诉已被撤回，无需申诉'})
+        closeAppeal();
       });
 }
 

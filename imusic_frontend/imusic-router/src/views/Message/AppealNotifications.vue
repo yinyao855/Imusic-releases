@@ -21,6 +21,7 @@ const Detail = ref({});
 const MessageDetail = ref({});
 const ShowAppealDetail = ref(false);
 const ShowAppealNotice = ref(false);
+const Loading= ref(false);
 const ShowAppeal_Detail = () => {
   ShowAppealDetail.value = true;
 }
@@ -35,6 +36,8 @@ function getAppealMessages() {
   if (Message.value.length === 0) {
     hasMessage.value = false;
   }
+  AppealDetail.value = [];
+  AppealType.value = [];
   AppealDetail.value.length = Message.value.length;
   trueContent.value = [];
   for(let i = 0;i<Message.value.length;i++) {
@@ -49,6 +52,7 @@ function getAppealMessages() {
       AppealDetail.value.push({});
     }
   }
+  Loading.value = false;
   console.log(AppealType.value);
 }
 const getAppealDetail = (index) => {
@@ -96,10 +100,13 @@ async function DeleteMessage(index) {
   try {
     await messageStore.deleteMessage(Message.value[index].id, token.value);
     MyAlert({type: 'alert-info', text: '删除成功'});
+    console.log(Message.value);
+    //删除Message.value[index];
+    console.log(Message.value);
+    Loading.value = true;
 
   } catch (error) {
     MyAlert({type: 'alert-error', text: '删除失败'});
-    messageStore.getMessage(token.value);
     getAppealMessages();
   }
 }
@@ -126,7 +133,10 @@ watch(Message, () => {
     <div class="w-full h-32 flex" v-if="!hasMessage">
       <div class="text-4xl text-white text-center m-auto">暂无消息</div>
     </div>
-    <table class="table">
+    <div class="w-full flex h-60" v-if="Loading">
+      <span class="loading loading-spinner loading-lg m-auto"></span>
+    </div>
+    <table class="table" v-if="!Loading">
       <tbody>
       <tr class="text-white hover:bg-gray-600/40 rounded-md cursor-pointer"
           v-for="(item, index) in Message" @click="activeAppeal(index)">
