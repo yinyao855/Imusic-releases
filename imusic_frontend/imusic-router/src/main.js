@@ -3,6 +3,8 @@ import './style.css'
 
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
+// 持久化
+import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 
 import App from './App.vue'
 import router from './router'
@@ -29,7 +31,9 @@ app.directive('click-outside', {
 });
 
 window.router=router
-app.use(createPinia())
+const pinia = createPinia()
+pinia.use(piniaPluginPersistedstate)
+app.use(pinia)
 app.use(VueParticles)
 app.use(router)
 

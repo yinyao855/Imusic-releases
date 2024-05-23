@@ -1,9 +1,11 @@
 <script setup>
 import {computed, ref} from "vue";
 import axios from "axios";
-import Warning from "@/components/Warning.vue";
+import {useUserStore} from "@/stores/user.js";
+import MyAlert from "@/js/MyAlert.js";
 
-const props = defineProps(['HasLogin', 'avatar', 'username'])
+const userStore = useUserStore();
+const {isLogin, userAvatar, username, userRole, token} = storeToRefs(userStore); // 解析出来的是ref对象
 
 const containerClass1 = computed(() => ({
   'antialiased text-sm block h-10 my-1 text-white leading-10 transition ease-in duration-400 hover:bg-gray-600/40 px-4 ml-2 mr-2 rounded-md cursor-pointer': mode.value !== '1',
@@ -44,65 +46,42 @@ const containerClass9 = computed(() => ({
 
 /*---------------------------------------*/
 import {useMessageStore} from "@/stores/message.js";
+import {storeToRefs} from "pinia";
 
 const messageStore = useMessageStore();
 const unReads = computed(() => messageStore.unReads);
 /*---------------------------------------*/
 
-const emits = defineEmits(['checkLogin']);
 const userUploadedSongs = defineModel('userUploadedSongs');
 const mode = defineModel('mode');
-const UserRole = defineModel('UserRole');
+const userdata = defineModel('userdata');
 
-function checkLogin() {
-  emits('checkLogin');
-}
 const changeMode = (newMode) => {
-  if (newMode === 9 || newMode === 3 || newMode === 4 || newMode === 6 || newMode === 8) {
-    checkLogin();
-    if (props.HasLogin === true) {
+  if (newMode === 9 || newMode === 4 || newMode === 6 || newMode === 8) {
+    if (isLogin.value === true) {
       mode.value = newMode.toString();
+    } else {
+      MyAlert({type: 'alert-warning', text: '请先登录'})
+      mode.value = '0';
     }
-  }
-  else {
+  } else {
     mode.value = newMode.toString();
   }
 };
 
 const LoginArea = () => {
-  if (props.HasLogin === true) {
-    getuserdata();
+  if (isLogin.value === true) {
+    userdata.value = userStore.userInfo;
   }
   changeMode(0);
-}
-
-const getuserdata = () => {
-  const instance = axios.create({
-    baseURL: 'http://182.92.100.66:5000',
-    timeout: 5000, // 设置请求超时时间
-    headers: {
-      'Authorization': `Bearer ${token.value}`,
-    }
-  });
-  axios.defaults.withCredentials = true;
-  const web = '/users/info/' + props.username;
-  instance.get(web)
-      .then(response => {
-        console.log(response.data.data);
-        userdata.value = response.data.data;
-      })
-      .catch(error => {
-        console.log(error.data);
-      })
 }
 
 
 // 获取用户上传的所有歌曲
 function getUserUploadedSongs() {
   changeMode(4)
-  if (props.HasLogin === false) {
-    message.value = '请先登录';
-    WarningShow.value = true;
+  if (isLogin.value === false) {
+    MyAlert({type: 'alert-warning', text: '请先登录'})
     return;
   }
   const instance = axios.create({
@@ -113,7 +92,7 @@ function getUserUploadedSongs() {
     }
   });
   axios.defaults.withCredentials = true;
-  instance.get("/users/songs?username=" + props.username)
+  instance.get("/users/songs?username=" + username)
       .then(function (response) {
         if (response.data.success === true) {
           userUploadedSongs.value = response.data.data;
@@ -123,28 +102,16 @@ function getUserUploadedSongs() {
         console.log(error.response.data);
       })
 }
-
-const token = defineModel('token');
-const userdata = defineModel('userdata');
-const message = ref('错误消息');
-const WarningShow = ref(false);
-const CloseWarning = () => {
-  WarningShow.value = false;
-}
 </script>
 
 <template>
-  <div class="w-full absolute top-0 left-1/2 transform -translate-x-1/2 cursor-default" v-if="WarningShow">
-    <Warning :message="message" @CloseWarning="CloseWarning" class="mx-auto" v-model:token="token"
-             v-model:Warningshow="WarningShow"></Warning>
-  </div>
   <div class="w-1/6 h-screen fixed hidden lg:block" style="background-color:#2E2E30">
     <div
         class="group flex antialiased w-full mt-3 hover:text-blue-500 my-1 font-medium text-white transition ease-in duration-400 bg-yellow-95000 text-base  cursor-pointer"
         style="height:60px; line-height: 60px" @click="LoginArea">
       <svg class="icon inline fill-white transition ease-in duration-400 my-auto ml-4"
            viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg"
-           width="32" height="32" v-if="!props.HasLogin||props.avatar===''">
+           width="32" height="32" v-if="!isLogin||userAvatar===''">
         <path
             d="M512 625.777778c-159.288889 0-284.444444-125.155556-284.444444-284.444445s125.155556-284.444444 284.444444-284.444444 284.444444 125.155556 284.444444 284.444444-125.155556 284.444444-284.444444 284.444445z m0-56.888889c125.155556 0 227.555556-102.4 227.555556-227.555556s-102.4-227.555556-227.555556-227.555555-227.555556 102.4-227.555556 227.555555 102.4 227.555556 227.555556 227.555556z"
         ></path>
@@ -152,10 +119,10 @@ const CloseWarning = () => {
             d="M56.888889 1024c0-250.311111 204.8-455.111111 455.111111-455.111111s455.111111 204.8 455.111111 455.111111h-56.888889c0-221.866667-176.355556-398.222222-398.222222-398.222222s-398.222222 176.355556-398.222222 398.222222H56.888889z"
         ></path>
       </svg>
-      <img v-if="HasLogin&&avatar!==''" :src="avatar"
+      <img v-if="isLogin&&userAvatar!==''" :src="userAvatar"
            class="inline transition ease-in duration-400 my-auto ml-4 aspect-square w-12 h-12 rounded-full"
            alt="头像">
-      <span class="px-5">{{ props.username }}</span>
+      <span class="px-5">{{ username }}</span>
       <svg
           class="icon inline fill-white group-hover:fill-blue-800 transition ease-in duration-400 justify-end my-auto mr-0"
           viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg"
@@ -166,7 +133,7 @@ const CloseWarning = () => {
       </svg>
     </div>
     <div
-        :class="containerClass7" @click="changeMode(7)" v-if="UserRole==='admin'">
+        :class="containerClass7" @click="changeMode(7)" v-if="userRole==='admin'">
       <svg class="icon inline fill-white my-auto" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg"
            width="16" height="16">
         <path
@@ -271,11 +238,6 @@ const CloseWarning = () => {
             d="M508.2 961.6c-41 0-79.7-16.8-109-47.4-28.7-30-44.4-69-44.4-110 0-17.7 14.3-32 32-32s32 14.3 32 32c0 50.6 40.9 93.4 89.4 93.4 50.4 0 89.4-50.2 89.4-93.4 0-17.7 14.3-32 32-32s32 14.3 32 32c0 38.5-16.1 77.9-44.2 108-29.7 31.9-68.5 49.4-109.2 49.4z"
             p-id="2759" fill="#ffffff"></path>
       </svg>
-      <!--      <span class="px-4 font-medium">消息中心-->
-      <!--        <svg v-if="ShowRedPoint" class="icon inline text-white my-auto" viewBox="0 0 1024 1024"-->
-      <!--             xmlns="http://www.w3.org/2000/svg" width="4" height="4"><path-->
-      <!--            d="M512 512m-512 0a512 512 0 1 0 1024 0 512 512 0 1 0-1024 0Z" fill="#FC3227"-->
-      <!--            ></path></svg></span>-->
       <div class="indicator">
         <span class="px-4 font-medium mr-4">消息中心</span>
         <span class="indicator-item indicator-middle badge badge-secondary" v-if="unReads>0">{{ unReads }}+</span>

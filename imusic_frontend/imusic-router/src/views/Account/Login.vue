@@ -139,6 +139,7 @@ const show = () => {
           // 在store里存储用户数据
           userStore.setUsername(username.value);
           userStore.setToken(response.data.token);
+          userStore.login(response.data.data);
           //
           HasLogin.value = true;
           getsonglistinit(username.value);
@@ -157,7 +158,7 @@ const show = () => {
           if (response.data.data.avatar === null) {
             avatar.value = '';
           }
-          console.log(avatar.value)
+          console.log("avatar"+avatar.value)
         } else {
           WarningShow.value = true;
           message.value = "用户名或密码错误";

@@ -8,7 +8,6 @@ import Login from "./Account/Login.vue";
 import Personal_Center from "@/views/Account/Personal_Center.vue";
 import Sign_up from "./Account/Sign_up.vue";
 import axios from "axios";
-import Warning from "@/components/Warning.vue";
 import SideBar from "@/views/SideBar.vue";
 import MusicPlayer_Cell from "@/views/MusicPlayer/MusicPlayer_Cell.vue";
 import AdminPage_Main from "@/views/Admin/AdminPage_Main.vue";
@@ -16,6 +15,11 @@ import CreatedSonglist_Main from "@/views/CreatedSongList/CreatedSonglist_Main.v
 import FavoriteSonglist_Main from "@/views/FavoriteSongList/FavoriteSonglist_Main.vue";
 import Forget_Password from "@/views/Account/Forget_Password.vue";
 import Message_Main from "@/views/Message/Message_Main.vue";
+
+import {useUserStore} from "@/stores/user.js";
+
+const userStore = useUserStore();
+console.log("测试持久化" + userStore.username);
 
 const token = ref('');
 const needshowsonglistpage = ref(false);
@@ -56,7 +60,6 @@ const HomePageRecommendLatest = ref([]);
 const songlistlast = ref([]);
 const RegisterMode = ref(false);
 const mode = ref('1');
-const WarningShow = ref(false);
 const message = ref('');
 const songlist = ref([]);
 const changeMode = (newMode) => {
@@ -493,9 +496,6 @@ const checkLogin = () => {
     changeMode(0);
   }
 }
-const CloseWarning = () => {
-  WarningShow.value = false;
-}
 
 const PlayLikeSongs = () => {
   const instance = axios.create({
@@ -544,6 +544,7 @@ const autoLogin = () => {
             UserRole.value = user_object.UserRole;
             getsonglistinit(user_object.username);
             GetMessage();
+            intervalId = setInterval(GetMessage, 10000); // 10000 毫秒即 10 秒
           }
         })
         .catch(error => {
@@ -558,7 +559,7 @@ const ChangeForgetMode = () => {
   console.log(ShowForget.value);
 }
 
-const PlaySingerSongs=(index)=>{
+const PlaySingerSongs = (index) => {
   const instance = axios.create({
     baseURL: 'http://182.92.100.66:5000',
     timeout: 5000, // 设置请求超时时间
@@ -581,6 +582,7 @@ const PlaySingerSongs=(index)=>{
 
 /*----------------------------------------*/
 import {useMessageStore} from "@/stores/message.js";
+
 const messageStore = useMessageStore();
 // 获取消息
 const GetMessage = () => {
@@ -607,10 +609,6 @@ const GetMessage = () => {
 
 let intervalId = null;
 
-onMounted(() => {
-  intervalId = setInterval(GetMessage, 10000); // 10000 毫秒即 10 秒
-});
-
 onBeforeUnmount(() => {
   if (intervalId) {
     clearInterval(intervalId);
@@ -621,17 +619,11 @@ onMounted(autoLogin);
 </script>
 
 <template>
-  <div class="w-full absolute top-0 left-1/2 transform -translate-x-1/2 cursor-default" v-if="WarningShow">
-    <Warning :message="message" @CloseWarning="CloseWarning" class="mx-auto" v-model:token="token"
-             v-model:Warningshow="WarningShow"></Warning>
-  </div>
   <div class="flex w-full h-screen bg-zinc-900">
-    <SideBar :HasLogin="HasLogin" :avatar="avatar" @checkLogin="checkLogin" v-model:mode="mode" :username="username"
-             v-model:userdata="userdata" v-model:token="token" v-model:createdSonglists="createdSonglists"
-             v-model:favoriteSonglists="favoriteSonglists"
-             v-model:currentUserSongList="currentUserSongList" v-model:userUploadedSongs="userUploadedSongs"
-             v-model:showUserSongList="showUserSongList" v-model:ShowRedPoint="ShowRedPoint"
-             v-model:UserRole="UserRole"></SideBar>
+    <SideBar v-model:mode="mode"
+             v-model:userdata="userdata"
+             v-model:userUploadedSongs="userUploadedSongs"
+    ></SideBar>
     <div class="lg:w-1/6 w-0 h-full mr-0"></div>
     <div class="w-full lg:w-5/6 h-full mr-0">
       <div class="bg-zinc-900 h-screen overflow-auto">
@@ -650,7 +642,7 @@ onMounted(autoLogin);
         </div>
         <Personal_Center v-model:userdata="userdata" v-model:HasLogin="HasLogin" v-model:username="username"
                          v-if="HasLogin&&mode==='0'" @updateavatar="updateavatar"
-                         v-model:token="token" v-model:CountNotRead="CountNotRead"></Personal_Center>
+                         v-model:token="token"></Personal_Center>
         <HomePage_Main v-model:songlist="songlist" v-model:needshowsonglistpage="needshowsonglistpage"
                        @handlePlayAfter="handlePlayAfter" @handlePlayNow="handlePlayNow" v-if="mode==='1'"
                        v-model:SearchContent="SearchContent" v-model:ShowSearchView="ShowSearchView"
