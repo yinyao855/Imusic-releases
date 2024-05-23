@@ -115,16 +115,16 @@ function getShare() {
       <button class="btn btn-info btn-md float-right mt-3 mx-3" onclick="my_modal_2.showModal()">使用分享码</button>
     </div>
     <dialog id="my_modal_2" class="modal">
-      <div class="modal-box bg-gray-300">
+      <div class="modal-box bg-gray-300 h-60 py-10">
+        <form method="dialog">
+          <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+        </form>
         <h3 class="font-bold text-2xl text-gray-700">分享码：</h3>
         <input class="w-4/5 text-cyan-600 text-xl p-2 inline-block align-middle mr-5 rounded-md"
                v-model="shareCode" placeholder="请输入分享码"/>
-        <button class="btn btn-info mt-5 inline-block" @click="getShare">获取</button>
+        <button class="btn btn-info mt-8 inline-block" @click="getShare">获取</button>
         <div class="text-cyan-600 mt-1 ml-1" style="font-size: 12px">分享码时效为一天，接受分享成功后，请在【收藏的歌单】中查看</div>
       </div>
-      <form method="dialog" class="modal-backdrop">
-        <button>close</button>
-      </form>
     </dialog>
     <div class="text-white text-xl w-3/5 mx-auto my-4">
       个人简介：
