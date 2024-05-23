@@ -33,7 +33,7 @@ export const useUserStore = defineStore('user', () => {
         console.log("login success!")
     }
 
-    function refresh() {
+    function refreshInfo() {
         if (isLogin.value === true) {
             const webx = '/users/info/' + username.value;
             const instance = axios.create({
@@ -77,7 +77,7 @@ export const useUserStore = defineStore('user', () => {
         setToken,
         flush,
         login,
-        refresh,
+        refreshInfo,
     }
 }, {
         persist: true, // enable the store to be saved in the storage
