@@ -24,6 +24,8 @@ const favoriteSonglists = ref([]); // 用户收藏的歌单
 const showCurrentSongList = ref(false); // 是否展示选中的歌单信息页面（默认：否），选择歌单后为true
 const currentSonglistId = ref(0);
 
+const loading = ref(true);
+
 // emits
 const PlaySongList = (id) => {
   emits('PlaySongList', id);
@@ -68,6 +70,7 @@ const getFavoriteSonglists = () => {
       .then(function (response) {
         if (response.data.success === true) {
           favoriteSonglists.value = response.data.data;
+          loading.value = false;
         }
       })
       .catch(function (error) {
@@ -92,12 +95,15 @@ onMounted(getFavoriteSonglists);
   </transition>
 
   <!--  展示用户收藏的歌单主界面-->
-  <div class="w-full h-full mb-48 flex flex-col" v-if="!showCurrentSongList">
+  <div class="w-full h-full mb-48" v-if="!showCurrentSongList">
     <!--    标题-->
     <div class="w-full h-32 flex">
       <div class="text-4xl text-white text-center m-auto">我收藏的歌单</div>
     </div>
-    <div class="flex-1">
+    <div class="w-1 m-auto my-40" v-if="loading">
+      <span class="loading loading-dots loading-lg"></span>
+    </div>
+    <div class="flex-1" v-if="!loading">
       <!--    内容：创建的歌单（v-for依次输出创建的歌单）-->
       <div v-for="(songlist, index) in favoriteSonglists" class="all inline-block px-8 pb-6">
         <div @click="activeSonglist(index)" class="card bg-gray-300 cursor-pointer">
