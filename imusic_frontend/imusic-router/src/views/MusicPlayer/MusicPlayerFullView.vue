@@ -154,6 +154,8 @@ const seek = () => {
   if (audioPlayer.value) {
     audioPlayer.value.currentTime = currentduration.value;
     console.log(currentduration.value);
+    console.log(audioPlayer.value.currentTime);
+    console.log("check");
   }
 };
 
