@@ -537,14 +537,6 @@ const PlaySongList = (id) => {
       })
 }
 
-// const checkLogin = () => {
-//   if (HasLogin.value === false) {
-//     WarningShow.value = true;
-//     message.value = '请先登录';
-//     changeMode(0);
-//   }
-// }
-
 const PlayLikeSongs = () => {
   const instance = axios.create({
     baseURL: 'http://182.92.100.66:5000',

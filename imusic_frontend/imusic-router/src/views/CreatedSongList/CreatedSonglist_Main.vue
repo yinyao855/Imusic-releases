@@ -4,18 +4,13 @@ import {defineEmits, defineModel, onMounted, ref} from "vue";
 import CreatedSonglist from "@/views/CreatedSongList/CreatedSonglist.vue";
 import axios from "axios";
 import LikeSongs_Area from "@/views/CreatedSongList/LikeSongs_Area.vue";
-import Warning from "@/components/Warning.vue";
+import MyAlert from "@/js/MyAlert.js";
 
 // global variables
 const token = defineModel('token')
 const username = defineModel('username')
 const HasLogin = defineModel('HasLogin');
 const message = ref('错误消息');
-const WarningShow = ref(false);
-const CloseWarning = () => {
-  WarningShow.value = false;
-}
-
 const loading = ref(true);
 
 // defineEmits(播放歌单全部歌曲，加入播放列表，立即播放)
@@ -68,8 +63,7 @@ const PlayLikeSongs = () => {
 
 function getCreatedSonglists() {
   if (HasLogin.value === false) {
-    message.value = '请先登录';
-    WarningShow.value = true;
+    MyAlert({type:'alert-warning',text:'请先登录'});
     return;
   }
   const instance = axios.create({
@@ -96,9 +90,6 @@ onMounted(getCreatedSonglists);
 </script>
 
 <template>
-  <div class="w-full absolute top-0 left-1/2 transform -translate-x-1/2" v-if="WarningShow">
-    <Warning :message="message" @CloseWarning="CloseWarning" class="mx-auto" v-model:token="token"></Warning>
-  </div>
   <transition name="slide" appear>
     <div class="transition-container z-50 ml-8" v-if="ShowLikeSongs">
       <LikeSongs_Area class="w-screen mb-32" v-model:LikeSongsCover="LikeSongCover" v-model:username="username"

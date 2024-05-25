@@ -260,8 +260,7 @@ function cancelSelect() {
 
 function activeShowComplaint() {
   if (HasLogin.value === false) {
-    message.value = '请先登录';
-    WarningShow.value = true;
+    MyAlert({type:'alert-warning',text:'请先登录'});
     return;
   }
   showComplaint.value = true;
@@ -273,8 +272,7 @@ function closeComplaint() {
 
 function activeSharePage() {
   if (HasLogin.value === false) {
-    message.value = '请先登录';
-    WarningShow.value = true;
+    MyAlert({type:'alert-warning',text:'请先登录'});
     return;
   }
   showSharePage.value = true;

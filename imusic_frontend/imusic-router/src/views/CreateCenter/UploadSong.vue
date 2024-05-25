@@ -1,9 +1,4 @@
 <template>
-  <transition name="vx">
-    <div class="w-full absolute top-0 left-1/2 transform -translate-x-1/2" v-if="WarningShow">
-      <Warning :message="message" @CloseWarning="CloseWarning" class="mx-auto" v-model:token="token" v-model:Warningshow="WarningShow"></Warning>
-    </div>
-  </transition>
   <div class="h-full w-full flex items-center cursor-default" @keypress.enter="submitSong">
     <div class="formx2 my-auto mx-auto width:800px flexible bg-zinc-900 w-full">
       <div class="flex-column text-2xl">
@@ -289,7 +284,6 @@
 <script setup>
 import {ref, defineModel} from "vue";
 import axios from "axios";
-import Warning from "@/components/Warning.vue";
 import {defineEmits} from "vue"
 import P from "particles.vue3";
 import MyAlert from "@/js/MyAlert.js";
@@ -391,6 +385,7 @@ function fileToBase64(file) {
 
 const downloadLrcFile = () => {
   if(lyrics.value.length===1){
+    MyAlert({type:'alert-warning',text:'请添加歌词'});
     return;
   }
   const lrcString = convertLyricsToLRC(lyrics.value);
@@ -408,29 +403,20 @@ const downloadLrcFile = () => {
 };
 
 const submitSong = () => {
-  console.log("ok");
-  // const button = document.querySelector('.button-submit');
-  // const rect = button.getBoundingClientRect();
-  // const x = rect.left + rect.width / 2 + window.scrollX;
-  // const y = rect.top + rect.height / 2 + window.scrollY;
   if (HasLogin.value === false) {
-    WarningShow.value = true;
-    message.value = '请先登录';
+    MyAlert({type:'alert-warning',text:'请先登录'});
     return;
   }
   if (songTitle.value === '') {
-    WarningShow.value = true;
-    message.value = '请输入歌曲名';
+    MyAlert({type:'alert-warning',text:'请输入歌曲名'});
     return;
   }
   if (mp3File.value === null) {
-    WarningShow.value = true;
-    message.value = '请上传歌曲';
+    MyAlert({type:'alert-warning',text:'请上传歌曲'});
     return;
   }
   if (coverImageFile.value === null) {
-    WarningShow.value = true;
-    message.value = '请上传封面';
+    MyAlert({type:'alert-warning',text:'请上传封面'});
     return;
   }
   let formData = new FormData();
@@ -511,17 +497,7 @@ const deleteline = (index) => {
   }
 }
 
-const CloseWarning = () => {
-  WarningShow.value = false;
-}
 const HasLogin = defineModel('HasLogin');
-const message = ref('');
-const WarningShow = ref(false);
-
-const changeMode = () => {
-  emits('changeMode');
-}
-
 const uploadSongSuccess = () => {
   emits('uploadSongSuccess');
 }

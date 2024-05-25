@@ -1,7 +1,5 @@
 <script setup>
-import UploadSong from "@/views/CreateCenter/UploadSong.vue";
 import {onMounted, ref} from "vue";
-import Warning from "@/components/Warning.vue";
 import P from "particles.vue3";
 import axios from "axios";
 
@@ -238,11 +236,6 @@ onMounted(GetSongData);
 </script>
 
 <template>
-  <!--  <transition name="vx">-->
-  <!--    <div class="w-full absolute top-0 left-1/2 transform -translate-x-1/2" v-if="WarningShow">-->
-  <!--      <Warning :message="message" @CloseWarning="CloseWarning" class="mx-auto" v-model:token="token"></Warning>-->
-  <!--    </div>-->
-  <!--  </transition>-->
   <buttonchangesize class="absolute top-2 left-2" @fullsize="changesize" v-model:token="token"></buttonchangesize>
   <div class="h-full w-full flex items-center" @keypress.enter="submitSong">
     <div class="formx2 my-auto mx-auto width:800px flexible bg-zinc-900">

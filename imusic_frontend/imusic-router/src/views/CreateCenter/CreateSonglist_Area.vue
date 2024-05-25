@@ -2,7 +2,6 @@
 import {defineModel, ref} from "vue";
 import axios from "axios";
 import P from "particles.vue3";
-import Warning from "@/components/Warning.vue";
 import MyAlert from "@/js/MyAlert.js";
 
 const title = ref("");
@@ -17,7 +16,6 @@ const coverImageFileUrl = ref('');
 const HasLogin = defineModel('HasLogin');
 const username = defineModel('username');
 const message = ref('');
-const WarningShow = ref(false);
 const token=defineModel('token')
 const onCoverFileChange = (event) => {
   cover.value = event.target.files[0];
@@ -51,21 +49,15 @@ function fileToBase64(file) {
 
 function sendPostCreateSonglist() {
   if (HasLogin.value === false) {
-    console.log('请先登录');
-    WarningShow.value = true;
-    message.value = '请先登录';
+    MyAlert({type:'alert-warning',text:'请先登录'});
     return;
   }
   if (title.value === '') {
-    console.log('请输入歌单名');
-    WarningShow.value = true;
-    message.value = '请输入歌单名';
+    MyAlert({type:'alert-warning',text:'请输入歌单名'});
     return;
   }
   if (cover.value === null) {
-    console.log('请上传封面');
-    WarningShow.value = true;
-    message.value = '请上传封面';
+    MyAlert({type:'alert-warning',text:'请上传封面'});
     return;
   }
 
@@ -98,18 +90,11 @@ function sendPostCreateSonglist() {
         console.log(error.response.data);
       });
 }
-const CloseWarning = () => {
-  WarningShow.value = false;
-}
+
 </script>
 
 <template>
-  <div class="form_create_container bg-zinc-900 w-full cursor-default">
-    <transition name="vx">
-      <div class="w-full absolute top-0 left-1/2 transform -translate-x-1/2" v-if="WarningShow">
-        <Warning :message="message" @CloseWarning="CloseWarning" class="mx-auto" v-model:token="token" v-model:Warningshow="WarningShow"></Warning>
-      </div>
-    </transition>
+  <div class="form_create_container bg-zinc-900 w-full cursor-default overflow-y-auto">
     <div class="w-3/5 m-auto mt-4 bg-zinc-900 p-3 rounded-2xl">
       <div class="text-2xl text-white mb-2">
         <p class="">*歌单标题</p>
@@ -123,6 +108,9 @@ const CloseWarning = () => {
         </svg>
         <input type="text" class="input bg-zinc-900" placeholder="请输入歌单名" v-model="title">
       </div>
+      <p class="text-sm text-gray-500 mt-2 mb-1">
+        <span>此项为必填项</span>
+      </p>
       <div>
         <div class="text-2xl text-white my-2">
           <p class="w-full rounded-2xl">*歌单封面</p>
@@ -243,7 +231,7 @@ const CloseWarning = () => {
         </button>
       </div>
     </div>
-    <div class="h-32"></div>
+    <div class="h-16"></div>
   </div>
 </template>
 
@@ -260,5 +248,12 @@ select {
   top: 0;
   opacity: 95%;
 }
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
 
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
 </style>

@@ -157,7 +157,7 @@ const CloseSongPage=()=>{
     </div>
   </transition>
 
-  <div v-if="!showEditSong&&!ShowSong&&!NeedShowSongDetail" class="cursor-default">
+  <div v-if="!showEditSong&&!ShowSong&&!NeedShowSongDetail" class="cursor-default overflow-hidden">
     <div class="w-full h-14 pl-6">
       <div :class="[NaviClass1, 'text-transition']" @click="changeNaviMode(1)" style="line-height: 56px">我的创作</div>
       <div :class="[NaviClass2, 'text-transition']" @click="changeNaviMode(2)" style="line-height: 56px">创作歌曲</div>
@@ -305,7 +305,7 @@ const CloseSongPage=()=>{
     <CreateSonglist_Area @uploadSongSuccess="uploadSongSuccess" v-model:HasLogin="HasLogin"
                 v-model:username="username" v-model:token="token"></CreateSonglist_Area>
   </div>
-  <div class="h-32" v-if="!NeedShowSongDetail"></div>
+  <div class="h-16" v-if="!NeedShowSongDetail"></div>
 </template>
 
 <style scoped>
@@ -336,5 +336,13 @@ const CloseSongPage=()=>{
   right: 0;
   top: 0;
   height: 100%;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 </style>

@@ -9,7 +9,7 @@ const showComment = defineModel('showComment');
 const songID = defineModel('songID');
 const Comment = defineModel('Comment');
 const addCommentInfo = ref('');
-const WarningShow = defineModel('WarningShow');
+
 const message = defineModel('message');
 const addComment = () => {
   const formData = new FormData();
