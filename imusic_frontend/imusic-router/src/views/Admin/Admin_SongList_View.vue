@@ -104,7 +104,7 @@ const changesize = () => {
         </td>
         <td>{{ item.create_date }}</td>
         <td>
-          <div class="inline pr-4" @click="DeleteSongList(index)">
+          <div class="inline pr-4 cursor-pointer" @click="DeleteSongList(index)">
             <svg class="icon fill-red-600 hover:fill-red-800 inline" viewBox="0 0 1024 1024"
                  xmlns="http://www.w3.org/2000/svg"
                  width="24" height="24">
@@ -122,7 +122,7 @@ const changesize = () => {
               ></path>
             </svg>
           </div>
-          <svg @click="Show_Update_SongList(index)" class="icon fill-white inline hover:fill-gray-500"
+          <svg @click="Show_Update_SongList(index)" class="icon fill-white inline hover:fill-gray-500 cursor-pointer"
                viewBox="0 0 1024 1024"
                xmlns="http://www.w3.org/2000/svg"
                width="24" height="24">

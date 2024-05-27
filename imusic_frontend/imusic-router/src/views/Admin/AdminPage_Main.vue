@@ -13,19 +13,19 @@ import Admin_Search_User_View from "@/views/Admin/Admin_Search_User_View.vue";
 import Admin_Show_User_Information from "@/views/Admin/Admin_Show_User_Information.vue";
 import Admin_Complaint_View from "@/views/Admin/Admin_Complaint_View.vue";
 const NaviClass1 = computed(() => ({
-  'text-base inline-block mx-5 w-30 rounded-lg antialiased tracking-widest font-medium transition-colors duration-400 hover:bg-gray-600/40': true,
+  'text-base inline-block mx-5 w-30 rounded-lg antialiased tracking-widest font-medium transition-colors duration-400 hover:bg-gray-600/40 cursor-pointer': true,
   'text-cyan-700 underline underline-offset-8 decoration-2': NaviMode.value === '1',
 }));
 const NaviClass2 = computed(() => ({
-  'text-base inline-block mx-5 w-30 rounded-lg antialiased tracking-widest font-medium transition-colors duration-400 hover:bg-gray-600/40': true,
+  'text-base inline-block mx-5 w-30 rounded-lg antialiased tracking-widest font-medium transition-colors duration-400 hover:bg-gray-600/40 cursor-pointer': true,
   'text-cyan-700 underline underline-offset-8 decoration-2': NaviMode.value === '2',
 }));
 const NaviClass3 = computed(() => ({
-  'text-base inline-block mx-5 w-30 rounded-lg antialiased tracking-widest font-medium transition-colors duration-400 hover:bg-gray-600/40': true,
+  'text-base inline-block mx-5 w-30 rounded-lg antialiased tracking-widest font-medium transition-colors duration-400 hover:bg-gray-600/40 cursor-pointer': true,
   'text-cyan-700 underline underline-offset-8 decoration-2': NaviMode.value === '3',
 }));
 const NaviClass4 = computed(() => ({
-  'text-base inline-block mx-5 w-30 rounded-lg antialiased tracking-widest font-medium transition-colors duration-400 hover:bg-gray-600/40': true,
+  'text-base inline-block mx-5 w-30 rounded-lg antialiased tracking-widest font-medium transition-colors duration-400 hover:bg-gray-600/40 cursor-pointer': true,
   'text-cyan-700 underline underline-offset-8 decoration-2': NaviMode.value === '4',
 }));
 const Songs = ref([]);

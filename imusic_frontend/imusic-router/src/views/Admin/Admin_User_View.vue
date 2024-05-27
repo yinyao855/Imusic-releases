@@ -75,7 +75,7 @@ const UpdateUserData=(role)=>{
         </td>
         <td>{{ item.registration_date }}</td>
         <td>
-          <svg class="icon fill-white inline hover:fill-gray-500" viewBox="0 0 1024 1024"
+          <svg class="icon fill-white inline hover:fill-gray-500 cursor-pointer" viewBox="0 0 1024 1024"
                xmlns="http://www.w3.org/2000/svg"
                width="24" height="24" @click="ShowDetail(index)">
             <path
