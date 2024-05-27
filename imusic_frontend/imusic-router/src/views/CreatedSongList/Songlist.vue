@@ -1,6 +1,6 @@
 <script setup>
 // 展示歌单信息页面
-import {defineEmits, defineModel, onMounted, ref} from "vue";
+import {computed, defineEmits, defineModel, onMounted, ref} from "vue";
 import axios from "axios";
 import CurrentUser_SongList from "@/components/CurrentUser_SongList.vue";
 import SongPage from "@/components/SongPage.vue";
@@ -10,9 +10,11 @@ import Other_User_Data from "@/views/Explore/Other_User_Data.vue";
 import Complaint from "@/components/Complaint.vue";
 import SharePage from "@/components/SharePage.vue";
 import MyAlert from "@/js/MyAlert.js";
+import {useUserStore} from "@/stores/user.js";
 
 // global variables
-const HasLogin = defineModel('HasLogin');
+const userStore = useUserStore();
+const HasLogin = ref(computed(() => userStore.isLogin))
 const token = defineModel('token')
 const username = defineModel('username')
 
@@ -155,6 +157,10 @@ function getSonglistData() {
 
 // 收藏此歌单
 function addFavoriteSonglist() {
+  if (HasLogin.value === false) {
+    MyAlert({type:'alert-warning',text:'请先登录'});
+    return;
+  }
   const instance = axios.create({
     baseURL: 'http://182.92.100.66:5000',
     timeout: 5000, // 设置请求超时时间
@@ -205,6 +211,10 @@ function deleteFavoriteSonglist() {
 
 // 存储选择加入歌单的歌曲id，进入选择歌单界面（ShowCreatedSongList为true）
 function activeAddToSongList(songid) {
+  if (HasLogin.value === false) {
+    MyAlert({type:'alert-warning',text:'请先登录'});
+    return;
+  }
   ShowCreatedSongList.value = true;
   needtoaddSongid.value = [songid];
 }
@@ -241,6 +251,10 @@ function CloseUserDetail() {
 }
 
 function activeSelect() {
+  if (HasLogin.value === false) {
+    MyAlert({type:'alert-warning',text:'请先登录'});
+    return;
+  }
   showSelect.value = true;
 }
 
@@ -336,7 +350,7 @@ onMounted(getSonglistData);
     <span class="loading loading-dots loading-lg"></span>
   </div>
 
-  <div v-if="!loading&&!ShowCreatedSongList&&!ShowSong&&!showComplaint&&!showSharePage">
+  <div v-if="!loading&&!ShowCreatedSongList&&!ShowSong&&!showComplaint&&!showSharePage&&!showUser">
     <!--      展示歌单信息-->
     <div class="h-80 relative">
       <div class="bg-center bg-cover bg-blur w-full h-full absolute top-0 left-0"
