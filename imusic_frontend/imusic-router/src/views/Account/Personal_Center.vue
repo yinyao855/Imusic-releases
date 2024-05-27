@@ -49,7 +49,7 @@ const Savemessage = () => {
         console.log(response.data.message);
         if (response.data.success === true) {
           MyAlert({type: 'alert-info', text: '保存成功'});
-          userStore.refresh();
+          userStore.refreshInfo();
         }
       })
       .catch(error => {

@@ -1,9 +1,4 @@
 <template>
-  <transition name="vx">
-    <div class="w-full absolute top-0 left-1/2 transform -translate-x-1/2" v-if="WarningShow">
-      <Warning :message="message" @CloseWarning="CloseWarning" class="mx-auto" v-model:token="token" v-model:Warningshow="WarningShow"></Warning>
-    </div>
-  </transition>
   <div class="flex h-screen w-screen" :style="sty">
     <div class="col1 w-1/2">
       <div class="button_div">
@@ -110,7 +105,7 @@
     <div v-if="showComment" class="col2 w-1/2 flex transition:ease-in duration-300">
       <div class="w-full overflow-hidden mx-auto my-auto pr-20" style="height:90%">
         <Comment :token="token" :id="songID" v-model:showComment="showComment" v-model:songID="songID"
-                 v-model:WarningShow="WarningShow" v-model:message="message" v-model:username="username"></Comment>
+                 v-model:message="message" v-model:username="username"></Comment>
       </div>
     </div>
   </div>
@@ -121,7 +116,6 @@ import {ref, defineModel, watch} from 'vue';
 import buttonchangesize from '../../components/ButtonChangeSizeLeft.vue'
 import Comment from '@/components/Comment.vue'
 import {defineEmits} from 'vue';
-import Warning from "@/components/Warning.vue";
 import LyricsView from "@/views/MusicPlayer/LyricsView.vue";
 
 const emit = defineEmits(['fullsize', 'togglePlay', 'update', 'back', 'next']);
@@ -160,6 +154,8 @@ const seek = () => {
   if (audioPlayer.value) {
     audioPlayer.value.currentTime = currentduration.value;
     console.log(currentduration.value);
+    console.log(audioPlayer.value.currentTime);
+    console.log("check");
   }
 };
 
@@ -192,10 +188,6 @@ const comment = () => {
   showComment.value = !showComment.value;
   songID = props.id;
   console.log(songID);
-}
-const WarningShow = ref(false);
-const CloseWarning = () => {
-  WarningShow.value = false;
 }
 const message = ref('');
 </script>

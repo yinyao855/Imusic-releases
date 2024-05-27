@@ -2,6 +2,7 @@
 import {defineEmits, defineModel, onMounted, ref, watch} from "vue";
 import axios from "axios";
 import MyAlert from "@/js/MyAlert.js";
+import {useMessageStore} from "@/stores/message.js";
 
 const token = defineModel('token')
 const showComment = defineModel('showComment');
@@ -9,7 +10,7 @@ const showComment = defineModel('showComment');
 const songID = defineModel('songID');
 const Comment = defineModel('Comment');
 const addCommentInfo = ref('');
-const WarningShow = defineModel('WarningShow');
+const messageStore = useMessageStore();
 const message = defineModel('message');
 const addComment = () => {
   const formData = new FormData();
@@ -93,7 +94,7 @@ const initUserImage = () => {
     }
     sameUser.value[i] = (Comment.value[i].user === username.value);
     //comment_date仅保留年月日
-    Comment.value[i].comment_date = Comment.value[i].comment_date.split('T')[0];
+    Comment.value[i].comment_date = messageStore.ChangeTime(Comment.value[i].comment_date);
   }
 }
 const deleteComment = (index) => {
@@ -250,7 +251,7 @@ watch(songID, () => {
                     v-if="showInfo[index]===true" @click="off(index)">
               <div class="text-l font-black">收起</div>
             </button>
-          <div class="row-start-4 row-span-2 col-start-12 col-span-1 w-1/2" @click="deleteComment(index)"
+          <div class="row-start-3 row-span-2 col-start-12 col-span-1 w-1/2" @click="deleteComment(index)"
                v-if="(sameUser[index])">
             <svg class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"
                  width="24" height="24">

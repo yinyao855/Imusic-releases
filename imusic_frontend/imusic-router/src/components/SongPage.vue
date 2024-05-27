@@ -3,16 +3,12 @@
 import {defineModel, defineEmits, onMounted, ref} from "vue";
 import buttonchangesize from "@/components/ButtonChangeSizeRight.vue";
 import axios from "axios";
-import Comment from "@/components/Comment.vue";
-import CurrentUser_SongList from "@/components/CurrentUser_SongList.vue";
 import Complaint from "@/components/Complaint.vue";
-import Warning from "@/components/Warning.vue";
 import MyAlert from "@/js/MyAlert.js";
 
 // global variables
 const token = defineModel('token')
 const username = defineModel('username')
-const WarningShow = ref(false);
 const message = ref('');
 const HasLogin = defineModel('HasLogin');
 const showComment = ref(true);
@@ -22,9 +18,6 @@ const complaintType = ref("songs")
 // defineEmits(关闭当前页面/回到上一个页面展示歌单)
 const emits = defineEmits(['handlePlayNow', 'CloseSong'])
 
-const CloseWarning = () => {
-  WarningShow.value = false;
-}
 
 // v-model
 let songData;
@@ -89,8 +82,7 @@ function getFavoriteSongs() {
 // 收藏此歌单
 function addFavoriteSong() {
   if (HasLogin.value === false) {
-    message.value = '请先登录';
-    WarningShow.value = true;
+    MyAlert({type:'alert-warning',text:'请先登录'});
     return;
   }
   const instance = axios.create({
@@ -118,8 +110,7 @@ function addFavoriteSong() {
 // 取消收藏此歌单
 function deleteFavoriteSong() {
   if (HasLogin.value === false) {
-    message.value = '请先登录';
-    WarningShow.value = true;
+    MyAlert({type:'alert-warning',text:'请先登录'});
     return;
   }
   const instance = axios.create({
@@ -203,9 +194,7 @@ function convertLyricsToLRC(lyricsArray) {
 
 function downloadLrcFile() {
   if (lyrics.value.length === 0) {
-    console.log("hi")
-    message.value = '无歌词';
-    WarningShow.value = true;
+    MyAlert({type:'alert-warning',text:'未输入歌词'});
     return;
   }
   const lrcString = convertLyricsToLRC(lyrics.value);
@@ -259,8 +248,7 @@ function getSubscribeUser() {
 // 关注用户/取消关注
 function handleSubscribeUser() {
   if (HasLogin.value === false) {
-    message.value = '请先登录';
-    WarningShow.value = true;
+    MyAlert({type:'alert-warning',text:'请先登录'});
     return;
   }
   if (isMe.value === true) {
@@ -289,8 +277,7 @@ function handleSubscribeUser() {
 
 function activeShowComplaint() {
   if (HasLogin.value === false) {
-    message.value = '请先登录';
-    WarningShow.value = true;
+    MyAlert({type:'alert-warning',text:'请先登录'});
     return;
   }
   showComplaint.value = true;
@@ -306,11 +293,6 @@ onMounted(getSubscribeUser);
 </script>
 
 <template>
-  <div class="w-full absolute top-5 left-1/2 transform -translate-x-1/2" v-if="WarningShow">
-    <Warning :message="message" @CloseWarning="CloseWarning" class="mx-auto" v-model:token="token"
-             v-model:Warningshow="WarningShow"></Warning>
-  </div>
-
   <transition name="slide" appear>
     <div class="transition-container-2" v-if="showComplaint">
       <Complaint v-model:complaintType="complaintType"
@@ -497,15 +479,6 @@ onMounted(getSubscribeUser);
         <p>{{ lyric.text }}</p>
       </div>
     </div>
-    <!--    <hr class="my-20">-->
-    <!--    <div v-if="showComment" class="">-->
-    <!--      <div class="w-full overflow-hidden mx-auto my-auto pr-20" style="height:600px">-->
-    <!--        <transition name="all transition-duration: 300ms">-->
-    <!--          <Comment :token="token" :id="currentSongId" v-model:showComment="showComment" v-model:songID="currentSongId"-->
-    <!--                   v-model:WarningShow="WarningShow" v-model:message="message" v-model:username="username"></Comment>-->
-    <!--        </transition>-->
-    <!--      </div>-->
-    <!--    </div>-->
   </div>
   <div class="h-40"></div>
 </template>

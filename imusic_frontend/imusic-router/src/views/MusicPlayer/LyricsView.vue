@@ -15,7 +15,6 @@
 <script setup>
 import {ref, watch} from 'vue';
 
-const audioPlayer = ref(null);
 const ulRef = ref(null);
 const containerRef = ref(null);
 const lrcArr=defineModel('lrcArr');
@@ -26,8 +25,12 @@ const Local_Scrool_Offset=ref(0);
 
 const ChangePlayTime=(LyricIndex)=>{
   console.log(lrcArr.value[LyricIndex].timestamp);
+  console.log(RealaudioPlayer.value.currentTime);
+  console.log(currentduration.value);
   currentduration.value=lrcArr.value[LyricIndex].timestamp;
   RealaudioPlayer.value.currentTime=lrcArr.value[LyricIndex].timestamp;
+  console.log(RealaudioPlayer.value.currentTime);
+  console.log(currentduration.value);
 }
 
 const handleScroll=()=>{

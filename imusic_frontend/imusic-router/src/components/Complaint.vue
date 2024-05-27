@@ -45,7 +45,14 @@ function getSongListOwner() {
     }
   });
   axios.defaults.withCredentials = true;
-  instance.get("/songlists/info/" + id.value)
+  const web = ref("");
+  let str = id.value + "";
+  if(str.includes("sh")) {
+    web.value = '/songlists/info/' + id.value + "?username=" + username.value;
+  } else {
+    web.value = '/songlists/info/' + id.value;
+  }
+  instance.get(web.value)
       .then(function (response) {
         owner.value = response.data.data.owner;
       })
@@ -103,7 +110,7 @@ onMounted(getOwner)
 <template>
   <buttonchangesize class="left-4 top-4" @fullsize="closeComplaint"
                     v-model:token="token"></buttonchangesize>
-  <div class="w-2/3 m-auto">
+  <div class="w-2/3 h-screen m-auto">
     <div class="w-full h-32 flex">
       <div v-if="complaintType==='songs'" class="text-4xl text-white text-center m-auto">投诉歌曲： {{ title }}</div>
       <div v-if="complaintType==='songlists'" class="text-4xl text-white text-center m-auto">投诉歌单： {{ title }}</div>

@@ -11,12 +11,12 @@ const HasLogin = defineModel('HasLogin')
 const emits = defineEmits(['handlePlayNow', 'handlePlayAfter', 'changesize', 'ChangeSongList', 'addToSongList']);
 const SongListId = defineModel('SongListId');
 
-function handlePlayNow(index) {
-  emits('handlePlayNow', songlistlast.value.songs[index].id)
+function handlePlayNow(id) {
+  emits('handlePlayNow', id)
 }
 
-function handlePlayAfter(index) {
-  emits('handlePlayAfter', songlistlast.value.songs[index].id)
+function handlePlayAfter(id) {
+  emits('handlePlayAfter', id)
 }
 
 const changesize = () => {
@@ -215,7 +215,7 @@ onMounted(GetUserLike)
       <!-- row 1 -->
       <tr class="text-white transition duration-400 hover:bg-gray-600/40 rounded-md"
           v-for="(item, index) in songlistlast.songs" :key="index">
-        <td @click="handlePlayNow(index);">
+        <td @click="handlePlayNow(item.id);">
           <svg @click="addlike(index)" v-if="!item.user_like" class="icon fill-white mr-4 my-auto"
                viewBox="0 0 1024 1024"
                xmlns="http://www.w3.org/2000/svg" width="20" height="20">
@@ -234,7 +234,7 @@ onMounted(GetUserLike)
                 fill="#BF4C4C"></path>
           </svg>
         </td>
-        <td @click="handlePlayNow(index);">
+        <td @click="handlePlayNow(item.id);">
           <div class="flex items-center gap-3">
             <div class="avatar">
               <div class="mask mask-squircle w-12 h-12">
@@ -248,11 +248,11 @@ onMounted(GetUserLike)
             </div>
           </div>
         </td>
-        <td @click="handlePlayNow(index);">
+        <td @click="handlePlayNow(item.id);">
           {{ item.singer }}
         </td>
-        <td @click="handlePlayNow(index);">{{ item.uploader }}</td>
-        <td @click="handlePlayNow(index);">{{ item.duration }}</td>
+        <td @click="handlePlayNow(item.id);">{{ item.uploader }}</td>
+        <td @click="handlePlayNow(item.id);">{{ item.duration }}</td>
         <th>
           <div
               class="dropdown dropdown-left dropdown-end my-auto tooltip transition duration-400 hover:bg-gray-600/40 bg-zinc-900 btn btn-sm border-none"
@@ -274,7 +274,7 @@ onMounted(GetUserLike)
                 </div>
               </li>
               <li>
-                <div class="text-sm font-semibold" @click="handlePlayNow(index);">
+                <div class="text-sm font-semibold" @click="handlePlayNow(item.id);">
                   <svg class="icon ml-1" viewBox="0 0 1024 1024"
                        xmlns="http://www.w3.org/2000/svg" width="16" height="16">
                     <path
@@ -286,7 +286,7 @@ onMounted(GetUserLike)
                 </div>
               </li>
               <li>
-                <div class="text-sm font-semibold" @click="handlePlayAfter(index)">
+                <div class="text-sm font-semibold" @click="handlePlayAfter(item.id)">
                   <svg class="icon" viewBox="0 0 1024 1024"
                        xmlns="http://www.w3.org/2000/svg" width="22" height="22">
                     <path

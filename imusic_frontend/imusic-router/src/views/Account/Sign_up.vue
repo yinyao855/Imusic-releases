@@ -1,10 +1,5 @@
 <template>
   <div id="sign_up" class="h-full w-full flex items-center" @keypress.enter="show">
-    <transition>
-      <div class="w-full absolute top-0 left-1/2 transform -translate-x-1/2" v-if="WarningShow">
-        <Warning :message="message" @CloseWarning="CloseWarning" class="mx-auto" v-model:token="token" v-model:Warningshow="WarningShow"></Warning>
-      </div>
-    </transition>
     <div class="formx mx-auto my-auto">
       <div class="flex-column">
         <label>邮 箱 </label>
@@ -120,13 +115,13 @@
 </style>
 
 <script setup>
-import Warning from "@/components/Warning.vue";
 import confetti from 'canvas-confetti';
 import axios from "axios";
 import {defineEmits} from "vue"
 
 const content = ref('获取验证码');
 import {ref, watch} from "vue";
+import MyAlert from "@/js/MyAlert.js";
 
 const showcountdown = ref(false);
 const email = ref('');
@@ -134,7 +129,6 @@ const username = ref('');
 const password = ref('');
 const repeatpassword = ref('');
 const message = ref('');
-const WarningShow = ref(false);
 const usernametofather = defineModel('username');
 const emits = defineEmits(['ChangerRegisterMode']);
 let interval = null;
@@ -152,24 +146,19 @@ const show = () => {
   const y = rect.top + rect.height / 2 + window.scrollY;
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   if (email.value === '') {
-    WarningShow.value = true;
-    message.value = '请输入邮箱';
+    MyAlert({type:'alert-warning',text:'请输入邮箱'});
     return;
   } else if (verify_code.value === '') {
-    WarningShow.value = true;
-    message.value = '请输入验证码';
+    MyAlert({type:'alert-warning',text:'请输入验证码'});
     return;
   } else if (!emailRegex.test(email.value)) {
-    WarningShow.value = true;
-    message.value = '邮箱格式不符合要求';
+    MyAlert({type:'alert-warning',text:'邮箱格式不符合要求'});
     return;
   } else if (username.value === '') {
-    WarningShow.value = true;
-    message.value = '请输入用户名';
+    MyAlert({type:'alert-warning',text:'请输入用户名'});
     return;
   } else if (password.value !== repeatpassword.value) {
-    WarningShow.value = true;
-    message.value = '确认密码和密码不符';
+    MyAlert({type:'alert-warning',text:'两次密码不一致'});
     return;
   }
   const formData = new FormData();
@@ -216,14 +205,9 @@ const show = () => {
             scalar: 1
           });
           gotologin();
-        } else {
-          WarningShow.value = true;
-          message.value = response.data.message;
         }
       })
       .catch(error => {
-        WarningShow.value = true;
-        message.value = error.response.data.message;
         if (error.response) {
           console.log(error.response.data);
           console.log(error.response.status);
@@ -267,9 +251,4 @@ const startCountdown = () => {
     }
   }, 1000);
 }
-
-const CloseWarning = () => {
-  WarningShow.value = false;
-}
-
 </script>

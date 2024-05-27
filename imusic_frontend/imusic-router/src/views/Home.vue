@@ -275,8 +275,14 @@ const changesonglist = () => {
   });
   axios.defaults.withCredentials = true;
   SongListId.value = index.value;
-  const web = '/songlists/info/' + index.value;
-  instance.get(web)
+  const web = ref("");
+  let str = SongListId.value + "";
+  if(str.includes("sh")) {
+    web.value = '/songlists/info/' + SongListId.value + "?username=" + username.value;
+  } else {
+    web.value = '/songlists/info/' + SongListId.value;
+  }
+  instance.get(web.value)
       .then(response => {
         songlist.value = response.data.data;
         songlist.value.create_date = extractDate(songlist.value.create_date)
@@ -519,7 +525,7 @@ const PlaySongList = (id) => {
     }
   });
   axios.defaults.withCredentials = true;
-  const web = '/songlists/info/' + id;
+  const web = '/songlists/info/' + id + "?username=" + username.value;
   instance.get(web)
       .then(response => {
         musicList.value = response.data.data.songs;
@@ -530,14 +536,6 @@ const PlaySongList = (id) => {
         console.log(error.response.data);
       })
 }
-
-// const checkLogin = () => {
-//   if (HasLogin.value === false) {
-//     WarningShow.value = true;
-//     message.value = '请先登录';
-//     changeMode(0);
-//   }
-// }
 
 const PlayLikeSongs = () => {
   const instance = axios.create({
@@ -659,7 +657,7 @@ onMounted(autoLogin);
                        v-model:token="token" v-model:SongListId="SongListId"
                        @changesonglist="changesonglist" @PlaySongList="PlaySongList"
                        v-model:HotSongs="HotSongs" @PlaySingerSongs="PlaySingerSongs"></HomePage_Main>
-        <ExplorePage_Main v-model:username="username" v-if="mode==='2'" v-model:token="token"
+        <ExplorePage_Main v-model:username="username" v-if="mode==='2'" v-model:token="token" @PlaySongList="PlaySongList"
                           @handlePlayNow="handlePlayNow" @handlePlayAfter="handlePlayAfter"></ExplorePage_Main>
         <SettingPage_Main v-if="mode==='3'" v-model:token="token" v-model:username="username"></SettingPage_Main>
         <CreateCenter v-if="mode==='4'" :userUploadedSongs="userUploadedSongs" @handlePlayNow="handlePlayNow"

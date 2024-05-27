@@ -9,12 +9,12 @@ const emits = defineEmits(['handlePlayNow', 'handlePlayAfter', 'changesize', 'ad
 const HasLogin = defineModel('HasLogin')
 const username = defineModel('username');
 const token=defineModel('token')
-function handlePlayNow(index) {
-  emits('handlePlayNow', songlistlast.value[index].id)
+function handlePlayNow(id) {
+  emits('handlePlayNow', id)
 }
 
-function handlePlayAfter(index) {
-  emits('handlePlayAfter', songlistlast.value[index].id)
+function handlePlayAfter(id) {
+  emits('handlePlayAfter', id)
 }
 
 const changesize = () => {
@@ -130,7 +130,7 @@ const CloseSongPage=()=>{
                 fill="#BF4C4C"></path>
           </svg>
         </td>
-        <td @click="handlePlayNow(index);">
+        <td @click="handlePlayNow(item.id);">
           <div class="flex items-center gap-3">
             <div class="avatar">
               <div class="mask mask-squircle w-12 h-12">
@@ -144,11 +144,11 @@ const CloseSongPage=()=>{
             </div>
           </div>
         </td>
-        <td @click="handlePlayNow(index);">
+        <td @click="handlePlayNow(item.id);">
           {{ item.singer }}
         </td>
-        <td @click="handlePlayNow(index);">{{ item.uploader }}</td>
-        <td @click="handlePlayNow(index);">{{ item.duration }}</td>
+        <td @click="handlePlayNow(item.id);">{{ item.uploader }}</td>
+        <td @click="handlePlayNow(item.id);">{{ item.duration }}</td>
         <th>
           <div
               class="dropdown dropdown-left dropdown-bottom my-auto tooltip transition duration-400 hover:bg-gray-600/40 bg-zinc-900 btn btn-sm border-none z-50"
@@ -170,7 +170,7 @@ const CloseSongPage=()=>{
                 </div>
               </li>
               <li>
-                <div class="text-sm font-semibold z-50" @click="handlePlayNow(index);">
+                <div class="text-sm font-semibold z-50" @click="handlePlayNow(item.id);">
                   <svg class="icon ml-1" viewBox="0 0 1024 1024"
                        xmlns="http://www.w3.org/2000/svg" width="16" height="16">
                     <path
@@ -182,7 +182,7 @@ const CloseSongPage=()=>{
                 </div>
               </li>
               <li>
-                <div class="text-sm font-semibold" @click="handlePlayAfter(index)">
+                <div class="text-sm font-semibold" @click="handlePlayAfter(item.id)">
                   <svg class="icon" viewBox="0 0 1024 1024"
                        xmlns="http://www.w3.org/2000/svg" width="22" height="22">
                     <path

@@ -65,7 +65,14 @@ function getSonglistData() {
     }
   });
   axios.defaults.withCredentials = true;
-  instance.get("/songlists/info/" + currentSonglistId.value)
+  const web = ref("");
+  let str = currentSonglistId.value + "";
+  if (str.includes("sh")) {
+    web.value = '/songlists/info/' + currentSonglistId.value + "?username=" + username.value;
+  } else {
+    web.value = '/songlists/info/' + currentSonglistId.value;
+  }
+  instance.get(web.value)
       .then(function (response) {
         if (response.data.success === true) {
           currentUserSongList = response.data.data;
@@ -108,6 +115,7 @@ function activeShowUser() {
 function CloseUserDetail() {
   showUser.value = false;
 }
+
 function closeComplaint() {
   showComplaint.value = false;
 }

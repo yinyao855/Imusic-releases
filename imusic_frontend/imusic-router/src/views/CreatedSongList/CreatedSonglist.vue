@@ -134,7 +134,14 @@ function getSonglistData() {
     }
   });
   axios.defaults.withCredentials = true;
-  instance.get("/songlists/info/" + currentSonglistId.value)
+  const web = ref("");
+  let str = currentSonglistId.value + "";
+  if(str.includes("sh")) {
+    web.value = '/songlists/info/' + currentSonglistId.value + "?username=" + username.value;
+  } else {
+    web.value = '/songlists/info/' + currentSonglistId.value;
+  }
+  instance.get(web.value)
       .then(function (response) {
         if (response.data.success === true) {
           currentUserSongList = response.data.data;
@@ -196,6 +203,9 @@ function deleteFavoriteSonglist() {
 
 // 删除此歌单
 function deleteSonglist() {
+  if(!confirm("确定删除？")) {
+    return
+  }
   console.log("delete " + currentSonglistId.value)
   const instance = axios.create({
     baseURL: 'http://182.92.100.66:5000',
@@ -247,6 +257,9 @@ const CloseCurrentUser_SongList = () => {
 
 // 将歌曲从当前歌单删除
 function deleteFromSongList(index) {
+  if(!confirm("确定删除？")) {
+    return
+  }
   const formData = new FormData();
   formData.append('song_id', currentUserSongList.songs[index].id);
   formData.append('songlist_id', currentSonglistId.value);
@@ -313,8 +326,7 @@ function cancelSelect() {
 
 function activeSharePage() {
   if (HasLogin.value === false) {
-    message.value = '请先登录';
-    WarningShow.value = true;
+    MyAlert({type:'alert-warning',text:'请先登录'});
     return;
   }
   showSharePage.value = true;

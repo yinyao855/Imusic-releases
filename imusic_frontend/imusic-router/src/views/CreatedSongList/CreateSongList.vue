@@ -14,8 +14,6 @@ const language = ref("")
 const cover = ref(null);
 const coverImageFileUrl = ref('');
 const username = defineModel('username');
-const message = ref('');
-const WarningShow = ref(false);
 const token=defineModel('token');
 const Songs=defineModel('Songs');
 const emits=defineEmits(['changesize'])
@@ -53,15 +51,11 @@ const SongListId=ref(0);
 
 function sendPostCreateSonglist() {
   if (title.value === '') {
-    console.log('请输入歌单名');
-    WarningShow.value = true;
-    message.value = '请输入歌单名';
+    MyAlert({type:'alert-warning',text:'请输入歌单名'});
     return;
   }
   if (cover.value === null) {
-    console.log('请上传封面');
-    WarningShow.value = true;
-    message.value = '请上传封面';
+    MyAlert({type:'alert-warning',text:'请上传封面'});
     return;
   }
 
@@ -160,7 +154,7 @@ const changesize=()=>{
                       fill="#1296db">
                   </path>
                 </svg>
-                <p v-if="cover===null" class="pointer-none text-gray-500 "><span class="text-sm"></span> 拖拽文件至此处
+                <p class="pointer-none text-gray-500 "><span class="text-sm"></span> 拖拽文件至此处
                   <br/> 或点击此处上传</p>
               </div>
               <input type="file" @change="onCoverFileChange" id="CoverUpLoad" class="absolute -left-10 -top-10"

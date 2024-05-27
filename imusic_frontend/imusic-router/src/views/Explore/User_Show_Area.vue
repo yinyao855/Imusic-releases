@@ -3,6 +3,7 @@ import {computed, defineEmits, onMounted, ref} from "vue";
 import axios from "axios";
 import SongPage from "@/components/SongPage.vue";
 import Other_User_Data from "@/views/Explore/Other_User_Data.vue";
+import MyAlert from "@/js/MyAlert.js";
 
 const Users = ref([]);
 const token = defineModel('token');
@@ -68,6 +69,12 @@ const GetSearchResult = () => {
 
 
 const HandleLike = (index) => {
+  //未登录不能关注
+  console.log(username.value)
+  if (username.value === '请先登录') {
+    MyAlert({type: 'alert-warning', text: '请先登录'})
+    return;
+  }
   const UserId = Users.value[index].username;
   console.log(UserId);
   const instance = axios.create({

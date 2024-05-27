@@ -100,7 +100,7 @@ const changesize = () => {
         <td>{{ item.uploader }}</td>
         <td>{{ item.duration }}</td>
         <td>
-          <div class="inline pr-4">
+          <div class="inline pr-4 cursor-pointer">
             <svg class="icon fill-red-600 inline hover:fill-red-800" viewBox="0 0 1024 1024"
                  xmlns="http://www.w3.org/2000/svg"
                  width="24" height="24" @click="DeleteSong(index)">
@@ -118,7 +118,7 @@ const changesize = () => {
               ></path>
             </svg>
           </div>
-          <svg class="icon fill-white inline hover:fill-gray-500" viewBox="0 0 1024 1024"
+          <svg class="icon fill-white inline hover:fill-gray-500 cursor-pointer" viewBox="0 0 1024 1024"
                xmlns="http://www.w3.org/2000/svg"
                width="24" height="24" @click="UpdateSong(index)">
             <path

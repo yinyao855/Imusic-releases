@@ -17,9 +17,17 @@ const currentUserSongList = defineModel('currentUserSongList')
 const cover = defineModel('cover')
 const coverImageFileUrl = defineModel('coverImageFileUrl')
 
+const showSonglistSongs = ref(true);
+
 // emits
 const deleteFromSongList = (index) => {
+  if(!confirm("确定删除？")) {
+    return
+  }
   emits('deleteFromSongList', index);
+  showSonglistSongs.value = false;
+  currentUserSongList.value.songs.splice(index, 1);
+  showSonglistSongs.value = true;
 }
 const CloseEditSongList = () => {
   emits('CloseEditSongList');
@@ -242,7 +250,7 @@ function sendEditSonglist(id) {
           </tr>
           </thead>
           <tbody>
-          <tr v-for="(song, index) in currentUserSongList.songs"
+          <tr v-for="(song, index) in currentUserSongList.songs" v-if="showSonglistSongs"
               class="text-white transition duration-400 hover:bg-gray-600/40">
             <td class="pl-3 p-1 hover:cursor-pointer">
               <img :src="song.cover" class="img_song inline-block mr-3">

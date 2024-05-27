@@ -3,17 +3,13 @@
 import {defineEmits, defineModel, onMounted, ref} from "vue";
 import axios from "axios";
 import Songlist from "@/views/CreatedSongList/Songlist.vue";
-import Warning from "@/components/Warning.vue";
+import MyAlert from "@/js/MyAlert.js";
 
 // global variables
 const token = defineModel('token')
 const username = defineModel('username')
 const HasLogin = defineModel('HasLogin');
 const message = ref('错误消息');
-const WarningShow = ref(false);
-const CloseWarning = () => {
-  WarningShow.value = false;
-}
 
 // defineEmits(播放歌单全部歌曲，加入播放列表，立即播放)
 const emits = defineEmits(['PlaySongList', 'handlePlayAfter', 'handlePlayNow'])
@@ -54,8 +50,7 @@ function activeSonglist(index) {
 // 获取用户收藏的歌单
 const getFavoriteSonglists = () => {
   if (HasLogin.value === false) {
-    message.value = '请先登录';
-    WarningShow.value = true;
+    MyAlert({type:'alert-warning',text:'请先登录'});
     return;
   }
   const instance = axios.create({
@@ -82,9 +77,6 @@ onMounted(getFavoriteSonglists);
 </script>
 
 <template>
-  <div class="w-full absolute top-0 left-1/2 transform -translate-x-1/2" v-if="WarningShow">
-    <Warning :message="message" @CloseWarning="CloseWarning" class="mx-auto" v-model:token="token"></Warning>
-  </div>
   <transition name="slide" appear>
     <div class="transition-container z-50" v-if="showCurrentSongList">
       <Songlist v-model:currentSonglistId="currentSonglistId"

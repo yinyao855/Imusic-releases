@@ -248,7 +248,14 @@ async function getSonglistInformation(id) {
     }
   });
   axios.defaults.withCredentials = true;
-  instance.get("/songlists/info/" + id)
+  const web = ref("");
+  let str = id.value + "";
+  if(str.includes("sh")) {
+    web.value = '/songlists/info/' + id.value + "?username=" + username.value;
+  } else {
+    web.value = '/songlists/info/' + id.value;
+  }
+  instance.get(web.value)
       .then(function (response) {
         return false;
       })
@@ -324,8 +331,12 @@ watch(Message, () => {
       <tr class="text-white hover:bg-gray-600/40 rounded-md cursor-pointer"
           v-for="(item, index) in Message" @click="activeComplaintMessage(index)">
         <td class="w-28">
-          <img :src="image[index]" alt="头像" v-if="item.title === '投诉消息'"
-               class="h-14 rounded-xl aspect-square inline-block"/>
+          <svg v-if="item.title === '投诉消息'"
+               class="h-14 w-14 bg-gray-300 text-yellow-600 rounded-xl aspect-square align-middle inline-block"
+               fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                  d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+          </svg>
           <svg v-if="item.title === '审查结果'"
                class="h-14 w-14 bg-gray-300 text-yellow-600 rounded-xl aspect-square align-middle inline-block"
                fill="none" viewBox="0 0 24 24" stroke="currentColor">

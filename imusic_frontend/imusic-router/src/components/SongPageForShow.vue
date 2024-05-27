@@ -1,26 +1,18 @@
 <script setup>
 // 展示歌曲详细信息界面
 import {defineModel, defineEmits, onMounted, ref} from "vue";
-import buttonchangesize from "@/components/ButtonChangeSizeRight.vue";
 import axios from "axios";
 
 import Complaint from "@/components/Complaint.vue";
-import Warning from "@/components/Warning.vue";
 import Other_User_Data from "@/views/Explore/Other_User_Data.vue";
 
 // global variables
 const token = defineModel('token')
 const username = defineModel('username')
-const WarningShow = ref(false);
-const message = ref('');
 const showComplaint = ref(false);
 const complaintType = ref("songs")
 // defineEmits(关闭当前页面/回到上一个页面展示歌单)
 const emits = defineEmits(['handlePlayNow', 'CloseSong'])
-
-const CloseWarning = () => {
-  WarningShow.value = false;
-}
 
 // v-model
 let songData;
@@ -104,10 +96,6 @@ onMounted(getSongData)
 </script>
 
 <template>
-  <div class="w-full absolute top-5 left-1/2 transform -translate-x-1/2" v-if="WarningShow">
-    <Warning :message="message" @CloseWarning="CloseWarning" class="mx-auto" v-model:token="token"
-             v-model:Warningshow="WarningShow"></Warning>
-  </div>
 
   <transition name="slide" appear>
     <div class="transition-container-2" v-if="showComplaint">
@@ -197,15 +185,6 @@ onMounted(getSongData)
         <p>{{ lyric.text }}</p>
       </div>
     </div>
-    <!--    <hr class="my-20">-->
-    <!--    <div v-if="showComment" class="">-->
-    <!--      <div class="w-full overflow-hidden mx-auto my-auto pr-20" style="height:600px">-->
-    <!--        <transition name="all transition-duration: 300ms">-->
-    <!--          <Comment :token="token" :id="currentSongId" v-model:showComment="showComment" v-model:songID="currentSongId"-->
-    <!--                   v-model:WarningShow="WarningShow" v-model:message="message" v-model:username="username"></Comment>-->
-    <!--        </transition>-->
-    <!--      </div>-->
-    <!--    </div>-->
   </div>
   <div class="h-40"></div>
 </template>

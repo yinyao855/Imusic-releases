@@ -7,12 +7,12 @@ const emits = defineEmits(['handlePlayNow', 'handlePlayAfter', 'addToSongList'])
 const username = defineModel('username');
 const token = defineModel('token')
 
-function handlePlayNow(index) {
-  emits('handlePlayNow', songlistlast.value[index].id)
+function handlePlayNow(id) {
+  emits('handlePlayNow', id)
 }
 
-function handlePlayAfter(index) {
-  emits('handlePlayAfter', songlistlast.value[index].id)
+function handlePlayAfter(id) {
+  emits('handlePlayAfter', id)
 }
 
 const addlike = (index) => {
@@ -142,7 +142,7 @@ const addToSongList = (id) => {
                 </div>
               </li>
               <li>
-                <div class="text-sm font-semibold" @click="handlePlayNow(index);">
+                <div class="text-sm font-semibold" @click="handlePlayNow(item.id);">
                   <svg class="icon ml-1" viewBox="0 0 1024 1024"
                        xmlns="http://www.w3.org/2000/svg" width="16" height="16">
                     <path
@@ -154,7 +154,7 @@ const addToSongList = (id) => {
                 </div>
               </li>
               <li>
-                <div class="text-sm font-semibold" @click="handlePlayAfter(index)">
+                <div class="text-sm font-semibold" @click="handlePlayAfter(item.id)">
                   <svg class="icon" viewBox="0 0 1024 1024"
                        xmlns="http://www.w3.org/2000/svg" width="22" height="22">
                     <path

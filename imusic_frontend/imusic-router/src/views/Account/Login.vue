@@ -1,10 +1,5 @@
 <template>
   <div id="login" class="h-full w-full flex items-center" @keypress.enter="show">
-    <transition name="vx">
-      <div class="w-full absolute top-0 left-1/2 transform -translate-x-1/2" v-if="WarningShow">
-        <Warning :message="message" @CloseWarning="CloseWarning" class="mx-auto" v-model:token="token"  v-model:Warningshow="WarningShow"></Warning>
-      </div>
-    </transition>
     <div class="formx mx-auto my-auto">
       <div class="flex-column">
         <label>账 号</label>
@@ -63,13 +58,13 @@
 import confetti from 'canvas-confetti';
 import {ref} from "vue";
 import axios from "axios";
-import Warning from "@/components/Warning.vue";
 import {defineEmits} from "vue"
 
 const emits = defineEmits(['ChangerRegisterMode', 'changeMode', 'getsonglistinit','ChangeForgetMode']);
 
 /*----------------------------------*/
 import {useUserStore} from "@/stores/user.js";
+import MyAlert from "@/js/MyAlert.js";
 const userStore = useUserStore();
 /*----------------------------------*/
 
@@ -82,13 +77,11 @@ const show = () => {
   const x = rect.left + rect.width / 2 + window.scrollX;
   const y = rect.top + rect.height / 2 + window.scrollY;
   if (username.value === '') {
-    WarningShow.value = true;
-    message.value = "请输入用户名";
+    MyAlert({type:'alert-warning',text:'请输入用户名'});
     return;
   }
   if (password.value === '') {
-    WarningShow.value = true;
-    message.value = "请输入密码";
+    MyAlert({type:'alert-warning',text:'请输入密码'});
     return;
   }
   const formData = new FormData();
@@ -135,8 +128,7 @@ const show = () => {
           getsonglistinit(username.value);
           changeMode();
         } else {
-          WarningShow.value = true;
-          message.value = "用户名或密码错误";
+          MyAlert({type:'alert-warning',text:'用户名或密码错误'});
         }
       })
       .catch(error => {
@@ -148,14 +140,9 @@ const getsonglistinit = (s) => {
   emits('getsonglistinit', s);
 }
 
-const CloseWarning = () => {
-  WarningShow.value = false;
-}
 
 const username = ref('');
 const password = ref('');
-const message = ref('');
-const WarningShow = ref(false);
 
 const gotosignup = () => {
   emits('ChangerRegisterMode');

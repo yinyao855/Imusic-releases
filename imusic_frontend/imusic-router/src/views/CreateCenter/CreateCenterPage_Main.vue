@@ -77,6 +77,9 @@ function activeSongPage(id) {
 
 // 删除歌曲
 function deleteSong(songid) {
+  if(!confirm("确定删除？")) {
+    return
+  }
   const instance = axios.create({
     baseURL: 'http://182.92.100.66:5000',
     timeout: 5000, // 设置请求超时时间
@@ -157,7 +160,7 @@ const CloseSongPage=()=>{
     </div>
   </transition>
 
-  <div v-if="!showEditSong&&!ShowSong&&!NeedShowSongDetail" class="cursor-default">
+  <div v-if="!showEditSong&&!ShowSong&&!NeedShowSongDetail" class="cursor-default overflow-hidden">
     <div class="w-full h-14 pl-6">
       <div :class="[NaviClass1, 'text-transition']" @click="changeNaviMode(1)" style="line-height: 56px">我的创作</div>
       <div :class="[NaviClass2, 'text-transition']" @click="changeNaviMode(2)" style="line-height: 56px">创作歌曲</div>
@@ -183,7 +186,7 @@ const CloseSongPage=()=>{
             <!-- row 1 -->
             <tr class="text-white transition duration-400 hover:bg-gray-600/40 rounded-md cursor-pointer"
                 v-for="(item, index) in props.userUploadedSongs" :key="index">
-              <td @click="handlePlayNow(index);">
+              <td @click="handlePlayNow(item.id);">
                 <div class="flex items-center gap-3">
                   <div class="avatar">
                     <div class="mask mask-squircle w-12 h-12">
@@ -197,7 +200,7 @@ const CloseSongPage=()=>{
                   </div>
                 </div>
               </td>
-              <td @click="handlePlayNow(index);">
+              <td @click="handlePlayNow(item.id);">
                 {{ item.singer }}
               </td>
               <td @click="handlePlayNow(item.id);">{{ gettime(item.duration) }}</td>
@@ -305,7 +308,7 @@ const CloseSongPage=()=>{
     <CreateSonglist_Area @uploadSongSuccess="uploadSongSuccess" v-model:HasLogin="HasLogin"
                 v-model:username="username" v-model:token="token"></CreateSonglist_Area>
   </div>
-  <div class="h-32" v-if="!NeedShowSongDetail"></div>
+  <div class="h-16" v-if="!NeedShowSongDetail"></div>
 </template>
 
 <style scoped>
@@ -336,5 +339,13 @@ const CloseSongPage=()=>{
   right: 0;
   top: 0;
   height: 100%;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 </style>
