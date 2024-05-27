@@ -63,6 +63,11 @@ function getSongListOwner() {
 
 function sendPostComplaint() {
   console.log(id.value)
+  //未登录不能投诉
+  if (token.value === "") {
+    MyAlert({type: 'alert-warning', text: '请先登录'})
+    return;
+  }
   const idType = ref("");
   if (complaintType.value==='songs') {
     idType.value = 'song_id';

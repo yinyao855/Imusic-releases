@@ -1,7 +1,6 @@
 <script setup>
 import {computed, defineEmits, onMounted, ref} from "vue";
 import axios from "axios";
-import SongPage from "@/components/SongPage.vue";
 import Other_User_Data from "@/views/Explore/Other_User_Data.vue";
 import MyAlert from "@/js/MyAlert.js";
 
@@ -101,6 +100,10 @@ const ShowUserData = ref(false);
 const ShowUsername = ref('');
 
 const ActiveUserDetail = (index) => {
+  if(token.value===''){
+    MyAlert({type: 'alert-warning', text: '请先登录'})
+    return;
+  }
   ShowUsername.value = Users.value[index].username;
   console.log(ShowUsername.value);
   ShowUserData.value = true;
@@ -132,7 +135,6 @@ onMounted(GetSearchResult);
                        @handlePlayNow="handlePlayNow" @handlePlayAfter="handlePlayAfter" @PlaySongList="PlaySongList"></Other_User_Data>
     </div>
   </transition>
-
   <div class="overflow-x-auto mx-12 mb-32" v-if="!ShowUserData">
     <table class="table">
       <!-- head -->
