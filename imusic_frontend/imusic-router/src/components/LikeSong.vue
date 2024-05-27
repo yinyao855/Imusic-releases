@@ -12,12 +12,12 @@ onMounted(() => {
   getLikeSongList(); // 首次加载时获取歌曲列表
 
 });
-function handlePlayNow(index) {
-  emits('handlePlayNow', likeSongList.value[index].id)
+function handlePlayNow(id) {
+  emits('handlePlayNow', id)
 }
 
-function handlePlayAfter(index) {
-  emits('handlePlayAfter', likeSongList.value[index].id)
+function handlePlayAfter(id) {
+  emits('handlePlayAfter', id)
 }
 const getLikeSongList = () => {
   const instance = axios.create({
@@ -190,7 +190,7 @@ const addToSongList = (id) => {
                 </div>
               </li>
               <li>
-                <div class="text-sm font-semibold" @click="handlePlayNow(index);">
+                <div class="text-sm font-semibold" @click="handlePlayNow(item.id);">
                   <svg class="icon ml-1" viewBox="0 0 1024 1024"
                        xmlns="http://www.w3.org/2000/svg" width="16" height="16">
                     <path
@@ -202,7 +202,7 @@ const addToSongList = (id) => {
                 </div>
               </li>
               <li>
-                <div class="text-sm font-semibold" @click="handlePlayAfter(index)">
+                <div class="text-sm font-semibold" @click="handlePlayAfter(item.id)">
                   <svg class="icon" viewBox="0 0 1024 1024"
                        xmlns="http://www.w3.org/2000/svg" width="22" height="22">
                     <path

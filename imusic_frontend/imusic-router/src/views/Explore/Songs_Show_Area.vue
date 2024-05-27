@@ -211,13 +211,13 @@ const gettime = (time) => {
   return `${minute}:${second}`;
 }
 
-const handlePlayNow = (index) => {
-  emits('handlePlayNow', Songs.value[index].id);
+const handlePlayNow = (id) => {
+  emits('handlePlayNow', id);
 }
 
 
-const handlePlayAfter = (index) => {
-  emits('handlePlayAfter', Songs.value[index].id);
+const handlePlayAfter = (id) => {
+  emits('handlePlayAfter', id);
 }
 const NeedToAddSongId = ref([]);
 
@@ -445,7 +445,7 @@ onMounted(GetInitSongs);
       <!-- row 1 -->
       <tr class="text-white transition duration-400 hover:bg-gray-600/40 rounded-md"
           v-for="(item, index) in Songs" :key="index">
-        <td @click="handlePlayNow(index);">
+        <td @click="handlePlayNow(item.id);">
           <div class="flex items-center gap-3">
             <div class="avatar">
               <div class="mask mask-squircle w-12 h-12">
@@ -459,11 +459,11 @@ onMounted(GetInitSongs);
             </div>
           </div>
         </td>
-        <td @click="handlePlayNow(index);">
+        <td @click="handlePlayNow(item.id);">
           {{ item.singer }}
         </td>
-        <td @click="handlePlayNow(index);">{{ item.uploader }}</td>
-        <td @click="handlePlayNow(index);">{{ item.duration }}</td>
+        <td @click="handlePlayNow(item.id);">{{ item.uploader }}</td>
+        <td @click="handlePlayNow(item.id);">{{ item.duration }}</td>
         <th>
           <div
               class="dropdown dropdown-left dropdown-top my-auto tooltip transition duration-400 hover:bg-gray-600/40 bg-zinc-900 btn btn-sm border-none"
@@ -485,7 +485,7 @@ onMounted(GetInitSongs);
                 </div>
               </li>
               <li>
-                <div class="text-sm font-semibold z-50" @click="handlePlayNow(index);">
+                <div class="text-sm font-semibold z-50" @click="handlePlayNow(item.id);">
                   <svg class="icon ml-1" viewBox="0 0 1024 1024"
                        xmlns="http://www.w3.org/2000/svg" width="16" height="16">
                     <path
@@ -497,7 +497,7 @@ onMounted(GetInitSongs);
                 </div>
               </li>
               <li>
-                <div class="text-sm font-semibold" @click="handlePlayAfter(index)">
+                <div class="text-sm font-semibold" @click="handlePlayAfter(item.id)">
                   <svg class="icon" viewBox="0 0 1024 1024"
                        xmlns="http://www.w3.org/2000/svg" width="22" height="22">
                     <path

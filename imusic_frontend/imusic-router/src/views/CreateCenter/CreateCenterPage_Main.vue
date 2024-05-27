@@ -183,7 +183,7 @@ const CloseSongPage=()=>{
             <!-- row 1 -->
             <tr class="text-white transition duration-400 hover:bg-gray-600/40 rounded-md cursor-pointer"
                 v-for="(item, index) in props.userUploadedSongs" :key="index">
-              <td @click="handlePlayNow(index);">
+              <td @click="handlePlayNow(item.id);">
                 <div class="flex items-center gap-3">
                   <div class="avatar">
                     <div class="mask mask-squircle w-12 h-12">
@@ -197,7 +197,7 @@ const CloseSongPage=()=>{
                   </div>
                 </div>
               </td>
-              <td @click="handlePlayNow(index);">
+              <td @click="handlePlayNow(item.id);">
                 {{ item.singer }}
               </td>
               <td @click="handlePlayNow(item.id);">{{ gettime(item.duration) }}</td>
