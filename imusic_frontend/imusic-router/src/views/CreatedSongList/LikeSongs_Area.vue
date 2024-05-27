@@ -31,6 +31,9 @@ const changesize = () => {
 const username = defineModel('username');
 
 const deletelike = (index) => {
+  if(!confirm("确定删除？")) {
+    return
+  }
   const formData = new FormData();
   formData.append('username', username.value);
   formData.append('song_id', LikeSongs.value[index].id);

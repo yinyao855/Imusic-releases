@@ -21,6 +21,9 @@ const showSonglistSongs = ref(true);
 
 // emits
 const deleteFromSongList = (index) => {
+  if(!confirm("确定删除？")) {
+    return
+  }
   emits('deleteFromSongList', index);
   showSonglistSongs.value = false;
   currentUserSongList.value.songs.splice(index, 1);
