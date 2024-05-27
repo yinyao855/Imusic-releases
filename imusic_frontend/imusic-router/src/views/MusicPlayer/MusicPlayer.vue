@@ -4,7 +4,7 @@ import axios from "axios";
 import MusicPlayerFullView from "@/views/MusicPlayer/MusicPlayerFullView.vue";
 import MusicPlayerView from "@/views/MusicPlayer/MusicPlayerView.vue";
 
-const props=defineProps(['HasLogin']);
+const props = defineProps(['HasLogin']);
 const updateTime = () => {
   const audio = audioPlayer.value;
   let minutes = Math.floor(audio.currentTime / 60);
@@ -17,8 +17,8 @@ const updateTime = () => {
   durationInSeconds.value = audio.duration;
 };
 
-const initCurrentMusic=(music)=>{
-  currentMusic.value=music;
+const initCurrentMusic = (music) => {
+  currentMusic.value = music;
   fetchAndFormatLyrics(currentMusic.value.lyric);
 }
 
@@ -33,22 +33,22 @@ function handleModeChange() {
   }
 }
 
-const currentTime=ref('0:00');
-const duration=ref('0:00');
-const isPlaying=ref(true);
-const durationInSeconds=ref(0);
-const currentTimeInSeconds=ref(0);
-const audioPlayer=ref(null);
-const playerMode=ref(0);
-const curIndex=ref(0);
-const token=defineModel('token');
+const currentTime = ref('0:00');
+const duration = ref('0:00');
+const isPlaying = ref(true);
+const durationInSeconds = ref(0);
+const currentTimeInSeconds = ref(0);
+const audioPlayer = ref(null);
+const playerMode = ref(0);
+const curIndex = ref(0);
+const token = defineModel('token');
 const musicList = defineModel('musicList');
 const isFull = ref(false);
 const currentMusic = ref(musicList.value[curIndex.value])
-const datax=defineModel('datax');
-const lyric=ref([]);
-const username=defineModel('username')
-const cantransformtofull=defineModel('cantransformtofull')
+const datax = defineModel('datax');
+const lyric = ref([]);
+const username = defineModel('username')
+const cantransformtofull = defineModel('cantransformtofull')
 const togglePlay = () => {
   if (isPlaying.value) {
     audioPlayer.value.pause();
@@ -72,6 +72,7 @@ function handlePlayNow(id) {
       .then(response => {
         let newmusic = response.data.data;
         const idx = newmusic.id;
+        //updateusersonglist(idx);
         let length = musicList.value.length;
         for (let i = 0; i < length; i = i + 1) {
           if (musicList.value[i].id === idx) {
@@ -87,8 +88,21 @@ function handlePlayNow(id) {
         }
         musicList.value.push(newmusic);
         curIndex.value = musicList.value.length - 1;
+        if (musicList.value.length === 0) {
+          curIndex.value = 0;
+        }
         datax.value = musicList.value;
-        currentMusic.value = musicList.value[curIndex.value]
+        currentMusic.value = musicList.value[curIndex.value];
+        console.log(currentMusic.value);
+        let index = curIndex.value;
+        currentMusic.value = musicList.value[index];
+        if (currentMusic.value.lyric !== null) {
+          fetchAndFormatLyrics(currentMusic.value.lyric);
+        }
+        isPlaying.value = true;
+        cantransformtofull.value=true;
+        const id = currentMusic.value.id;
+        updateusersonglist(id);
       })
       .catch(error => {
         console.log(error.response.data);
@@ -126,6 +140,7 @@ function handlePlayAfter(id) {
         console.log(curIndex.value);
         datax.value = musicList.value;
         currentMusic.value = musicList.value[curIndex.value]
+
       })
       .catch(error => {
         console.log(error.data.message);
@@ -145,6 +160,7 @@ const fetchAndFormatLyrics = async (lrcUrl) => {
     console.error('Error fetching lyrics:', error);
   }
 };
+
 
 function parseLRC(lrc) {
   const lines = lrc.split("\n");
@@ -197,7 +213,8 @@ function changeSize() {
   }
 }
 
-const mode=defineModel('mode');
+const mode = defineModel('mode');
+
 
 watch(curIndex, () => {
   let index = curIndex.value;
@@ -237,7 +254,7 @@ function backSong() {
   refresh();
 }
 
-defineExpose({handlePlayNow,handlePlayAfter,initCurrentMusic})
+defineExpose({handlePlayNow, handlePlayAfter, initCurrentMusic})
 
 </script>
 
