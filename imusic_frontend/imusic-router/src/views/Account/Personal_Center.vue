@@ -89,7 +89,7 @@ function getShare() {
         <p class="text-white text-4xl my-4">{{ username }}</p>
         <p class="text-base text-white my-6">注册时间：{{ userInfo.registration_date }}</p>
       </div>
-      <button class="btn btn-info btn-md float-right mt-3 mx-3" onclick="my_modal_2.showModal()">使用分享码</button>
+      <button class="btn btn-info btn-md float-right mt-3 mx-3 bg-blue-600 hover:bg-blue-800 transition:ease-in duration-400 text-white border-none w-32" onclick="my_modal_2.showModal()">使用分享码</button>
     </div>
     <dialog id="my_modal_2" class="modal">
       <div class="modal-box bg-gray-300 h-60 py-10">
@@ -97,9 +97,9 @@ function getShare() {
           <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
         </form>
         <h3 class="font-bold text-2xl text-gray-700">分享码：</h3>
-        <input class="w-4/5 text-cyan-600 text-xl p-2 inline-block align-middle mr-5 rounded-md"
+        <input class="w-4/5 text-cyan-600 text-xl p-2 inline-block align-middle rounded-md mr-2"
                v-model="shareCode" placeholder="请输入分享码"/>
-        <button class="btn btn-info mt-8 inline-block" @click="getShare">获取</button>
+        <button class="w-20 btn mt-8 inline-block text-white bg-blue-600 hover:bg-blue-800 transition:ease-in duration-400 border-none" @click="getShare">获取</button>
         <div class="text-cyan-600 mt-1 ml-1" style="font-size: 12px">分享码时效为一天，接受分享成功后，请在【收藏的歌单】中查看</div>
       </div>
     </dialog>
