@@ -243,6 +243,10 @@ function show_tag(tag) {
 }
 
 function activeShowUser() {
+  if(token.value === "") {
+    MyAlert({type:'alert-warning',text:'请先登录'});
+    return;
+  }
   showUser.value = true;
 }
 

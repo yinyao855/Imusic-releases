@@ -247,7 +247,7 @@ function getSubscribeUser() {
 
 // 关注用户/取消关注
 function handleSubscribeUser() {
-  if (HasLogin.value === false) {
+  if (token.value === "") {
     MyAlert({type:'alert-warning',text:'请先登录'});
     return;
   }
@@ -276,7 +276,7 @@ function handleSubscribeUser() {
 }
 
 function activeShowComplaint() {
-  if (HasLogin.value === false) {
+  if (token.value === "") {
     MyAlert({type:'alert-warning',text:'请先登录'});
     return;
   }

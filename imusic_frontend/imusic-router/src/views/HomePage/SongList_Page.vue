@@ -4,6 +4,7 @@ import buttonchangesize from '../../components/ButtonChangeSizeRight.vue'
 import axios from "axios";
 import SongPage from "@/components/SongPage.vue";
 import Search_View from "@/views/HomePage/Search_View.vue";
+import MyAlert from "@/js/MyAlert.js";
 
 const songlistlast = defineModel('songlist');
 const token = defineModel('token')
@@ -79,6 +80,10 @@ const deletelike = (index) => {
 
 const addSongListlike = () => {
   console.log(SongListId.value);
+  if(token.value===''){
+    MyAlert({type: 'alert-warning', text: '请先登录'})
+    return;
+  }
   const instance = axios.create({
     baseURL: 'http://182.92.100.66:5000',
     timeout: 5000, // 设置请求超时时间

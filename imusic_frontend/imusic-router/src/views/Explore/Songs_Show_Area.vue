@@ -3,6 +3,7 @@ import {computed, onMounted, ref, watch} from "vue";
 import axios from "axios";
 import CurrentUser_SongList from "@/components/CurrentUser_SongList.vue";
 import SongPage from "@/components/SongPage.vue";
+import MyAlert from "@/js/MyAlert.js";
 
 const emits = defineEmits(['handlePlayNow', 'handlePlayAfter', 'addToSongList'])
 const token = defineModel('token')
@@ -330,6 +331,10 @@ const GetInitSongs = () => {
 const ShowCurrentUser_SongList = ref(false);
 
 const addToSongList = (index) => {
+  if(!HasLogin.value){
+    MyAlert({type: 'alert-warning', text: '请先登录'});
+    return;
+  }
   NeedToAddSongId.value = [Songs.value[index].id];
   GetMySongList();
   ShowCurrentUser_SongList.value = true;

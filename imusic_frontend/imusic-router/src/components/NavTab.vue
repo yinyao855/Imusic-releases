@@ -5,6 +5,7 @@
            @click="changeNaviMode(index)" style="line-height: 56px">{{ tab }}
         <span v-if="unReads[index].value>0"
               class="indicator-item badge badge-info badge-sm">{{ unReads[index] }}+</span>
+
       </div>
     </div>
     <div class="flex-1">
