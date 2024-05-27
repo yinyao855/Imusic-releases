@@ -20,7 +20,7 @@ onMounted(() => {
   console.log(props.message);
   timer = setTimeout(() => {
     isWarningVisible.value = false;
-  }, 7000);
+  }, 2000);
 });
 
 onUnmounted(() => {

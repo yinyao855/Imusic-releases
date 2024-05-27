@@ -3,10 +3,6 @@
 </script>
 
 <template>
-<!--<div class="w-full h-full bg-red-200">-->
-<!--    <h1>关于我们</h1>-->
-<!--    <p>这是一个关于我们页面</p>-->
-<!--</div>-->
   <div class="w-full h-full">
     <div class="flex flex-col lg:grid lg:gap-4 2xl:gap-6 lg:grid-cols-4 2xl:row-span-2 2xl:pb-8 ml-2 pt-4 px-6">
       <!-- Beginning of the component about Daniel Clifford -->
