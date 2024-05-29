@@ -7,7 +7,13 @@ export const useMessageStore = defineStore('message', () => {
     const Message = ref([])
 
     let unReads = computed(() => {
-        return Message.value.filter(item => !item.is_read).length
+        const totalUnreads = ref(0);
+        totalUnreads.value = MessageType1.value.filter(item => !item.is_read).length +
+            MessageType2.value.filter(item => !item.is_read).length +
+            MessageType4.value.filter(item => !item.is_read).length +
+            MessageType6.value.filter(item => !item.is_read).length +
+            MessageType7.value.filter(item => !item.is_read).length;
+        return totalUnreads.value;
     })
     let unReads1 = computed(() => {
         return MessageType1.value.filter(item => !item.is_read).length
@@ -31,7 +37,7 @@ export const useMessageStore = defineStore('message', () => {
     const MessageType4 = ref([]);
     const MessageType6 = ref([]);
     const MessageType7 = ref([]);
-    const tmp=ref([]);
+    const tmp = ref([]);
 
     // 处理消息数量
     const Count1 = ref(0);
@@ -41,7 +47,7 @@ export const useMessageStore = defineStore('message', () => {
     const Count7 = ref(0);
 
 
-    const ChangeTime=(InputDate)=> {
+    const ChangeTime = (InputDate) => {
         const date = new Date(InputDate);
         const now = new Date();
         const diff = now - date;
@@ -66,7 +72,6 @@ export const useMessageStore = defineStore('message', () => {
     }
 
 
-
     const processMessage = () => {
         // console.log(Message.value);
         MessageType1.value = [];
@@ -74,7 +79,7 @@ export const useMessageStore = defineStore('message', () => {
         MessageType4.value = [];
         MessageType6.value = [];
         MessageType7.value = [];
-        tmp.value=[];
+        tmp.value = [];
         Count1.value = 0;
         Count2.value = 0;
         Count4.value = 0;
@@ -97,15 +102,15 @@ export const useMessageStore = defineStore('message', () => {
                 Count7.value++;
             }
         }
-        for(let i=0;i<tmp.value.length;++i){
-            let flag=false;
-            for(let j=0;j<MessageType1.value.length;++j){
-                if(tmp.value[i].title===MessageType1.value[j].title&&tmp.value[i].send_date===MessageType1.value[j].send_date){
-                    flag=true;
+        for (let i = 0; i < tmp.value.length; ++i) {
+            let flag = false;
+            for (let j = 0; j < MessageType1.value.length; ++j) {
+                if (tmp.value[i].title === MessageType1.value[j].title && tmp.value[i].send_date === MessageType1.value[j].send_date) {
+                    flag = true;
                     break;
                 }
             }
-            if(flag===false){
+            if (flag === false) {
                 MessageType1.value.push(tmp.value[i]);
             }
         }
@@ -161,6 +166,7 @@ export const useMessageStore = defineStore('message', () => {
                 console.log(token);
             })
     }
+
     async function deleteMessage(messageId, token) {
         const instance = axios.create({
             baseURL: 'http://182.92.100.66:5000',
@@ -176,7 +182,7 @@ export const useMessageStore = defineStore('message', () => {
             }
         })
             .then(response => {
-                if (response.data!==null&&response.data.message === "删除成功") {
+                if (response.data !== null && response.data.message === "删除成功") {
                     new Promise(resolve => setTimeout(resolve, 500));
                     refreshMessage(token);
                     console.log(Message.value)
@@ -193,7 +199,8 @@ export const useMessageStore = defineStore('message', () => {
                 return false;
             })
     }
-    function getMessage(token){
+
+    function getMessage(token) {
         const instance = axios.create({
             baseURL: 'http://182.92.100.66:5000',
             timeout: 5000, // 设置请求超时时间
