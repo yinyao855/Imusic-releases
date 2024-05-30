@@ -189,27 +189,72 @@ onMounted(GetSongListData);
     </div>
     <div class="absolute top-0 w-full">
       <buttonchangesize class="top-0 absolute left-6" @fullsize="changesize" v-model:token="token"></buttonchangesize>
-      <svg @click="deleteSonglist" v-if="!IsEditing"
-           class="inline-block float-right h-8 w-8 cursor-pointer text-red-600 hover:text-red-800" width="24"
-           height="24"
-           viewBox="0 0 24 24" stroke-width="2"
-           stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-        <path stroke="none" d="M0 0h24v24H0z"/>
-        <line x1="4" y1="7" x2="20" y2="7"/>
-        <line x1="10" y1="11" x2="10" y2="17"/>
-        <line x1="14" y1="11" x2="14" y2="17"/>
-        <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12"/>
-        <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3"/>
-      </svg>
-      <!--          修改歌单信息-->
-      <svg @click="activeShowEditSonglist()" v-if="!IsEditing"
-           class="m-1 inline-block float-right h-7 w-7 cursor-pointer text-blue-700 hover:text-blue-900" width="24"
-           height="24"
-           viewBox="0 0 24 24"
-           xmlns="http://www.w3.org/2000/svg" fill="none"
-           stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/>
-      </svg>
+      <div v-if="!IsEditing"
+          class="float-right dropdown dropdown-bottom transition duration-400 border-none z-50">
+        <svg class="icon" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg"
+             width="32" height="32" tabindex="0" role="button">
+          <path
+              d="M170.666667 213.333333h682.666666v85.333334H170.666667V213.333333z m0 512h682.666666v85.333334H170.666667v-85.333334z m0-256h682.666666v85.333334H170.666667v-85.333334z"
+              fill="white"></path>
+        </svg>
+        <ul tabindex="0"
+            class="dropdown-content z-50 text-white text-sm"
+            style="width:50px">
+          <li class="pb-2">
+            <!--          修改歌单-->
+            <div class="cursor-pointer h-8 w-8 p-1 bg-gray-300 hover:bg-blue-500 rounded-lg tooltip tooltip-left"
+                 data-tip="修改歌单">
+              <svg @click="activeShowEditSonglist"
+                   class="inline-block h-6 w-6 align-top text-blue-600 hover:text-blue-800" width="24"
+                   height="24"
+                   viewBox="0 0 24 24"
+                   xmlns="http://www.w3.org/2000/svg" fill="none"
+                   stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/>
+              </svg>
+            </div>
+          </li>
+          <li>
+            <!--          删除歌单-->
+            <div class="cursor-pointer h-8 w-8 p-1 bg-gray-300 hover:bg-red-500 rounded-lg tooltip tooltip-left"
+                 data-tip="移除歌单">
+              <svg @click="deleteSonglist"
+                   class="h-6 w-6 align-top text-red-600 hover:text-red-800" width="24"
+                   height="24"
+                   viewBox="0 0 24 24" stroke-width="2"
+                   stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                <path stroke="none" d="M0 0h24v24H0z"/>
+                <line x1="4" y1="7" x2="20" y2="7"/>
+                <line x1="10" y1="11" x2="10" y2="17"/>
+                <line x1="14" y1="11" x2="14" y2="17"/>
+                <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12"/>
+                <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3"/>
+              </svg>
+            </div>
+          </li>
+        </ul>
+      </div>
+<!--      <svg @click="deleteSonglist" v-if="!IsEditing"-->
+<!--           class="inline-block float-right h-8 w-8 cursor-pointer text-red-600 hover:text-red-800" width="24"-->
+<!--           height="24"-->
+<!--           viewBox="0 0 24 24" stroke-width="2"-->
+<!--           stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">-->
+<!--        <path stroke="none" d="M0 0h24v24H0z"/>-->
+<!--        <line x1="4" y1="7" x2="20" y2="7"/>-->
+<!--        <line x1="10" y1="11" x2="10" y2="17"/>-->
+<!--        <line x1="14" y1="11" x2="14" y2="17"/>-->
+<!--        <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12"/>-->
+<!--        <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3"/>-->
+<!--      </svg>-->
+<!--      &lt;!&ndash;          修改歌单信息&ndash;&gt;-->
+<!--      <svg @click="activeShowEditSonglist()" v-if="!IsEditing"-->
+<!--           class="m-1 inline-block float-right h-7 w-7 cursor-pointer text-blue-700 hover:text-blue-900" width="24"-->
+<!--           height="24"-->
+<!--           viewBox="0 0 24 24"-->
+<!--           xmlns="http://www.w3.org/2000/svg" fill="none"-->
+<!--           stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">-->
+<!--        <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/>-->
+<!--      </svg>-->
       <div class="inline-block px-10">
         <img :src="SongList.cover" class="img_songlist shadow-2xl" v-if="!IsEditing">
         <div>
