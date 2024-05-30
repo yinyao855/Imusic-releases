@@ -190,7 +190,7 @@ onMounted(GetSongListData);
     <div class="absolute top-0 w-full">
       <buttonchangesize class="top-0 absolute left-6" @fullsize="changesize" v-model:token="token"></buttonchangesize>
       <div v-if="!IsEditing"
-          class="float-right dropdown dropdown-bottom transition duration-400 border-none z-50">
+          class="float-right dropdown dropdown-bottom transition duration-400 border-none z-50 mr-5">
         <svg class="icon" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg"
              width="32" height="32" tabindex="0" role="button">
           <path
@@ -291,7 +291,7 @@ onMounted(GetSongListData);
             }}</p>
         </div>
         <div class="flex-column text-md" v-if="IsEditing">
-          <div class="text-white">歌曲名</div>
+          <div class="text-white">歌单名</div>
           <div class="inputForm bg-zinc-900">
             <svg class="icon fill-white transition" viewBox="0 0 1024 1024" version="1.1"
                  xmlns="http://www.w3.org/2000/svg" width="24" height="24">
