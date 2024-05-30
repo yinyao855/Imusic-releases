@@ -12,6 +12,7 @@ import Admin_User_View from "@/views/Admin/Admin_User_View.vue";
 import Admin_Search_User_View from "@/views/Admin/Admin_Search_User_View.vue";
 import Admin_Show_User_Information from "@/views/Admin/Admin_Show_User_Information.vue";
 import Admin_Complaint_View from "@/views/Admin/Admin_Complaint_View.vue";
+
 const NaviClass1 = computed(() => ({
   'text-base inline-block mx-5 w-30 rounded-lg antialiased tracking-widest font-medium transition-colors duration-400 hover:bg-gray-600/40 cursor-pointer': true,
   'text-cyan-700 underline underline-offset-8 decoration-2': NaviMode.value === '1',
@@ -38,7 +39,7 @@ const changeNaviMode = (NewMode) => {
   if (NewMode === 2) {
     Get_Admin_Songs_Data();
   }
-  if(NewMode===3){
+  if (NewMode === 3) {
     Get_Admin_Users_Data();
   }
 }
@@ -54,7 +55,7 @@ function gettime(time) {
 }
 
 const SongLists = ref([]);
-const Users=ref([]);
+const Users = ref([]);
 const Get_Admin_SongList_Data = () => {
   const instance = axios.create({
     baseURL: 'http://182.92.100.66:5000',
@@ -89,9 +90,9 @@ const Get_Admin_Users_Data = () => {
       .then(response => {
         Users.value = response.data.data;
         console.log(Users.value);
-        let length=Users.value.length;
-        for(let i=0;i<length;++i){
-          Users.value[i].role=Users.value[i].role==='admin'?'管理员':'普通用户';
+        let length = Users.value.length;
+        for (let i = 0; i < length; ++i) {
+          Users.value[i].role = Users.value[i].role === 'admin' ? '管理员' : '普通用户';
         }
       })
       .then(error => {
@@ -126,7 +127,7 @@ const Get_Admin_Songs_Data = () => {
 const token = defineModel('token');
 const SearchContent = ref('');
 onMounted(Get_Admin_SongList_Data);
-const SongListId=ref(0);
+const SongListId = ref(0);
 const ChangeShowSearchView = () => {
   ShowSearchView.value = false;
 }
@@ -146,11 +147,11 @@ const UpdateSongList = (id) => {
   ShowUpdateSongView.value = true;
   SongListId.value = id;
 }
-const UserId=ref(0);
+const UserId = ref(0);
 
-const UpdateUser=(id)=>{
-  UserId.value=id;
-  ShowUpdateSongView.value=true;
+const UpdateUser = (id) => {
+  UserId.value = id;
+  ShowUpdateSongView.value = true;
 }
 
 const SongId = ref(0);
@@ -170,8 +171,9 @@ const SearchOperation = () => {
       <Admin_Search_Songlist_View v-if="NaviMode==='1'" :SearchContent="SearchContent"
                                   @changesize="ChangeShowSearchView" @refresh="Get_Admin_Songs_Data"
                                   v-model:token="token" @UpdateSongList="UpdateSongList"></Admin_Search_Songlist_View>
-      <Admin_Search_User_View v-if="NaviMode==='3'"
-                              v-model:token="token" ></Admin_Search_User_View>
+      <Admin_Search_User_View v-if="NaviMode==='3'" :SearchContent="SearchContent" @changesize="ChangeShowSearchView"
+                              @refresh="Get_Admin_Users_Data" @UpdateUser="UpdateUser"
+                              v-model:token="token"></Admin_Search_User_View>
     </div>
   </transition>
 
@@ -183,7 +185,7 @@ const SearchOperation = () => {
       <Admin_Update_SongList_Page v-model:token="token" v-model:SongListId="SongListId" v-if="NaviMode==='1'"
                                   @changesize="ChangeShowUpdateView"></Admin_Update_SongList_Page>
       <Admin_Show_User_Information v-model:token="token" v-model:UserId="UserId" v-if="NaviMode==='3'"
-                                  @changesize="ChangeShowUpdateView"></Admin_Show_User_Information>
+                                   @changesize="ChangeShowUpdateView"></Admin_Show_User_Information>
     </div>
   </transition>
 
