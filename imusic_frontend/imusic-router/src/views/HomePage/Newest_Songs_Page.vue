@@ -1,6 +1,7 @@
 <script setup>
 import {defineModel, defineEmits} from "vue"
 import axios from "axios";
+import MyAlert from "@/js/MyAlert.js";
 
 const songlistlast = defineModel('songlistlast');
 const emits = defineEmits(['handlePlayNow', 'handlePlayAfter', 'addToSongList']);
@@ -16,6 +17,10 @@ function handlePlayAfter(id) {
 }
 
 const addlike = (index) => {
+  if(token.value === '') {
+    MyAlert({type: 'alert-warning', text: '请先登录'})
+    return
+  }
   const formData = new FormData();
   formData.append('username', username.value);
   formData.append('song_id', songlistlast.value[index].id);
@@ -60,6 +65,10 @@ const deletelike = (index) => {
 }
 
 const addToSongList = (id) => {
+  if(token.value === '') {
+    MyAlert({type: 'alert-warning', text: '请先登录'})
+    return
+  }
   emits('addToSongList', id);
 }
 
