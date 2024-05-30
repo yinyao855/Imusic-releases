@@ -331,11 +331,12 @@ onMounted(GetInitSongLists);
 
 <template>
   <transition name="slide" appear>
-    <div class="transition-container-2" v-if="NeedShowSongList">
+    <div class="transition-container-2 h-screen" v-if="NeedShowSongList">
       <Songlist v-model:currentSonglistId="SongListId"
                 @PlaySongList="PlaySongList" @handlePlayAfter="handlePlayAfter"
                 @handlePlayNow="handlePlayNow" @closeSonglist="closeSonglist"
                 v-model:token="token" v-model:username="username" v-model:HasLogin="HasLogin"></Songlist>
+      <div class="h-32"></div>
     </div>
   </transition>
   <div class="flex w-full h-full px-10" v-if="!ShowCurrentUser_SongList&&!NeedShowSongList">
