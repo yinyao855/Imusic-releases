@@ -51,24 +51,28 @@ export const useMessageStore = defineStore('message', () => {
         const date = new Date(InputDate);
         const now = new Date();
         const diff = now - date;
-
-        if (diff < 5 * 60 * 60 * 1000) { // 不超过5小时
-            if (diff < 10 * 60 * 1000) { // 不超过10分钟
-                return '刚刚';
-            } else {
-                const minutesDiff = Math.floor(diff / (60 * 1000));
-                return `${minutesDiff}分钟前`;
-            }
-        } else if (diff < 24 * 60 * 60 * 1000) { // 前一天
-            const hours = date.getHours().toString().padStart(2, '0');
-            const minutes = date.getMinutes().toString().padStart(2, '0');
-            return `昨天${hours}:${minutes}`;
-        } else {
-            const year = date.getFullYear();
-            const month = (date.getMonth() + 1).toString().padStart(2, '0');
-            const day = date.getDate().toString().padStart(2, '0');
-            return `${year}-${month}-${day}`;
+        //同一天且五分钟内设置为刚刚
+        if (date.toDateString() === now.toDateString() && diff < 5 * 60 * 1000) {
+            return "刚刚";
         }
+        //同一天且一小时内设置为几分钟前
+        if (date.toDateString() === now.toDateString() && diff < 60 * 60 * 1000) {
+            return Math.floor(diff / 60 / 1000) + "分钟前";
+        }
+        //同一天设置为小时+分钟，个位数前面加0
+        if (date.toDateString() === now.toDateString()) {
+            return (date.getHours() < 10 ? "0" : "") + date.getHours() + ":" + (date.getMinutes() < 10 ? "0" : "") + date.getMinutes();
+        }
+        //昨天设置为昨天
+        if (date.toDateString() === new Date(now - 24 * 60 * 60 * 1000).toDateString()) {
+            return "昨天";
+        }
+        //今年设置为月日
+        if (date.getFullYear() === now.getFullYear()) {
+            return (date.getMonth() + 1) + "月" + date.getDate() + "日";
+        }
+        //其他设置为年月日
+        return date.getFullYear() + "年" + (date.getMonth() + 1) + "月" + date.getDate() + "日";
     }
 
 

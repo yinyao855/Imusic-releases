@@ -20,7 +20,7 @@
             </div>
             <div class="flex-1">
               <h2 class="text-lg font-semibold">{{ chat.friend }}</h2>
-              <p class="text-sm text-white w-28 truncate ..." v-if="chat.last_message">
+              <p class="text-sm text-white w-40 truncate ..." v-if="chat.last_message">
                 {{ chat.last_message.content }}</p>
             </div>
             <!--show time-->
@@ -114,7 +114,7 @@
         <!-- Chat Input -->
         <footer class="p-4 bg-zinc-900 flex" v-if="ShowMessageDetail">
           <div class="flex items-center my-auto w-full">
-            <input type="text" placeholder="Type a message..." v-model="SendContent"
+            <input type="text" placeholder="请输入消息..." v-model="SendContent"
                    class="w-full p-2 rounded-md border border-gray-400 focus:outline-none focus:border-blue-500"
                    @keydown.enter="sendMsg">
             <!--            <button class="bg-indigo-500 text-white px-4 py-2 rounded-md ml-2" @click="sendMsg">Send</button>-->
