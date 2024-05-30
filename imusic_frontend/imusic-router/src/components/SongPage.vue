@@ -1,16 +1,18 @@
 <script setup>
 // 展示歌曲详细信息界面
-import {defineModel, defineEmits, onMounted, ref} from "vue";
+import {defineModel, defineEmits, onMounted, ref, computed} from "vue";
 import buttonchangesize from "@/components/ButtonChangeSizeRight.vue";
 import axios from "axios";
 import Complaint from "@/components/Complaint.vue";
 import MyAlert from "@/js/MyAlert.js";
+import {useUserStore} from "@/stores/user.js";
 
 // global variables
+const userStore = useUserStore();
 const token = defineModel('token')
 const username = defineModel('username')
 const message = ref('');
-const HasLogin = defineModel('HasLogin');
+const HasLogin = ref(computed(() => userStore.isLogin));
 const showComment = ref(true);
 const showComplaint = ref(false);
 const complaintType = ref("songs")
