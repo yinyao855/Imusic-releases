@@ -4,7 +4,7 @@ import {ref} from "vue";
 </script>
 
 <template>
-  <div class="flex w-full">
+  <div class="w-full h-full">
     <div class="card w-4/5 bg-base-100 shadow-xl mx-auto">
       <figure><img src="../assets/AboutUS.jpg" alt="关于我们"/>
       </figure>
