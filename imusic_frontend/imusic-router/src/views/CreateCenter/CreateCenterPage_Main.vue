@@ -160,7 +160,7 @@ const CloseSongPage=()=>{
     </div>
   </transition>
 
-  <div v-if="!showEditSong&&!ShowSong&&!NeedShowSongDetail" class="cursor-default overflow-hidden">
+  <div v-if="!showEditSong&&!ShowSong&&!NeedShowSongDetail" class="cursor-default">
     <div class="w-full h-14 pl-6">
       <div :class="[NaviClass1, 'text-transition']" @click="changeNaviMode(1)" style="line-height: 56px">我的创作</div>
       <div :class="[NaviClass2, 'text-transition']" @click="changeNaviMode(2)" style="line-height: 56px">创作歌曲</div>
