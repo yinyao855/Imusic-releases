@@ -124,7 +124,7 @@ function getShare() {
               d="M500 128.8c-95.2 5.6-173.6 83.2-180 178.4-7.2 112 80.8 205.6 191.2 205.6 106.4 0 192-86.4 192-192 0.8-110.4-92-198.4-203.2-192zM512 575.2c-128 0-383.2 64-383.2 192v96c0 17.6 14.4 32 32 32h702.4c17.6 0 32-14.4 32-32V766.4c0-127.2-255.2-191.2-383.2-191.2z"
           ></path>
         </svg>
-        <input type="text" class="input bg-zinc-900" placeholder="" v-model="userrole" readonly>
+        <input type="text" class="input bg-zinc-900 cursor-default" placeholder="" v-model="userrole" readonly>
       </div>
     </div>
     <div class="text-white text-xl w-3/5 mx-auto my-4">
@@ -136,7 +136,7 @@ function getShare() {
               d="M500 128.8c-95.2 5.6-173.6 83.2-180 178.4-7.2 112 80.8 205.6 191.2 205.6 106.4 0 192-86.4 192-192 0.8-110.4-92-198.4-203.2-192zM512 575.2c-128 0-383.2 64-383.2 192v96c0 17.6 14.4 32 32 32h702.4c17.6 0 32-14.4 32-32V766.4c0-127.2-255.2-191.2-383.2-191.2z"
           ></path>
         </svg>
-        <input type="text" class="input bg-zinc-900" placeholder="" v-model="userInfo.email" readonly>
+        <input type="text" class="input bg-zinc-900 cursor-default" placeholder="" v-model="userInfo.email" readonly>
       </div>
     </div>
     <Upload_Area v-model:Avatar="Avatar" v-model:AvatarHasChanged="AvatarHasChanged"
