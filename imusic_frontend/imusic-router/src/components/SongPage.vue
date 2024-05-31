@@ -168,8 +168,9 @@ function getSongData() {
 const fetchAndFormatLyrics = async (lrcUrl) => {
   try {
     const response = await axios.get(lrcUrl);
+    console.log(response.data)
     const lines = response.data.split("\n");
-    const timeRegex = /\[(\d{2}):(\d{2})\.(\d{2})](.*)/;
+    const timeRegex = /\[(\d{2}):(\d{2})\.(\d+)](.*)/;
 
     lines.forEach((line) => {
       const match = timeRegex.exec(line);
@@ -180,6 +181,7 @@ const fetchAndFormatLyrics = async (lrcUrl) => {
         };
         lyrics.value.push(text);
       }
+      console.log(lyrics.value)
     });
   } catch (error) {
     console.error('Error fetching lyrics:', error);
