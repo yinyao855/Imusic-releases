@@ -682,7 +682,7 @@ onMounted(autoLogin);
       </div>
     </div>
   </div>
-  <MusicPlayer_Cell ref="MusicPlayer_Cell_Ref" v-model:musicList="musicList" v-model:token="token" v-model:mode="mode"
+  <MusicPlayer_Cell v-if="HasLogin" ref="MusicPlayer_Cell_Ref" v-model:musicList="musicList" v-model:token="token" v-model:mode="mode"
                     :HasLogin="HasLogin" v-model:datax="datax" v-model:username="username"
                     v-model:cantransformtofull="cantransformtofull"></MusicPlayer_Cell>
 </template>
