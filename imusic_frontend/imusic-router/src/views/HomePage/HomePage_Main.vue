@@ -10,6 +10,7 @@ import Search_View from "@/views/HomePage/Search_View.vue";
 import CurrentUser_SongList from "@/components/CurrentUser_SongList.vue";
 import SongPage from "@/components/SongPage.vue";
 import Singer_View from "@/views/HomePage/Singer_View.vue";
+import MyAlert from "@/js/MyAlert.js";
 
 const emits = defineEmits(['PlaySingerSongs','changesonglist', 'handlePlayNow', 'handlePlayAfter', 'PlaySongList', 'refreshNewest_Songs_Page', 'SearchOperation']);
 const HasLogin = defineModel('HasLogin')
@@ -94,6 +95,10 @@ const GetCurrentUser_SongListdata = () => {
 
 
 const addToSongList = (songid) => {
+  if(!HasLogin.value){
+    MyAlert({type:'alert-warning',text:'请先登录'});
+    return;
+  }
   console.log(songid);
   GetCurrentUser_SongListdata();
   ShowCurrentUser_SongList.value = true;
