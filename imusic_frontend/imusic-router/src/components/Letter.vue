@@ -51,14 +51,13 @@ const author = ref("SMOOKYDEV");
 
   <div class="paper flex flex-col items-center p-6 overflow-y-auto no-scrollbar" v-if="show">
     <div class="absolute right-8 hover:glass" @click="expandCard">
-      <svg t="1717239528263" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"
-           p-id="4290" width="30" height="30">
+      <svg class="icon" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" width="30" height="30">
         <path
             d="M119.233957 66.85913l837.898911 837.898911-52.368365 52.368365-837.898911-837.898911 52.368365-52.368365Z"
-            fill="#CCCCCC" p-id="4291"></path>
+            fill="#CCCCCC"></path>
         <path
             d="M957.140461 119.233957l-837.898911 837.898911-52.368365-52.368365 837.898911-837.898911 52.368365 52.368365Z"
-            fill="#CCCCCC" p-id="4292"></path>
+            fill="#CCCCCC"></path>
       </svg>
     </div>
 
@@ -78,10 +77,6 @@ const author = ref("SMOOKYDEV");
     <p class="px-10 text-lg text-gray-700">
       {{ text }}
     </p>
-    <!--    <p class="font-serif text-[10px] text-gray-700">-->
-    <!--      {{ending}}-->
-    <!--    </p>-->
-    <!--    <p class="font-sans text-[10px] text-gray-700 pt-5">{{author}}</p>-->
   </div>
 </template>
 
