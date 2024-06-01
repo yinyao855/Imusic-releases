@@ -151,7 +151,7 @@ function sendEditSonglist(id) {
         </div>
         <div class="inline-block ml-7 align-top">
           <div class="flex-column text-md">
-            <div class="text-white">*歌曲名</div>
+            <div class="text-white">*歌单名</div>
           </div>
           <div class="inputForm bg-zinc-900">
             <svg t="1713779846725" class="icon fill-white transition" viewBox="0 0 1024 1024" version="1.1"

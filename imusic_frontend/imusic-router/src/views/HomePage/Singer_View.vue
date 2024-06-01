@@ -4,6 +4,7 @@ import buttonchangesize from '../../components/ButtonChangeSizeRight.vue'
 import axios from "axios";
 import SongPage from "@/components/SongPage.vue";
 import Search_View from "@/views/HomePage/Search_View.vue";
+import MyAlert from "@/js/MyAlert.js";
 
 const SingerData=ref([]);
 const token = defineModel('token')
@@ -43,6 +44,10 @@ const addToSongList = (index) => {
 
 const username = defineModel('username');
 const addlike = (index) => {
+  if(!HasLogin.value){
+    MyAlert({type:'alert-warning',text:'请先登录'});
+    return;
+  }
   const formData = new FormData();
   formData.append('username', username.value);
   formData.append('song_id', SingerData.value.songs[index].id);

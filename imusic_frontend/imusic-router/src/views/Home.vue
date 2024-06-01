@@ -1,5 +1,5 @@
 <script setup>
-import {computed, onBeforeUnmount, onMounted, ref} from "vue";
+import {computed, onBeforeUnmount, onMounted, ref, watch} from "vue";
 import HomePage_Main from "@/views/HomePage/HomePage_Main.vue";
 import ExplorePage_Main from "@/views/Explore/ExplorePage_Main.vue";
 import CreateCenter from "@/views/CreateCenter/CreateCenterPage_Main.vue";
@@ -412,6 +412,8 @@ const handlePlayAfter = (id) => {
 
 
 const getPageinit = () => {
+  console.log(musicList.value[0].id);
+  console.log(HasLogin.value);
   const instance = axios.create({
     baseURL: 'http://182.92.100.66:5000',
     timeout: 10000, // 设置请求超时时间
@@ -624,6 +626,10 @@ onBeforeUnmount(() => {
 });
 onMounted(getPageinit);
 onMounted(autoLogin);
+watch(musicList, (newVal) => {
+  console.log(newVal);
+}
+)
 </script>
 
 <template>
@@ -684,7 +690,7 @@ onMounted(autoLogin);
       </div>
     </div>
   </div>
-  <MusicPlayer_Cell v-if="HasLogin" ref="MusicPlayer_Cell_Ref" v-model:musicList="musicList" v-model:token="token" v-model:mode="mode"
+  <MusicPlayer_Cell ref="MusicPlayer_Cell_Ref" v-model:musicList="musicList" v-model:token="token" v-model:mode="mode"
                     :HasLogin="HasLogin" v-model:datax="datax" v-model:username="username"
                     v-model:cantransformtofull="cantransformtofull"></MusicPlayer_Cell>
 

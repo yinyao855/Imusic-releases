@@ -34,6 +34,10 @@ const addToSongList = (index) => {
 
 const username = defineModel('username');
 const addlike = (index) => {
+  if(!HasLogin.value){
+    MyAlert({type:'alert-warning',text:'请先登录'});
+    return;
+  }
   const formData = new FormData();
   formData.append('username', username.value);
   formData.append('song_id', songlistlast.value.songs[index].id);

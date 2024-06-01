@@ -128,7 +128,7 @@ onMounted(getUserFriends)
 <template>
   <buttonchangesize class="left-4 top-4" @fullsize="closeSharePage"
                     v-model:token="token"></buttonchangesize>
-  <div class="w-2/3 m-auto">
+  <div class="w-2/3 m-auto h-screen overflow-x-hidden">
     <div class="w-full h-32 flex">
       <div v-if="shareType==='songlist'" class="text-4xl text-white text-center m-auto">分享歌单： {{ title }}</div>
       <div v-if="shareType==='likesongs'" class="text-4xl text-white text-center m-auto">分享喜欢的歌</div>
