@@ -15,6 +15,7 @@ import CreatedSonglist_Main from "@/views/CreatedSongList/CreatedSonglist_Main.v
 import FavoriteSonglist_Main from "@/views/FavoriteSongList/FavoriteSonglist_Main.vue";
 import Forget_Password from "@/views/Account/Forget_Password.vue";
 import Message_Main from "@/views/Message/Message_Main.vue";
+import PdfViewer from "@/views/Pdf/PdfViewer.vue";
 
 import {useUserStore} from "@/stores/user.js";
 import {useMessageStore} from "@/stores/message.js";
@@ -679,12 +680,14 @@ onMounted(autoLogin);
                       v-model:HasLogin="HasLogin" v-model:UserRole="UserRole"
         ></Message_Main>
         <AdminPage_Main v-model:token="token" v-if="mode==='7'"></AdminPage_Main>
+        <PdfViewer url="http://storage.xuetangx.com/public_assets/xuetangx/PDF/PlayerAPI_v1.0.6.pdf" v-if="mode==='10'"></PdfViewer>
       </div>
     </div>
   </div>
   <MusicPlayer_Cell v-if="HasLogin" ref="MusicPlayer_Cell_Ref" v-model:musicList="musicList" v-model:token="token" v-model:mode="mode"
                     :HasLogin="HasLogin" v-model:datax="datax" v-model:username="username"
                     v-model:cantransformtofull="cantransformtofull"></MusicPlayer_Cell>
+
 </template>
 
 <style scoped>
