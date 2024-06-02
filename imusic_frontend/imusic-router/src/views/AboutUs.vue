@@ -4,13 +4,13 @@ import PhotoCard from "@/components/PhotoCard.vue";
 import {ref} from "vue";
 
 const show = ref(false);
-
+//TODO: add your information here
 const information = [
   {
-    url: "https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg",
+    url: "/yy.jpg",
     ring_type: "ring-info",
     name: "尹耀",
-    description: "你好我是yy，来自重庆，我喜欢音乐、旅行、美食和运动。",
+    description: "我是yy，来自重庆，我喜欢音乐、旅行、美食和运动。",
   },
   {
     url: "https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg",
