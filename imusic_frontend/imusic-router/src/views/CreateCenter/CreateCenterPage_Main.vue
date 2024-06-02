@@ -159,19 +159,20 @@ const CloseSongPage=()=>{
                 v-model:token="token" v-model:username="username"></EditSong>
     </div>
   </transition>
-
   <div v-if="!showEditSong&&!ShowSong&&!NeedShowSongDetail" class="cursor-default">
-    <div class="w-full h-14 pl-6">
+    <div class="w-full h-16 pl-6 fixed z-50 bg-zinc-900">
       <div :class="[NaviClass1, 'text-transition']" @click="changeNaviMode(1)" style="line-height: 56px">我的创作</div>
       <div :class="[NaviClass2, 'text-transition']" @click="changeNaviMode(2)" style="line-height: 56px">创作歌曲</div>
       <div :class="[NaviClass3, 'text-transition']" @click="changeNaviMode(3)" style="line-height: 56px">创建歌单</div>
       <Search v-model:token="token"></Search>
     </div>
-    <div v-if="NaviMode==='1'">
-      <div class="">
-        <div class="text-2xl mx-4 text-white font-serif font-bold my-4 w-1/2">我的上传</div>
-        <div class="mx-6">
-          <table class="table mb-32">
+  </div>
+  <div v-if="!showEditSong&&!ShowSong&&!NeedShowSongDetail&&NaviMode==='1'" class="cursor-default h-5/6">
+    <div v-if="NaviMode==='1'" class="h-full mt-16">
+      <div class="h-full">
+        <div class="mx-6 max-h-5/6 overflow-hidden">
+          <div class="text-2xl mx-4 text-white font-serif font-bold my-4 w-1/2">我的上传</div>
+          <table class="table max-h-full w-full">
             <thead>
             <tr>
               <th class="text-left text-sm font-semibold">音乐标题</th>
@@ -297,18 +298,18 @@ const CloseSongPage=()=>{
             </tbody>
           </table>
         </div>
+        <div class="h-32"></div>
       </div>
     </div>
   </div>
-  <div class="w-full h-5/6 overflow-auto" v-if="NaviMode==='2'&&!NeedShowSongDetail">
+  <div class="w-full h-5/6 overflow-auto mt-16" v-if="NaviMode==='2'&&!NeedShowSongDetail">
     <UploadSong @uploadSongSuccess="uploadSongSuccess" v-model:HasLogin="HasLogin"
                 v-model:username="username" v-model:token="token"></UploadSong>
   </div>
-  <div class="w-full h-5/6 overflow-auto" v-if="NaviMode==='3'&&!NeedShowSongDetail">
+  <div class="w-full h-5/6 overflow-auto mt-16" v-if="NaviMode==='3'&&!NeedShowSongDetail">
     <CreateSonglist_Area @uploadSongSuccess="uploadSongSuccess" v-model:HasLogin="HasLogin"
                 v-model:username="username" v-model:token="token"></CreateSonglist_Area>
   </div>
-  <div class="h-16" v-if="!NeedShowSongDetail"></div>
 </template>
 
 <style scoped>
