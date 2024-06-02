@@ -633,7 +633,7 @@ watch(musicList, (newVal) => {
 </script>
 
 <template>
-  <div class="flex w-full h-screen bg-zinc-900">
+  <div class="flex w-full h-screen bg-zinc-900 overflow-x-hidden">
     <SideBar v-model:mode="mode"
              v-model:userdata="userdata"
              v-model:userUploadedSongs="userUploadedSongs"
@@ -714,4 +714,8 @@ watch(musicList, (newVal) => {
 .slide-leave-from {
   transform: translateX(0);
 }
+* {
+  overflow-x: hidden;
+}
+
 </style>

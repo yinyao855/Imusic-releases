@@ -31,6 +31,9 @@ function formatDateTime(dateTimeStr) {
   const minutes = date.getMinutes();
   const formattedMonth = month < 10 ? '0' + month : month;
   const formattedDay = day < 10 ? '0' + day : day;
+  if(year === new Date().getFullYear()) {
+    return `${formattedMonth}月${formattedDay}日`;
+  }
   return `${year}年${formattedMonth}月${formattedDay}日`;
 }
 

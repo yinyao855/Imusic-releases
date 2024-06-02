@@ -154,7 +154,7 @@ watch(Message, () => {
           <div class="text-sm text-left opacity-50 truncate w-96">{{ trueContent[index] }}</div>
         </td>
         <td class="w-40 text-sm opacity-50">
-          {{ item.send_date }}
+          {{ messageStore.ChangeTime(item.send_date) }}
         </td>
         <td class="w-20">
           <div class="inline pr-4">

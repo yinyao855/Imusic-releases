@@ -2,7 +2,7 @@
   <div class="w-full bg-zinc-900 flex h-full">
 
     <!-- component -->
-    <div class="w-full mx-auto overflow-hidden flex">
+    <div class="w-full mx-auto overflow-y-auto flex">
       <!-- Sidebar -->
       <div class="w-1/4 h-full bg-zinc-800">
 
@@ -42,7 +42,7 @@
         </header>
 
         <!-- Chat Messages -->
-        <div class="overflow-y-auto p-4 pb-8 flex flex-col" style="height: 580px" ref="listContainer">
+        <div class="overflow-y-auto p-4 pb-8 flex flex-col"  style="height: 640px" ref="listContainer">
           <!-- 私聊消息 -->
           <div v-for="(message, index) in DetailMessage" :key="index">
             <!-- Incoming Message -->
