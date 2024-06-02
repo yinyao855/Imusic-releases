@@ -686,7 +686,7 @@ watch(musicList, (newVal) => {
                       v-model:HasLogin="HasLogin" v-model:UserRole="UserRole"
         ></Message_Main>
         <AdminPage_Main v-model:token="token" v-if="mode==='7'"></AdminPage_Main>
-        <PdfViewer url="http://storage.xuetangx.com/public_assets/xuetangx/PDF/PlayerAPI_v1.0.6.pdf" v-if="mode==='10'"></PdfViewer>
+        <PdfViewer url="http://182.92.100.66:5000/media/files/用户使用说明书.pdf" v-if="mode==='10'"></PdfViewer>
       </div>
     </div>
   </div>

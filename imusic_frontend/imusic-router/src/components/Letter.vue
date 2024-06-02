@@ -8,9 +8,8 @@ function expandCard() {
 }
 
 const title = "Imusic 开发团队"
-const text = "根据美国媒体透露如今勇士这一方面已经打算对他们的阵容进行一个全面的升级，目前球队希望能够通过交易拿下热火队的球员吉米巴特勒这位球员被人们称之为NBA第一硬汉并且热火队现在也有意把他送走因此现在双方的交易只差签字了。"
-const ending = ref("Wishing you a fantastic day ahead!");
-const author = ref("SMOOKYDEV");
+//TODO: 这个介绍太简单了，可以多写一点
+const text = "我们是一个有趣的团队~"
 
 </script>
 
@@ -25,12 +24,12 @@ const author = ref("SMOOKYDEV");
           Imusic 开发团队
         </p>
         <p class="px-10 text-[10px] sm:text-[12px] text-gray-700">
-          It’s so nice that you had the time to view this idea
+          欢迎了解我们团队的成员！
         </p>
         <p class="font-serif text-[10px] sm:text-[12px] text-gray-700">
-          Wishing you a fantastic day ahead!
+          点击开启
         </p>
-        <p class="font-sans text-[10px] text-gray-700 pt-5">SMOOKYDEV</p>
+        <p class="font-sans text-[10px] text-gray-700 pt-5">CHAMPS-ELYSEES</p>
       </div>
       <button
           class="seal bg-rose-500 text-red-800 w-10 aspect-square rounded-full z-40 text-[10px] flex items-center justify-center
@@ -72,11 +71,8 @@ const author = ref("SMOOKYDEV");
     <figure>
       <img src="../assets/AboutUS.jpg" alt="关于我们" class="h-[360px] aspect-auto"/>
       <figcaption class="flex justify-center">全体成员</figcaption>
+      <figcaption class="flex justify-center">从左至右依次为牛梓涵，张旖霜，薛惠天，卢思文和尹耀</figcaption>
     </figure>
-    <br>
-    <p class="px-10 text-lg text-gray-700">
-      {{ text }}
-    </p>
   </div>
 </template>
 
