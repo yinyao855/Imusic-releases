@@ -214,6 +214,7 @@ const CloseSongPage=()=>{
       </tr>
       </tbody>
     </table>
+    <div class="h-32"></div>
   </div>
 </template>
 

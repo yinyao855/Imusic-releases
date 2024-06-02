@@ -95,7 +95,7 @@ const CloseSongPage=()=>{
     <buttonchangesize class="absolute top-5 left-5" @fullsize="changesize" v-model:token="token"></buttonchangesize>
     搜索结果
   </div>
-  <div class="overflow-x-auto overflow-y-hidden mx-6 h-full cursor-default" v-if="!NeedShowSongDetail">
+  <div class="overflow-x-auto overflow-y-hidden mx-6 cursor-default" v-if="!NeedShowSongDetail">
     <table class="table mb-32">
       <thead>
       <tr>
@@ -224,7 +224,7 @@ const CloseSongPage=()=>{
       </tbody>
     </table>
   </div>
-  <div class="h-32" v-if="!NeedShowSongDetail"></div>
+  <div class="h-16" v-if="!NeedShowSongDetail"></div>
 </template>
 
 <style scoped>
