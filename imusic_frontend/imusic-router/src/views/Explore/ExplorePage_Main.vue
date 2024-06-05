@@ -12,15 +12,15 @@ const NaviMode = ref('1');
 const HasLogin = defineModel('HasLogin')
 const username = defineModel('username');
 const NaviClass1 = computed(() => ({
-  'text-base inline-block mx-5 w-30 rounded-lg antialiased tracking-widest font-medium transition-colors duration-400 hover:bg-gray-600/40': true,
+  'text-base inline-block mx-3 px-3 w-30 rounded-lg antialiased tracking-widest font-medium transition-colors duration-400 hover:bg-gray-600/40': true,
   'text-cyan-700 underline underline-offset-8 decoration-2': NaviMode.value === '1',
 }));
 const NaviClass2 = computed(() => ({
-  'text-base inline-block mx-5 w-30 rounded-lg antialiased tracking-widest font-medium transition-colors duration-400 hover:bg-gray-600/40': true,
+  'text-base inline-block mx-3 px-3 w-30 rounded-lg antialiased tracking-widest font-medium transition-colors duration-400 hover:bg-gray-600/40': true,
   'text-cyan-700 underline underline-offset-8 decoration-2': NaviMode.value === '2',
 }));
 const NaviClass3 = computed(() => ({
-  'text-base inline-block mx-5 w-30 rounded-lg antialiased tracking-widest font-medium transition-colors duration-400 hover:bg-gray-600/40': true,
+  'text-base inline-block mx-3 px-3 w-30 rounded-lg antialiased tracking-widest font-medium transition-colors duration-400 hover:bg-gray-600/40': true,
   'text-cyan-700 underline underline-offset-8 decoration-2': NaviMode.value === '3',
 }));
 const changeNaviMode = (newMode) => {

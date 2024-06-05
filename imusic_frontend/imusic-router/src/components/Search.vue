@@ -1,10 +1,15 @@
 <script setup>
 import {defineModel, defineEmits} from "vue"
+import MyAlert from "@/js/MyAlert.js";
 
 const SearchContent = defineModel('SearchContent');
 const emits = defineEmits(['SearchOperation']);
 const token=defineModel('token')
 const SearchOperation = () => {
+  if(SearchContent.value===''){
+    MyAlert({text:'搜索内容不能为空',type:'alert-warning'});
+    return;
+  }
   emits('SearchOperation');
 }
 </script>

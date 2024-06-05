@@ -34,7 +34,7 @@ const state = reactive({
 // 计算属性，根据索引判断是否为选中状态，并返回对应的样式类
 const getNaviClass = (index) => {
   return {
-    'text-base inline-block mx-3 w-30 text-center rounded-lg antialiased tracking-widest font-medium transition-colors duration-400 hover:bg-gray-600/40 cursor-pointer': true,
+    'text-base inline-block mx-3 px-1 w-30 text-center rounded-lg antialiased tracking-widest font-medium transition-colors duration-400 hover:bg-gray-600/40 cursor-pointer': true,
     'text-cyan-700 underline underline-offset-8 decoration-2': state.activeTab === index,
   };
 };

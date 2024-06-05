@@ -29,7 +29,7 @@ const props = defineProps({
   }
 }
 
-// 消失动画
+
 @keyframes slideUp {
   0% {
     transform: translateY(0);
@@ -43,6 +43,9 @@ const props = defineProps({
 
 .alert {
   /* 其他样式 */
-  animation: slideDown 0.3s ease-in-out, slideUp 0.3s ease-in-out;
+  animation: slideDown 0.3s ease-in-out;
+}
+.alert.hide {
+  animation: slideUp 0.3s ease-in-out;
 }
 </style>

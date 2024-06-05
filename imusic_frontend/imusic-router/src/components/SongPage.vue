@@ -102,6 +102,7 @@ function addFavoriteSong() {
         if (response.data.success === true) {
           isFavoriteSong.value = true;
           songData.like++;
+          MyAlert({type:'alert-info',text:'喜欢歌曲成功'})
         }
       })
       .catch(function (error) {
@@ -130,6 +131,7 @@ function deleteFavoriteSong() {
         if (response.data.success === true) {
           isFavoriteSong.value = false;
           songData.like--;
+          MyAlert({type:'alert-info',text:'取消喜欢成功'})
         }
       })
       .catch(function (error) {
