@@ -31,10 +31,10 @@ const information = [
     description: "your self-introduction",
   },
   {
-    url: "https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg",
-    ring_type: "ring-error",
-    name: "your name",
-    description: "your self-introduction",
+    url: "/zys.jpg",
+    ring_type: "ring-info",
+    name: "张旖霜",
+    description: "我是旖霜，来自马来西亚，想要认识很多很多的中国朋友，欢迎大家到马来西亚玩~",
   }
 ]
 </script>
