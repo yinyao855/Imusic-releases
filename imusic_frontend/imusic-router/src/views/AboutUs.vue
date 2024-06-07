@@ -25,10 +25,10 @@ const information = [
     description: "your self-introduction",
   },
   {
-    url: "https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg",
-    ring_type: "ring-error",
-    name: "your name",
-    description: "your self-introduction",
+    url: "/nzh.jpg",
+    ring_type: "ring-info",
+    name: "牛梓涵",
+    description: "我是nzh，来自天津，爱好辩论，大家有空来打找我桌游和剧本杀啊~",
   },
   {
     url: "/zys.jpg",
