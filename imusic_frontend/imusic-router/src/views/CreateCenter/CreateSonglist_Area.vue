@@ -118,7 +118,7 @@ function sendPostCreateSonglist() {
         <div class="grid grid-cols-1 space-y-2">
           <div class="flex items-center justify-center w-full">
             <label
-                class="flex flex-col rounded-lg border-4 border-dashed w-full h-60 pb-6 pt-3 group text-center hover:bg-zinc-800 transition ease-in duration-300"
+                class="flex flex-col rounded-lg border-4 border-dashed w-full h-60 pb-6 pt-3 group text-center hover:bg-zinc-800 transition ease-in duration-300 cursor-pointer"
                 for="CoverUpLoad">
               <div class="h-full content-center mx-auto" v-if="cover!==null">
                 <img :src="coverImageFileUrl" class="w-full h-full object-cover rounded-lg content-center" alt="图像">

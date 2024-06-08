@@ -152,7 +152,7 @@ const Class5_6 = computed(() => ({
   'w-1/3 text-xs block mb-2 text-blue-400 cursor-pointer': mode5.value === 6,
 }));
 
-
+const loading = ref(true);
 
 const HandleStyle=(event,value)=>{
   mode5.value=value;
@@ -307,6 +307,7 @@ watch(tag_mood, () => {
   updateSongs();
 });
 const GetInitSongs = () => {
+  loading.value = true;
   const instance = axios.create({
     baseURL: 'http://182.92.100.66:5000',
     timeout: 5000, // 设置请求超时时间
@@ -322,6 +323,7 @@ const GetInitSongs = () => {
         for (let i = 0; i < length; ++i) {
           Songs.value[i].duration = gettime(Songs.value[i].duration);
         }
+        loading.value = false;
       })
       .catch(error => {
         console.log(error.response.data);
@@ -433,8 +435,11 @@ onMounted(GetInitSongs);
       </div>
     </div>
   </div>
+  <div class="flex flex-center w-full mt-32" v-if="!ShowCurrentUser_SongList&&!NeedShowSongDetail&&!NeedShowComplain&&loading">
+    <span class="mx-auto loading loading-dots loading-lg "></span>
+  </div>
 <!--  <hr class="w-full border border-gray-500 my-2" v-if="!ShowCurrentUser_SongList">-->
-  <div class="mx-6" v-if="!ShowCurrentUser_SongList&&!NeedShowSongDetail&&!NeedShowComplain">
+  <div class="mx-6 cursor-pointer" v-if="!ShowCurrentUser_SongList&&!NeedShowSongDetail&&!NeedShowComplain&&!loading">
     <div class="text-2xl text-white my-5">推荐歌曲</div>
     <table class="table mb-32">
       <thead>

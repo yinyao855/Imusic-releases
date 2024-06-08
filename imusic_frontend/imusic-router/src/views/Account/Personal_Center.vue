@@ -143,12 +143,12 @@ function getShare() {
                  v-model:token="token"></Upload_Area>
 
     <div
-        class="w-1/5 bg-blue-600 hover:bg-blue-800 transition ease-in duration-300 my-6 mx-auto rounded-md h-10 text-white text-center tracking-widest items-center flex justify-center"
+        class="w-1/5 bg-blue-600 hover:bg-blue-800 transition ease-in duration-300 my-6 mx-auto rounded-md h-10 text-white text-center tracking-widest items-center flex justify-center cursor-pointer"
         @click="Savemessage">
       <p>保存信息</p>
     </div>
     <div
-        class="w-1/5 bg-blue-600 hover:bg-blue-800 transition ease-in duration-300 my-6 mx-auto rounded-md h-10 text-white text-center tracking-widest items-center flex justify-center"
+        class="w-1/5 bg-blue-600 hover:bg-blue-800 transition ease-in duration-300 my-6 mx-auto rounded-md h-10 text-white text-center tracking-widest items-center flex justify-center cursor-pointer"
         @click="logout">
       <p>注销</p>
     </div>

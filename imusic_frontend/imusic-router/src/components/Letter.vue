@@ -48,7 +48,7 @@ const text = "我们是一个有趣的团队~"
     </div>
   </div>
 
-  <div class="paper flex flex-col items-center p-6 overflow-y-auto no-scrollbar" v-if="show">
+  <div class="paper flex flex-col items-center p-6 overflow-visible no-scrollbar" v-if="show">
     <div class="absolute right-8 hover:glass" @click="expandCard">
       <svg class="icon" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" width="30" height="30">
         <path

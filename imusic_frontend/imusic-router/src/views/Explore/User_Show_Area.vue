@@ -9,9 +9,10 @@ const token = defineModel('token');
 const SearchContent = defineModel('SearchContent');
 const username = defineModel('username');
 const emits = defineEmits(['handlePlayNow', 'handlePlayAfter','PlaySongList'])
-
+const loading = ref(true);
 
 const GetSearchResult = () => {
+  loading.value = true;
   const instance = axios.create({
     baseURL: 'http://182.92.100.66:5000',
     timeout: 5000, // 设置请求超时时间
@@ -56,6 +57,7 @@ const GetSearchResult = () => {
                   }
                 }
               }
+              loading.value = false;
             })
             .catch(error => {
               console.log(error.response.data);
@@ -135,7 +137,10 @@ onMounted(GetSearchResult);
                        @handlePlayNow="handlePlayNow" @handlePlayAfter="handlePlayAfter" @PlaySongList="PlaySongList"></Other_User_Data>
     </div>
   </transition>
-  <div class="overflow-x-auto mx-12 mb-32" v-if="!ShowUserData">
+  <div class="flex flex-center w-full mt-32" v-if="!ShowUserData&&loading">
+    <span class="mx-auto loading loading-dots loading-lg "></span>
+  </div>
+  <div class="overflow-x-auto mx-12 mb-32" v-if="!ShowUserData&&!loading">
     <table class="table">
       <!-- head -->
       <thead>
