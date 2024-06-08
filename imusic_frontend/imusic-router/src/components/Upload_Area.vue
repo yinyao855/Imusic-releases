@@ -1,12 +1,14 @@
 <script setup>
-import {ref} from 'vue'
+import {onMounted, ref} from 'vue'
+import {useUserStore} from "@/stores/user.js";
+import {storeToRefs} from "pinia";
 
 const CoverFile = defineModel('Avatar');
 let needshow = ref(false);
 const imageUrl = ref('');
 const AvatarHasChanged = defineModel('AvatarHasChanged')
-const token=defineModel('token');
-
+const userStore = useUserStore();
+const {username, token, userInfo} = storeToRefs(userStore);
 const onFileChange = (e) => {
   const files = e.target.files || e.dataTransfer.files;
   if (!files.length)
@@ -42,6 +44,10 @@ function fileToBase64(file) {
     reader.readAsDataURL(file);
   });
 }
+onMounted(() => {
+      console.log(userInfo.value.avatar);
+}
+)
 </script>
 
 <template>
@@ -59,7 +65,8 @@ function fileToBase64(file) {
         </svg>
       </div>
       <div class="text text-white text-xl text-center flex items-center" v-if="!needshow">
-        <span class="text-center">请上传个人头像</span>
+        <span class="text-center" v-if="userInfo.avatar!==null">更改个人头像</span>
+        <span class="text-center" v-if="userInfo.avatar===null">请上传个人头像</span>
       </div>
       <input type="file" id="image" @change="onFileChange">
       <img :src="imageUrl" alt="图片" class="preview" v-if="needshow">
