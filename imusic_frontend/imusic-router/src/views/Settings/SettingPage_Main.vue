@@ -4,7 +4,7 @@
 </template>
 <script setup>
 import NavTab from "@/components/NavTab.vue";
-import AboutUs from "@/views/AboutUs.vue";
+import AboutUs from "@/views/Settings/AboutUs.vue";
 
 const username = defineModel("username");
 const token = defineModel("token");
