@@ -1,7 +1,7 @@
 <template>
   <NavTab :tabs="tabs" :components="components" :unReads="unReads" v-model:username="username" v-model:token="token"
           @PlaySongList="PlaySongList" @handlePlayAfter="handlePlayAfter"
-          @handlePlayNow="handlePlayNow"></NavTab>
+          @handlePlayNow="handlePlayNow" @Minimize_Player="Minimize_Player"></NavTab>
 </template>
 
 <script setup>
@@ -10,7 +10,7 @@ import CommentNotifications from "@/views/Message/CommentNotifications.vue";
 import AppealNotifications from "@/views/Message/AppealNotifications.vue";
 import ComplainNotifications from "@/views/Message/ComplainNotifications.vue";
 import NavTab from "@/components/NavTab.vue";
-import {computed, defineEmits, ref} from "vue";
+import {computed, defineEmits, ref, watch} from "vue";
 
 import {useUserStore} from "@/stores/user.js";
 import PrivateMessage from "@/views/Message/PrivateMessage.vue";
@@ -19,7 +19,7 @@ import {useMessageStore} from "@/stores/message.js";
 const userStore = useUserStore();
 const messageStore = useMessageStore();
 
-const emits = defineEmits(["PlaySongList", "handlePlayAfter", "handlePlayNow"]);
+const emits = defineEmits(["PlaySongList", "handlePlayAfter", "handlePlayNow",'Minimize_Player']);
 
 // emits
 const PlaySongList = (id) => {
@@ -28,6 +28,10 @@ const PlaySongList = (id) => {
 
 function handlePlayAfter(id) {
   emits('handlePlayAfter', id)
+}
+
+const Minimize_Player=()=>{
+  emits('Minimize_Player');
 }
 
 function handlePlayNow(id) {

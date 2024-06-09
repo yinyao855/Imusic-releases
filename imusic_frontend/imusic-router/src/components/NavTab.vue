@@ -18,7 +18,7 @@
 </template>
 
 <script setup>
-import {defineEmits, reactive} from "vue";
+import {defineEmits, reactive, watch} from "vue";
 import Message_Main from "@/views/Message/Message_Main.vue";
 
 // tabs和components从外部传入
@@ -39,12 +39,19 @@ const getNaviClass = (index) => {
   };
 };
 
+const Minimize_Player=()=>{
+  emits('Minimize_Player');
+}
+
 // 切换标签的方法
 const changeNaviMode = (index) => {
   state.activeTab = index;
+  if(tabs[index]==='我的私信'){
+    Minimize_Player();
+  }
 };
 
-const emits = defineEmits(["PlaySongList", "handlePlayAfter", "handlePlayNow"]);
+const emits = defineEmits(["PlaySongList", "handlePlayAfter", "handlePlayNow","Minimize_Player"]);
 
 // emits
 const PlaySongList = (id) => {

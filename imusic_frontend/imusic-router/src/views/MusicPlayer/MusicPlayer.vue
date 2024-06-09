@@ -254,7 +254,13 @@ function backSong() {
   refresh();
 }
 
-defineExpose({handlePlayNow, handlePlayAfter, initCurrentMusic})
+const musicplayerview=ref(null);
+
+const Minimize_Player=()=>{
+  musicplayerview.value.minimizePlayer();
+}
+
+defineExpose({handlePlayNow, handlePlayAfter, initCurrentMusic,Minimize_Player})
 
 </script>
 
@@ -269,6 +275,7 @@ defineExpose({handlePlayNow, handlePlayAfter, initCurrentMusic})
       autoplay
   ></audio>
   <MusicPlayerView
+      ref="musicplayerview"
       :key="1"
       :name="currentMusic.title"
       :singer="currentMusic.singer"
