@@ -95,7 +95,7 @@ const GetCurrentUser_SongListdata = () => {
 
 
 const addToSongList = (songid) => {
-  if(!HasLogin.value){
+  if(token.value==='') {
     MyAlert({type:'alert-warning',text:'请先登录'});
     return;
   }
