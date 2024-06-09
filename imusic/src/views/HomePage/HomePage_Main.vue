@@ -104,6 +104,7 @@ const addToSongList = (songid) => {
   ShowCurrentUser_SongList.value = true;
   needtoaddSongid.value = [songid];
   needshowsonglistpage.value = false;
+  ShowSingerDetail.value=false;
 }
 
 const CloseCurrentUser_SongList = () => {
