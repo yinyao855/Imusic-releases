@@ -1,8 +1,8 @@
 <template>
   <!-- 缩小后的音乐播放器 -->
   <Transition name="player-transition">
-    <div v-if="isMinimized" class="fixed bottom-6 left-6 w-32 h-32 rounded-full bg-red-100 animate-spin1"
-         @click="expandPlayer">
+    <div v-if="isMinimized" :class="['fixed', 'bottom-6', 'left-6', 'w-32', 'h-32', 'rounded-full',
+    'bg-red-100', { 'animate-spin1': isPlaying }]" @click="expandPlayer">
       <img :src="props.cover" alt="Album Art" class="h-32 w-32 rounded-full">
     </div>
   </Transition>
