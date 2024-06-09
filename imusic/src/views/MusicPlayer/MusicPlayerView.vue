@@ -319,6 +319,7 @@ function fullSize() {
   emit('fullsize');
 }
 
+defineExpose({minimizePlayer});
 
 </script>
 

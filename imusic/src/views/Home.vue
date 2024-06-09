@@ -615,6 +615,12 @@ const GetMessage = () => {
         console.log(error.response.data);
       })
 };
+
+
+const Minimize_Player=()=>{
+  console.log("minimize");
+  MusicPlayer_Cell_Ref.value.Minimize_Player();
+}
 /*----------------------------------------*/
 
 let intervalId = null;
@@ -683,7 +689,7 @@ watch(musicList, (newVal) => {
         <Message_Main v-if="mode==='9'" @PlaySongList="PlaySongList" @handlePlayAfter="handlePlayAfter"
                       @handlePlayNow="handlePlayNow"
                       v-model:token="token" v-model:username="username"
-                      v-model:HasLogin="HasLogin" v-model:UserRole="UserRole"
+                      v-model:HasLogin="HasLogin" v-model:UserRole="UserRole" @Minimize_Player="Minimize_Player"
         ></Message_Main>
         <AdminPage_Main v-model:token="token" v-if="mode==='7'"></AdminPage_Main>
         <PdfViewer url="http://182.92.100.66:5000/media/files/用户使用说明书.pdf" v-if="mode==='10'"></PdfViewer>
