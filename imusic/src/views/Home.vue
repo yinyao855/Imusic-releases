@@ -660,7 +660,7 @@ watch(musicList, (newVal) => {
                            v-model:token="token"></Forget_Password>
         </div>
         <Personal_Center v-if="HasLogin&&mode==='0'"></Personal_Center>
-        <HomePage_Main v-model:songlist="songlist" v-model:needshowsonglistpage="needshowsonglistpage"
+        <HomePage_Main v-model:songlist="songlist" v-model:HasLogin="HasLogin" v-model:needshowsonglistpage="needshowsonglistpage"
                        @handlePlayAfter="handlePlayAfter" @handlePlayNow="handlePlayNow" v-if="mode==='1'"
                        v-model:SearchContent="SearchContent" v-model:ShowSearchView="ShowSearchView"
                        v-model:songlistsearch="songlistsearch" @SearchOperation="SearchOperation"
