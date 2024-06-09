@@ -488,6 +488,7 @@ onMounted(GetSongData)
               @click="editSong">
         更 新
       </button>
+      <div class="h-32 w-full"></div>
     </div>
   </div>
 </template>
