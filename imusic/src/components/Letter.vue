@@ -9,7 +9,7 @@ function expandCard() {
 
 const title = "Imusic 开发团队"
 //TODO: 这个介绍太简单了，可以多写一点
-const text = "我们是一个有趣的团队~"
+const text = "我们是一个有趣的团队，我们的联系方式是1311095683@qq.com，欢迎联系我们~"
 
 </script>
 

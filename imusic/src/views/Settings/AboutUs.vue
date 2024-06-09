@@ -4,7 +4,7 @@ import PhotoCard from "@/components/PhotoCard.vue";
 import {ref} from "vue";
 
 const show = ref(false);
-//TODO: add your information here
+
 const information = [
   {
     url: "/yy.jpg",
@@ -13,16 +13,16 @@ const information = [
     description: "我是yy，来自重庆，我喜欢音乐、旅行、美食和运动。",
   },
   {
-    url: "https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg",
-    ring_type: "ring-error",
-    name: "your name",
-    description: "your self-introduction",
+    url: "/lsw.jpg",
+    ring_type: "ring-primary",
+    name: "卢思文",
+    description: "我叫卢思文，来自河南，喜欢拍照、听音乐和跑步",
   },
   {
-    url: "https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg",
+    url: "/xht.jpg",
     ring_type: "ring-error",
-    name: "your name",
-    description: "your self-introduction",
+    name: "薛惠天",
+    description: "薛惠天，北京航空航天大学软件学院2022级本科生，学号22373330",
   },
   {
     url: "/nzh.jpg",
