@@ -170,7 +170,7 @@ const CloseSongPage=()=>{
   <div v-if="!showEditSong&&!ShowSong&&!NeedShowSongDetail&&NaviMode==='1'" class="cursor-default h-5/6">
     <div v-if="NaviMode==='1'" class="h-full mt-16">
       <div class="h-full">
-        <div class="mx-6 max-h-5/6 overflow-hidden">
+        <div class="mx-6 h-5/6 overflow-visible">
           <div class="text-2xl mx-4 text-white font-serif font-bold my-4 w-1/2">我的上传</div>
           <table class="table max-h-full w-full">
             <thead>
