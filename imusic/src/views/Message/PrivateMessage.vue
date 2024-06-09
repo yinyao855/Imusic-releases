@@ -42,7 +42,7 @@
         </header>
 
         <!-- Chat Messages -->
-        <div class="overflow-y-auto p-4 pb-8 flex flex-col"  style="height: 640px" ref="listContainer">
+        <div class="overflow-y-auto p-4 pb-8 flex flex-col"  style="height: 580px" ref="listContainer">
           <!-- 私聊消息 -->
           <div v-for="(message, index) in DetailMessage" :key="index">
             <!-- Incoming Message -->
