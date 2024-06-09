@@ -43,7 +43,7 @@ const Class1_5 = computed(() => ({
   'w-1/3 text-xs block mb-2 text-blue-400 cursor-pointer': mode1.value === 5,
 }));
 const Class1_6 = computed(() => ({
-  'w-1/3 text-white hover:text-blue-400 text-xs block mb-2 transition ease-in duration-300': mode1.value !== 6,
+  'w-1/3 text-white hover:text-blue-400 text-xs block mb-2 transition ease-in duration-300 cursor-pointer': mode1.value !== 6,
   'w-1/3 text-xs block mb-2 text-blue-400 cursor-pointer': mode1.value === 6,
 }));
 
