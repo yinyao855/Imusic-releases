@@ -32,7 +32,7 @@ const ShowSong = ref(false); // 是否展示歌曲信息页面（默认：否）
 
 // CurrentUser_SongList需要的属性（用于选择将歌曲加入哪个歌单）
 const loading = ref(true); // 当前歌单界面
-let currentUserSongList;
+const currentUserSongList = ref({});
 const createdSongLists = ref([])
 const ShowCreatedSongList = ref(false); // 是否展示选择歌单页面（默认：否），点击加入歌单后为true
 const needtoaddSongid = ref([]); // 存储需要加入歌单的歌曲id
@@ -144,7 +144,8 @@ function getSonglistData() {
   instance.get(web.value)
       .then(function (response) {
         if (response.data.success === true) {
-          currentUserSongList = response.data.data;
+          currentUserSongList.value = response.data.data;
+          console.log(currentUserSongList.value);
           loading.value = false;
         }
       })
@@ -169,7 +170,7 @@ function addFavoriteSonglist() {
       .then(function (response) {
         if (response.data.success === true) {
           isFavoriteSonglist.value = true;
-          currentUserSongList.like++;
+          currentUserSongList.value.like++;
         }
       })
       .catch(function (error) {
@@ -193,7 +194,7 @@ function deleteFavoriteSonglist() {
       .then(function (response) {
         if (response.data.success === true) {
           isFavoriteSonglist.value = false;
-          currentUserSongList.like--;
+          currentUserSongList.value.like--;
         }
       })
       .catch(function (error) {
@@ -261,7 +262,10 @@ function deleteFromSongList(index) {
     return
   }
   const formData = new FormData();
-  formData.append('song_id', currentUserSongList.songs[index].id);
+  console.log(index)
+  console.log(currentUserSongList.value)
+  console.log("delete " + currentUserSongList.value.songs[index].id + " from " + currentSonglistId.value);
+  formData.append('song_id', currentUserSongList.value.songs[index].id);
   formData.append('songlist_id', currentSonglistId.value);
   const instance = axios.create({
     baseURL: 'http://182.92.100.66:5000',
@@ -275,6 +279,11 @@ function deleteFromSongList(index) {
       .then(response => {
         console.log(response.data);
         MyAlert({type: 'alert-info', text: '删除歌曲成功'});
+        // 刷新歌单信息
+        getSonglistData();
+        console.log(currentUserSongList.value);
+        getCreatedSonglists();
+        getFavoriteSonglists();
       })
       .catch(error => {
         console.log(error.response.data);
@@ -283,7 +292,7 @@ function deleteFromSongList(index) {
 
 // 存储歌曲信息，进入歌曲详细信息界面（ShowSong为true）
 const activeShowSong = (index) => {
-  currentSongId.value = currentUserSongList.songs[index].id;
+  currentSongId.value = currentUserSongList.value.songs[index].id;
   ShowSong.value = true;
 }
 
@@ -652,7 +661,7 @@ onMounted(getSonglistData);
                     </div>
                   </li>
                   <li>
-                    <div class="text-sm font-semibold" @click="deleteFromSongList(song.id)">
+                    <div class="text-sm font-semibold" @click="deleteFromSongList(index)">
                       <svg class="icon fill-white" viewBox="0 0 1024 1024"
                            xmlns="http://www.w3.org/2000/svg" width="22" height="22">
                         <path
