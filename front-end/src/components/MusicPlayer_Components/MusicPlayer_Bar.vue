@@ -16,14 +16,14 @@
         <div class="w-1/2 h-full">
           <div class="flex h-[62%] justify-around w-1/2 mx-auto">
             <!--播放上一首-->
-            <div class="tooltip my-auto" data-tip="上一首">
+            <div class="tooltip my-auto tooltip-primary" data-tip="上一首">
               <button
                   class="btn btn-sm rounded-md border-none fill-zinc-900 glass">
                 <img src="../icons/NextSong_Icon.svg" style="transform: rotate(180deg);" alt="上一首" @click="PreviousSong">
               </button>
             </div>
             <!--播放与暂停-->
-            <div class="tooltip my-auto" data-tip="播放与暂停">
+            <div class="tooltip my-auto tooltip-primary" data-tip="播放与暂停">
               <button class="btn rounded-md border-none glass"
                       @click="IsPlaying = !IsPlaying">
                 <img v-if="!IsPlaying" src="../icons/Play_Icon.svg" alt="播放">
@@ -31,7 +31,7 @@
               </button>
             </div>
             <!--播放下一首-->
-            <div class="tooltip my-auto" data-tip="下一首">
+            <div class="tooltip my-auto tooltip-primary" data-tip="下一首">
               <button class="btn btn-sm rounded-md border-none glass" @click="NextSong">
                 <img src="../icons/NextSong_Icon.svg" alt="下一首">
               </button>
@@ -49,7 +49,7 @@
         <div class="w-1/4 ml-8 flex justify-around">
 
           <!--控制播放方式-->
-          <button class="btn btn-sm rounded-md border-none glass tooltip my-auto" @click="PlayType=(PlayType+1)%3"
+          <button class="btn btn-sm rounded-md border-none glass tooltip my-auto tooltip-primary" @click="PlayType=(PlayType+1)%3"
                   :data-tip="MusicPlayModeDataTip[PlayType]">
             <img src="../icons/List_Circulate_Icon.svg" v-if="PlayType === 0" alt="列表循环">
             <img src="../icons/Single_Circulate_Icon.svg" v-if="PlayType === 1" alt="单曲循环">
@@ -68,13 +68,13 @@
           </div>
           <!--播放列表-->
           <button
-              class="border-none my-auto tooltip btn btn-sm z-50 glass"
+              class="border-none my-auto tooltip btn btn-sm z-50 glass tooltip-primary"
               data-tip="播放列表" @click="PlayListVisible=!PlayListVisible">
             <img src="../icons/Menu_Icon.svg" alt="播放列表">
           </button>
 
           <!--全屏播放器-->
-          <button class="btn btn-sm rounded-md border-none glass tooltip my-auto" data-tip="全屏显示"
+          <button class="btn btn-sm rounded-md border-none glass tooltip my-auto tooltip-primary" data-tip="全屏显示"
                   @click="IsFullScreen=true">
             <img src="../icons/FullScreen_Icon.svg" alt="全屏">
           </button>
