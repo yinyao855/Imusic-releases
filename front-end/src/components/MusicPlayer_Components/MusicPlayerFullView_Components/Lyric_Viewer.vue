@@ -2,7 +2,7 @@
   <div class="w-full h-full flex">
     <div class="overflow-hidden w-4/5 h-[90%] m-auto">
       <transition name="lyric-transition">
-        <ul :ref="el => LyricPanel = el" :style="{ transform: `translateY(-${currentIndex * 40}px)` }" class="px-4">
+        <ul :ref="el => LyricPanel = el" :style="{ transform: `translateY(-${currentIndex * 40}px)` }" class="px-[56px]">
           <li v-for="(lyricContent, index) in lyricList" :key="index"
               :class="{ 'current-lyric': index === currentIndex, 'NotCurrent-lyric': index !== currentIndex, 'text-center py-1 hover:hover:bg-gray-300/30 transition-colors ease-in duration-100 rounded-lg': true }"
               :ref="el => lyricRefs[index] = el">
