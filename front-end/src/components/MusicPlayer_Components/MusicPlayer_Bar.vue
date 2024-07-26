@@ -19,7 +19,7 @@
             <div class="tooltip my-auto" data-tip="上一首">
               <button
                   class="btn btn-sm rounded-md border-none fill-zinc-900 glass">
-                <img src="../icons/NextSong_Icon.svg" style="transform: rotate(180deg);" alt="上一首">
+                <img src="../icons/NextSong_Icon.svg" style="transform: rotate(180deg);" alt="上一首" @click="PreviousSong">
               </button>
             </div>
             <!--播放与暂停-->
@@ -95,21 +95,14 @@ import {
   Duration,
   IsDragging,
   IsFullScreen,
-  IsPlaying,
+  IsPlaying, MusicPlayModeDataTip,
   NextSong,
   PlayListVisible,
-  PlayType,
+  PlayType, PreviousSong,
   VolumePercent
 } from "@/js/MusicPlayer.js";
 import {SecondToTime} from '@/js/BeforeEnterHomeView.js'
 import PlayList_Component from "@/components/PlayList_Component.vue";
-
-//播放方式的提示
-const MusicPlayModeDataTip = [
-  '列表循环',
-  '单曲循环',
-  '随机播放'
-]
 </script>
 
 

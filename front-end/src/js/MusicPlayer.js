@@ -32,6 +32,12 @@ export const VolumePercent = ref(40);
 export const PlayListVisible = ref(false);
 //是否全屏播放
 export const IsFullScreen = ref(false);
+//播放方式的提示
+export const MusicPlayModeDataTip = [
+    '列表循环',
+    '单曲循环',
+    '随机播放'
+]
 
 //播放下一首歌
 export const NextSong = () => {
@@ -44,6 +50,26 @@ export const NextSong = () => {
         index = 0;
     } else {
         index++;
+    }
+    if (PlayType.value === 2) {
+        index = Math.floor(Math.random() * CurrentPlayList.value.length);
+    }
+    CurrentSongId.value = CurrentPlayList.value[index].id;
+    GetCurrentSongDetail();
+}
+
+
+//播放上一首歌
+export const PreviousSong = () => {
+    if (PlayType.value === 1) {
+        CurrentTime.value = 0;
+        return;
+    }
+    let index = CurrentPlayList.value.findIndex(item => item.id === CurrentSongId.value);
+    if (index === 0) {
+        index = CurrentPlayList.value.length - 1;
+    } else {
+        index--;
     }
     if (PlayType.value === 2) {
         index = Math.floor(Math.random() * CurrentPlayList.value.length);

@@ -1,0 +1,160 @@
+.card {
+    --main-color: #fff;
+    --sub-main-color: #B9B9B9;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    width: 480px;
+    height: 637px;
+    border-radius: 20px;
+    padding: 30px;
+}
+
+.card__menu {
+    cursor: pointer;
+}
+
+.card__img {
+    height: 324px;
+    width: 324px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-inline: auto;
+    background: #131313;
+    border-radius: 100%;
+}
+
+.card__img svg {
+    width: 243px;
+    height: 243px;
+    border-radius: 100%;
+}
+
+.card__title {
+    margin-top: 20px;
+    font-weight: 500;
+    font-size: 28px;
+    color: var(--main-color);
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.card__subtitle {
+    font-weight: 400;
+    font-size: 16px;
+    color: white;
+    text-align: center;
+    cursor: pointer;
+}
+
+.card__wrapper {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.card__time {
+    font-weight: 400;
+    font-size: 12px;
+    color: var(--main-color);
+}
+
+.card__timeline {
+    width: 100%;
+    height: 4px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.card__timeline input {
+    width: 100%;
+    border-radius: 100px;
+}
+
+.card__btn {
+    padding: 10px;
+    border-radius: 5px;
+    background: transparent;
+    cursor: pointer;
+    transition: background-color 0.3s, filter 0.3s, border-color 0.3s; /* 添加过渡动画 */
+    border: 0 solid transparent; /* 初始时边框为透明 */
+}
+
+.card__btn:hover {
+    padding: 10px;
+    background-color: rgba(164, 164, 164, 0.2); /* 鼠标悬停时的背景颜色 */
+    border-color: rgba(0, 0, 0, 0); /* 鼠标悬停时显示的边框颜色 */
+}
+
+
+.card__btn path {
+    fill: var(--main-color);
+}
+
+.card__btn-play {
+    width: 60px;
+    height: 60px;
+    background: var(--main-color);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.card__btn-play path {
+    fill: var(--bg-color);
+}
+
+.col1 {
+    height: 100%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding-right: 10%;
+}
+
+
+.col2 {
+    padding: 0;
+    border: none;
+    height: 100%;
+    display: grid;
+}
+
+
+.button_div {
+    height: 100%;
+    box-sizing: border-box;
+    padding-top: 30px;
+    padding-right: 50px;
+    width: 20%;
+    display: flex;
+    top: 30px;
+    justify-content: flex-end;
+    align-items: flex-start;
+}
+
+.content {
+    transform-origin: center center;
+    animation: rotate 10s linear infinite;
+}
+
+.content.rotate {
+    animation: rotate 10s linear infinite; /* 启动动画 */
+}
+
+.content.stop {
+    animation-play-state: paused;
+}
+
+@keyframes rotate {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
