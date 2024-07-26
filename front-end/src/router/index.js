@@ -1,0 +1,77 @@
+import {createRouter, createWebHistory} from 'vue-router'
+import HomeView from '../views/HomeView.vue'
+
+const router = createRouter({
+    history: createWebHistory(import.meta.env.BASE_URL),
+    routes: [
+        {
+            path: '/home',
+            name: 'home',
+            component: HomeView,
+            children: [
+                {
+                    path: 'personalCenter',
+                    name: 'personalCenter',
+                    component: () => import('../frames/PersonalCenter_MainFrame.vue')
+                },
+                {
+                    path: 'homeView',
+                    name: 'homeView',
+                    component: () => import('../frames/Home_MainFrame.vue')
+                },
+                {
+                    path: 'explore',
+                    name: 'explore',
+                    component: () => import('../frames/Explore_MainFrame.vue')
+                },
+                {
+                    path: 'create',
+                    name: 'create',
+                    component: () => import('../frames/Create_MainFrame.vue')
+                },
+                {
+                    path: 'createLikeSongs',
+                    name: 'createLikeSongs',
+                    component: () => import('../frames/CreateLikeSongs_MainFrame.vue')
+                },
+                {
+                    path: 'likeSongs',
+                    name: 'likeSongs',
+                    component: () => import('../frames/LikeSongs_MainFrame.vue')
+                },
+                {
+                    path: 'message',
+                    name: 'message',
+                    component: () => import('../frames/Message_MainFrame.vue')
+                },
+                {
+                    path: 'aboutUs',
+                    name: 'aboutUs',
+                    component: () => import('../frames/AboutUs_MainFrame.vue')
+                },
+            ]
+        },
+        {
+            path: '/',
+            name: 'root',
+            redirect: '/home/homeView'
+        },
+        {
+            path: '/login',
+            name: 'login',
+            component: () => import('../views/LoginView.vue')
+        },
+        {
+            path: '/register',
+            name: 'register',
+            component: () => import('../views/RegisterView.vue')
+        },
+        {
+            path: '/forget-password',
+            name: 'forget-password',
+            component: () => import('../views/ForgetPasswordView.vue')
+        },
+    ]
+})
+
+export default router
