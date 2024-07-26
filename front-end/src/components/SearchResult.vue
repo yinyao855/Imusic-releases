@@ -14,7 +14,7 @@ const Songs=ref(SearchResult);
       <img src="./icons/Return_Icon.svg" alt="返回">
     </div>
     <SongTable_HasFavor v-model:Songs="Songs"></SongTable_HasFavor>
-    <div class="h-36 w-full" v-if="MusicPlayerVisible"></div>
+    <div class="h-32 w-full" v-if="MusicPlayerVisible"></div>
   </div>
 </template>
 

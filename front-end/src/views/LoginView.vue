@@ -1,11 +1,10 @@
 <!--登录界面-->
 <script setup>
-import {ref} from "vue";
+import {computed, ref} from "vue";
 import {OpenNotification} from "@/js/Notification.js";
 import {UserStore} from "@/stores/User.js";
 import instance, {setAuthToken} from "@/js/axios.js";
 import router from "@/router/index.js";
-import {computed} from "vue";
 import {GetPlayList} from "@/js/MusicPlayer.js";
 
 const user_store = UserStore();
@@ -36,7 +35,7 @@ const onSubmit = () => {
           user_store.store_bio = user_store.bio;
           user_store.Avatar = response.data.data.avatar;
           user_store.role = response.data.data.role;
-          user_store.Registration_date=response.data.data.registration_date.split(' ')[0];
+          user_store.Registration_date = response.data.data.registration_date.split(' ')[0];
           setAuthToken(user_store.token);
           GetPlayList();
           router.push('/home/homeView');
@@ -56,6 +55,15 @@ const ShowPassword = ref(false);
 const InputType = computed(() => {
   return ShowPassword.value === true ? 'text' : 'password'
 })
+
+//输入框是否聚焦
+const isFocused = ref(false);
+//监听enter键
+const EnterOperation = () => {
+  if (isFocused.value) {
+    onSubmit();
+  }
+}
 </script>
 
 <template>
@@ -67,31 +75,36 @@ const InputType = computed(() => {
         <div class="text-sm font-normal mb-4 text-center text-[#1e0e4b]">登录你的账户</div>
         <form class="flex flex-col gap-3">
           <div class="block relative">
-            <label for="email"
-                   class="block text-gray-600 cursor-text text-sm leading-[140%] font-normal mb-2">账户</label>
-            <input type="text" id="email" v-model="username"
-                   class="rounded border border-gray-200 text-sm w-full font-normal leading-[18px] text-black tracking-[0px] appearance-none block h-11 m-0 p-[11px] focus:ring-2 ring-offset-2  ring-gray-900 outline-0">
+            <label class="block text-gray-600 cursor-text text-sm leading-[140%] font-normal mb-2"
+                   for="email">账户</label>
+            <input id="email" v-model="username"
+                   class="rounded border border-gray-200 text-sm w-full font-normal leading-[18px] text-black tracking-[0px] appearance-none block h-11 m-0 p-[11px] focus:ring-2 ring-offset-2  ring-gray-900 outline-0"
+                   type="text"
+                   @blur="isFocused=false" @focus="isFocused=true" @keydown.enter="EnterOperation">
 
           </div>
           <div class="block relative">
-            <label for="password"
-                   class="block text-gray-600 cursor-text text-sm leading-[140%] font-normal mb-2">密码</label>
+            <label class="block text-gray-600 cursor-text text-sm leading-[140%] font-normal mb-2"
+                   for="password">密码</label>
             <div class="relative">
-              <input :type="InputType" id="password" v-model="password"
-                     class="rounded border border-gray-200 text-sm w-full font-normal leading-[18px] text-black tracking-[0px] appearance-none block h-11 m-0 p-[11px] focus:ring-2 ring-offset-2 ring-gray-900 outline-0">
-              <img src="../components/icons/Eye.svg" alt="眼睛睁开"
+              <input id="password" v-model="password" :type="InputType"
+                     class="rounded border border-gray-200 text-sm w-full font-normal leading-[18px] text-black tracking-[0px] appearance-none block h-11 m-0 p-[11px] focus:ring-2 ring-offset-2 ring-gray-900 outline-0"
+                     @focus="isFocused=true" @blur="isFocused=false" @keydown.enter="EnterOperation">
+              <img v-if="!ShowPassword" alt="眼睛睁开"
+                   src="../components/icons/Eye.svg"
                    style="height:22px; position: absolute; top: 50%; right: 10px; transform: translateY(-50%);"
-                   @click="ShowPassword=true" v-if="!ShowPassword">
-              <img src="../components/icons/Eye_Close.svg" alt="眼睛闭上"
+                   @click="ShowPassword=true">
+              <img v-if="ShowPassword" alt="眼睛闭上"
+                   src="../components/icons/Eye_Close.svg"
                    style="height:22px; position: absolute; top: 50%; right: 10px; transform: translateY(-50%);"
-                   @click="ShowPassword=false" v-if="ShowPassword">
+                   @click="ShowPassword=false">
             </div>
           </div>
           <div>
             <a class="text-sm text-[#7747ff]" href="/forget-password">忘记密码
             </a></div>
         </form>
-        <button type="submit" class="bg-[#7747ff] w-max mx-auto px-6 py-2 rounded text-white text-sm font-normal my-2"
+        <button class="bg-[#7747ff] w-max mx-auto px-6 py-2 rounded text-white text-sm font-normal my-2" type="submit"
                 @click="onSubmit">登 录
         </button>
         <div class="text-sm text-center mt-[1.6rem]">还没有账号？ <a class="text-sm text-[#7747ff]"

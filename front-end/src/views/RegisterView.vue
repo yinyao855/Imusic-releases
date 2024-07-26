@@ -2,7 +2,6 @@
 <script setup>
 import {computed, ref, watch} from "vue";
 import {OpenNotification} from "@/js/Notification.js";
-import axios from "axios";
 import instance, {setAuthToken} from "@/js/axios.js";
 import router from "@/router/index.js";
 import {UserStore} from "@/stores/User.js";
@@ -106,6 +105,16 @@ const ShowPassword2 = ref(false);
 const InputType2 = computed(() => {
   return ShowPassword2.value === true ? 'text' : 'password'
 })
+
+
+//输入框是否聚焦
+const isFocused = ref(false);
+//监听enter键
+const EnterOperation = () => {
+  if (isFocused.value) {
+    onSubmit();
+  }
+}
 </script>
 
 <template>
@@ -117,63 +126,68 @@ const InputType2 = computed(() => {
         <div class="text-sm font-normal mb-4 text-center text-[#1e0e4b]">注册账号</div>
         <form class="flex flex-col gap-3">
           <div class="block relative">
-            <label for="email"
-                   class="block text-gray-600 cursor-text text-sm leading-[140%] font-normal mb-2">邮箱</label>
-            <input type="text" id="email" v-model="email"
-                   class="rounded border border-gray-200 text-sm w-full font-normal leading-[18px] text-black tracking-[0px] appearance-none block h-11 m-0 p-[11px] focus:ring-2 ring-offset-2  ring-gray-900 outline-0">
+            <label class="block text-gray-600 cursor-text text-sm leading-[140%] font-normal mb-2"
+                   for="email">邮箱</label>
+            <input id="email" v-model="email" class="rounded border border-gray-200 text-sm w-full font-normal leading-[18px] text-black tracking-[0px] appearance-none block h-11 m-0 p-[11px] focus:ring-2 ring-offset-2  ring-gray-900 outline-0"
+                   type="text"
+                   @blur="isFocused=false" @focus="isFocused=true" @keydown.enter="EnterOperation">
           </div>
           <div class="block relative">
-            <label for="VerifyPassword"
-                   class="block text-gray-600 cursor-text text-sm leading-[140%] font-normal mb-2">
+            <label class="block text-gray-600 cursor-text text-sm leading-[140%] font-normal mb-2"
+                   for="VerifyPassword">
               验证码
             </label>
             <div class="flex w-full">
-              <input type="text" id="VerifyPassword" v-model="VerifyPassword"
-                     class="rounded border border-gray-200 text-sm flex-1 font-normal leading-[18px] text-black tracking-[0px] appearance-none block h-11 m-0 p-[11px] focus:ring-2 ring-offset-2  ring-gray-900 outline-0">
-              <div class="btn ml-2 w-32 btn-secondary" v-if="!ShowCountDown" @click="startCountdown">{{ Content }}</div>
+              <input id="VerifyPassword" v-model="VerifyPassword" class="rounded border border-gray-200 text-sm flex-1 font-normal leading-[18px] text-black tracking-[0px] appearance-none block h-11 m-0 p-[11px] focus:ring-2 ring-offset-2  ring-gray-900 outline-0"
+                     type="text"
+                     @blur="isFocused=false" @focus="isFocused=true" @keydown.enter="EnterOperation">
+              <div v-if="!ShowCountDown" class="btn ml-2 w-32 btn-secondary" @click="startCountdown">{{ Content }}</div>
               <div class="flex">
               <span v-if="ShowCountDown" class="countdown font-mono text-2xl text-black px-4 my-auto">
             <span :style="{ '--value': timeLeft }"></span>
               </span>
                 <div class="flex h-full">
-                  <div class="text-sm my-auto" v-if="ShowCountDown">秒后重新获取</div>
+                  <div v-if="ShowCountDown" class="text-sm my-auto">秒后重新获取</div>
                 </div>
               </div>
             </div>
           </div>
           <div class="block relative">
-            <label for="username"
-                   class="block text-gray-600 cursor-text text-sm leading-[140%] font-normal mb-2">账户</label>
-            <input type="text" id="username" v-model="username"
-                   class="rounded border border-gray-200 text-sm w-full font-normal leading-[18px] text-black tracking-[0px] appearance-none block h-11 m-0 p-[11px] focus:ring-2 ring-offset-2  ring-gray-900 outline-0">
+            <label class="block text-gray-600 cursor-text text-sm leading-[140%] font-normal mb-2"
+                   for="username">账户</label>
+            <input id="username" v-model="username" class="rounded border border-gray-200 text-sm w-full font-normal leading-[18px] text-black tracking-[0px] appearance-none block h-11 m-0 p-[11px] focus:ring-2 ring-offset-2  ring-gray-900 outline-0"
+                   type="text"
+                   @blur="isFocused=false" @focus="isFocused=true" @keydown.enter="EnterOperation">
           </div>
           <div class="block relative">
-            <label for="password"
-                   class="block text-gray-600 cursor-text text-sm leading-[140%] font-normal mb-2">密码</label>
+            <label class="block text-gray-600 cursor-text text-sm leading-[140%] font-normal mb-2"
+                   for="password">密码</label>
             <div class="relative">
-              <input :type="InputType1" id="password" v-model="password"
-                     class="rounded border border-gray-200 text-sm w-full font-normal leading-[18px] text-black tracking-[0px] appearance-none block h-11 m-0 p-[11px] focus:ring-2 ring-offset-2 ring-gray-900 outline-0">
-              <img src="../components/icons/Eye.svg" alt="眼睛睁开"
-                   style="height:22px; position: absolute; top: 50%; right: 10px; transform: translateY(-50%);"
-                   @click="ShowPassword1=true" v-if="!ShowPassword1">
-              <img src="../components/icons/Eye_Close.svg" alt="眼睛闭上"
-                   style="height:22px; position: absolute; top: 50%; right: 10px; transform: translateY(-50%);"
-                   @click="ShowPassword1=false" v-if="ShowPassword1">
+              <input id="password" v-model="password" :type="InputType1"
+                     class="rounded border border-gray-200 text-sm w-full font-normal leading-[18px] text-black tracking-[0px] appearance-none block h-11 m-0 p-[11px] focus:ring-2 ring-offset-2 ring-gray-900 outline-0"
+                     @blur="isFocused=false" @focus="isFocused=true" @keydown.enter="EnterOperation">
+              <img v-if="!ShowPassword1" alt="眼睛睁开"
+                   src="../components/icons/Eye.svg"
+                   style="height:22px; position: absolute; top: 50%; right: 10px; transform: translateY(-50%);" @click="ShowPassword1=true">
+              <img v-if="ShowPassword1" alt="眼睛闭上"
+                   src="../components/icons/Eye_Close.svg"
+                   style="height:22px; position: absolute; top: 50%; right: 10px; transform: translateY(-50%);" @click="ShowPassword1=false">
             </div>
           </div>
 
           <div class="block relative">
-            <label for="repeat_password"
-                   class="block text-gray-600 cursor-text text-sm leading-[140%] font-normal mb-2">重复密码</label>
+            <label class="block text-gray-600 cursor-text text-sm leading-[140%] font-normal mb-2"
+                   for="repeat_password">重复密码</label>
             <div class="relative">
-              <input :type="InputType2" id="password" v-model="repeatPassword"
-                     class="rounded border border-gray-200 text-sm w-full font-normal leading-[18px] text-black tracking-[0px] appearance-none block h-11 m-0 p-[11px] focus:ring-2 ring-offset-2 ring-gray-900 outline-0">
-              <img src="../components/icons/Eye.svg" alt="眼睛睁开"
-                   style="height:22px; position: absolute; top: 50%; right: 10px; transform: translateY(-50%);"
-                   @click="ShowPassword2=true" v-if="!ShowPassword2">
-              <img src="../components/icons/Eye_Close.svg" alt="眼睛闭上"
-                   style="height:22px; position: absolute; top: 50%; right: 10px; transform: translateY(-50%);"
-                   @click="ShowPassword2=false" v-if="ShowPassword2">
+              <input id="password" v-model="repeatPassword" :type="InputType2"
+                     class="rounded border border-gray-200 text-sm w-full font-normal leading-[18px] text-black tracking-[0px] appearance-none block h-11 m-0 p-[11px] focus:ring-2 ring-offset-2 ring-gray-900 outline-0"
+                     @blur="isFocused=false" @focus="isFocused=true" @keydown.enter="EnterOperation">
+              <img v-if="!ShowPassword2" alt="眼睛睁开"
+                   src="../components/icons/Eye.svg"
+                   style="height:22px; position: absolute; top: 50%; right: 10px; transform: translateY(-50%);" @click="ShowPassword2=true">
+              <img v-if="ShowPassword2" alt="眼睛闭上"
+                   src="../components/icons/Eye_Close.svg"
+                   style="height:22px; position: absolute; top: 50%; right: 10px; transform: translateY(-50%);" @click="ShowPassword2=false">
             </div>
           </div>
         </form>

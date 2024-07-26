@@ -2,13 +2,13 @@
   <Search_Input></Search_Input>
   <el-tabs v-if="!SongDetailVisible" v-model="activeName" class="demo-tabs ml-4 mt-2" @tab-click="handleClick">
     <el-tab-pane label="推荐" name="推荐">
-      <div :style="{ height: (windowHeight-60) + 'px'}">
+      <div :style="{ height: (windowHeight-62) + 'px'}">
         <SearchResult v-if='SearchResultVisible'></SearchResult>
         <HomeView_Recommend v-else></HomeView_Recommend>
       </div>
     </el-tab-pane>
     <el-tab-pane label="最新上传" name="最新上传">
-      <div :style="{ height: (windowHeight-60) + 'px'}">
+      <div :style="{ height: (windowHeight-62) + 'px'}">
         <SearchResult v-if='SearchResultVisible'></SearchResult>
         <HomeView_NewestSongs v-else></HomeView_NewestSongs>
       </div>

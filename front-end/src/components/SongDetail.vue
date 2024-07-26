@@ -62,7 +62,7 @@ onMounted(GetSongDetail)
       <div class="w-full flex" v-for="(Content,index) in LyricList" :key="index">
         <span class="mx-auto">{{ Content.content }}</span>
       </div>
-      <div class="h-36 w-full" v-if="MusicPlayerVisible"></div>
+      <div class="h-32 w-full" v-if="MusicPlayerVisible"></div>
     </div>
 
   </div>

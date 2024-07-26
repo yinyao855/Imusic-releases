@@ -2,7 +2,6 @@
 <script setup>
 import {ref, watch} from "vue";
 import {OpenNotification} from "@/js/Notification.js";
-import axios from "axios";
 import instance, {setAuthToken} from "@/js/axios.js";
 import router from "@/router/index.js";
 import {UserStore} from "@/stores/User.js";
@@ -103,6 +102,16 @@ const startCountdown = () => {
         console.log(error);
       })
 }
+
+
+//输入框是否聚焦
+const isFocused = ref(false);
+//监听enter键
+const EnterOperation = () => {
+  if (isFocused.value) {
+    onSubmit();
+  }
+}
 </script>
 
 <template>
@@ -114,49 +123,55 @@ const startCountdown = () => {
         <div class="text-sm font-normal mb-4 text-center text-[#1e0e4b]">忘记密码</div>
         <form class="flex flex-col gap-3">
           <div class="block relative">
-            <label for="email"
-                   class="block text-gray-600 cursor-text text-sm leading-[140%] font-normal mb-2">邮箱</label>
-            <input type="text" id="email" v-model="email"
-                   class="rounded border border-gray-200 text-sm w-full font-normal leading-[18px] text-black tracking-[0px] appearance-none block h-11 m-0 p-[11px] focus:ring-2 ring-offset-2  ring-gray-900 outline-0">
+            <label class="block text-gray-600 cursor-text text-sm leading-[140%] font-normal mb-2"
+                   for="email">邮箱</label>
+            <input id="email" v-model="email"
+                   class="rounded border border-gray-200 text-sm w-full font-normal leading-[18px] text-black tracking-[0px] appearance-none block h-11 m-0 p-[11px] focus:ring-2 ring-offset-2  ring-gray-900 outline-0"
+                   type="text"
+                   @blur="isFocused=false" @focus="isFocused=true" @keydown.enter="EnterOperation">
           </div>
           <div class="block relative">
-            <label for="VerifyPassword"
-                   class="block text-gray-600 cursor-text text-sm leading-[140%] font-normal mb-2">
+            <label class="block text-gray-600 cursor-text text-sm leading-[140%] font-normal mb-2"
+                   for="VerifyPassword">
               验证码
             </label>
             <div class="flex w-full">
-              <input type="text" id="VerifyPassword" v-model="VerifyPassword"
-                     class="rounded border border-gray-200 text-sm flex-1 font-normal leading-[18px] text-black tracking-[0px] appearance-none block h-11 m-0 p-[11px] focus:ring-2 ring-offset-2  ring-gray-900 outline-0">
-              <div class="btn ml-2 w-32 btn-secondary" v-if="!ShowCountDown" @click="startCountdown">{{ Content }}</div>
+              <input id="VerifyPassword" v-model="VerifyPassword"
+                     class="rounded border border-gray-200 text-sm flex-1 font-normal leading-[18px] text-black tracking-[0px] appearance-none block h-11 m-0 p-[11px] focus:ring-2 ring-offset-2  ring-gray-900 outline-0"
+                     type="text" @blur="isFocused=false" @focus="isFocused=true" @keydown.enter="EnterOperation">
+              <div v-if="!ShowCountDown" class="btn ml-2 w-32 btn-secondary" @click="startCountdown">{{ Content }}</div>
               <div class="flex">
               <span v-if="ShowCountDown" class="countdown font-mono text-2xl text-black px-4 my-auto">
             <span :style="{ '--value': timeLeft }"></span>
               </span>
                 <div class="flex h-full">
-                  <div class="text-sm my-auto" v-if="ShowCountDown">秒后重新获取</div>
+                  <div v-if="ShowCountDown" class="text-sm my-auto">秒后重新获取</div>
                 </div>
               </div>
             </div>
           </div>
           <div class="block relative">
-            <label for="username"
-                   class="block text-gray-600 cursor-text text-sm leading-[140%] font-normal mb-2">账户</label>
-            <input type="text" id="username" v-model="username"
-                   class="rounded border border-gray-200 text-sm w-full font-normal leading-[18px] text-black tracking-[0px] appearance-none block h-11 m-0 p-[11px] focus:ring-2 ring-offset-2  ring-gray-900 outline-0">
+            <label class="block text-gray-600 cursor-text text-sm leading-[140%] font-normal mb-2"
+                   for="username">账户</label>
+            <input id="username" v-model="username"
+                   class="rounded border border-gray-200 text-sm w-full font-normal leading-[18px] text-black tracking-[0px] appearance-none block h-11 m-0 p-[11px] focus:ring-2 ring-offset-2  ring-gray-900 outline-0"
+                   type="text" @blur="isFocused=false" @focus="isFocused=true" @keydown.enter="EnterOperation">
           </div>
           <div class="block relative">
-            <label for="password"
-                   class="block text-gray-600 cursor-text text-sm leading-[140%] font-normal mb-2">新密码</label>
-            <input type="password" id="password" v-model="password"
-                   class="rounded border border-gray-200 text-sm w-full font-normal leading-[18px] text-black tracking-[0px] appearance-none block h-11 m-0 p-[11px] focus:ring-2 ring-offset-2 ring-gray-900 outline-0">
+            <label class="block text-gray-600 cursor-text text-sm leading-[140%] font-normal mb-2"
+                   for="password">新密码</label>
+            <input id="password" v-model="password"
+                   class="rounded border border-gray-200 text-sm w-full font-normal leading-[18px] text-black tracking-[0px] appearance-none block h-11 m-0 p-[11px] focus:ring-2 ring-offset-2 ring-gray-900 outline-0"
+                   type="password" @blur="isFocused=false" @focus="isFocused=true" @keydown.enter="EnterOperation">
 
           </div>
 
           <div class="block relative">
-            <label for="repeat_password"
-                   class="block text-gray-600 cursor-text text-sm leading-[140%] font-normal mb-2">重复密码</label>
-            <input type="password" id="repeat_password" v-model="repeatPassword"
-                   class="rounded border border-gray-200 text-sm w-full font-normal leading-[18px] text-black tracking-[0px] appearance-none block h-11 m-0 p-[11px] focus:ring-2 ring-offset-2 ring-gray-900 outline-0">
+            <label class="block text-gray-600 cursor-text text-sm leading-[140%] font-normal mb-2"
+                   for="repeat_password">重复密码</label>
+            <input id="repeat_password" v-model="repeatPassword"
+                   class="rounded border border-gray-200 text-sm w-full font-normal leading-[18px] text-black tracking-[0px] appearance-none block h-11 m-0 p-[11px] focus:ring-2 ring-offset-2 ring-gray-900 outline-0"
+                   type="password" @blur="isFocused=false" @focus="isFocused=true" @keydown.enter="EnterOperation">
 
           </div>
         </form>

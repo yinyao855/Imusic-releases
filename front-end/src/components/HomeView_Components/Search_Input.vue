@@ -18,7 +18,7 @@ const SearchOperation = () => {
 </script>
 
 <template>
-  <div class="z-20 fixed top-1 right-0">
+  <div class="z-20 fixed top-1 right-2">
     <div class="group">
       <svg viewBox="0 0 24 24" aria-hidden="true" class="icon">
         <g>

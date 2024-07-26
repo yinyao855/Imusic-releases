@@ -1,7 +1,7 @@
 <!--主界面-->
 <template>
   <Transition name="slide">
-    <MusicPlayerFullView class="fixed left-0 top-0 z-20" v-if="MusicPlayerVisible&&IsFullScreen"></MusicPlayerFullView>
+    <MusicPlayerFullView class="fixed left-0 top-0 z-30" v-if="MusicPlayerVisible&&IsFullScreen"></MusicPlayerFullView>
   </Transition>
   <Transition name="slideBar">
     <MusicPlayer_Bar v-if="MusicPlayerVisible&&!IsFullScreen"></MusicPlayer_Bar>

@@ -42,7 +42,7 @@ onMounted(BeforeEnterHomeView);
         </div>
       </div>
     </div>
-    <div class="h-36 w-full" v-if="MusicPlayerVisible"></div>
+    <div class="h-32 w-full" v-if="MusicPlayerVisible"></div>
   </div>
 </template>
 
