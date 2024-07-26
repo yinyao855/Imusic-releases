@@ -56,7 +56,7 @@ const props = defineProps({
               </div>
             </li>
             <li>
-              <div class="text-sm font-semibold"  @click="HandlePlayNow(Song.id)">
+              <div class="text-sm font-semibold" @click="HandlePlayNow(Song.id)">
                 <img src="./icons/PlayNow_Icon.svg" alt="立即播放" class="ml-1">
                 立即播放
               </div>
