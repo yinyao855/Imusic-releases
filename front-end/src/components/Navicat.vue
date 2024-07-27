@@ -1,4 +1,3 @@
-//左侧导航栏
 <template>
   <div class="relative h-full bg-[#FAF7F5]">
     <el-menu
@@ -79,10 +78,15 @@ import {UserStore} from "@/stores/User.js";
 import {ref} from 'vue'
 import router from "@/router/index.js";
 import {watch} from 'vue'
+import { NavicatWidth } from '@/js/NavicatStatus.js'
 
 const user_store = UserStore(); //用户信息
 const isCollapse = ref(false) //是否展开状态栏
 const ActiveIndex = ref(1); //当前激活的栏目
+
+watch(()=>isCollapse.value,()=>{
+  NavicatWidth.value=isCollapse.value?88:224;
+})
 
 //点击导航栏
 const handleSelect = (index) => {

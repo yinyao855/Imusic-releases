@@ -7,7 +7,7 @@
     <MusicPlayer_Bar v-if="MusicPlayerVisible&&!IsFullScreen"></MusicPlayer_Bar>
   </Transition>
 
-  <div class="w-full h-full flex bg-white" v-if="!IsFullScreen">
+  <div class="w-screen h-screen flex bg-white" v-if="!IsFullScreen">
     <div class="h-screen">
       <Navicat></Navicat>
     </div>

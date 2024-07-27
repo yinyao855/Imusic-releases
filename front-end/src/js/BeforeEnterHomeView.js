@@ -1,6 +1,5 @@
 import instance from "@/js/axios.js";
 import {ref} from "vue";
-import {CurrentPlayList} from "@/js/MusicPlayer.js";
 
 
 //首页展示的热门歌单

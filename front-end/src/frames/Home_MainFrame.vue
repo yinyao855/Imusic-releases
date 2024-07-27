@@ -1,5 +1,8 @@
 <template>
-  <Search_Input></Search_Input>
+  <Transition name="slide">
+    <SongDetail v-if="SongDetailVisible"></SongDetail>
+  </Transition>
+  <Search_Input v-if="!SongDetailVisible"></Search_Input>
   <el-tabs v-if="!SongDetailVisible" v-model="activeName" class="demo-tabs ml-4 mt-2" @tab-click="handleClick">
     <el-tab-pane label="推荐" name="推荐">
       <div :style="{ height: (windowHeight-62) + 'px'}">
@@ -14,10 +17,10 @@
       </div>
     </el-tab-pane>
   </el-tabs>
-  <SongDetail v-if="SongDetailVisible"></SongDetail>
+
 </template>
 <script setup>
-import {ref,onMounted,onBeforeUnmount} from 'vue'
+import {onBeforeUnmount, onMounted, ref} from 'vue'
 import HomeView_Recommend from "@/components/HomeView_Components/HomeView_Recommend.vue";
 import HomeView_NewestSongs from "@/components/HomeView_Components/HomeView_NewestSongs.vue";
 import SongDetail from "@/components/SongDetail.vue";
@@ -25,6 +28,7 @@ import {SongDetailVisible} from "@/js/SongDetail.js";
 import Search_Input from "@/components/HomeView_Components/Search_Input.vue";
 import SearchResult from "@/components/SearchResult.vue";
 import {SearchResultVisible} from "@/js/Search.js";
+import { WindowWidth } from '@/js/NavicatStatus.js'
 
 //当前触发的状态
 const activeName = ref('推荐')
@@ -40,6 +44,7 @@ const windowHeight = ref(window.innerHeight);
 const handleResize = () => {
   windowWidth.value = window.innerWidth;
   windowHeight.value = window.innerHeight;
+  WindowWidth.value=windowWidth.value;
 };
 
 onMounted(() => {
@@ -56,6 +61,6 @@ onBeforeUnmount(() => {
 ::v-deep .el-tabs__item {
   font-size: 20px;
   line-height: 30px;
-  text-align:center;
+  text-align: center;
 }
 </style>

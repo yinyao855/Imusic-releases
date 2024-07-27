@@ -2,7 +2,7 @@
   <div class="w-full h-full flex" :ref="el => LyricPanel = el" @wheel="handleScroll">
     <div class="overflow-hidden w-4/5 h-[90%] m-auto">
       <transition name="lyric-transition">
-        <ul :style="{ transform: `translateY(-${Offset}px)`,transition: `transform 0.5s ease`, }" class="px-[56px]">
+        <ul :style="{ transform: `translateY(-${Offset}px)`,transition: `transform 0.5s ease` }" class="px-[56px] h-full">
           <li v-for="(lyricContent, index) in lyricList" :key="index"
               :class="{ 'current-lyric': index === currentIndex, 'NotCurrent-lyric': index !== currentIndex, 'text-center py-1 hover:hover:bg-gray-300/30 transition-colors ease-in duration-100 rounded-lg': true }"
               :ref="el => lyricRefs[index] = el" @click="ChangeLyricIndex(index)">
@@ -56,10 +56,10 @@ export default {
         Offset.value += lyricRefs.value[i].clientHeight;
       }
       Offset.value += lyricRefs.value[currentIndex.value].clientHeight / 2;
-      if (Offset.value < LyricPanel.value.clientHeight * 0.45) {
+      if (Offset.value < LyricPanel.value.clientHeight * 0.4) {
         Offset.value = 0;
       } else {
-        Offset.value -= LyricPanel.value.clientHeight * 0.45;
+        Offset.value -= LyricPanel.value.clientHeight * 0.4;
       }
     }
 
@@ -103,11 +103,11 @@ export default {
   width: 100%;
   color: white;
   font-weight: 700;
-  transform: scale(1.2); /* 高亮行的缩放效果 */
+
   font-size: 36px; /* 高亮行的字体大小 */
 }
 
 .lyric-transition-enter-active, .lyric-transition-leave-active {
-  transition: transform 2s ease; /* 设置过渡效果 */
+  transition: transform 1s ease; /* 设置过渡效果 */
 }
 </style>

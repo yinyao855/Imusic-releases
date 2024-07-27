@@ -33,7 +33,7 @@ const PageDeleteFavorSong = (SongId, index) => {
     </thead>
     <tbody>
     <tr v-for="(Song,index) in Songs" :key="index"
-        class="transition-colors ease-in duration-150 hover:bg-gray-300 hover:bg-opacity-40">
+        class="transition-colors ease-in duration-150 hover:bg-gray-300 hover:bg-opacity-40 cursor-pointer">
       <td>
         <img src="./icons/Like_Icon.svg" alt="喜欢" class="w-6 h-6" v-if="Song.user_like===true"
              @click="PageDeleteFavorSong(Song.id,index)">

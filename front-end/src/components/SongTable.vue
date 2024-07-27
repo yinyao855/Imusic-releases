@@ -20,7 +20,7 @@ const props = defineProps({
     </thead>
     <tbody>
     <tr v-for="(Song,index) in props.Songs" :key="index"
-        class="transition-colors ease-in duration-150 hover:bg-gray-300 hover:bg-opacity-40">
+        class="transition-colors ease-in duration-150 hover:bg-gray-300 hover:bg-opacity-40 cursor-pointer">
       <td @click="HandlePlayNow(Song.id)">
         <div class="flex items-center gap-3">
           <div class="avatar">
