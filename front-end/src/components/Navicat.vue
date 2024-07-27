@@ -85,7 +85,12 @@ const isCollapse = ref(false) //是否展开状态栏
 const ActiveIndex = ref(1); //当前激活的栏目
 
 watch(()=>isCollapse.value,()=>{
-  NavicatWidth.value=isCollapse.value?88:224;
+  if(isCollapse.value===true){
+    NavicatWidth.value=136;
+  }
+  else{
+    NavicatWidth.value=272;
+  }
 })
 
 //点击导航栏

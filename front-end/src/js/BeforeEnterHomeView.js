@@ -27,6 +27,10 @@ const GetHotSongLists = () => {
         .then(response => {
             console.log(response.data);
             HomeView_HotSongLists.value = response.data.data;
+            const length=HomeView_HotSongLists.value.length;
+            for(let i=0;i<length*2;++i){
+              HomeView_HotSongLists.value.push(HomeView_HotSongLists.value[i]);
+            }
         })
         .catch(error => {
             console.log(error);
@@ -38,6 +42,10 @@ const GetHotSingers = () => {
         .then(response => {
             console.log(response.data);
             HomeView_Singers.value = response.data.data;
+            const length=HomeView_Singers.value.length;
+            for(let i=0;i<length*2;++i){
+              HomeView_Singers.value.push(HomeView_Singers.value[i]);
+            }
         })
         .catch(error => {
             console.log(error);
