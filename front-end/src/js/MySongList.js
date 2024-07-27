@@ -52,6 +52,10 @@ export const AddSongToMySongList = (songlist_id, song_id) => {
 
 //打开弹出框
 export const ActiveDialog=(id)=>{
+  if(UserStore().State===false){
+    OpenMessage('请先登录','error');
+    return;
+  }
   CurrentSongIdNeededToAdd.value=id;
   GetMySongList();
   AddSongToMySongListVisible.value=true;

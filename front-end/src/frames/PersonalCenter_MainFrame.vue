@@ -4,6 +4,7 @@ import {UserStore} from "@/stores/User.js";
 import {MusicPlayerVisible} from "@/js/MusicPlayer.js";
 import {ref, watch} from 'vue'
 import instance from "@/js/axios.js";
+import router from '@/router/index.js'
 
 const user_store = UserStore();
 //展示的头像
@@ -48,6 +49,17 @@ async function urlToFile(url, filename) {
   const response = await fetch(url);
   const blob = await response.blob();
   return new File([blob], filename, { type: blob.type });
+}
+
+
+//退出登录
+const LogOut=()=>{
+  const user_store=UserStore();
+  user_store.State=false;
+  user_store.Username='';
+  user_store.email='';
+  user_store.bio='';
+  router.push('/home/homeView');
 }
 </script>
 
@@ -95,7 +107,7 @@ async function urlToFile(url, filename) {
               <div class="btn bg-red-300 hover:bg-red-400 px-4 mx-2" v-if="ShowChangeButton">
                 <div class="tracking-widest mx-4">取消修改</div>
               </div>
-              <div class="btn bg-gray-300 hover:bg-gray-400 px-4 mx-2">
+              <div class="btn bg-gray-300 hover:bg-gray-400 px-4 mx-2" @click="LogOut">
                 <div class="tracking-widest mx-4">退出登录</div>
               </div>
             </div>
