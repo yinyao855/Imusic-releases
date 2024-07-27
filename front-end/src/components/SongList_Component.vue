@@ -5,9 +5,32 @@ import { AddLikeSongList, DeleteLikeSongList, SongListDetail, SongListVisible } 
 import SongTable_HasFavor from '@/components/SongTable_HasFavor.vue'
 import { ref } from 'vue'
 import { NavicatWidth, WindowWidth } from '@/js/NavicatStatus.js'
+import { UserStore } from '@/stores/User.js'
+import { OpenMessage } from '@/js/Notification.js'
 
 //歌单中的歌曲
 const Songs = ref(SongListDetail.value.songs)
+
+//本地处理添加以及减少的问题
+const ThisAddLikeSongList = (id) => {
+  if(UserStore().State===false){
+    OpenMessage('请先登录','error');
+    return;
+  }
+  SongListDetail.value.like++;
+  SongListDetail.value.user_favor=true;
+  AddLikeSongList(id)
+}
+
+const ThisDeleteLikeSongList = (id) => {
+  if(UserStore().State===false){
+    OpenMessage('请先登录','error');
+    return;
+  }
+  SongListDetail.value.like--;
+  SongListDetail.value.user_favor=false;
+  DeleteLikeSongList(id)
+}
 </script>
 
 <template>
@@ -53,8 +76,8 @@ const Songs = ref(SongListDetail.value.songs)
               <img src="./icons/Plus_Icon.svg" alt="加" class="h-4 mr-3">
             </div>
             <div class="mt-3 flex">
-              <img src="./icons/Like_SongList_Icon.svg" alt="喜欢" class="h-6" v-if="SongListDetail.user_favor===true" @click="DeleteLikeSongList(SongListDetail.id)">
-              <img src="./icons/NotLike_SongList_Icon.svg" alt="不喜欢" class="h-6" v-else @click="AddLikeSongList(SongListDetail.id)">
+              <img src="./icons/Like_SongList_Icon.svg" alt="喜欢" class="h-6" v-if="SongListDetail.user_favor===true" @click="ThisDeleteLikeSongList(SongListDetail.id)">
+              <img src="./icons/NotLike_SongList_Icon.svg" alt="不喜欢" class="h-6" v-else @click="ThisAddLikeSongList(SongListDetail.id)">
               <div class="flex h-7 ml-3">
                 <div class="my-auto text-white">{{SongListDetail.like}}</div>
               </div>

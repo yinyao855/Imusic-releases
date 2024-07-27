@@ -22,6 +22,8 @@
     </div>
   </div>
 
+  <MySongListsDialog></MySongListsDialog>
+
 </template>
 
 <script setup>
@@ -36,6 +38,7 @@ import { SongListVisible } from '@/js/SongList.js'
 import { NavicatWidth, WindowWidth } from '@/js/NavicatStatus.js'
 import { SongDetailVisible } from '@/js/SongDetail.js'
 import SongDetail from '@/components/SongDetail.vue'
+import MySongListsDialog from '@/components/MySongListsDialog.vue'
 
 watch(() => UserStore().State, GetPlayList)
 </script>

@@ -2,6 +2,7 @@
 <script setup>
 import {AddSongToCurrentPlayList, HandlePlayNow} from "@/js/MusicPlayer.js";
 import {ShowSongDetail} from "@/js/SongDetail.js";
+import { ActiveDialog } from '@/js/MySongList.js'
 
 const props = defineProps({
   Songs: Array
@@ -68,7 +69,7 @@ const props = defineProps({
               </div>
             </li>
             <li>
-              <div class="text-sm font-semibold">
+              <div class="text-sm font-semibold" @click="ActiveDialog(Song.id)">
                 <img src="./icons/AddToSongList_Icon.svg" alt="添加到歌单">
                 添加到歌单
               </div>

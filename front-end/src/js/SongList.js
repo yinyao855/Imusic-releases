@@ -2,7 +2,6 @@ import { ref } from 'vue';
 import instance from '@/js/axios.js'
 import { UserStore } from '@/stores/User.js'
 import { SecondToTime } from '@/js/BeforeEnterHomeView.js'
-import { OpenMessage } from '@/js/Notification.js'
 
 //是否展示SongList组件
 export const SongListVisible=ref(false);
@@ -36,16 +35,11 @@ export function GetSongListDetail(id){
 
 //添加用户喜爱歌单
 export const AddLikeSongList=(id)=>{
-  if(UserStore().State===false){
-    OpenMessage('请先登录','error');
-    return;
-  }
   const formData=new FormData();
   formData.append('songlist_id',id);
   instance.post('/like/songlists/add',formData)
     .then(response=>{
       console.log(response.data);
-      GetSongListDetail(id);
     })
     .catch(error=>{
       console.log(error);
@@ -54,16 +48,11 @@ export const AddLikeSongList=(id)=>{
 
 //删除用户喜爱歌单
 export const DeleteLikeSongList=(id)=>{
-  if(UserStore().State===false){
-    OpenMessage('请先登录','error');
-    return;
-  }
   const formData=new FormData();
   formData.append('songlist_id',id);
   instance.post('/like/songlists/delete',formData)
     .then(response=>{
       console.log(response.data);
-      GetSongListDetail(id);
     })
     .catch(error=>{
       console.log(error);

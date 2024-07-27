@@ -3,6 +3,7 @@
 import {AddSongToCurrentPlayList, HandlePlayNow} from "@/js/MusicPlayer.js";
 import {ShowSongDetail} from "@/js/SongDetail.js";
 import {AddFavorSong, DeleteFavorSong} from "@/js/Favor.js";
+import { ActiveDialog } from '@/js/MySongList.js'
 
 const Songs = defineModel('Songs');
 
@@ -87,7 +88,7 @@ const PageDeleteFavorSong = (SongId, index) => {
               </div>
             </li>
             <li>
-              <div class="text-sm font-semibold">
+              <div class="text-sm font-semibold" @click="ActiveDialog(Song.id)">
                 <img src="./icons/AddToSongList_Icon.svg" alt="添加到歌单">
                 添加到歌单
               </div>
