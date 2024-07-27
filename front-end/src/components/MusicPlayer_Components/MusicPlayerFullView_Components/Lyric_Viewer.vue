@@ -1,8 +1,8 @@
 <template>
-  <div class="w-full h-full flex">
-    <div class="overflow-hidden w-4/5 h-[90%] m-auto">
+  <div class="w-full h-full flex" :ref="el => LyricPanel = el">
+    <div class="overflow-hidden w-4/5 h-[90%] m-auto" >
       <transition name="lyric-transition">
-        <ul :ref="el => LyricPanel = el" :style="{ transform: `translateY(-${currentIndex * 40}px)` }" class="px-[56px]">
+        <ul :style="{ transform: `translateY(-${Offset}px)`,transition: `transform 0.5s ease`, }" class="px-[56px]">
           <li v-for="(lyricContent, index) in lyricList" :key="index"
               :class="{ 'current-lyric': index === currentIndex, 'NotCurrent-lyric': index !== currentIndex, 'text-center py-1 hover:hover:bg-gray-300/30 transition-colors ease-in duration-100 rounded-lg': true }"
               :ref="el => lyricRefs[index] = el">
@@ -22,9 +22,14 @@ import {CurrentTime} from "@/js/MusicPlayer.js";
 export default {
   setup() {
     const lyricList = ref(LyricList);
+    //当前歌词列表对应的引用
     const lyricRefs = ref([]);
+    //当前歌词面板对应的引用
     const LyricPanel = ref(null);
+    //当前歌词索引
     const currentIndex = ref(0);
+    //当前偏移量
+    const Offset = ref(0);
 
     const GetCurrentIndex = () => {
       let index = 0;
@@ -39,8 +44,26 @@ export default {
       return index;
     }
 
+
+    const GetOffset = () => {
+      Offset.value = 0;
+      for (let i = 0; i < currentIndex.value - 1; i++) {
+        Offset.value += lyricRefs.value[i].clientHeight;
+      }
+      Offset.value += lyricRefs.value[currentIndex.value].clientHeight / 2;
+      if (Offset.value < LyricPanel.value.clientHeight*0.45) {
+        Offset.value = 0;
+      } else {
+        Offset.value -= LyricPanel.value.clientHeight*0.45;
+      }
+    }
+
     watch(CurrentTime, () => {
       currentIndex.value = GetCurrentIndex();
+    });
+
+    watch(currentIndex, () => {
+      GetOffset();
     });
 
     return {
@@ -48,7 +71,7 @@ export default {
       lyricRefs,
       currentIndex,
       LyricPanel,
-      GetCurrentIndex
+      Offset,
     };
   }
 };
