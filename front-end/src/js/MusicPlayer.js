@@ -113,6 +113,13 @@ export const AddSongToCurrentPlayList = (song) => {
     CurrentPlayList.value.push(song);
 }
 
+//播放全部歌曲
+export const PlayAll=(PlayList)=>{
+    CurrentPlayList.value=PlayList;
+    CurrentSongId.value=CurrentPlayList.value[0].id;
+    GetCurrentSongDetail();
+}
+
 //立即播放当前歌曲
 export const HandlePlayNow = (id) => {
     CurrentSongId.value = id;

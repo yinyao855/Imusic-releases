@@ -64,7 +64,7 @@ const PageDeleteFavorSong = (SongId, index) => {
             <img src="./icons/Menu_Icon.svg" alt="详情">
           </div>
           <ul tabindex="0"
-              class="dropdown-content menu rounded-box z-[1] w-52 p-2 shadow bg-base-100"
+              class="dropdown-content dropdown-left dropdown-top menu rounded-box z-50 w-52 p-2 shadow bg-base-100"
               style="width:300px">
             <li>
               <div>

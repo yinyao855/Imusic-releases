@@ -1,3 +1,4 @@
+<!--左侧导航栏-->
 <template>
   <div class="relative h-full bg-[#FAF7F5]">
     <el-menu
@@ -86,10 +87,10 @@ const ActiveIndex = ref(1); //当前激活的栏目
 
 watch(()=>isCollapse.value,()=>{
   if(isCollapse.value===true){
-    NavicatWidth.value=136;
+    NavicatWidth.value=152;
   }
   else{
-    NavicatWidth.value=272;
+    NavicatWidth.value=288;
   }
 })
 

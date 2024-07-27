@@ -1,4 +1,4 @@
-//歌曲详情
+<!--歌曲详情-->
 <script setup>
 import {GetSongDetail, LyricList, SongDetail, SongDetailVisible, SongId} from "@/js/SongDetail.js";
 import {onMounted} from "vue";
@@ -8,7 +8,7 @@ onMounted(GetSongDetail)
 </script>
 
 <template>
-  <div class="h-screen w-full overflow-auto flex flex-row">
+  <div class="h-screen w-full overflow-auto flex flex-row z-50 bg-[#FAF7F5]">
     <div class="block w-2/5 my-auto">
       <div class="btn btn-sm mt-2" @click="SongDetailVisible=false">
         <img src="./icons/Return_Icon.svg" alt="返回">

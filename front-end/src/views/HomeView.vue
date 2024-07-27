@@ -12,19 +12,30 @@
       <Navicat></Navicat>
     </div>
     <div class="flex-1 h-full pl-2 bg-[#FAF7F5]">
-      <router-view></router-view>
+      <Transition name="slide">
+        <SongDetail v-if="SongDetailVisible" class="z-40 bg-[#FAF7F5]"></SongDetail>
+      </Transition>
+      <Transition name="slide">
+        <SongList_Component v-if="SongListVisible&&!SongDetailVisible" class="z-30"></SongList_Component>
+      </Transition>
+      <router-view v-if="!SongListVisible"></router-view>
     </div>
   </div>
 
 </template>
 
 <script setup>
-import Navicat from "@/components/Navicat.vue";
-import MusicPlayer_Bar from "@/components/MusicPlayer_Components/MusicPlayer_Bar.vue";
-import {GetPlayList, IsFullScreen, MusicPlayerVisible} from "@/js/MusicPlayer.js";
-import {UserStore} from "@/stores/User.js";
-import {watch} from "vue";
-import MusicPlayerFullView from "@/components/MusicPlayer_Components/MusicPlayerFullView.vue";
+import Navicat from '@/components/Navicat_Component.vue'
+import MusicPlayer_Bar from '@/components/MusicPlayer_Components/MusicPlayer_Bar.vue'
+import { GetPlayList, IsFullScreen, MusicPlayerVisible } from '@/js/MusicPlayer.js'
+import { UserStore } from '@/stores/User.js'
+import { watch } from 'vue'
+import MusicPlayerFullView from '@/components/MusicPlayer_Components/MusicPlayerFullView.vue'
+import SongList_Component from '@/components/SongList_Component.vue'
+import { SongListVisible } from '@/js/SongList.js'
+import { NavicatWidth, WindowWidth } from '@/js/NavicatStatus.js'
+import { SongDetailVisible } from '@/js/SongDetail.js'
+import SongDetail from '@/components/SongDetail.vue'
 
 watch(() => UserStore().State, GetPlayList)
 </script>

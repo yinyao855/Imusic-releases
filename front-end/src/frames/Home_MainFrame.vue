@@ -1,7 +1,5 @@
 <template>
-  <Transition name="slide">
-    <SongDetail v-if="SongDetailVisible"></SongDetail>
-  </Transition>
+
   <Search_Input v-if="!SongDetailVisible"></Search_Input>
   <el-tabs v-if="!SongDetailVisible" v-model="activeName" class="demo-tabs ml-4 mt-2" @tab-click="handleClick">
     <el-tab-pane label="推荐" name="推荐">
@@ -23,7 +21,6 @@
 import {onBeforeUnmount, onMounted, ref} from 'vue'
 import HomeView_Recommend from "@/components/HomeView_Components/HomeView_Recommend.vue";
 import HomeView_NewestSongs from "@/components/HomeView_Components/HomeView_NewestSongs.vue";
-import SongDetail from "@/components/SongDetail.vue";
 import {SongDetailVisible} from "@/js/SongDetail.js";
 import Search_Input from "@/components/HomeView_Components/Search_Input.vue";
 import SearchResult from "@/components/SearchResult.vue";

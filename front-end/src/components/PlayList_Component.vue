@@ -1,3 +1,4 @@
+<!--播放列表-->
 <script setup>
 
 import {CurrentPlayList, HandlePlayNow} from "@/js/MusicPlayer.js";

@@ -41,7 +41,7 @@ const PrevPhoto = () => {
 
 //监测当前时间变化
 watch(() => currentTime.value, () => {
-  if (currentTime.value >= 3) {
+  if (currentTime.value >= 4) {
     currentTime.value = 0
     NextPhoto()
   }
@@ -49,11 +49,14 @@ watch(() => currentTime.value, () => {
 </script>
 
 <template>
-  <div class="relative px-6">
+  <div class="relative pl-6 pr-10">
     <div :style="{width:`${WindowWidth-NavicatWidth}px`}" class="overflow-hidden">
       <div class="flex mt-2" :style="{ transform: `translateX(-${Offset}px)`,transition: `transform 0.5s ease` }">
         <div v-for="(Singer,index) in HomeView_Singers" :key="index" class="mx-2 flex flex-wrap w-48">
-          <img :src="Singer.singerImage" alt="歌手封面" class="aspect-square rounded-3xl w-48 cursor-pointer">
+          <div class="relative w-48 h-48">
+            <div class="absolute top-0 left-0 rounded-3xl hover:bg-gray-400/40 w-full h-full transition-colors ease-in duration-300 cursor-pointer"></div>
+            <img :src="Singer.singerImage" alt="歌手封面" class="aspect-square rounded-3xl w-48 cursor-pointer">
+          </div>
           <div class="text-center w-48 mt-2">{{ Singer.singerName }}</div>
         </div>
       </div>
@@ -61,7 +64,7 @@ watch(() => currentTime.value, () => {
     <div class="absolute top-1/2 left-0 -translate-y-1/2">
       <img src="../../icons/Left_Photo_Icon.svg" class="h-6 w-6" alt="上一张" @click="PrevPhoto">
     </div>
-    <div class="absolute top-1/2 right-0 -translate-y-1/2">
+    <div class="absolute top-1/2 right-4 -translate-y-1/2">
       <img src="../../icons/Left_Photo_Icon.svg" class="h-6 w-6 rotate-180" alt="下一张" @click="NextPhoto">
     </div>
   </div>
