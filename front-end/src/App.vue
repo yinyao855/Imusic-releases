@@ -11,7 +11,7 @@ import {MusicPlayerVisible} from "@/js/MusicPlayer.js";
     </transition>
   </router-view>
   <MusicPlayer class="fixed"  v-if="MusicPlayerVisible"></MusicPlayer>
-<!--  <TestView v-if="MusicPlayerVisible"></TestView>-->
+<!--  <TestView></TestView>-->
 </template>
 
 <style>
