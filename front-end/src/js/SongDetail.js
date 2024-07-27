@@ -18,6 +18,8 @@ export const EditSongVisible = ref(false);
 export const EditSongDetail = ref({});
 //编辑歌曲界面的歌词列表
 export const EditLyricList = ref([]);
+//全屏播放界面的歌词列表
+export const FullScreenLyricList = ref([]);
 
 //获取到歌曲详情界面的歌曲详情
 export const GetSongDetail = () => {
