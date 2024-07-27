@@ -6,8 +6,8 @@ import { GetSongListDetail } from '@/js/SongList.js'
 
 //偏移量
 const Offset = ref(2080)
-//当前时间
-const currentTime = ref(0)
+//当前时间,这里从1开始，以让两者错开
+const currentTime = ref(1)
 //计时器
 let timer = null
 //当前索引
@@ -31,6 +31,7 @@ onUnmounted(() => {
 //土方法解决，会浪费性能
 const NextPhoto = () => {
   Offset.value += 208
+  currentTime.value=0;
   HomeView_HotSongLists.value.push(HomeView_HotSongLists.value[CurrentIndex.value])
   CurrentIndex.value++
 }
@@ -43,7 +44,6 @@ const PrevPhoto = () => {
 //监测当前时间变化
 watch(() => currentTime.value, () => {
   if (currentTime.value >= 4) {
-    currentTime.value = 0
     NextPhoto()
   }
 })
@@ -64,10 +64,10 @@ watch(() => currentTime.value, () => {
 
       </div>
     </div>
-    <div class="absolute top-1/2 left-0 -translate-y-1/2">
+    <div class="absolute top-1/2 left-0 -translate-y-1/2 px-0.5 py-1 bg-gray-300/60 hover:bg-gray-400/50 transition-colors ease-in duration-300 cursor-pointer rounded">
       <img src="../../icons/Left_Photo_Icon.svg" class="h-6 w-6" alt="上一张" @click="PrevPhoto">
     </div>
-    <div class="absolute top-1/2 right-4 -translate-y-1/2">
+    <div class="absolute top-1/2 right-4 -translate-y-1/2 px-0.5 py-1 bg-gray-300/60 hover:bg-gray-400/50 transition-colors ease-in duration-300 cursor-pointer rounded">
       <img src="../../icons/Left_Photo_Icon.svg" class="h-6 w-6 rotate-180" alt="下一张" @click="NextPhoto">
     </div>
   </div>

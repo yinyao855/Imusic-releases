@@ -1,7 +1,7 @@
 import {computed, ref} from 'vue';
 import instance from "@/js/axios.js";
 import {UserStore} from "@/stores/User.js";
-import {GetLyrics} from "@/js/HandleLyrics.js";
+import {GetDetailLyrics} from "@/js/HandleLyrics.js";
 
 //是否可见音乐播放器
 export const MusicPlayerVisible = ref(false);
@@ -90,7 +90,7 @@ export const GetCurrentSongDetail = () => {
     instance.get('/songs/info/' + CurrentSongId.value)
         .then(response => {
             CurrentSongDetail.value = response.data.data;
-            GetLyrics(CurrentSongDetail.value.lyric);
+            GetDetailLyrics(CurrentSongDetail.value.lyric);
             AddSongToCurrentPlayList(CurrentSongDetail.value);
             MusicPlayerVisible.value = true;
             Duration.value = parseInt(CurrentSongDetail.value.duration);

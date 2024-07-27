@@ -82,6 +82,7 @@ import {watch} from 'vue'
 import { ActiveIndex, NavicatWidth } from '@/js/NavicatStatus.js'
 import { CheckLogin, GetMySongLists } from '@/js/MySongList.js'
 import { GetLikeSongLists } from '@/js/LikeSongLists.js'
+import { GetMyCreatedSongs } from '@/js/MyCreates.js'
 
 const user_store = UserStore(); //用户信息
 const isCollapse = ref(false) //是否展开状态栏
@@ -120,6 +121,7 @@ watch(() => ActiveIndex.value, (newValue,oldValue) => {
         ActiveIndex.value=oldValue;
         break;
       }
+      GetMyCreatedSongs();
       router.push('/home/create');
       break;
     case 4:
