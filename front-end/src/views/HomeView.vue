@@ -3,9 +3,7 @@
   <Transition name="slide">
     <MusicPlayerFullView class="fixed left-0 top-0 z-30" v-if="MusicPlayerVisible&&IsFullScreen"></MusicPlayerFullView>
   </Transition>
-  <Transition name="slideBar">
-    <MusicPlayer_Bar v-if="MusicPlayerVisible&&!IsFullScreen"></MusicPlayer_Bar>
-  </Transition>
+  <MusicPlayer_Bar v-if="MusicPlayerVisible&&!IsFullScreen"></MusicPlayer_Bar>
 
   <div class="w-screen h-screen flex bg-white" v-if="!IsFullScreen">
     <div class="h-screen">
@@ -55,19 +53,5 @@ watch(() => UserStore().State, GetPlayList)
 .slide-enter-from,
 .slide-leave-to {
   transform: translateX(100%);
-}
-
-
-.slideBar-leave-active {
-  transition: transform 0.5s ease;
-}
-
-.slideBar-enter-active {
-  transition: transform 0.5s ease;
-}
-
-.slideBar-enter-from,
-.slideBar-leave-to {
-  transform: translateY(-100%);
 }
 </style>

@@ -1,5 +1,5 @@
 <script setup>
-import { GetSongListDetail, SongListDetail } from '@/js/SongList.js'
+import { GetSongListDetail } from '@/js/SongList.js'
 import { MusicPlayerVisible } from '@/js/MusicPlayer.js'
 import { LikeSongLists } from '@/js/LikeSongLists.js'
 </script>
@@ -18,7 +18,6 @@ import { LikeSongLists } from '@/js/LikeSongLists.js'
       </figure>
       <div class="card-body">
         <div class="text-xl">{{ SongList.title }}</div>
-        <!--        <div>创建时间：{{SongList.create_date}}</div>-->
         <div>
           <span>创建者：{{ SongList.owner }}</span>
           <span>・</span>

@@ -5,8 +5,6 @@ import { AddLikeSongList, DeleteLikeSongList, SongListDetail, SongListVisible } 
 import SongTable_HasFavor from '@/components/SongTable_HasFavor.vue'
 import { ref } from 'vue'
 import { NavicatWidth, WindowWidth } from '@/js/NavicatStatus.js'
-import { UserStore } from '@/stores/User.js'
-import { OpenMessage } from '@/js/Notification.js'
 import { CheckLogin } from '@/js/MySongList.js'
 
 //歌单中的歌曲
@@ -14,35 +12,36 @@ const Songs = ref(SongListDetail.value.songs)
 
 //本地处理添加以及减少的问题
 const ThisAddLikeSongList = (id) => {
-  if(!CheckLogin()){
-    return;
+  if (!CheckLogin()) {
+    return
   }
-  SongListDetail.value.like++;
-  SongListDetail.value.user_favor=true;
+  SongListDetail.value.like++
+  SongListDetail.value.user_favor = true
   AddLikeSongList(id)
 }
 
 const ThisDeleteLikeSongList = (id) => {
-  if(!CheckLogin()){
-    return;
+  if (!CheckLogin()) {
+    return
   }
-  SongListDetail.value.like--;
-  SongListDetail.value.user_favor=false;
+  SongListDetail.value.like--
+  SongListDetail.value.user_favor = false
   DeleteLikeSongList(id)
 }
 </script>
 
 <template>
-  <div class="h-screen overflow-auto flex flex-row flex-wrap" >
+  <div class="h-screen overflow-auto flex flex-row flex-wrap">
     <div class="btn btn-sm mt-3 ml-2 z-40" @click="SongListVisible=false">
       <img src="./icons/Return_Icon.svg" alt="返回">
     </div>
     <!--    背景模糊-->
-    <div class="w-full h-[44%] absolute overflow-hidden" style="filter:blur(12px)" :style="{width:`${WindowWidth-NavicatWidth+88}px`}">
+    <div class="w-full h-1/3 absolute overflow-hidden" style="filter:blur(12px)"
+         :style="{width:`${WindowWidth-NavicatWidth+88}px`}">
       <img class="w-full aspect-[3/1]" :src="SongListDetail.cover" alt="封面">
     </div>
     <!--    歌单详情-->
-    <div class="w-full h-[44%] absolute z-10" :style="{width:`${WindowWidth-NavicatWidth+88}px`}">
+    <div class="w-full h-1/3 absolute z-10" :style="{width:`${WindowWidth-NavicatWidth+88}px`}">
       <div class="w-full h-full flex flex-row z-10">
         <div class="h-3/4 my-auto ml-20">
           <img class="h-full aspect-square rounded-2xl" :src="SongListDetail.cover" alt="封面">
@@ -62,12 +61,12 @@ const ThisDeleteLikeSongList = (id) => {
             </div>
             <div class="flex">
               <div class="dropdown w-full mt-3 block">
-              <div tabindex="0" role="button" class="btn m-1 btn-sm">简介</div>
-              <ul tabindex="0" class="dropdown-content menu bg-base-100 rounded-box z-30 p-2 shadow text-sm"
-                  style="width:300px">
-                <li><a>{{ SongListDetail.introduction === 'null' ? '无简介' : SongListDetail.introduction }}</a></li>
-              </ul>
-            </div>
+                <div tabindex="0" role="button" class="btn m-1 btn-sm">简介</div>
+                <ul tabindex="0" class="dropdown-content menu bg-base-100 rounded-box z-30 p-2 shadow text-sm"
+                    style="width:300px">
+                  <li><a>{{ SongListDetail.introduction === 'null' ? '无简介' : SongListDetail.introduction }}</a></li>
+                </ul>
+              </div>
             </div>
 
             <div class="text-white text-lg btn btn-sm btn-success mt-3" @click="PlayAll(SongListDetail.songs)">
@@ -75,10 +74,12 @@ const ThisDeleteLikeSongList = (id) => {
               <img src="./icons/Plus_Icon.svg" alt="加" class="h-4 mr-3">
             </div>
             <div class="mt-3 flex" v-if="SongListDetail.mode===1">
-              <img src="./icons/Like_SongList_Icon.svg" alt="喜欢" class="h-6" v-if="SongListDetail.user_favor===true" @click="ThisDeleteLikeSongList(SongListDetail.id)">
-              <img src="./icons/NotLike_SongList_Icon.svg" alt="不喜欢" class="h-6" v-else @click="ThisAddLikeSongList(SongListDetail.id)">
+              <img src="./icons/Like_SongList_Icon.svg" alt="喜欢" class="h-6" v-if="SongListDetail.user_favor===true"
+                   @click="ThisDeleteLikeSongList(SongListDetail.id)">
+              <img src="./icons/NotLike_SongList_Icon.svg" alt="不喜欢" class="h-6" v-else
+                   @click="ThisAddLikeSongList(SongListDetail.id)">
               <div class="flex h-7 ml-3">
-                <div class="my-auto text-white">{{SongListDetail.like}}</div>
+                <div class="my-auto text-white">{{ SongListDetail.like }}</div>
               </div>
             </div>
           </div>
@@ -86,7 +87,7 @@ const ThisDeleteLikeSongList = (id) => {
       </div>
     </div>
 
-    <div class="h-[56%] absolute bottom-0 px-4 overflow-auto" :style="{width:`${WindowWidth-NavicatWidth+88}px`}">
+    <div class="h-2/3 absolute bottom-0 px-4 overflow-auto" :style="{width:`${WindowWidth-NavicatWidth+88}px`}">
       <SongTable_HasFavor v-model:Songs="Songs" class="w-full"></SongTable_HasFavor>
       <div class="h-32 w-full" v-if="MusicPlayerVisible"></div>
     </div>

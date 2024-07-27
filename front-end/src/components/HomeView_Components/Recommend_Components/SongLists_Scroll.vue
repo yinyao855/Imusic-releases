@@ -35,8 +35,8 @@ const NextPhoto = () => {
   CurrentIndex.value++
 }
 
-const PrevPhoto=()=> {
-  Offset.value -= 208;
+const PrevPhoto = () => {
+  Offset.value -= 208
 }
 
 
@@ -55,7 +55,8 @@ watch(() => currentTime.value, () => {
       <div class="flex mt-2" :style="{ transform: `translateX(-${Offset}px)`,transition: `transform 0.5s ease` }">
         <div v-for="(SongList,index) in HomeView_HotSongLists" :key="index" class="mx-2 flex flex-wrap w-48">
           <div class="relative w-48 h-48" @click="GetSongListDetail(SongList.id)">
-            <div class="absolute top-0 left-0 rounded-full hover:bg-gray-400/40 w-full h-full transition-colors ease-in duration-300 cursor-pointer"></div>
+            <div
+              class="absolute top-0 left-0 rounded-full hover:bg-gray-400/40 w-full h-full transition-colors ease-in duration-300 cursor-pointer"></div>
             <img :src="SongList.cover" alt="歌单封面" class="aspect-square rounded-full w-48 cursor-pointer">
           </div>
           <div class="text-center w-48 mt-2">{{ SongList.title }}</div>
