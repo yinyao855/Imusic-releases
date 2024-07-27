@@ -5,6 +5,7 @@ import {MusicPlayerVisible} from "@/js/MusicPlayer.js";
 import {ref, watch} from 'vue'
 import instance from "@/js/axios.js";
 import router from '@/router/index.js'
+import { ActiveIndex } from '@/js/NavicatStatus.js'
 
 const user_store = UserStore();
 //展示的头像
@@ -44,17 +45,10 @@ const ConfirmChange=()=>{
 }
 
 
-//将url转成file
-async function urlToFile(url, filename) {
-  const response = await fetch(url);
-  const blob = await response.blob();
-  return new File([blob], filename, { type: blob.type });
-}
-
-
 //退出登录
 const LogOut=()=>{
   const user_store=UserStore();
+  ActiveIndex.value=1;
   user_store.State=false;
   user_store.Username='';
   user_store.email='';

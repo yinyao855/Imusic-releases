@@ -6,6 +6,7 @@ import {UserStore} from "@/stores/User.js";
 import instance, {setAuthToken} from "@/js/axios.js";
 import router from "@/router/index.js";
 import {GetPlayList} from "@/js/MusicPlayer.js";
+import { ActiveIndex } from '@/js/NavicatStatus.js'
 
 const user_store = UserStore();
 const onSubmit = () => {
@@ -37,6 +38,7 @@ const onSubmit = () => {
           user_store.role = response.data.data.role;
           user_store.Registration_date = response.data.data.registration_date.split(' ')[0];
           setAuthToken(user_store.token);
+          ActiveIndex.value=1;
           GetPlayList();
           router.push('/home/homeView');
         } else {

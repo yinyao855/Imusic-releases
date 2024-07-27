@@ -79,11 +79,11 @@ import {UserStore} from "@/stores/User.js";
 import {ref} from 'vue'
 import router from "@/router/index.js";
 import {watch} from 'vue'
-import { NavicatWidth } from '@/js/NavicatStatus.js'
+import { ActiveIndex, NavicatWidth } from '@/js/NavicatStatus.js'
 
 const user_store = UserStore(); //用户信息
 const isCollapse = ref(false) //是否展开状态栏
-const ActiveIndex = ref(1); //当前激活的栏目
+
 
 watch(()=>isCollapse.value,()=>{
   if(isCollapse.value===true){
