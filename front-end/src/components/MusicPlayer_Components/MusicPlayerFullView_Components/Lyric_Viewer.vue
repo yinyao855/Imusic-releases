@@ -1,11 +1,11 @@
 <template>
-  <div class="w-full h-full flex" :ref="el => LyricPanel = el">
-    <div class="overflow-hidden w-4/5 h-[90%] m-auto" >
+  <div class="w-full h-full flex" :ref="el => LyricPanel = el" @wheel="handleScroll">
+    <div class="overflow-hidden w-4/5 h-[90%] m-auto">
       <transition name="lyric-transition">
         <ul :style="{ transform: `translateY(-${Offset}px)`,transition: `transform 0.5s ease`, }" class="px-[56px]">
           <li v-for="(lyricContent, index) in lyricList" :key="index"
               :class="{ 'current-lyric': index === currentIndex, 'NotCurrent-lyric': index !== currentIndex, 'text-center py-1 hover:hover:bg-gray-300/30 transition-colors ease-in duration-100 rounded-lg': true }"
-              :ref="el => lyricRefs[index] = el">
+              :ref="el => lyricRefs[index] = el" @click="ChangeLyricIndex(index)">
             {{ lyricContent.content }}
           </li>
         </ul>
@@ -17,7 +17,7 @@
 <script>
 import {ref, watch} from 'vue';
 import {LyricList} from '@/js/SongDetail.js';
-import {CurrentTime} from "@/js/MusicPlayer.js";
+import {CurrentTime,IsDragging} from "@/js/MusicPlayer.js";
 
 export default {
   setup() {
@@ -44,18 +44,29 @@ export default {
       return index;
     }
 
+    //处理滑动操作
+    const handleScroll=(event)=> {
+      Offset.value+=event.deltaY;
+    }
 
+    //获取当前偏移量
     const GetOffset = () => {
       Offset.value = 0;
       for (let i = 0; i < currentIndex.value - 1; i++) {
         Offset.value += lyricRefs.value[i].clientHeight;
       }
       Offset.value += lyricRefs.value[currentIndex.value].clientHeight / 2;
-      if (Offset.value < LyricPanel.value.clientHeight*0.45) {
+      if (Offset.value < LyricPanel.value.clientHeight * 0.45) {
         Offset.value = 0;
       } else {
-        Offset.value -= LyricPanel.value.clientHeight*0.45;
+        Offset.value -= LyricPanel.value.clientHeight * 0.45;
       }
+    }
+
+    //点击歌词之后切换
+    const ChangeLyricIndex=(index)=>{
+      CurrentTime.value=parseInt(lyricList.value[index].timestamp);
+      IsDragging.value=true;
     }
 
     watch(CurrentTime, () => {
@@ -72,6 +83,8 @@ export default {
       currentIndex,
       LyricPanel,
       Offset,
+      handleScroll,
+      ChangeLyricIndex
     };
   }
 };
