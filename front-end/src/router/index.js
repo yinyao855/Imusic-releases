@@ -30,14 +30,14 @@ const router = createRouter({
                     component: () => import('../frames/Create_MainFrame.vue')
                 },
                 {
-                    path: 'createLikeSongs',
-                    name: 'createLikeSongs',
-                    component: () => import('../frames/CreateLikeSongs_MainFrame.vue')
+                    path: 'mySongLists',
+                    name: 'mySongLists',
+                    component: () => import('../frames/MySongLists_MainFrame.vue')
                 },
                 {
-                    path: 'likeSongs',
-                    name: 'likeSongs',
-                    component: () => import('../frames/LikeSongs_MainFrame.vue')
+                    path: 'likeSongLists',
+                    name: 'likeSongLists',
+                    component: () => import('../frames/LikeSongLists_MainFrame.vue')
                 },
                 {
                     path: 'message',

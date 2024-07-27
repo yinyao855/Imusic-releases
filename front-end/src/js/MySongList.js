@@ -11,10 +11,9 @@ export const CurrentSongIdNeededToAdd = ref(0)
 export const AddSongToMySongListVisible = ref(false)
 
 //获取到我创建的歌单
-export const GetMySongList = () => {
-  if (UserStore().State === false) {
-    OpenMessage('请先登录', 'error')
-    return
+export const GetMySongLists = () => {
+  if(!CheckLogin()){
+    return;
   }
   instance.get('/users/songlists', {
     params: {
@@ -23,6 +22,9 @@ export const GetMySongList = () => {
   })
     .then(response => {
       MySongLists.value = response.data.data
+      for(let i=0;i<MySongLists.value.length;++i){
+        MySongLists.value[i].create_date=MySongLists.value[i].create_date.split(' ')[0]
+      }
       console.log(MySongLists.value)
     })
     .catch(error => {
@@ -52,11 +54,19 @@ export const AddSongToMySongList = (songlist_id, song_id) => {
 
 //打开弹出框
 export const ActiveDialog=(id)=>{
-  if(UserStore().State===false){
-    OpenMessage('请先登录','error');
+  if(!CheckLogin()){
     return;
   }
   CurrentSongIdNeededToAdd.value=id;
-  GetMySongList();
+  GetMySongLists();
   AddSongToMySongListVisible.value=true;
+}
+
+
+export const CheckLogin=()=>{
+  if(UserStore().State===false){
+    OpenMessage('请先登录','error');
+    return false;
+  }
+  return true;
 }

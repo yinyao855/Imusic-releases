@@ -7,14 +7,14 @@ import { ref } from 'vue'
 import { NavicatWidth, WindowWidth } from '@/js/NavicatStatus.js'
 import { UserStore } from '@/stores/User.js'
 import { OpenMessage } from '@/js/Notification.js'
+import { CheckLogin } from '@/js/MySongList.js'
 
 //歌单中的歌曲
 const Songs = ref(SongListDetail.value.songs)
 
 //本地处理添加以及减少的问题
 const ThisAddLikeSongList = (id) => {
-  if(UserStore().State===false){
-    OpenMessage('请先登录','error');
+  if(!CheckLogin()){
     return;
   }
   SongListDetail.value.like++;
@@ -23,8 +23,7 @@ const ThisAddLikeSongList = (id) => {
 }
 
 const ThisDeleteLikeSongList = (id) => {
-  if(UserStore().State===false){
-    OpenMessage('请先登录','error');
+  if(!CheckLogin()){
     return;
   }
   SongListDetail.value.like--;
@@ -75,7 +74,7 @@ const ThisDeleteLikeSongList = (id) => {
               <span class="ml-3">播放全部</span>
               <img src="./icons/Plus_Icon.svg" alt="加" class="h-4 mr-3">
             </div>
-            <div class="mt-3 flex">
+            <div class="mt-3 flex" v-if="SongListDetail.mode===1">
               <img src="./icons/Like_SongList_Icon.svg" alt="喜欢" class="h-6" v-if="SongListDetail.user_favor===true" @click="ThisDeleteLikeSongList(SongListDetail.id)">
               <img src="./icons/NotLike_SongList_Icon.svg" alt="不喜欢" class="h-6" v-else @click="ThisAddLikeSongList(SongListDetail.id)">
               <div class="flex h-7 ml-3">

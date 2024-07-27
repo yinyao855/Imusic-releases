@@ -80,6 +80,8 @@ import {ref} from 'vue'
 import router from "@/router/index.js";
 import {watch} from 'vue'
 import { ActiveIndex, NavicatWidth } from '@/js/NavicatStatus.js'
+import { CheckLogin, GetMySongLists } from '@/js/MySongList.js'
+import { GetLikeSongLists } from '@/js/LikeSongLists.js'
 
 const user_store = UserStore(); //用户信息
 const isCollapse = ref(false) //是否展开状态栏
@@ -99,7 +101,7 @@ const handleSelect = (index) => {
   ActiveIndex.value = parseInt(index);
 }
 
-watch(() => ActiveIndex.value, (newValue) => {
+watch(() => ActiveIndex.value, (newValue,oldValue) => {
   switch (newValue) {
     case 0:
       if (user_store.State === false)
@@ -114,15 +116,33 @@ watch(() => ActiveIndex.value, (newValue) => {
       router.push('/home/explore');
       break;
     case 3:
+      if(!CheckLogin()){
+        ActiveIndex.value=oldValue;
+        break;
+      }
       router.push('/home/create');
       break;
     case 4:
-      router.push('/home/createLikeSongs');
+      if(!CheckLogin()){
+        ActiveIndex.value=oldValue;
+        break;
+      }
+      GetMySongLists();
+      router.push('/home/mySongLists');
       break;
     case 5:
-      router.push('/home/likeSongs');
+      if(!CheckLogin()){
+        ActiveIndex.value=oldValue;
+        break;
+      }
+      GetLikeSongLists();
+      router.push('/home/likeSongLists');
       break;
     case 6:
+      if(!CheckLogin()){
+        ActiveIndex.value=oldValue;
+        break;
+      }
       router.push('/home/message');
       break;
     case 7:

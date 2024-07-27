@@ -8,7 +8,7 @@ export const SongListVisible=ref(false);
 //当前SongList编号
 export const SongListId=ref(0);
 //当前SongList内容
-export const SongListDetail=ref([]);
+export const SongListDetail=ref({});
 
 //获取到当前SongList内容
 export function GetSongListDetail(id){
@@ -23,6 +23,8 @@ export function GetSongListDetail(id){
         for(let i=0;i<SongListDetail.value.songs.length;++i){
           SongListDetail.value.songs[i].duration=SecondToTime(parseInt(SongListDetail.value.songs[i].duration));
         }
+        //标志为歌单模式
+        SongListDetail.value['mode']=1;
         SongListDetail.value.create_date=SongListDetail.value.create_date.split(' ')[0];
         SongListDetail.value.introduction=SongListDetail.value.introduction==='null'?'无简介':SongListDetail.value.introduction;
         SongListVisible.value=true;

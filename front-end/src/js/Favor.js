@@ -2,10 +2,10 @@
 import {UserStore} from "@/stores/User.js";
 import {OpenMessage} from "@/js/Notification.js";
 import instance from "@/js/axios.js";
+import { CheckLogin } from '@/js/MySongList.js'
 
 export const AddFavorSong=(id)=>{
-    if(UserStore().State===false){
-        OpenMessage('请先登录','error');
+    if(!CheckLogin()){
         return;
     }
     const formData=new FormData();
@@ -21,8 +21,7 @@ export const AddFavorSong=(id)=>{
 
 //删除喜爱歌曲
 export const DeleteFavorSong=(id)=>{
-    if(UserStore().State===false){
-        OpenMessage('请先登录','error');
+    if(!CheckLogin()){
         return;
     }
     const formData=new FormData();
