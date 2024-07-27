@@ -16,12 +16,12 @@
 
 <script>
 import {ref, watch} from 'vue';
-import {LyricList} from '@/js/SongDetail.js';
+import { FullScreenLyricList } from '@/js/SongDetail.js'
 import {CurrentTime,IsDragging} from "@/js/MusicPlayer.js";
 
 export default {
   setup() {
-    const lyricList = ref(LyricList);
+    const lyricList = ref(FullScreenLyricList);
     //当前歌词列表对应的引用
     const lyricRefs = ref([]);
     //当前歌词面板对应的引用
@@ -71,6 +71,10 @@ export default {
 
     watch(CurrentTime, () => {
       currentIndex.value = GetCurrentIndex();
+    });
+
+    watch(FullScreenLyricList, () => {
+      lyricList.value = FullScreenLyricList.value;
     });
 
     watch(currentIndex, () => {
