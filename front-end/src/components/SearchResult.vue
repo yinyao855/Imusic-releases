@@ -9,7 +9,7 @@ const Songs=ref(SearchResult);
 </script>
 
 <template>
-  <div class="w-full h-full overflow-auto">
+  <div class="w-full h-full">
     <div class="btn btn-sm" @click="SearchResultVisible=false">
       <img src="./icons/Return_Icon.svg" alt="返回">
     </div>

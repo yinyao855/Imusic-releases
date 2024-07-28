@@ -107,7 +107,7 @@ const SubScribe=(id)=>{
       </div>
     </div>
 
-    <div class="h-2/3 absolute bottom-0 px-4 overflow-auto" :style="{width:`${WindowWidth-NavicatWidth+88}px`}">
+    <div class="h-2/3 absolute bottom-0 px-4" :style="{width:`${WindowWidth-NavicatWidth+88}px`}">
       <SongTable_HasFavor v-model:Songs="Songs" class="w-full"></SongTable_HasFavor>
       <div class="h-32 w-full" v-if="MusicPlayerVisible"></div>
     </div>

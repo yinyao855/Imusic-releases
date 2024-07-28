@@ -8,7 +8,7 @@ import EditSongFrame from '@/components/CreateCenter_Components/MyCreatedSongs_C
 </script>
 
 <template>
-  <div class="w-full h-full overflow-auto" v-if="!EditSongVisible">
+  <div class="w-full h-full" v-if="!EditSongVisible">
     <EditSongsTable :Songs="MyCreatedSongs"></EditSongsTable>
     <div class="w-full h-32" v-if="MusicPlayerVisible"></div>
   </div>
