@@ -20,9 +20,10 @@
 </template>
 <script setup>
 import {onBeforeUnmount, onMounted, ref} from 'vue'
-import {SongDetailVisible} from "@/js/SongDetail.js";
+import { EditSongVisible, SongDetailVisible } from '@/js/SongDetail.js'
 import { WindowWidth } from '@/js/NavicatStatus.js'
 import MyCreatedSongs from '@/components/CreateCenter_Components/MyCreatedSongs.vue'
+import {watch} from 'vue'
 
 //当前触发的状态
 const activeName = ref('我的创作')
@@ -30,6 +31,11 @@ const activeName = ref('我的创作')
 const handleClick = (tab, event) => {
   console.log(tab, event)
 }
+
+//在跳转到其他页面的时候关闭当前的歌曲编辑
+watch(()=>activeName.value,()=>{
+  EditSongVisible.value=false;
+})
 
 //获取到当前窗口的长宽信息
 const windowWidth = ref(window.innerWidth);

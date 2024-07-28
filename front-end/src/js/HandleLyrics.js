@@ -103,3 +103,32 @@ const parseLRCContent = (lrcText) => {
   })
   return parsedLyrics
 }
+
+
+//将歌词列表转成文件
+export const GenerateLRCFile = (lyric,title) => {
+  let content = ''
+  lyric.forEach(line => {
+    content += `[${line.timestamp}] ${line.content}\n`
+  })
+  const lrcContent = ref('')
+  lrcContent.value = content
+
+  const blob = new Blob([lrcContent.value], { type: 'text/plain' })
+  return new File([blob], title + '.lrc', { type: 'text/plain' })
+}
+
+
+//下载歌词文件
+export const DownloadGeneratedFile = (file) => {
+  if (file) {
+    const url = URL.createObjectURL(file);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = file.name;
+    document.body.appendChild(a);
+    a.click();
+    URL.revokeObjectURL(url);
+    document.body.removeChild(a);
+  }
+};
