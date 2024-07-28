@@ -90,7 +90,7 @@ onMounted(GetEditSongDetail)
         <img src="../../icons/Return_Icon.svg" alt="返回">
       </div>
       <div class="mt-4">
-        <UploadImage v-model:ShowImage="ShowImage" v-model:AvatarFile="CoverFile"
+        <UploadImage v-model:ShowImage="ShowImage" v-model:AvatarFile="CoverFile" :UploadImageId="'EditSong'"
                      class="w-72 ml-12 my-2"></UploadImage>
         <div class="ml-12 flex flex-wrap my-1">
           <div class="text-base text-gray-60 w-full my-1">歌曲名:

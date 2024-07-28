@@ -61,7 +61,7 @@ const LogOut=()=>{
   <div class="w-full h-screen">
     <div class="h-full overflow-auto bg-[#FAF7F5]">
       <div class="w-full flex mt-4">
-        <UploadImage class="mx-8" v-model:ShowImage="ShowImage" v-model:AvatarFile="AvatarFile"></UploadImage>
+        <UploadImage class="mx-8" v-model:ShowImage="ShowImage" v-model:AvatarFile="AvatarFile" :UploadImageId="'PersonalCenter'"></UploadImage>
         <div class="flex flex-wrap">
           <div class="text-3xl my-auto w-full">用户名：{{ user_store.Username }}</div>
           <div class="w-full text-lg">

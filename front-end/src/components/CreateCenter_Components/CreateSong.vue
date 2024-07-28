@@ -1,10 +1,9 @@
 <!--创建歌曲界面-->
 <script setup>
 import UploadImage from '@/components/UploadImage.vue'
-import { ref,watch } from 'vue'
+import { ref,watch,onMounted } from 'vue'
 import { GenerateLRCFile, UploadedLyricList } from '@/js/HandleLyrics.js'
-import { EditSongVisible, SongId } from '@/js/SongDetail.js'
-import { HandlePlayNow, MusicPlayerVisible } from '@/js/MusicPlayer.js'
+import { MusicPlayerVisible } from '@/js/MusicPlayer.js'
 import UploadFile_Small from '@/components/CreateCenter_Components/MyCreatedSongs_Components/UploadFile_Small.vue'
 import UploadSong from '@/components/CreateCenter_Components/CreateSong_Components/UploadSong.vue'
 import { OpenMessage } from '@/js/Notification.js'
@@ -80,23 +79,22 @@ const SubmitSong=()=>{
       else{
         OpenMessage('上传失败','error');
       }
-    })
+      })
     .catch(error=>{
       console.log(error);
     })
 }
+
+onMounted(ClearContent);
 </script>
 
 <template>
   <div class="w-full h-full">
     <div class="h-full w-full overflow-auto flex flex-row z-50 bg-[#FAF7F5]">
       <div class="block w-2/5">
-        <div class="btn btn-sm mt-2" @click="EditSongVisible=false">
-          <img src="../icons/Return_Icon.svg" alt="返回">
-        </div>
         <div class="mt-4">
           <div class="text-base text-gray-60 w-full my-1 ml-12">封面:</div>
-          <UploadImage v-model:ShowImage="ShowImage" v-model:AvatarFile="CoverFile"
+          <UploadImage v-model:ShowImage="ShowImage" v-model:AvatarFile="CoverFile" :UploadImageId="'CreateSong'"
                        class="w-72 ml-12 my-2"></UploadImage>
           <div class="ml-12">
           <UploadSong v-model:Mp3File="Mp3File"></UploadSong>
