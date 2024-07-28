@@ -28,7 +28,7 @@ export const GetSongDetail = () => {
             SongDetail.value = response.data.data;
             SongDetail.value.upload_date = SongDetail.value.upload_date.split(' ')[0];
             SongDetail.value.introduction = SongDetail.value.introduction === null ? '无简介' : SongDetail.value.introduction;
-            GetDetailLyrics(SongDetail.value);
+            GetDetailLyrics(SongDetail.value.lyric);
         })
         .catch(error => {
             console.log(error);

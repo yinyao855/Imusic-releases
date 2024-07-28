@@ -4,7 +4,7 @@ import { EditLyricList, EditSongDetail, EditSongVisible, GetEditSongDetail, Song
 import { onMounted, ref, watch } from 'vue'
 import { HandlePlayNow, MusicPlayerVisible } from '@/js/MusicPlayer.js'
 import UploadImage from '@/components/UploadImage.vue'
-import { GenerateLRCFile, parseLRCFile, UploadedLyricList } from '@/js/HandleLyrics.js'
+import { GenerateLRCFile, UploadedLyricList } from '@/js/HandleLyrics.js'
 import instance from '@/js/axios.js'
 import { OpenMessage } from '@/js/Notification.js'
 import UploadFile_Small from '@/components/CreateCenter_Components/MyCreatedSongs_Components/UploadFile_Small.vue'
@@ -24,7 +24,7 @@ const introduction = ref('')
 //上传的封面文件
 const CoverFile = ref(null)
 //生成的歌词文件
-const GeneratedFile = ref(null)
+const GeneratedFile = ref()
 
 //监测歌词上传之后的变化
 watch(() => UploadedLyricList.value, () => {

@@ -22,7 +22,7 @@ const AvatarFile=defineModel('AvatarFile');
       </div>
       <div class="w-full flex">
         <div class="text mx-auto">
-          <span>还没有头像,点击上传</span>
+          <span>还没有图片,点击上传</span>
         </div>
       </div>
     </div>

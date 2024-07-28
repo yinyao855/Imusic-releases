@@ -39,8 +39,8 @@ const handleFileUpload = (event) => {
           y2="95.4804"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#8F88C2"></stop>
-          <stop offset="1" stop-color="#5C52A2"></stop>
+          <stop stop-color="#a040fd"></stop>
+          <stop offset="1" stop-color="#5f41f3"></stop>
         </linearGradient>
       </defs>
     </svg>
@@ -89,13 +89,13 @@ const handleFileUpload = (event) => {
           y2="82.8317"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#C3BBFF"></stop>
-          <stop offset="1" stop-color="#51469A"></stop>
+          <stop stop-color="#a040fd"></stop>
+          <stop offset="1" stop-color="#5251f2"></stop>
         </linearGradient>
       </defs>
     </svg>
   </span>
-    <p class="text">{{ Filename }}</p>
+    <p class="text">{{Filename}}</p>
   </div>
   </label>
 </template>

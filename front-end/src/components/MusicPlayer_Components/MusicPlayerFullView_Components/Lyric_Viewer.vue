@@ -33,6 +33,9 @@ export default {
 
     const GetCurrentIndex = () => {
       let index = 0;
+      if(lyricList.value.length<=1){
+        return 0;
+      }
       if (parseInt(lyricList.value[lyricList.value.length - 1].timestamp) <= CurrentTime.value) {
         return lyricList.value.length - 1;
       }
@@ -74,6 +77,7 @@ export default {
     });
 
     watch(FullScreenLyricList, () => {
+      console.log('change');
       lyricList.value = FullScreenLyricList.value;
     });
 

@@ -5,10 +5,10 @@
     width: fit-content;
     height: 45px;
     border: none;
-    padding: 0px 15px;
+    padding: 0px 17px;
     border-radius: 5px;
-    background-color: rgb(49, 49, 83);
-    gap: 10px;
+    background: linear-gradient(to left bottom, #9b3ce8, #3386ef, #13bcec);
+    gap: 8px;
     cursor: pointer;
     transition: all 0.3s;
 }
@@ -44,7 +44,7 @@
 }
 .text {
     color: white;
-    font-size: 14px;
+    font-size: 15px;
     font-weight: 600;
     letter-spacing: 0.5px;
 }
@@ -53,9 +53,6 @@
 }
 .Documents-btn:hover {
     background-color: rgb(58, 58, 94);
-}
-.Documents-btn:active {
-    transform: scale(0.95);
 }
 .Documents-btn:hover .fileFront {
     transform: rotateX(30deg);

@@ -5,20 +5,25 @@ import { ref } from 'vue'
 
 //详情界面的歌词解析
 export const GetDetailLyrics = (url) => {
+  LyricList.value=[];
+  console.log(url);
   axios.get(url)
     .then(response => {
-      let lyric = []
       LyricContent.value = response.data
+      console.log(response.data);
       const TmpLyricList = LyricContent.value.trim().split('\n')
       for (let i = 0; i < TmpLyricList.length; ++i) {
         let timestamp = TmpLyricList[i].split(']')[0].split('[')[1]
         let content = TmpLyricList[i].split(']')[1]
         let TmpDictionary = {}
+        if(timestamp===undefined){
+          continue;
+        }
         TmpDictionary['content'] = content
         TmpDictionary['timestamp'] = TimeStringToSecond(timestamp)
-        lyric.push(TmpDictionary)
+        LyricList.value.push(TmpDictionary)
       }
-      LyricList.value = lyric
+      console.log(LyricList.value);
     })
     .catch(error => {
       console.log(error)
@@ -28,20 +33,25 @@ export const GetDetailLyrics = (url) => {
 
 //全屏播放界面的歌词解析
 export const GetFullScreenLyric = (url) => {
+  FullScreenLyricList.value=[];
+  if(url===null){
+    return;
+  }
   axios.get(url)
     .then(response => {
-      let lyric = []
       LyricContent.value = response.data
-      const TmpLyricList = LyricContent.value.trim().split('\n')
+      const TmpLyricList = LyricContent.value.split('\n')
       for (let i = 0; i < TmpLyricList.length; ++i) {
         let timestamp = TmpLyricList[i].split(']')[0].split('[')[1]
         let content = TmpLyricList[i].split(']')[1]
         let TmpDictionary = {}
         TmpDictionary['content'] = content
+        if(timestamp===undefined){
+          continue;
+        }
         TmpDictionary['timestamp'] = TimeStringToSecond(timestamp)
-        lyric.push(TmpDictionary)
+        FullScreenLyricList.value.push(TmpDictionary)
       }
-      FullScreenLyricList.value = lyric
     })
     .catch(error => {
       console.log(error)
@@ -51,9 +61,9 @@ export const GetFullScreenLyric = (url) => {
 
 //编辑界面的歌词
 export const GetEditLyrics = (url) => {
+  EditLyricList.value=[]
   axios.get(url)
     .then(response => {
-      let lyric = []
       LyricContent.value = response.data
       const TmpLyricList = LyricContent.value.trim().split('\n')
       for (let i = 0; i < TmpLyricList.length; ++i) {
@@ -63,11 +73,9 @@ export const GetEditLyrics = (url) => {
           let TmpDictionary = {}
           TmpDictionary['content'] = content
           TmpDictionary['timestamp'] = timestamp
-          lyric.push(TmpDictionary)
+          EditLyricList.value.push(TmpDictionary)
         }
       }
-      EditLyricList.value = lyric
-      console.log(EditLyricList.value)
     })
     .catch(error => {
       console.log(error)
