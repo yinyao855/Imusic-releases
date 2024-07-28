@@ -1,7 +1,7 @@
 <template>
 
   <Search_Input v-if="!SongDetailVisible"></Search_Input>
-  <el-tabs v-if="!SongDetailVisible" v-model="activeName" class="demo-tabs ml-4 mt-2" @tab-click="handleClick">
+  <el-tabs v-if="!SongDetailVisible" v-model="activeName" class="demo-tabs ml-4 mt-2">
     <el-tab-pane label="推荐" name="推荐">
       <div :style="{ height: (windowHeight-62) + 'px'}">
         <SearchResult v-if='SearchResultVisible'></SearchResult>
@@ -29,10 +29,6 @@ import { WindowWidth } from '@/js/NavicatStatus.js'
 
 //当前触发的状态
 const activeName = ref('推荐')
-
-const handleClick = (tab, event) => {
-  console.log(tab, event)
-}
 
 //获取到当前窗口的长宽信息
 const windowWidth = ref(window.innerWidth);

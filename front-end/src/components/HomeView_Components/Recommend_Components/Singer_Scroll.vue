@@ -62,10 +62,12 @@ watch(() => currentTime.value, () => {
         </div>
       </div>
     </div>
-    <div class="absolute top-1/2 left-0 -translate-y-1/2 px-0.5 py-1 bg-gray-300/60 hover:bg-gray-400/50 transition-colors ease-in duration-300 cursor-pointer rounded">
+    <div
+      class="absolute top-1/2 left-0 -translate-y-1/2 px-0.5 py-1 bg-gray-300/60 hover:bg-gray-400/50 transition-colors ease-in duration-300 cursor-pointer rounded">
       <img src="../../icons/Left_Photo_Icon.svg" class="h-6 w-6" alt="上一张" @click="PrevPhoto">
     </div>
-    <div class="absolute top-1/2 right-4 -translate-y-1/2 px-0.5 py-1 bg-gray-300/60 hover:bg-gray-400/50 transition-colors ease-in duration-300 cursor-pointer rounded">
+    <div
+      class="absolute top-1/2 right-4 -translate-y-1/2 px-0.5 py-1 bg-gray-300/60 hover:bg-gray-400/50 transition-colors ease-in duration-300 cursor-pointer rounded">
       <img src="../../icons/Left_Photo_Icon.svg" class="h-6 w-6 rotate-180" alt="下一张" @click="NextPhoto">
     </div>
   </div>

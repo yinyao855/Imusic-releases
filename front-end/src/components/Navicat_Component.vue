@@ -55,8 +55,13 @@
       <el-menu-item index="6" class="border-b">
         <img src="./icons/Message_Icon.svg" alt="消息中心" class="h-4 mr-3 ml-1" v-if="ActiveIndex!==6">
         <img src="./icons/Message_Active_Icon.svg" alt="消息中心" class="h-4 mr-3 ml-1" v-else>
-        <template #title><span
-            style="font-family: 'TsangerYuYangT_W03_W03', sans-serif;font-size: 15px;line-height: 22px">消息中心</span>
+        <template #title>
+          <span style="font-family: 'TsangerYuYangT_W03_W03', sans-serif;font-size: 15px;line-height: 22px">消息中心</span>
+          <div class="bg-red-500 w-5 h-5 rounded-full text-xs flex ml-1" style="font-family: 'TsangerYuYangT_W03_W03', sans-serif;">
+            <div class="m-auto">
+              {{MessageNotRead}}
+            </div>
+          </div>
         </template>
       </el-menu-item>
       <el-menu-item index="7">
@@ -83,6 +88,7 @@ import { ActiveIndex, NavicatWidth } from '@/js/NavicatStatus.js'
 import { CheckLogin, GetMySongLists } from '@/js/MySongList.js'
 import { GetLikeSongLists } from '@/js/LikeSongLists.js'
 import { GetMyCreatedSongs } from '@/js/MyCreates.js'
+import { MessageNotRead } from '@/js/Message.js'
 
 const user_store = UserStore(); //用户信息
 const isCollapse = ref(false) //是否展开状态栏

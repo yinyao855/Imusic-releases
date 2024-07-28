@@ -25,7 +25,6 @@ export const BeforeEnterHomeView = () => {
 const GetHotSongLists = () => {
     instance.get('feature/hotsonglists')
         .then(response => {
-            console.log(response.data);
             HomeView_HotSongLists.value = response.data.data;
             const length=HomeView_HotSongLists.value.length;
             for(let i=0;i<length*2;++i){
@@ -40,7 +39,6 @@ const GetHotSongLists = () => {
 const GetHotSingers = () => {
     instance.get('feature/hotsingers')
         .then(response => {
-            console.log(response.data);
             HomeView_Singers.value = response.data.data;
             const length=HomeView_Singers.value.length;
             for(let i=0;i<length*2;++i){
@@ -64,7 +62,6 @@ export const SecondToTime = (InputSecond) => {
 const GetHotSongs = () => {
     instance.get('feature/hotsongs')
         .then(response => {
-            console.log(response.data);
             HomeView_HotSongs.value = response.data.data;
             for (let i = 0; i < HomeView_HotSongs.value.length; ++i) {
                 HomeView_HotSongs.value[i].duration = SecondToTime(parseInt(HomeView_HotSongs.value[i].duration));
@@ -82,7 +79,6 @@ const GetNewSongs = () => {
         }
     })
         .then(response => {
-            console.log(response.data);
             HomeView_NewSongs.value = response.data.data;
             for(let i=0;i<HomeView_NewSongs.value.length;++i){
                 HomeView_NewSongs.value[i].duration = SecondToTime(parseInt(HomeView_NewSongs.value[i].duration));
@@ -101,7 +97,6 @@ const GetNewSongViewNewSongs = () => {
         }
     })
         .then(response => {
-            console.log(response.data);
             HomeView_NewSongView_NewSongs.value = response.data.data;
             for(let i=0;i<HomeView_NewSongView_NewSongs.value.length;++i){
                 HomeView_NewSongView_NewSongs.value[i].duration = SecondToTime(parseInt(HomeView_NewSongView_NewSongs.value[i].duration));

@@ -28,6 +28,7 @@ const onSubmit = () => {
         if (response.data.success === true) {
           OpenNotification('登录成功', '');
           user_store.token = response.data.token;
+          setAuthToken(user_store.token);
           user_store.Username = username.value;
           user_store.State = true;
           user_store.email = response.data.data.email;
@@ -37,7 +38,6 @@ const onSubmit = () => {
           user_store.Avatar = response.data.data.avatar;
           user_store.role = response.data.data.role;
           user_store.Registration_date = response.data.data.registration_date.split(' ')[0];
-          setAuthToken(user_store.token);
           ActiveIndex.value=1;
           GetPlayList();
           router.push('/home/homeView');

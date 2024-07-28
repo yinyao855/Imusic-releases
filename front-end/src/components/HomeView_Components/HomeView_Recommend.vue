@@ -17,13 +17,13 @@ onMounted(BeforeEnterHomeView);
   <div class="w-full flex flex-wrap bg-[#FAF7F5] h-full overflow-auto">
     <div class="w-full">
       <div class="text-xl">推荐歌单</div>
-      <SongLists_Scroll></SongLists_Scroll>
+<!--      <SongLists_Scroll></SongLists_Scroll>-->
       <el-divider class="w-full"></el-divider>
     </div>
 
     <div class="w-full">
       <div class="text-xl">推荐艺人</div>
-      <Singer_Scroll></Singer_Scroll>
+<!--      <Singer_Scroll></Singer_Scroll>-->
       <el-divider class="w-full"></el-divider>
     </div>
     <div class="w-full flex flex-row">
