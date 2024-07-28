@@ -3,9 +3,10 @@
 import { MusicPlayerVisible, PlayAll } from '@/js/MusicPlayer.js'
 import { AddLikeSongList, DeleteLikeSongList, SongListDetail, SongListVisible } from '@/js/SongList.js'
 import SongTable_HasFavor from '@/components/SongTable_HasFavor.vue'
-import { ref } from 'vue'
+import { ref,onMounted } from 'vue'
 import { NavicatWidth, WindowWidth } from '@/js/NavicatStatus.js'
 import { CheckLogin } from '@/js/MySongList.js'
+import { useTransition } from '@vueuse/core'
 
 //歌单中的歌曲
 const Songs = ref(SongListDetail.value.songs)
@@ -28,6 +29,15 @@ const ThisDeleteLikeSongList = (id) => {
   SongListDetail.value.user_favor = false
   DeleteLikeSongList(id)
 }
+
+//喜爱部分动画
+const LikeCount=ref(0);
+const outputValue = useTransition(LikeCount, {
+  duration: 1000,
+})
+onMounted(()=>{
+  LikeCount.value=SongListDetail.value.like;
+})
 </script>
 
 <template>
@@ -79,7 +89,7 @@ const ThisDeleteLikeSongList = (id) => {
               <img src="./icons/NotLike_SongList_Icon.svg" alt="不喜欢" class="h-6" v-else
                    @click="ThisAddLikeSongList(SongListDetail.id)">
               <div class="flex h-7 ml-3">
-                <div class="my-auto text-white">{{ SongListDetail.like }}</div>
+                <div class="my-auto text-white">{{ outputValue.toFixed(0) }}</div>
               </div>
             </div>
           </div>

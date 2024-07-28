@@ -12,6 +12,7 @@ import { LikeSongLists } from '@/js/LikeSongLists.js'
         <img
           :src="SongList.cover"
           alt="封面"
+          class="h-[200px]"
         />
         <div
           class="w-full h-full absolute hover:bg-gray-400/40 transition-colors ease-in duration-300 cursor-pointer"></div>

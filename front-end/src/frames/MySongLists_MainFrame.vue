@@ -1,5 +1,4 @@
 <script setup>
-
 import { MySongLists } from '@/js/MySongList.js'
 import { MusicPlayerVisible } from '@/js/MusicPlayer.js'
 import { GetSongListDetail } from '@/js/SongList.js'
@@ -28,6 +27,7 @@ import { GetLikeSongs } from '@/js/LikeSongs.js'
         <img
           :src="SongList.cover"
           alt="封面"
+          class="h-[200px]"
         />
         <div
           class="w-full h-full absolute hover:bg-gray-400/40 transition-colors ease-in duration-300 cursor-pointer"></div>

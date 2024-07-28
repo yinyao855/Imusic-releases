@@ -57,7 +57,7 @@
         <img src="./icons/Message_Active_Icon.svg" alt="消息中心" class="h-4 mr-3 ml-1" v-else>
         <template #title>
           <span style="font-family: 'TsangerYuYangT_W03_W03', sans-serif;font-size: 15px;line-height: 22px">消息中心</span>
-          <div class="bg-red-500 w-5 h-5 rounded-full text-xs flex ml-1" style="font-family: 'TsangerYuYangT_W03_W03', sans-serif;">
+          <div class="bg-red-500 w-5 h-5 rounded-full text-xs flex ml-1" style="font-family: 'TsangerYuYangT_W03_W03', sans-serif;" v-if="MessageNotRead!==0">
             <div class="m-auto">
               {{MessageNotRead}}
             </div>
