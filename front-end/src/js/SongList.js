@@ -2,6 +2,8 @@ import { ref } from 'vue';
 import instance from '@/js/axios.js'
 import { UserStore } from '@/stores/User.js'
 import { SecondToTime } from '@/js/BeforeEnterHomeView.js'
+import { MySubscribeUsers } from '@/js/SubscribeUser.js'
+import { SongDetail } from '@/js/SongDetail.js'
 
 //是否展示SongList组件
 export const SongListVisible=ref(false);
@@ -28,6 +30,9 @@ export function GetSongListDetail(id){
         SongListDetail.value.create_date=SongListDetail.value.create_date.split(' ')[0];
         SongListDetail.value.introduction=SongListDetail.value.introduction==='null'?'无简介':SongListDetail.value.introduction;
         SongListVisible.value=true;
+        SongListDetail.value['isSubscribed'] = MySubscribeUsers.value.filter((item) => {
+          return item.username === SongListDetail.value.owner
+        }).length > 0;
         console.log(SongListDetail.value);
       })
       .catch(error=>{

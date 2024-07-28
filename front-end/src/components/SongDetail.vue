@@ -3,8 +3,14 @@
 import {GetSongDetail, LyricList, SongDetail, SongDetailVisible, SongId} from "@/js/SongDetail.js";
 import {onMounted} from "vue";
 import {HandlePlayNow, MusicPlayerVisible} from "@/js/MusicPlayer.js";
+import { SubscribeUser } from '@/js/SubscribeUser.js'
 
 onMounted(GetSongDetail)
+
+const SubScribe=(id)=>{
+  SongDetail.value.isSubscribed=!SongDetail.value.isSubscribed;
+  SubscribeUser(id);
+}
 </script>
 
 <template>
@@ -19,8 +25,9 @@ onMounted(GetSongDetail)
           <div class="text-4xl w-full my-1">{{ SongDetail.title }}</div>
           <div class="text-base text-gray-60 ml-2 w-full my-1">歌手:{{ SongDetail.singer }}</div>
           <div class="w-full my-1">
-            <div class="inline tooltip tooltip-primary" data-tip="关注用户">
-              <img src="./icons/SubscribeUser_Icon.svg" alt="关注用户" class="inline">
+            <div class="inline tooltip tooltip-primary" :data-tip="SongDetail.isSubscribed===false?'关注用户':'取消关注'" @click="SubScribe(SongDetail.uploader)">
+              <img src="./icons/SubscribeUser_Icon.svg" alt="关注" class="inline" v-if="SongDetail.isSubscribed">
+              <img src="./icons/NotSubscribeUser_Icon.svg" alt="未关注" class="inline" v-else>
             </div>
             <span class="ml-2">{{ SongDetail.uploader }}</span>
             <span>・</span>

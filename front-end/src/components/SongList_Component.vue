@@ -7,6 +7,7 @@ import { ref,onMounted } from 'vue'
 import { NavicatWidth, WindowWidth } from '@/js/NavicatStatus.js'
 import { CheckLogin } from '@/js/MySongList.js'
 import { useTransition } from '@vueuse/core'
+import { SubscribeUser } from '@/js/SubscribeUser.js'
 
 //歌单中的歌曲
 const Songs = ref(SongListDetail.value.songs)
@@ -38,6 +39,11 @@ const outputValue = useTransition(LikeCount, {
 onMounted(()=>{
   LikeCount.value=SongListDetail.value.like;
 })
+
+const SubScribe=(id)=>{
+  SongListDetail.value.isSubscribed=!SongListDetail.value.isSubscribed;
+  SubscribeUser(id);
+}
 </script>
 
 <template>
@@ -62,8 +68,9 @@ onMounted(()=>{
               {{ SongListDetail.title }}
             </div>
             <div class="w-full mt-3 text-white text-lg">
-              <div class="inline tooltip tooltip-primary" data-tip="关注用户">
-                <img src="./icons/SubscribeUser_Icon.svg" alt="关注用户" class="inline">
+              <div class="inline tooltip tooltip-primary" :data-tip="SongListDetail.isSubscribed===false?'关注用户':'取消关注'" @click="SubScribe(SongListDetail.owner)">
+                <img src="./icons/SubscribeUser_Icon.svg" alt="关注" class="inline" v-if="SongListDetail.isSubscribed">
+                <img src="./icons/NotSubscribeUser_Icon.svg" alt="未关注" class="inline" v-else>
               </div>
               <span class="ml-2">{{ SongListDetail.owner }}</span>
               <span>・</span>

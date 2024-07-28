@@ -21,6 +21,8 @@ const Content = ref('')
 const CurrentFriend = ref('我的聊天')
 //当前聊天的人的头像
 const CurrentFriendAvatar = ref('')
+//是否显示当前的聊天
+const MessageVisible=ref(false);
 
 
 //是否已经聚焦了聊天框
@@ -57,6 +59,7 @@ const ThisPageGetFriendMessage = (friendName, friendAvatar) => {
   CurrentFriend.value = friendName
   CurrentFriendAvatar.value = friendAvatar
   GetFriendMessage(friendName)
+  MessageVisible.value=true;
 }
 
 //发送消息
@@ -80,6 +83,11 @@ const SendMessage = () => {
 onUpdated(() => {
   if(MessageRef.value!==null)
   MessageRef.value.scrollTop = MessageRef.value.scrollHeight
+})
+
+onMounted(()=>{
+  MessageVisible.value=false;
+  CurrentFriend.value='我的聊天'
 })
 </script>
 
@@ -110,7 +118,10 @@ onUpdated(() => {
       <div class="w-full h-12 text-center text-lg border-2 flex">
         <div class="m-auto">{{ CurrentFriend }}</div>
       </div>
-      <div class="w-full overflow-auto" :style="{height:`${MessageHeight}px`}">
+      <div class="w-full flex" :style="{height:`${MessageHeight}px`}"  v-if="!MessageVisible">
+        <img src="../icons/Chat_Icon.svg" alt="聊天" class="m-auto w-32 h-32">
+      </div>
+      <div class="w-full overflow-auto flex flex-wrap" :style="{height:`${MessageHeight}px`}" v-if="MessageVisible">
         <div class="w-full h-full flex" v-if="onLoading">
           <span class="loading loading-spinner loading-lg m-auto text-primary"></span>
         </div>
@@ -136,7 +147,7 @@ onUpdated(() => {
           </div>
         </div>
       </div>
-      <div class="flex p-2">
+      <div class="flex p-2" v-if="MessageVisible">
         <input v-model="Content" class="flex-1 p-2 border-2 rounded-lg" placeholder="输入消息" @focus="IsFocus=true" @blur="IsFocus=false" @keydown.enter="HandleEnter">
         <div class="w-32 bg-blue-500 hover:bg-blue-600 transition-colors ease-in duration-300 h-12 rounded-xl ml-2 flex"
              @click="SendMessage">

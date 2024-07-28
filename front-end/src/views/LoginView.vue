@@ -7,6 +7,7 @@ import instance, {setAuthToken} from "@/js/axios.js";
 import router from "@/router/index.js";
 import {GetPlayList} from "@/js/MusicPlayer.js";
 import { ActiveIndex } from '@/js/NavicatStatus.js'
+import { GetMySubscribeUsers } from '@/js/SubscribeUser.js'
 
 const user_store = UserStore();
 const onSubmit = () => {
@@ -40,6 +41,7 @@ const onSubmit = () => {
           user_store.Registration_date = response.data.data.registration_date.split(' ')[0];
           ActiveIndex.value=1;
           GetPlayList();
+          GetMySubscribeUsers();
           router.push('/home/homeView');
         } else {
           OpenNotification('登录失败', response.data.message);

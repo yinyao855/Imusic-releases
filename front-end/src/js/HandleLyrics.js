@@ -10,7 +10,6 @@ export const GetDetailLyrics = (url) => {
   axios.get(url)
     .then(response => {
       LyricContent.value = response.data
-      console.log(response.data);
       const TmpLyricList = LyricContent.value.trim().split('\n')
       for (let i = 0; i < TmpLyricList.length; ++i) {
         let timestamp = TmpLyricList[i].split(']')[0].split('[')[1]
