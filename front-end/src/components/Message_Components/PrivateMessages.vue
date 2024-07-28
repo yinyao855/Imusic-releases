@@ -1,5 +1,5 @@
 <script setup>
-import { computed, onMounted, onUpdated, ref } from 'vue'
+import { computed, onMounted, onUpdated, ref,onUnmounted } from 'vue'
 import {
   CurrentFriendMessage,
   GetFriendMessage,
@@ -13,10 +13,6 @@ import { UserStore } from '@/stores/User.js'
 
 onMounted(GetPrivateMessages)
 
-//聊天窗口的引用
-const MessagePanel = ref(null)
-//输入栏的引用
-const InputRef = ref(null)
 //对话部分的引用
 const MessageRef = ref(null)
 //输入栏里的消息
@@ -36,24 +32,30 @@ const HandleEnter=()=>{
   }
 }
 
-
-
-const BottomHeight = computed(() => {
-  return MusicPlayerVisible.value === true ? 128 : 0
-})
-
-
 const MessageHeight = computed(() => {
-  if (MessagePanel.value === null || InputRef.value === null) {
-    return window.innerHeight - 96 - BottomHeight.value - 75
-  }
-  return MessagePanel.value.clientHeight - BottomHeight.value - 48 - InputRef.value.clientHeight
+  return windowInnerHeight.value - 171;
 })
+
+
+// 监听窗口大小变化
+const windowInnerHeight = ref(window.innerHeight-(MusicPlayerVisible.value === true ? 128 : 0));
+const handleResize = () => {
+  const tmp=MusicPlayerVisible.value === true ? 128 : 0;
+  windowInnerHeight.value = window.innerHeight-tmp;
+};
+
+onMounted(() => {
+  window.addEventListener('resize', handleResize);
+});
+
+onUnmounted(() => {
+  window.removeEventListener('resize', handleResize);
+});
 
 //中转
-const ThisPageGetFriendMessage = (friendName, frientAvatar) => {
+const ThisPageGetFriendMessage = (friendName, friendAvatar) => {
   CurrentFriend.value = friendName
-  CurrentFriendAvatar.value = frientAvatar
+  CurrentFriendAvatar.value = friendAvatar
   GetFriendMessage(friendName)
 }
 
@@ -82,7 +84,7 @@ onUpdated(() => {
 </script>
 
 <template>
-  <div class="w-full h-full flex flex-row" :ref="el => MessagePanel = el">
+  <div class="w-full h-full flex flex-row">
     <div class="w-[30%] h-full overflow-auto block bg-[#faf3ee]">
       <div class="w-full border-t"></div>
       <div class="w-full border-b h-20 flex hover:bg-gray-300/50 transition-colors ease-in duration-300"
@@ -134,7 +136,7 @@ onUpdated(() => {
           </div>
         </div>
       </div>
-      <div class="flex p-2" :ref="el=>InputRef=el">
+      <div class="flex p-2">
         <input v-model="Content" class="flex-1 p-2 border-2 rounded-lg" placeholder="输入消息" @focus="IsFocus=true" @blur="IsFocus=false" @keydown.enter="HandleEnter">
         <div class="w-32 bg-blue-500 hover:bg-blue-600 transition-colors ease-in duration-300 h-12 rounded-xl ml-2 flex"
              @click="SendMessage">
