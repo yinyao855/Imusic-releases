@@ -2,6 +2,7 @@
 import { HomeView_Singers } from '@/js/BeforeEnterHomeView.js'
 import { NavicatWidth, WindowWidth } from '@/js/NavicatStatus.js'
 import { onMounted, onUnmounted, ref, watch } from 'vue'
+import { GetSingerDetail } from '@/js/SingerDetail.js'
 
 //偏移量
 const Offset = ref(2080)
@@ -53,7 +54,7 @@ watch(() => currentTime.value, () => {
     <div :style="{width:`${WindowWidth-NavicatWidth}px`}" class="overflow-hidden">
       <div class="flex mt-2" :style="{ transform: `translateX(-${Offset}px)`,transition: `transform 0.5s ease` }">
         <div v-for="(Singer,index) in HomeView_Singers" :key="index" class="mx-2 flex flex-wrap w-48">
-          <div class="relative w-48 h-48">
+          <div class="relative w-48 h-48" @click="GetSingerDetail(Singer.id)">
             <div
               class="absolute top-0 left-0 rounded-3xl hover:bg-gray-400/40 w-full h-full transition-colors ease-in duration-300 cursor-pointer"></div>
             <img :src="Singer.singerImage" alt="歌手封面" class="aspect-square rounded-3xl w-48 cursor-pointer">

@@ -14,9 +14,12 @@
         <SongDetail v-if="SongDetailVisible" class="z-40 bg-[#FAF7F5]"></SongDetail>
       </Transition>
       <Transition name="slide">
+        <Singer_Component v-if="SingerDetailVisible&&!SongDetailVisible"></Singer_Component>
+      </Transition>
+      <Transition name="slide">
         <SongList_Component v-if="SongListVisible&&!SongDetailVisible" class="z-30"></SongList_Component>
       </Transition>
-      <router-view v-if="!SongListVisible"></router-view>
+      <router-view v-if="!SongListVisible&&!SongDetailVisible&&!SingerDetailVisible"></router-view>
     </div>
   </div>
 
@@ -36,6 +39,8 @@ import { SongListVisible } from '@/js/SongList.js'
 import { SongDetailVisible } from '@/js/SongDetail.js'
 import SongDetail from '@/components/SongDetail.vue'
 import MySongListsDialog from '@/components/MySongListsDialog.vue'
+import Singer_Component from '@/components/Singer_Component.vue'
+import { SingerDetailVisible } from '@/js/SingerDetail.js'
 
 watch(() => UserStore().State, GetPlayList)
 </script>
