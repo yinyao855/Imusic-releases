@@ -1,7 +1,6 @@
 <template>
   <div class="w-full h-full flex" :ref="el => LyricPanel = el" @wheel="handleScroll">
     <div class="overflow-hidden w-4/5 h-[90%] m-auto">
-      <transition name="lyric-transition">
         <ul :style="{ transform: `translateY(-${Offset}px)`,transition: `transform 0.5s ease` }" class="px-[56px] h-full">
           <li v-for="(lyricContent, index) in lyricList" :key="index"
               :class="{ 'current-lyric': index === currentIndex, 'NotCurrent-lyric': index !== currentIndex, 'text-center py-1 hover:hover:bg-gray-300/30 transition-colors ease-in duration-100 rounded-lg': true }"
@@ -9,7 +8,6 @@
             {{ lyricContent.content }}
           </li>
         </ul>
-      </transition>
     </div>
   </div>
 </template>
@@ -111,11 +109,6 @@ export default {
   width: 100%;
   color: white;
   font-weight: 700;
-
   font-size: 36px; /* 高亮行的字体大小 */
-}
-
-.lyric-transition-enter-active, .lyric-transition-leave-active {
-  transition: transform 1s ease; /* 设置过渡效果 */
 }
 </style>

@@ -1,5 +1,4 @@
 <script setup>
-import TestView from './views/TestView.vue'
 import MusicPlayer from "@/components/MusicPlayer_Components/MusicPlayer.vue";
 import {MusicPlayerVisible} from "@/js/MusicPlayer.js";
 import {onMounted, onUnmounted, ref ,watch} from 'vue'
@@ -34,6 +33,7 @@ watch(()=>UserStore().State,()=>{
   }
 });
 
+//每五秒获取一次消息
 watch(()=>currentTime.value,()=>{
   if(currentTime.value>=5&&UserStore().State===true){
     GetAllMessage();
@@ -49,7 +49,6 @@ watch(()=>currentTime.value,()=>{
     </transition>
   </router-view>
   <MusicPlayer class="fixed"  v-if="MusicPlayerVisible"></MusicPlayer>
-<!--  <TestView></TestView>-->
 </template>
 
 <style>

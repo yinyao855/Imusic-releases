@@ -3,7 +3,7 @@
 import { MusicPlayerVisible, PlayAll } from '@/js/MusicPlayer.js'
 import { AddLikeSongList, DeleteLikeSongList, SongListDetail, SongListVisible } from '@/js/SongList.js'
 import SongTable_HasFavor from '@/components/SongTable_HasFavor.vue'
-import { ref,onMounted } from 'vue'
+import { ref,onMounted,watch } from 'vue'
 import { NavicatWidth, WindowWidth } from '@/js/NavicatStatus.js'
 import { CheckLogin } from '@/js/MySongList.js'
 import { useTransition } from '@vueuse/core'
@@ -39,6 +39,9 @@ const outputValue = useTransition(LikeCount, {
 onMounted(()=>{
   LikeCount.value=SongListDetail.value.like;
 })
+watch(()=>SongListDetail.value.like,(newVal)=>{
+  LikeCount.value=newVal;
+});
 
 const SubScribe=(id)=>{
   SongListDetail.value.isSubscribed=!SongListDetail.value.isSubscribed;
