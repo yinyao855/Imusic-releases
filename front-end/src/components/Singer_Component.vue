@@ -41,7 +41,7 @@ const Songs = ref(SingerDetail.value.songs)
       </div>
     </div>
 
-    <div class="h-2/3 absolute bottom-0 px-4 overflow-auto" :style="{width:`${WindowWidth-NavicatWidth+88}px`}">
+    <div class="h-2/3 absolute bottom-0 px-4" :style="{width:`${WindowWidth-NavicatWidth+88}px`}">
       <SongTable v-model:Songs="Songs" class="w-full"></SongTable>
       <div class="h-32 w-full" v-if="MusicPlayerVisible"></div>
     </div>

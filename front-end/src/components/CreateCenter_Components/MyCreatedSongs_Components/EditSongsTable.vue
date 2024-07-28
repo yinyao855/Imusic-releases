@@ -44,7 +44,7 @@ const props = defineProps({
       <td @click="HandlePlayNow(Song.id)">{{ Song.duration }}</td>
       <td @click="HandlePlayNow(Song.id)">{{ Song.upload_date }}</td>
       <th>
-        <div class="dropdown dropdown-top dropdown-end z-10">
+        <div class="dropdown dropdown-bottom dropdown-left z-10">
           <div tabindex="0" role="button" class="btn btn-ghost btn-xs">
             <img src="../../icons/Menu_Icon.svg" alt="详情">
           </div>
