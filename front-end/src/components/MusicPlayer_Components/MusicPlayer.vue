@@ -18,6 +18,7 @@ import {
   TotalTime,
   Volume
 } from "@/js/MusicPlayer.js";
+import { GetComments } from '@/js/Comment.js'
 
 // 音频播放器对象
 let audioPlayer = null;
@@ -37,6 +38,11 @@ onMounted(() => {
   audioPlayer.volume = Volume.value; // 初始化音量
   audioPlayer.play();
 });
+
+//监听获取评论
+watch(()=>CurrentSongDetail.value,()=>{
+  GetComments(CurrentSongDetail.value.id);
+})
 
 // 监听当前音频源变化
 watch(() => CurrentSongDetail.value.audio, () => {

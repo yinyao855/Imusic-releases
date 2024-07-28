@@ -3,18 +3,24 @@
 import {AddSongToCurrentPlayList, HandlePlayNow} from "@/js/MusicPlayer.js";
 import {ShowSongDetail} from "@/js/SongDetail.js";
 import {AddFavorSong, DeleteFavorSong} from "@/js/Favor.js";
-import { ActiveDialog } from '@/js/MySongList.js'
+import { ActiveDialog, CheckLogin } from '@/js/MySongList.js'
 
 const Songs = defineModel('Songs');
 
 //添加喜爱歌曲
 const PageAddFavorSong = (SongId, index) => {
+  if (!CheckLogin()) {
+    return
+  }
   Songs.value[index].user_like = true;
   AddFavorSong(SongId);
 }
 
 //删除喜爱歌曲
 const PageDeleteFavorSong = (SongId, index) => {
+  if (!CheckLogin()) {
+    return
+  }
   Songs.value[index].user_like = false;
   DeleteFavorSong(SongId);
 }

@@ -7,9 +7,20 @@ import {
   IsPlaying, MusicPlayModeDataTip,
   NextSong,
   PlayType,
-  PreviousSong
+  PreviousSong,
 } from "@/js/MusicPlayer.js";
 import {SecondToTime} from "@/js/BeforeEnterHomeView.js";
+import { CommentsVisible, GetComments } from '@/js/Comment.js'
+
+
+//更改是否显示评论的状态
+const ChangeCommentMode = (id) => {
+  if (CommentsVisible.value === false) {
+    GetComments(id);
+  } else {
+    CommentsVisible.value = false;
+  }
+}
 </script>
 
 <template>
@@ -49,7 +60,7 @@ import {SecondToTime} from "@/js/BeforeEnterHomeView.js";
       <button class="card__btn tooltip tooltip-primary" @click="NextSong" data-tip="下一首">
         <img src="../../icons/NextSong_White_Icon.svg" alt="下一首">
       </button>
-      <button class="card__btn tooltip tooltip-primary" data-tip="显示/关闭评论">
+      <button class="card__btn tooltip tooltip-primary" data-tip="显示/关闭评论" @click="ChangeCommentMode(CurrentSongDetail.id)">
         <img src="../../icons/Comment_Icon.svg" alt="评论">
       </button>
     </div>

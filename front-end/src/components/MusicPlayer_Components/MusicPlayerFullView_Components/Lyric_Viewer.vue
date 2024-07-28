@@ -16,6 +16,7 @@
 import {ref, watch} from 'vue';
 import { FullScreenLyricList } from '@/js/SongDetail.js'
 import {CurrentTime,IsDragging} from "@/js/MusicPlayer.js";
+import { CommentsVisible } from '@/js/Comment.js'
 
 export default {
   setup() {
@@ -73,6 +74,10 @@ export default {
     watch(CurrentTime, () => {
       currentIndex.value = GetCurrentIndex();
     });
+
+    watch(CommentsVisible,()=>{
+      currentIndex.value = GetCurrentIndex();
+    })
 
     watch(FullScreenLyricList, () => {
       console.log('change');

@@ -75,7 +75,7 @@
 
           <!--全屏播放器-->
           <button class="btn btn-sm rounded-md border-none glass tooltip my-auto tooltip-primary" data-tip="全屏显示"
-                  @click="IsFullScreen=true">
+                  @click="IsFullScreen=true;CommentsVisible=false">
             <img src="../icons/FullScreen_Icon.svg" alt="全屏">
           </button>
         </div>
@@ -103,6 +103,7 @@ import {
 } from "@/js/MusicPlayer.js";
 import {SecondToTime} from '@/js/BeforeEnterHomeView.js'
 import PlayList_Component from "@/components/PlayList_Component.vue";
+import { CommentsVisible } from '@/js/Comment.js'
 </script>
 
 
