@@ -8,6 +8,7 @@ import { GenerateLRCFile, UploadedLyricList } from '@/js/HandleLyrics.js'
 import instance from '@/js/axios.js'
 import { OpenMessage } from '@/js/Notification.js'
 import UploadFile_Small from '@/components/CreateCenter_Components/MyCreatedSongs_Components/UploadFile_Small.vue'
+import { GetMyCreatedSongs } from '@/js/MyCreates.js'
 
 
 const Lyrics = ref(EditLyricList.value)
@@ -55,12 +56,14 @@ const SaveChanges = () => {
     formData.append('cover', CoverFile.value)
   }
   if (GeneratedFile.value !== null) {
-    formData.append('lyrics', GeneratedFile.value)
+    console.log(GeneratedFile.value);
+    formData.append('lyric', GeneratedFile.value)
   }
   instance.post('/songs/update/' + EditSongDetail.value.id, formData)
     .then(response => {
       if (response.data.success === true) {
         OpenMessage('修改成功', 'success')
+        GetMyCreatedSongs();
         EditSongVisible.value = false
       } else {
         OpenMessage('修改失败', 'error')

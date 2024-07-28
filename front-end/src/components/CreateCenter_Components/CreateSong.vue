@@ -9,6 +9,7 @@ import UploadSong from '@/components/CreateCenter_Components/CreateSong_Componen
 import { OpenMessage } from '@/js/Notification.js'
 import { UserStore } from '@/stores/User.js'
 import instance from '@/js/axios.js'
+import { GetMyCreatedSongs } from '@/js/MyCreates.js'
 
 const ShowImage=ref(null);
 const CoverFile=ref(null);
@@ -67,13 +68,14 @@ const SubmitSong=()=>{
   formData.append('audio',Mp3File.value);
   if(Lyrics.value.length>1||(Lyrics.value.length===1&&Lyrics.value[0].content!=='')){
     const LyricFile=GenerateLRCFile(Lyrics.value,title.value);
-    formData.append('lyrics',LyricFile);
+    formData.append('lyric',LyricFile);
   }
   formData.append('uploader',UserStore().Username);
   instance.post('/songs/upload',formData)
     .then(response=>{
       if(response.data.success===true){
         OpenMessage('上传成功','success');
+        GetMyCreatedSongs();
         ClearContent();
       }
       else{
