@@ -4,6 +4,7 @@ import { SongDetailVisible } from '@/js/SongDetail.js'
 import { WindowWidth } from '@/js/NavicatStatus.js'
 import CommentMessages from '@/components/Message_Components/CommentMessages.vue'
 import PrivateMessages from '@/components/Message_Components/PrivateMessages.vue'
+import SystemMessages from "@/components/Message_Components/SystemMessages.vue";
 
 
 //当前触发的状态
@@ -32,7 +33,7 @@ onBeforeUnmount(() => {
   <el-tabs v-if="!SongDetailVisible" v-model="activeName" class="demo-tabs ml-4 mt-2">
     <el-tab-pane label="系统通知" name="系统通知">
       <div :style="{ height: (windowHeight-62) + 'px'}">
-
+        <SystemMessages></SystemMessages>
       </div>
     </el-tab-pane>
     <el-tab-pane label="评论通知" name="评论通知">
